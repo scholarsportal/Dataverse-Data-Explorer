@@ -1,0 +1,24 @@
+<mat-nav-list class="button-header">
+
+  <a mat-list-item (click)="addTab()">Add Group<span class="fill-space"></span><mat-icon>playlist_add</mat-icon></a>
+
+</mat-nav-list>
+<mat-nav-list>
+
+  <a mat-list-item (click)="showAll()"  [ngClass]="{'active': all_active }">All</a>
+
+  <a mat-list-item id="{{tab.varGrp['@ID']}}" draggable="true" [disableRipple]="true"  (dragstart)="dragstart($event);onGroupClick(tab);trackDragRow(tab)" (dragenter)="dragenter($event,tab)" (dragend)="dragend($event)"  *ngFor="let tab of _variable_groups" (click)="onGroupClick(tab)" (dblclick)="onGroupDblClick(tab)" [ngClass]="{'active': tab.active }" >
+    <mat-icon aria-label="drag" matTooltip="Drag Me" style="margin-left:-7px">drag_indicator</mat-icon>
+    <span *ngIf="!tab.editable">{{tab.varGrp.labl}}</span>
+    <mat-form-field *ngIf="tab.editable" class="fixed_width">
+      <input matInput value="{{tab.varGrp.labl}}" #titleInput >
+      <button mat-icon-button matSuffix color="primary"> <mat-icon aria-label="Done" (click)="renameGroupComplete(tab,titleInput.value )" >done</mat-icon></button>
+      <button mat-icon-button matSuffix color="primary"> <mat-icon aria-label="Clear" (click)="renameGroupCancel(tab)">clear</mat-icon></button>
+      <button mat-icon-button matSuffix color="primary"> <mat-icon aria-label="Delete" (click)="groupDelete(tab)">delete</mat-icon></button>
+    </mat-form-field>
+      <span class="fill-space"></span>
+    <button *ngIf="!tab.editable" mat-icon-button color="primary"> <mat-icon aria-label="Edit" (click)="renameGroup(tab)">edit</mat-icon></button>
+
+  </a>
+
+</mat-nav-list>

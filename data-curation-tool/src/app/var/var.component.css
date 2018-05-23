@@ -1,0 +1,29 @@
+.grey{
+  background: #ebebeb;
+}
+.active{
+  background: #6d9cff;
+}
+
+.mat-column-drag {
+  flex:  0 0 40px;
+
+}
+.mat-column-select{
+  flex:  0 0 40px;
+
+}
+.mat-column-control{
+  flex:  0 0 30px;
+}
+.mat-column-id {
+  flex:  0 0 100px;
+
+}
+
+.mat-column-name {
+  flex:  0 0 100px;
+}
+.mat-column-labl {
+  flex:  0 0 500px;
+}

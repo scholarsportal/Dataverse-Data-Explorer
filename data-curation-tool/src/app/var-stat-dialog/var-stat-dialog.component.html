@@ -1,0 +1,21 @@
+<div mat-dialog-content>
+  <h1 mat-dialog-title>{{data["@name"]}}: {{data["labl"]["#text"]}}</h1>
+  <app-chart [data]="data"></app-chart>
+  <table class="table-bordered">
+  <tr>
+      <th>Values</th>
+      <th>Categories</th>
+      <th>N</th>
+    <th>NW</th>
+  </tr>
+    <tr *ngFor="let row of data.catgry">
+      <td>{{row.catValu}}</td>
+      <td>{{row.labl["#text"]}}</td>
+      <td>{{row.catStat["#text"]}}</td>
+      <td></td>
+    </tr>
+
+  </table>
+
+
+</div>

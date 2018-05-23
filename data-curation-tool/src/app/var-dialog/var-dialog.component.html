@@ -1,0 +1,83 @@
+<div mat-dialog-content >
+  <form [formGroup]="form" (ngSubmit)="submit(form)">
+    <h1 mat-dialog-title>Variable Information</h1>
+
+    <mat-dialog-content>
+      <mat-grid-list class="table-controls" cols="2" rowHeight="62">
+        <mat-grid-tile colspan="1" rowspan="1">
+          <mat-form-field>
+            <input matInput formControlName="id" placeholder="ID" value="{{data['@ID']}}"  >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1">
+          <mat-form-field>
+            <input matInput formControlName="name" placeholder="Name" value="{{data['@name']}}" >
+          </mat-form-field>
+        </mat-grid-tile>
+
+
+
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-form-field  class="field_width">
+             <input matInput formControlName="labl" placeholder="Label" value="{{data.labl['#text']}}">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-form-field  class="field_width">
+            <input matInput formControlName="qstnLit" placeholder="Literal Question" value="{{data.qstn.qstnLit}}">
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-form-field  class="field_width">
+            <input matInput formControlName="ivuInstr" placeholder="Interviewer Instructions" value="{{data.qstn.ivuInstr}}">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-form-field  class="field_width">
+            <input matInput formControlName="universe" placeholder="Universe" value="{{data.universe['#text']}}">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="2">
+          <mat-form-field class="field_width" >
+            <textarea matInput formControlName="notes" class="textarea_height" placeholder="Notes" value="{{data.notes['#cdata']}}" ></textarea>
+          </mat-form-field>
+        </mat-grid-tile>
+        <!--Group chip list-->
+        <mat-grid-tile colspan="2" rowspan="1" class="field_width">
+          <mat-form-field class="field_width">
+            <mat-select formControlName="_groups" [(value)]="data['_groups']"  placeholder="Group" multiple="true">
+
+              <mat-option *ngFor="let g of _variable_groups" [value]="g.varGrp['@ID']" >
+                {{ g.varGrp.labl}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="1" rowspan="1">
+          <mat-form-field>
+            <mat-select formControlName="wgt_var" [(value)]="data['@wgt-var']" placeholder="Weight Variable">
+              <mat-option *ngFor="let w of weights" [value]="w">
+                {{ w }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1">
+          <section class="example-section">
+            <mat-checkbox formControlName="wgt" align="end" checked="{{data['@wgt']}}">Is Weight</mat-checkbox>
+          </section>
+        </mat-grid-tile>
+
+
+      <mat-grid-tile colspan="1" rowspan="1">
+        <button mat-button type="submit">Update</button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1">
+        <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+      </mat-grid-tile>
+      </mat-grid-list>
+    </mat-dialog-content>
+  </form>
+</div>
