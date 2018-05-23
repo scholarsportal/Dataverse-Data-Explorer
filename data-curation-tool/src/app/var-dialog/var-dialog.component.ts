@@ -17,7 +17,7 @@ export class VarDialogComponent implements OnInit{
   /////////
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private formBuilder: FormBuilder,
-              private dialogRef: MatDialogRef<VarDialogComponent>,
+              public dialogRef: MatDialogRef<VarDialogComponent>,
 
   ) { }
 
@@ -71,6 +71,9 @@ export class VarDialogComponent implements OnInit{
   addOmittedProperties(_obj) {
     if (typeof(_obj.qstn) == "undefined") {
       _obj.qstn = {}
+    }
+    if (typeof(_obj.labl) == "undefined") {
+      _obj.labl = {'#text': ""}
     }
     if (typeof(_obj.universe) == "undefined") {
       _obj.universe = {

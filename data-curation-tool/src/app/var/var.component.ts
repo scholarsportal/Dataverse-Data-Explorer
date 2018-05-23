@@ -13,7 +13,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 })
 export class VarComponent implements OnInit {
   datasource:MatTableDataSource<any>;
-  private searchFilter = new FormControl();
+  public searchFilter = new FormControl();
   private filterValues = {search: '', _show: true}
   _variables;
   id;
