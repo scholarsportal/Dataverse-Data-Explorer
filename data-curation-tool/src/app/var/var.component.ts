@@ -114,10 +114,13 @@ export class VarComponent implements OnInit {
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter) : boolean {
       let searchTerms = JSON.parse(filter)
-
-      return (data['@ID'].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1
-        ||  data['@name'].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1
-        ||  data['labl']["#text"].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1)
+      try {
+        return (data['@ID'].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1
+          || data['@name'].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1
+          || data['labl']["#text"].toString().toLowerCase().indexOf(searchTerms.search.toLowerCase()) != -1)
+      }catch(e){
+        return false
+      }
     }
     return filterFunction
   }
