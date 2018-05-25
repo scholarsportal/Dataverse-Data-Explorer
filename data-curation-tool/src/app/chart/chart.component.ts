@@ -10,7 +10,7 @@ export class ChartComponent implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   color_array=["#3366cc","#dc3912","#ff9900","#109618","#990099","#0099c6","#dd4477","#66aa00","#b82e2e","#316395","#994499","#22aa99","#aaaa11","#6633cc","#e67300","#8b0707","#651067","#329262","#5574a6","#3b3eac","#b77322","#16d620","#b91383","#f4359e","#9c5935","#a9c413","#2a778d","#668d1c","#bea413","#0c5922","#743411"];
-
+  max_string_length=13;
   @Input() private data: Array<any>;
 
   constructor() { }
@@ -37,8 +37,14 @@ export class ChartComponent implements OnInit {
         if(!freq){
           freq=_data[i].catStat["#text"]
         }
+       var  short_name=_data[i].labl["#text"]
+
+        if(short_name.length>this.max_string_length){
+          short_name=short_name.substring(0,this.max_string_length)+"..."
+        }
+        short_name=short_name
         data.push({
-          name:_data[i].labl["#text"],
+          name:short_name,
           freq:freq
 
         })
@@ -82,7 +88,6 @@ export class ChartComponent implements OnInit {
     // Scale the range of the data in the domains
     x.domain([0, d3.max(data, function(d){ return d.freq; })])
     y.domain(data.map(function(d) { return d.name; }));
-    //y.domain([0, d3.max(data, function(d) { return d.freq; })]);
 
     // append the rectangles for the bar chart
     var count=0

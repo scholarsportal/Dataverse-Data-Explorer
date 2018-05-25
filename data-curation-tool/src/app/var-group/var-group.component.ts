@@ -154,8 +154,13 @@ export class VarGroupComponent implements OnInit {
     return false;
   }
   dragend($event){
+    //make sure we've dragged over something
+    if(!this.dragged_over_obj){
+      return
+    }
     //update the master list
     //remove the object
+
     this._variable_groups.splice(this._variable_groups.map(function(e) { return e.varGrp["@ID"]; }).indexOf(this.dragged_obj.varGrp["@ID"]),1);
     //
     var index=this._variable_groups.map(function(e) { return e.varGrp["@ID"]; }).indexOf(this.dragged_over_obj.varGrp["@ID"]);

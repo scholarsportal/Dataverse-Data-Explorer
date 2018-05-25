@@ -142,6 +142,7 @@ export class VarComponent implements OnInit {
     }
 
     var data=[];
+    var ungrouped_count=0
     for(var i = 0; i< this._variables.length;i++){
       var obj=this._variables[i];
       if( this.mode=="group"){
@@ -149,7 +150,8 @@ export class VarComponent implements OnInit {
           obj._order = _ids.indexOf(obj["@ID"])
           obj._show=true
         }else{
-          obj._order = 99999;
+          ungrouped_count+=1
+          obj._order = 99999+ungrouped_count;
           obj._show=false
         }
 
@@ -167,6 +169,8 @@ export class VarComponent implements OnInit {
     this.checkSelection(); // and enable group downdown if applicable
     if(this.mode=="group"){
       this.sortByOrder();
+   }else{
+      this.sort.sort({id: '', start: 'asc', disableClear: false});
     }
 
   }
@@ -377,18 +381,19 @@ export class VarComponent implements OnInit {
       vars.push(_id);//add to end of array
     }else if(_type=="drag") {
       //check if this.dragged_over_obj is not part of the group
-
         //check to see if this var is part of the group -- otherwise add it.
         if(vars.indexOf(_id)>-1){
           vars.splice(vars.indexOf(_id),1);//remove from array
         }
         //find out the position of the dragged_over_obj
         var index=vars.indexOf(this.dragged_over_obj["@ID"]);
-
         if(this.dragged_over_dir=="before" &&  this.dragged_over_obj._show){
-          //case 1. reorder variable in group
+          //case 1. add before
           vars.splice(index,0, _id);
-        }
+        }else if(this.dragged_over_dir=="after" &&  this.dragged_over_obj._show){
+        //case 2. add after
+        vars.splice(index+1,0, _id);
+      }
 
 
     }
