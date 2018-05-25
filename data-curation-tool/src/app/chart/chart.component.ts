@@ -23,35 +23,27 @@ export class ChartComponent implements OnInit {
   createChart(_data){
     var obj=this;
     var data = this.data;
-    if(typeof(_data["catgry"])!="undefined"){
       data=[];
-      for(var i =0;i<_data["catgry"].length;i++){
+      for(var i =0;i<_data.length;i++){
 
         var freq=null
-        for(var j =0;j<_data["catgry"][i].catStat.length;j++) {
-          var sub_obj=_data["catgry"][i].catStat[j]
+        for(var j =0;j<_data[i].catStat.length;j++) {
+          var sub_obj=_data[i].catStat[j]
           if(sub_obj["@type"]=="freq" && !sub_obj["@wgtd"]){
             freq=sub_obj["#text"]
           }
         }
         //dataverse ddi exception
         if(!freq){
-          freq=_data["catgry"][i].catStat["#text"]
+          freq=_data[i].catStat["#text"]
         }
         data.push({
-          name:_data["catgry"][i].labl["#text"],
+          name:_data[i].labl["#text"],
           freq:freq
 
         })
       }
-
-    }else{
-      return
-    }
   var max_height = (data.length+1)*25
-
-
-
 
     //sort bars based on value
     data = data.sort(function (a, b) {
