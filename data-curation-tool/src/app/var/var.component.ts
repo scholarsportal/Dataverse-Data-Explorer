@@ -90,6 +90,10 @@ export class VarComponent implements OnInit {
     //make sure all the data is set to show
     for(var i = 0; i< this._variables.length;i++) {
       this._variables[i]._show=true;
+      //also make sure it has a labl
+      if(typeof(this._variables[i].labl) =="undefined"){
+        this._variables[i].labl={"#text":""};
+      }
     };
     //show if var is _in_group
     this.updateGroupsVars()
