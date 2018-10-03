@@ -10,12 +10,12 @@ export class VarStatDialogComponent implements OnInit {
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  sorted_catagories=[];
+  sorted_categories=[];
   ngOnInit() {
    for(var i = 0; i<this.data.catgry.length;i++){
-      this.sorted_catagories.push(this.data.catgry[i])
+      this.sorted_categories.push(this.data.catgry[i])
     }
-    this.sorted_catagories.sort(function(a, b){
+    this.sorted_categories.sort(function(a, b){
       return a.catValu - b.catValu}
     );
   }

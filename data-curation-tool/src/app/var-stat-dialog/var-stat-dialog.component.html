@@ -1,6 +1,6 @@
 <div mat-dialog-content>
   <h1 mat-dialog-title>{{data["@name"]}}: {{data["labl"]["#text"]}}</h1>
-  <app-chart [data]="sorted_catagories"></app-chart>
+  <app-chart [data]="sorted_categories"></app-chart>
   <table class="table-bordered">
   <tr>
       <th>Values</th>
@@ -8,7 +8,7 @@
       <th>N</th>
     <th>NW</th>
   </tr>
-    <tr *ngFor="let row of sorted_catagories">
+    <tr *ngFor="let row of sorted_categories">
       <td>{{row.catValu}}</td>
       <td>{{row.labl["#text"]}}</td>
       <td>{{row.catStat["#text"]}}</td>
