@@ -11,7 +11,11 @@
     <tr *ngFor="let row of sorted_categories">
       <td>{{row.catValu}}</td>
       <td>{{row.labl["#text"]}}</td>
+      <td *ngIf="isUndefined(row.catStat); else elseBlock"></td>
+      <ng-template #elseBlock>
       <td>{{row.catStat["#text"]}}</td>
+      </ng-template>
+
       <td></td>
     </tr>
 
