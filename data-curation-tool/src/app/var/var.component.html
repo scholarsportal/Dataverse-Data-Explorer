@@ -1,125 +1,182 @@
-
-  <mat-grid-list class="table-controls" cols="3" rowHeight="58">
-    <mat-grid-tile>
-       <mat-form-field>
-       <input matInput [formControl]="searchFilter" placeholder="Search">
-       <span matSuffix><mat-icon>search</mat-icon></span>
-      </mat-form-field>
-    </mat-grid-tile>
-    <mat-divider [vertical]="true"></mat-divider>
-    <mat-grid-tile>
-      <mat-select color="primary" (change)="addToGroup($event.value)" placeholder="Add Selected to Group" #group_select disabled="true" [hidden]="group_select.hidden">
+<mat-grid-list class="table-controls" cols="3" rowHeight="58">
+  <mat-grid-tile>
+    <mat-form-field>
+      <input matInput [formControl]="searchFilter" placeholder="Search" />
+      <span matSuffix><mat-icon>search</mat-icon></span>
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-divider [vertical]="true"></mat-divider>
+  <mat-grid-tile>
+    <mat-select
+      color="primary"
+      (change)="addToGroup($event.value)"
+      placeholder="Add Selected to Group"
+      #group_select
+      disabled="true"
+      [hidden]="group_select.hidden"
+    >
       <mat-option *ngFor="let g of _variable_groups" [value]="g.varGrp['@ID']">
-        {{ g.varGrp.labl}}
+        {{ g.varGrp.labl }}
       </mat-option>
     </mat-select>
-    </mat-grid-tile>
-  </mat-grid-list>
+  </mat-grid-tile>
+</mat-grid-list>
 
-  <mat-table class="mat-elevation-z8" [dataSource]="datasource" matSort  >
-    <!--drag Icon Column -->
-    <ng-container matColumnDef="drag">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-icon aria-label="drag" matTooltip="Drag Me">drag_indicator</mat-icon>
-      </mat-cell>
-    </ng-container>
+<mat-table class="mat-elevation-z8" [dataSource]="datasource" matSort>
+  <!-- drag Icon Column -->
+  <ng-container matColumnDef="drag">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-icon aria-label="drag" matTooltip="Drag Me">drag_indicator</mat-icon>
+    </mat-cell>
+  </ng-container>
 
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null; checkSelection();"
-                      [checked]="selection.isSelected(row)">
-        </mat-checkbox>
-      </mat-cell>
-    </ng-container>
-    <!-- MINUS PLUS Column-->
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox
+        (change)="$event ? masterToggle() : null"
+        [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()"
+      >
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox
+        (click)="$event.stopPropagation()"
+        (change)="$event ? selection.toggle(row) : null; checkSelection()"
+        [checked]="selection.isSelected(row)"
+      >
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <!-- MINUS PLUS Column -->
 
-    <ng-container matColumnDef="control" >
-      <mat-header-cell *matHeaderCellDef><div style="width:40px;"></div></mat-header-cell>
-      <mat-cell *matCellDef="let row; let i=index;">
-        <button *ngIf="row._show" mat-icon-button color="accent" (click)="onRemove(row['@ID'])">
-          <mat-icon aria-label="remove">indeterminate_check_box</mat-icon>
-        </button>
-        <button *ngIf="!row._show" mat-icon-button color="accent" (click)="onAdd(row['@ID'])">
-          <mat-icon aria-label="add">add_box</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="control">
+    <mat-header-cell *matHeaderCellDef
+      ><div style="width:40px;"></div
+    ></mat-header-cell>
+    <mat-cell *matCellDef="let row; let i = index">
+      <button
+        *ngIf="row._show"
+        mat-icon-button
+        color="accent"
+        (click)="onRemove(row['@ID'])"
+      >
+        <mat-icon aria-label="remove">indeterminate_check_box</mat-icon>
+      </button>
+      <button
+        *ngIf="!row._show"
+        mat-icon-button
+        color="accent"
+        (click)="onAdd(row['@ID'])"
+      >
+        <mat-icon aria-label="add">add_box</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-chip-list> <mat-chip [color]="row['_in_group']==true ?  'accent':'primary' " selected="true">
-         {{row["id"]}}
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-chip-list>
+        <mat-chip
+          [color]="row['_in_group'] == true ? 'accent' : 'primary'"
+          selected="true"
+        >
+          {{ row['id'] }}
+        </mat-chip></mat-chip-list
+      >
+    </mat-cell>
+  </ng-container>
 
-        </mat-chip></mat-chip-list>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="_order">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> order </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row['_order'] }} </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="_order">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> order </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row['_order']}} </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row['@name'] }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="labl">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Label </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row.labl['#text'] }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="catgry">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      Category
+    </mat-header-cell>
+    <!--
+      <mat-cell *matCellDef="let row"> <span *ngIf="row.catgry">{{row.catgry.length}}</span> </mat-cell>
+  --></ng-container>
 
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row['@name']}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="labl">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Label </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.labl["#text"]}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="catgry">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
-     <!-- <mat-cell *matCellDef="let row"> <span *ngIf="row.catgry">{{row.catgry.length}}</span> </mat-cell>
-    --></ng-container>
+  <ng-container matColumnDef="wgt-var">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      Weight
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <span *ngIf="row['@wgt-var']">{{ row['@wgt-var'] }}</span></mat-cell
+    >
+  </ng-container>
 
-    <ng-container matColumnDef="wgt-var">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Weight </mat-header-cell>
-      <mat-cell *matCellDef="let row"> <span *ngIf="row['@wgt-var']">{{row['@wgt-var']}}</span></mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="view">
+    <mat-header-cell *matHeaderCellDef>View</mat-header-cell>
 
-    <ng-container matColumnDef="view">
-      <mat-header-cell *matHeaderCellDef>View</mat-header-cell>
+    <mat-cell *matCellDef="let row; let i = index">
+      <button
+        mat-icon-button
+        color="accent"
+        (click)="onView(row['@ID'])"
+        matTooltip="View"
+      >
+        <mat-icon aria-label="View">visibility</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
 
-      <mat-cell *matCellDef="let row; let i=index;">
-        <button mat-icon-button color="accent" (click)="onView(row['@ID'])" matTooltip="View">
-          <mat-icon aria-label="View">visibility</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef>
+      <button
+        mat-icon-button
+        color="accent"
+        (click)="onEditSelected()"
+        matTooltip="Group Edit"
+        #group_edit
+        disabled="true"
+      >
+        <mat-icon aria-label="Group Edit">edit</mat-icon>
+      </button>
+    </mat-header-cell>
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef>
-        <button mat-icon-button color="accent" (click)="onEditSelected()" matTooltip="Group Edit" #group_edit disabled="true">
-          <mat-icon aria-label="Group Edit">edit</mat-icon>
-        </button>
-      </mat-header-cell>
+    <mat-cell *matCellDef="let row; let i = index">
+      <button
+        mat-icon-button
+        color="accent"
+        (click)="onEdit(row['@ID'])"
+        matTooltip="Edit"
+      >
+        <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
 
-      <mat-cell *matCellDef="let row; let i=index;">
-        <button mat-icon-button color="accent" (click)="onEdit(row['@ID'])" matTooltip="Edit">
-          <mat-icon aria-label="Edit">edit</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="getDisplayedColumns();"  ></mat-header-row>
-   <mat-row  *matRowDef="let row; columns: getDisplayedColumns();" draggable="true"  (dragstart)="dragstart($event);highlightRow(row);trackDragRow(row)" (dragend)="dragend($event)" (dragenter)="dragenter($event,row)" [ngClass]="{'grey':  row._show!=true,'active':  row._active==true}" >
-    </mat-row>!-- -->
-
-  </mat-table>
-  <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
-  <!--<div class="no-results" [style.display]="datasource.renderedData.length == 0 ? '' : 'none'">
+  <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
+  <mat-row
+    *matRowDef="let row; columns: getDisplayedColumns()"
+    draggable="true"
+    (dragstart)="dragstart($event); highlightRow(row); trackDragRow(row)"
+    (dragend)="dragend($event)"
+    (dragenter)="dragenter($event, row)"
+    [ngClass]="{ grey: row._show != true, active: row._active == true }"
+  >
+  </mat-row
+  >!-- -->
+</mat-table>
+<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+<!--
+  <div class="no-results" [style.display]="datasource.renderedData.length == 0 ? '' : 'none'">
     No results
   </div>
-  -->
-
+-->
