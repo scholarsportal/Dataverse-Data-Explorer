@@ -26,40 +26,29 @@ export class InterfaceComponent implements OnInit {
   title;
   _variable_groups = []; // store the variables in an array display
   _variables = []; // store the variables to be broadcast to child
-  prep_data = null;
-
+  _id = null; // file id
 
   constructor(private ddiService: DdiService,
   ) {
 
   }
-  private getParameterByName(name) {
-    const url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-    if (!results) { return null; }
-    if (!results[2]) { return ''; }
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-  }
-
 
   ngOnInit() {
       let uri = null;
-      uri = this.getParameterByName('uri');
+      uri = this.ddiService.getParameterByName('uri');
+      this._id = this.ddiService.getParameterByName('dfId');
+      console.log(this._id);
 
-      let id = null;
-      id = this.getParameterByName('dfId');
-      const protocol = window.location.protocol;
-      const host = window.location.hostname;
-      const port = window.location.port;
-      const base_url = protocol + '//' + host + ':' + port;
+      const base_url = this.ddiService.getBaseUrl();
 
-      if (!uri && id != null) {
-          uri = base_url + '/api/access/datafile/' + id + '/metadata/ddi';
+      if (!uri && this._id != null) {
+          console.log('Interface setting id ' + this._id);
+          uri = base_url + '/api/access/datafile/' + this._id + '/metadata/ddi';
+          console.log(uri);
+
               // &key=8f18fd62-3c5b-48f9-87d7-3fd181e6b5ed';
       } else {
-          if (!uri && !id) {
+          if (!uri && !this._id) {
               // Just for testing purposes
               uri = base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
               console.log(uri);
@@ -123,7 +112,20 @@ export class InterfaceComponent implements OnInit {
         }
      } /**/
 
+        if (typeof (obj.var.catgry) !== 'undefined' ) {
+            if (typeof (obj.var.catgry.length !== 'undefined')) {
+                for (let k = 0; k < obj.var.catgry.length; k++) {
+                    if (typeof (obj.var.catgry[k].catStat !== 'undefined' )) {
+                        if (typeof (obj.var.catgry[k].catStat.length === 'undefined')) {
+                            obj.var.catgry[k].catStat = [obj.var.catgry[k].catStat];
+                        }
+                    }
+                }
+            }
+        }
+
       flat_array.push(obj.var);
+
     }
     //
     this._variables = flat_array
@@ -131,7 +133,7 @@ export class InterfaceComponent implements OnInit {
     console.log(this._variables.length);
   }
   // pass the selected ids to the var table for display
-  broadcastSubSetRows(ids){
+  broadcastSubSetRows(ids) {
     this.child.onSubset(ids);
 
   }

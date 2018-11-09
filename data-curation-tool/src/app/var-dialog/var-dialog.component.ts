@@ -1,30 +1,39 @@
-import {Component, OnInit, Inject, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit, Inject, Output, Input, EventEmitter, ElementRef, ViewChild} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
+import {DdiService} from '../ddi.service';
 
 @Component({
   selector: 'app-var-dialog',
   templateUrl: './var-dialog.component.html',
   styleUrls: ['./var-dialog.component.css']
 })
-export class VarDialogComponent implements OnInit{
+export class VarDialogComponent implements OnInit {
   @Output() parentUpdateVar: EventEmitter<any> = new EventEmitter<any>();
  form: FormGroup;
   public weights: any;
   public _variable_groups: any
   edit_objs: any = [];
 
+  weights_and_variable: any;
+
+
+
+
+
   /////////
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private formBuilder: FormBuilder,
               public dialogRef: MatDialogRef<VarDialogComponent>,
+              private ddiService: DdiService
 
-  ) { }
-
+  ) {  }
 
   ngOnInit() {
 
     // Note: data is passed as any array to allow for multi editing
+      console.log("OnInit");
+      console.log(this.data);
 
     if (this.data.length > 1) {
       const selected_ids = [];
@@ -63,11 +72,11 @@ export class VarDialogComponent implements OnInit{
      wgt: this.data ? this.data['@wgt' ] : '',
      wgt_var: this.data ? this.data['@wgt-var' ] : '',
      _groups: this.data ? this.data['_groups' ] : []
-    })
+    });
   }
   isSelected(_id){
     console.log(_id)
-    return true
+    return true;
   }
   addOmittedProperties(_obj) {
     if (typeof(_obj.qstn) === 'undefined') {
@@ -87,7 +96,7 @@ export class VarDialogComponent implements OnInit{
         '#cdata': '',
       };
     }
-    return _obj
+    return _obj;
   }
   updateObjValues(_obj, form){
 
@@ -107,6 +116,9 @@ export class VarDialogComponent implements OnInit{
    //
     if (form.controls.wgt.value === true){
       _obj['@wgt'] = 'wgt';
+    } else {
+        _obj['@wgt'] = '';
+        // this.removeWeightedFrequencies(_obj);
     }
     // add variable to group
     if (form.controls._groups.dirty === true) {
@@ -124,6 +136,8 @@ export class VarDialogComponent implements OnInit{
     return _obj;
   }
 
+
+
   getVariableGroup(_id) {
     // loop though all the variables in the varaible groups and create a complete list
     for (let i = 0; i < this._variable_groups.length; i++) {
@@ -133,49 +147,120 @@ export class VarDialogComponent implements OnInit{
     }
   }
   updateObjValue(_obj, _var, _control) {
-    if (_control.dirty === true){
+    if (_control.dirty === true) {
       const stack = _var.split('.');
-      while (stack.length > 1){
+      while (stack.length > 1) {
         _obj = _obj[stack.shift()];
       }
       _obj[stack.shift()] = _control.value;
 
     }
+
   }
 
+
+
   submit(form) {
+      if (this.edit_objs.length > 0) {
 
-   if ( this.edit_objs.length > 0) {
+          // take all the objects from the
+          for (let i = 0; i < this.edit_objs.length; i++) {
+              this.data = this.edit_objs[i]
+              this.addOmittedProperties(this.data)
+              this.updateObjValues(this.data, form)
+              this.parentUpdateVar.emit(this.data);
+          }
 
-       // take all the objects from the
-     for ( let i = 0; i < this.edit_objs.length; i++){
-       this.data = this.edit_objs[i]
-      this.addOmittedProperties(this.data)
-      this.updateObjValues(this.data, form)
-       this.parentUpdateVar.emit( this.data);
-     }
-
-   } else {
-     this.updateObjValues(this.data, form);
-     this.parentUpdateVar.emit(this.data);
-     if (this.weights.length >0) {
-         console.log(this.weights);
-     }
-     // this.calculateWeightedFrequencies();
-   }
+      } else {
+          this.updateObjValues(this.data, form);
+          this.parentUpdateVar.emit(this.data);
+      }
+      if (this.data['@wgt-var'] !== 'undefined') {
+          this.calculateWeightedFrequencies();
+      }
 
     this.dialogRef.close(`${form}`);
 
   }
   calculateWeightedFrequencies() {
-    console.log(this.data);
-    console.log(this.data['@wgt-var' ]);
-    const variable = this.data['@wgt-var' ];
-    console.log(variable);
-    if (variable !== 'undefined') {
+      console.log ('Start calculate freq');
+
+      console.log(this.data);
+
+    const weight_variable = this.data['@wgt-var' ];
+    const variable = this.data['@ID'];
+    console.log(weight_variable);
+    if (typeof(weight_variable) !== 'undefined') {
+        console.log('variable defined');
+
+        const id = this.ddiService.getParameterByName('dfId');
+
+        const base_url = this.ddiService.getBaseUrl();
+        const key = this.ddiService.getParameterByName('key');
+
+        const detail_url = base_url + '/api/access/datafile/' + id + '?format=subset&variables=' + variable + ',' + weight_variable + '&key=' + key;
+
+        console.log(detail_url);
+        this.ddiService.getDDI(detail_url).subscribe(
+            data => this.processVariable(data),
+            error => console.log(error),
+            () => this.completeVariable());
       //  http://localhost:8080/api/access/datafile/41?variables=v885
     }
+    console.log('End calculate freq');
+
 
   }
+
+
+  processVariable(data) {
+      this.weights_and_variable = data.split('\n');
+    }
+
+    completeVariable() {
+      const map_wf = new Map();
+      for (let i = 1; i < this.weights_and_variable.length; i++) {
+          const vr = this.weights_and_variable[i].split('\t');
+
+          if (map_wf.has(vr[0])) {
+              let wt = map_wf.get(vr[0]);
+              wt = parseFloat(wt) + parseFloat(vr[1]);
+              map_wf.set(vr[0], wt);
+          } else {
+              map_wf.set(vr[0], vr[1]);
+          }
+      }
+      // map_wf.forEach((v, k) => {console.log(v + ' ' + k + ';'); });
+      console.log('Complete');
+      for (let i = 0; i < this.data.catgry.length; i++) {
+          if (map_wf.has(this.data.catgry[i].catValu)) {
+              console.log(this.data.catgry[i].catValu);
+              if (typeof (this.data.catgry[i].catStat) !== 'undefined' ) {
+                  if ( typeof( this.data.catgry[i].catStat.length) !== 'undefined') {
+                      if (this.data.catgry[i].catStat.length > 1) {
+                          this.data.catgry[i].catStat[1] = {
+                              '@wgtd': 'wgtd',
+                              '@type': 'freq',
+                              '#text': map_wf.get(this.data.catgry[i].catValu)
+                          };
+                      } else {
+                          this.data.catgry[i].catStat.push({
+                              '@wgtd': 'wgtd',
+                              '@type': 'freq',
+                              '#text': map_wf.get(this.data.catgry[i].catValu)
+                          });
+
+                      }
+
+                  }
+              }
+
+          }
+      }
+
+
+
+
+    }
 
 }

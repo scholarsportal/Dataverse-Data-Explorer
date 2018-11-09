@@ -30,7 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { AppComponent } from './app.component';
-import { DdiService } from "./ddi.service";
+import { DdiService } from './ddi.service';
 import { InterfaceComponent } from './interface/interface.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VarGroupComponent } from './var-group/var-group.component';
@@ -80,7 +80,7 @@ import { ChartComponent } from './chart/chart.component';
   ],
   exports: [
   ],
-  entryComponents: [VarDialogComponent,VarStatDialogComponent],
+  entryComponents: [VarDialogComponent, VarStatDialogComponent],
   providers: [DdiService],
   bootstrap: [AppComponent]
 })

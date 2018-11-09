@@ -13,10 +13,18 @@
       <td>{{row.labl["#text"]}}</td>
       <td *ngIf="isUndefined(row.catStat); else elseBlock"></td>
       <ng-template #elseBlock>
-      <td>{{row.catStat["#text"]}}</td>
+        <td *ngIf="isUndefined(row.catStat.length); else elseBlock2"></td>
+        <ng-template #elseBlock2>
+          <td>{{row.catStat[0]["#text"]}}</td>
+        </ng-template>
       </ng-template>
-
-      <td></td>
+      <td *ngIf="isUndefined(row.catStat); else elseBloc"></td>
+      <ng-template #elseBloc>
+        <td *ngIf="doesExist(row.catStat.length); else elseBloc2">{{row.catStat[1]["#text"]}}</td>
+        <ng-template #elseBloc2>
+          <td></td>
+        </ng-template>
+      </ng-template>
     </tr>
 
   </table>

@@ -16,7 +16,7 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
 
-   this.createChart(this.data)
+   this.createChart(this.data);
   }
 
   createChart(_data) {

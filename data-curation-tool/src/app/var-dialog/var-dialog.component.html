@@ -61,23 +61,23 @@
               <mat-option *ngFor="let w of weights" [value]="w">
                 {{ w }}
               </mat-option>
+              <mat-option>Unweighted</mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile colspan="1" rowspan="1">
           <section class="example-section">
             <mat-checkbox formControlName="wgt" align="end" checked="{{data['@wgt']}}">Is Weight</mat-checkbox>
+
           </section>
         </mat-grid-tile>
-
-
-      <mat-grid-tile colspan="1" rowspan="1">
-        <button mat-button type="submit">Update</button>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="1" rowspan="1">
-        <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-      </mat-grid-tile>
-      </mat-grid-list>
-    </mat-dialog-content>
-  </form>
-</div>
+             <mat-grid-tile colspan="1" rowspan="1">
+               <button mat-button type="submit">Update</button>
+             </mat-grid-tile>
+             <mat-grid-tile colspan="1" rowspan="1">
+               <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+             </mat-grid-tile>
+             </mat-grid-list>
+           </mat-dialog-content>
+         </form>
+       </div>

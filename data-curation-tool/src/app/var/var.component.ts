@@ -34,9 +34,9 @@ export class VarComponent implements OnInit {
   getDisplayedColumns(){
     let displayedColumns =  []; // 'order_arrows'
     if (this.mode === 'all'){
-      displayedColumns = ['drag', 'select', 'id', 'name', 'labl', 'wgt-var', 'view', 'action']
+      displayedColumns = ['drag', 'select', 'id', 'name', 'labl', 'wgt-var', 'view', 'action'];
     } else {
-      displayedColumns = ['drag', 'control', 'id', 'name','labl','wgt-var','view','action']
+      displayedColumns = ['drag', 'control', 'id', 'name', 'labl', 'wgt-var', 'view', 'action'];
     }
 
     return displayedColumns;
@@ -54,12 +54,12 @@ export class VarComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    if(this.isAllSelected() ){
-      this.selection.clear()
-    }else{
-      for(var i = 0; i<this.datasource.data.length;i++){
-        if(this.datasource.data[i]._show==true){
-          this.selection.select(this.datasource.data[i])
+    if (this.isAllSelected() ) {
+      this.selection.clear();
+    } else {
+      for ( let i = 0; i < this.datasource.data.length;i++){
+        if (this.datasource.data[i]._show === true){
+          this.selection.select(this.datasource.data[i]);
         }
 
       }
@@ -78,7 +78,7 @@ export class VarComponent implements OnInit {
     this.searchFilter.valueChanges
       .subscribe(value => {
         this.filterValues['search'] = value;
-        this.datasource.filter = JSON.stringify(this.filterValues)
+        this.datasource.filter = JSON.stringify(this.filterValues);
       })
     //
     this.group_select['hidden'] = true;
@@ -89,10 +89,10 @@ export class VarComponent implements OnInit {
     this._variables = data;
       console.log(this._variables);
     // make sure all the data is set to show
-    for ( var i = 0; i< this._variables.length;i++) {
+    for ( let i = 0; i < this._variables.length; i++) {
       this._variables[i]._show = true;
       // also make sure it has a labl
-      if(typeof(this._variables[i].labl) === 'undefined'){
+      if (typeof(this._variables[i].labl) === 'undefined') {
         this._variables[i].labl = {'#text': ''};
       }
     }
@@ -132,11 +132,11 @@ export class VarComponent implements OnInit {
   onEdit(_id){
     this.id = _id;
     // get the data
-    this.openDialog([this.getObjByID(_id, this._variables)])
+    this.openDialog([this.getObjByID(_id, this._variables)]);
     //
   }
-  onSubset(_ids?){
-    if (_ids == null){
+  onSubset(_ids?) {
+    if (_ids == null) {
       this.mode = 'all';
     } else {
       this.mode = 'group';
@@ -159,7 +159,7 @@ export class VarComponent implements OnInit {
 
       } else if (this.mode === 'all'){
         obj._order = null;
-        obj._show = true
+        obj._show = true;
       }
     }
     obj._active = false
@@ -177,9 +177,30 @@ export class VarComponent implements OnInit {
 
   }
   // when a single row has been updated
-  onUpdateVar(){
+  onUpdateVar() {
+    this.removeWeightedFreq();
     this.ref.detectChanges();
+
   }
+  removeWeightedFreq() {
+
+      const weights = this.getWeights();
+      const weights_set = new Set (weights);
+
+      for (let i = 0; i < this._variables.length; i++) {
+          if (typeof(this._variables[i]['@wgt-var']) !== 'undefined') {
+            if (!weights_set.has(this._variables[i]['@wgt-var'])) {
+                this._variables[i]['@wgt-var'] = '';
+                for (let k = 0; k < this._variables[i].catgry.length; k++) {
+                    this._variables[i].catgry[k].catStat.splice(1, 1);
+                }
+            }
+
+          }
+
+      }
+  }
+
   // get the var
   getObjByID(_id, _data){
     for (let i = 0; i < _data.length; i++) {
@@ -190,10 +211,10 @@ export class VarComponent implements OnInit {
     }
   }
   // get the group
-  getObjByIDNested(_id,_data){
-    for(var i =0;i<_data.length;i++) {
-      var obj=_data[i]
-      if(obj.varGrp["@ID"]==_id){
+  getObjByIDNested(_id, _data) {
+    for (let i = 0; i < _data.length; i++) {
+      const obj = _data[i]
+      if (obj.varGrp['@ID'] === _id) {
         return obj;
       }
 
@@ -201,13 +222,18 @@ export class VarComponent implements OnInit {
   }
   getWeights() {
     const weights = [];
+    console.log('Get weights ' + this._variables.length);
     for (let i = 0; i < this._variables.length; i++) {
-      if(this._variables[i]['@wgt'] === 'wgt'){
+
+
+      if (this._variables[i]['@wgt'] === 'wgt') {
         weights.push(this._variables[i]['@ID']);
+          console.log(this._variables[i]['@ID']);
       }
 
     }
-    return weights
+    console.log("End get weights");
+    return weights;
   }
   openDialog(data): void {
     this.dialogRef = this.dialog.open(VarDialogComponent, {
@@ -215,7 +241,9 @@ export class VarComponent implements OnInit {
       data: data,
       panelClass : 'field_width'
     });
+    console.log("Open dialog");
     const weights = this.getWeights();
+    console.log("w " + weights.length);
     this.dialogRef.componentInstance.weights = weights
     this.dialogRef.componentInstance._variable_groups = this._variable_groups
     const sub = this.dialogRef.componentInstance.parentUpdateVar.subscribe(() => {
@@ -324,7 +352,7 @@ export class VarComponent implements OnInit {
     }
   }
   isbefore(a, b) {
-    if (a.parentNode == b.parentNode) {
+    if (a.parentNode === b.parentNode) {
       for (let cur = a; cur; cur = cur.previousSibling) {
         if (cur === b) {
           return true;
