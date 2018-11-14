@@ -13,6 +13,8 @@ import { json2xml } from '../../assets/js/json2xml';
 
 import { MatButtonModule } from '@angular/material';
 import { VarComponent } from '../var/var.component';
+import * as FileSaver from 'file-saver';
+import * as XMLWriter from 'xml-writer';
 
 @Component({
   selector: 'app-interface',
@@ -115,12 +117,14 @@ export class InterfaceComponent implements OnInit {
       }
 
       if (typeof obj.var.catgry !== 'undefined') {
-        if (typeof (obj.var.catgry.length !== 'undefined')) {
-          for (let k = 0; k < obj.var.catgry.length; k++) {
-            if (typeof (obj.var.catgry[k].catStat !== 'undefined')) {
-              if (typeof (obj.var.catgry[k].catStat.length === 'undefined')) {
-                obj.var.catgry[k].catStat = [obj.var.catgry[k].catStat];
-              }
+        if (typeof obj.var.catgry.length === 'undefined') {
+          // If there is only one category
+          obj.var.catgry = [obj.var.catgry];
+        }
+        for (let k = 0; k < obj.var.catgry.length; k++) {
+          if (typeof obj.var.catgry[k].catStat !== 'undefined') {
+            if (typeof obj.var.catgry[k].catStat.length === 'undefined') {
+              obj.var.catgry[k].catStat = [obj.var.catgry[k].catStat];
             }
           }
         }
@@ -152,37 +156,153 @@ export class InterfaceComponent implements OnInit {
   }
   onSave() {
     console.log('GET ALL the JSON and convert it to XML');
-
-    console.log(this.data);
-    var dataDscr = this.data.getElementsByTagName('dataDscr')[0];
-    console.log(dataDscr);
-    for (var i = 0; i < this._variables.length; i++) {
-      console.log('----------');
-      var variable = dataDscr.getElementsByTagName('var')[i];
-      variable.getElementsByTagName(
-        'labl'
-      )[0].childNodes[0].nodeValue = this._variables[i]['labl']['#text'];
-      if (
-        typeof variable.getElementsByTagName('qstn')[0] == 'undefined' &&
-        typeof (this._variables[i].qstn != 'undefined')
-      ) {
-        var qstn = variable.createElement('qstn');
-        if (typeof this._variables[i].qstn['qstnLit'] != 'undefined') {
-          console.log(this._variables[i].qstn['qstnLit']);
-          // qstn.createElement("qstnLit");
+    const doc = new XMLWriter();
+    doc.startDocument();
+    doc.startElement('dataDscr');
+    console.log(this._variable_groups);
+    // add groups
+    for (let i = 0; i < this._variable_groups.length; i++) {
+      console.log(this._variable_groups[i]);
+      doc.startElement('varGrp');
+      doc.writeAttribute('ID', this._variable_groups[i].varGrp['@ID']);
+      doc.writeAttribute('var', this._variable_groups[i].varGrp['@var']);
+      doc.startElement('labl');
+      doc.text(this._variable_groups[i].varGrp.labl);
+      doc.endElement()
+      doc.endElement();
+    }
+    // add variables
+    for (let i = 0; i < this._variables.length; i++) {
+      console.log(this._variables[i]);
+      // start variable (var)
+      doc.startElement('var');
+      doc.writeAttribute('ID', this._variables[i]['@ID']);
+      doc.writeAttribute('name', this._variables[i]['@name']);
+      if (typeof this._variables[i]['@intrvl'] !== 'undefined') {
+        doc.writeAttribute('intrvl', this._variables[i]['@intrvl']);
+      }
+      if (typeof this._variables[i]['@wgt'] !== 'undefined' && this._variables[i]['@wgt'] !== '') {
+        doc.writeAttribute('wgt', this._variables[i]['@wgt']);
+      }
+      if (typeof this._variables[i]['@wgt-var'] !== 'undefined' && this._variables[i]['@wgt-var'] !== '') {
+        doc.writeAttribute('wgt-var', this._variables[i]['@wgt-var']);
+      }
+      // start location
+      if (typeof this._variables[i].location !== 'undefined') {
+        doc.startElement('location').writeAttribute('fileid', this._variables[i].location['@fileid']);
+        doc.endElement();
+      }
+      // end location
+      // start labl
+      if (typeof this._variables[i].labl !== 'undefined') {
+        doc.startElement('labl');
+        doc.writeAttribute('level', this._variables[i].labl['@level']);
+        doc.text(this._variables[i].labl['#text']);
+        doc.endElement();
+      }
+      // end labl
+      // start sumStat
+      if (typeof this._variables[i].sumStat !== 'undefined') {
+        if (typeof this._variables[i].sumStat.length !== 'undefined') {
+          for (let j = 0; j < this._variables[i].sumStat.length; j++) {
+            doc.startElement('sumStat');
+            doc.writeAttribute('type', this._variables[i].sumStat[j]['@type']);
+            doc.text(this._variables[i].sumStat[j]['#text']);
+            doc.endElement();
+          }
         }
       }
+      // end sumStat
+      // start catgry
+      if (typeof this._variables[i].catgry !== 'undefined') {
+        if (typeof this._variables[i].catgry.length !== 'undefined') {
+          for (let j = 0; j < this._variables[i].catgry.length; j++) {
+            doc.startElement('catgry');
+            if (typeof this._variables[i].catgry[j].catValu !== 'undefined') {
+              doc.startElement('catgry').text(this._variables[i].catgry[j].catValu);
+              doc.endElement();
+            }
+            if (typeof this._variables[i].catgry[j].labl !== 'undefined') {
+              doc.startElement('labl');
+              doc.writeAttribute('level', this._variables[i].catgry[j].labl['@level']);
+              doc.text(this._variables[i].catgry[j].labl['#text']);
+              doc.endElement();
+            }
+            if (typeof this._variables[i].catgry[j].catStat !== 'undefined') {
+              // frequency
+              if (typeof this._variables[i].catgry[j].catStat.length !== 'undefined') {
+                doc.startElement('catStat');
+                doc.writeAttribute('type', this._variables[i].catgry[j].catStat[0]['@type']);
+                doc.text(this._variables[i].catgry[j].catStat[0]['#text']);
+                doc.endElement();
+                // weighted frequency
+                if (this._variables[i].catgry[j].catStat.length > 1) {
+                  doc.startElement('catStat');
+                  doc.writeAttribute('wgtd', this._variables[i].catgry[j].catStat[1]['@wgtd']);
+                  doc.writeAttribute('type', this._variables[i].catgry[j].catStat[1]['@type']);
+                  doc.text(this._variables[i].catgry[j].catStat[1]['#text']);
+                  doc.endElement();
+                }
+              }
+            }
+            doc.endElement();
+          }
+        }
+      }
+      // end catgry
+      // start qstn
+      if (typeof this._variables[i].qstn !== 'undefined') {
+        doc.startElement('qstn');
+        if (typeof this._variables[i].qstn.qstnLit !== 'undefined') {
+          doc.startElement('qstnLit').text(this._variables[i].qstn.qstnLit);
+          doc.endElement();
+        }
+        if (typeof this._variables[i].qstn.ivuInstr !== 'undefined') {
+          doc.startElement('ivuInstr').text(this._variables[i].qstn.ivuInstr);
+          doc.endElement();
+        }
+        doc.endElement();
+      }
+      // end qstn
+      // start varFormat
+      if (typeof this._variables[i].varFormat !== 'undefined') {
+        doc.startElement('varFormat');
+        doc.writeAttribute('type', this._variables[i].varFormat['@type']);
+        doc.endElement();
+      }
+      // end varFormat
+      // start notes
+      if (typeof this._variables[i].notes !== 'undefined') {
+        doc.startElement('notes');
+        // start notes cdata
+        if (typeof this._variables[i].notes['#cdata'] !== 'undefined') {
+          doc.startCData();
+          doc.writeCData(this._variables[i].notes['#cdata']);
+          doc.endCData();
+        }
+        // end notes cdata
+        doc.writeAttribute('subject', this._variables[i].notes['@subject']);
+        doc.writeAttribute('level', this._variables[i].notes['@level']);
+        doc.writeAttribute('type', this._variables[i].notes['@type']);
+        doc.text(this._variables[i].notes['#text']);
+        doc.endElement();
+      }
+      // end notes
+      // start universe
+      if (typeof this._variables[i].universe !== 'undefined') {
+        doc.startElement('universe');
+        doc.text(this._variables[i].universe['#text']);
+        doc.endElement();
+      }
+      // end universe
+      // end variable (var)
+      doc.endElement();
     }
-
-    //  var elm = this.data.getElementsByTagName("var");
-    //  for (var i = 0; i < elm.length; i++) {
-    //      elm[i].parentNode.removeChild(elm[i]);
-    //  }
-    //  var obj = this.data.getElementsByTagName("stdyDscr");
-    //  console.log(obj);
-    // find the "dataDscr" element and
-    // add the var groups
-    // add the vars
+    doc.endDocument();
+    console.log(doc);
+    //var t = "Hello!";
+    let text = new Blob([doc.toString()], { type: 'text/xml;charset=utf-8' });
+    //FileSaver.saveAs(text, 'my.xml');
   }
-  //
+
 }

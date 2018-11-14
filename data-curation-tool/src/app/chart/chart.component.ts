@@ -56,12 +56,19 @@ export class ChartComponent implements OnInit {
     data = [];
     console.log(_data);
     for (let i = 0; i < _data.length; i++) {
+      console.log('chart: data.length ' + _data.length)
       let freq = null;
+      let freq_weight = null;
       if (typeof _data[i].catStat !== 'undefined') {
+        console.log(_data[i].catStat);
         for (let j = 0; j < _data[i].catStat.length; j++) {
           const sub_obj = _data[i].catStat[j];
           if (sub_obj['@type'] === 'freq' && !sub_obj['@wgtd']) {
             freq = sub_obj['#text'];
+          } else {
+            if (sub_obj['@type'] === 'freq' && sub_obj['@wgtd'] && sub_obj['#text'] !== '') {
+              freq_weight = sub_obj['#text'];
+            }
           }
         }
         // dataverse ddi exception
@@ -75,6 +82,8 @@ export class ChartComponent implements OnInit {
         short_name = short_name.substring(0, this.max_string_length) + '...';
       }
       short_name = short_name;
+      // switching to weighted frequencies
+      if (freq_weight != null) { freq = freq_weight; }
       data.push({
         name: short_name,
         freq: freq

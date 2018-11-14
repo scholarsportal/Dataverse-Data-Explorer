@@ -223,19 +223,26 @@ export class VarComponent implements OnInit {
     this.ref.detectChanges();
   }
   removeWeightedFreq() {
+    console.log('Start removeWeightedFreq');
     const weights = this.getWeights();
     const weights_set = new Set(weights);
+    console.log(weights);
+    console.log(this._variables);
 
     for (let i = 0; i < this._variables.length; i++) {
+      console.log('wgt-var:' + this._variables[i]['@wgt-var']);
       if (typeof this._variables[i]['@wgt-var'] !== 'undefined') {
-        if (!weights_set.has(this._variables[i]['@wgt-var'])) {
-          this._variables[i]['@wgt-var'] = '';
-          for (let k = 0; k < this._variables[i].catgry.length; k++) {
-            this._variables[i].catgry[k].catStat.splice(1, 1);
+        if (this._variables[i]['@wgt-var'] !== '') {
+          if (!weights_set.has(this._variables[i]['@wgt-var'])) {
+            this._variables[i]['@wgt-var'] = '';
+            for (let k = 0; k < this._variables[i].catgry.length; k++) {
+              this._variables[i].catgry[k].catStat.splice(1, 1);
+            }
           }
         }
       }
     }
+    console.log('End removeWeightedFreq');
   }
 
   // get the var

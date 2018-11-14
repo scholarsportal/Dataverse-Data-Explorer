@@ -82,15 +82,18 @@ export class VarDialogComponent implements OnInit {
     if (typeof _obj.qstn === 'undefined') {
       _obj.qstn = {};
     }
+
     if (typeof _obj.labl === 'undefined') {
       _obj.labl = { '#text': '' };
     }
+
     if (typeof _obj.universe === 'undefined') {
       _obj.universe = {
         '#text': '',
         '@clusion': ''
       };
     }
+
     if (typeof _obj.notes === 'undefined') {
       _obj.notes = {
         '#cdata': ''
@@ -166,8 +169,20 @@ export class VarDialogComponent implements OnInit {
       this.updateObjValues(this.data, form);
       this.parentUpdateVar.emit(this.data);
     }
-    if (this.data['@wgt-var'] !== 'undefined') {
+    if (typeof this.data['@wgt-var'] !== 'undefined') {
       this.calculateWeightedFrequencies();
+    } else {
+      // Removing weighted frequency
+      if (typeof this.data.catgry !== 'undefined') {
+        for (let k = 0; k < this.data.catgry.length; k++) {
+          if (
+            typeof this.data.catgry[k].catStat !== 'undefined' &&
+            this.data.catgry[k].catStat.length > 1
+          ) {
+            this.data.catgry[k].catStat.splice(1, 1);
+          }
+        }
+      }
     }
 
     this.dialogRef.close(`${form}`);
@@ -229,26 +244,28 @@ export class VarDialogComponent implements OnInit {
         map_wf.set(vr[0], vr[1]);
       }
     }
+
     // map_wf.forEach((v, k) => {console.log(v + ' ' + k + ';'); });
     console.log('Complete');
     for (let i = 0; i < this.data.catgry.length; i++) {
-      if (map_wf.has(this.data.catgry[i].catValu)) {
-        console.log(this.data.catgry[i].catValu);
-        if (typeof this.data.catgry[i].catStat !== 'undefined') {
-          if (typeof this.data.catgry[i].catStat.length !== 'undefined') {
-            if (this.data.catgry[i].catStat.length > 1) {
-              this.data.catgry[i].catStat[1] = {
-                '@wgtd': 'wgtd',
-                '@type': 'freq',
-                '#text': map_wf.get(this.data.catgry[i].catValu)
-              };
-            } else {
-              this.data.catgry[i].catStat.push({
-                '@wgtd': 'wgtd',
-                '@type': 'freq',
-                '#text': map_wf.get(this.data.catgry[i].catValu)
-              });
-            }
+      if (!map_wf.has(this.data.catgry[i].catValu)) {
+        map_wf.set(this.data.catgry[i].catValu, 0);
+      }
+
+      if (typeof this.data.catgry[i].catStat !== 'undefined') {
+        if (typeof this.data.catgry[i].catStat.length !== 'undefined') {
+          if (this.data.catgry[i].catStat.length > 1) {
+            this.data.catgry[i].catStat[1] = {
+              '@wgtd': 'wgtd',
+              '@type': 'freq',
+              '#text': map_wf.get(this.data.catgry[i].catValu)
+            };
+          } else {
+            this.data.catgry[i].catStat.push({
+              '@wgtd': 'wgtd',
+              '@type': 'freq',
+              '#text': map_wf.get(this.data.catgry[i].catValu)
+            });
           }
         }
       }
