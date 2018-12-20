@@ -54,6 +54,7 @@ export class VarDialogComponent implements OnInit {
     }
     this.data['_groups'] = [groups]; // groups;
     this.addOmittedProperties(this.data);
+    console.log("Universe text " + this.data.universe['#text']);
     this.form = this.formBuilder.group({
       id: [
         { value: this.data ? this.data['@ID'] : '', disabled: true },
