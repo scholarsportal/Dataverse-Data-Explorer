@@ -36,6 +36,7 @@ export class InterfaceComponent implements OnInit {
   _variable_groups = []; // store the variables in an array display
   _variables = []; // store the variables to be broadcast to child
   _id = null; // file id
+  _metaId = null;
   _base_url = null;
   http:HttpClient;
 
@@ -45,10 +46,12 @@ export class InterfaceComponent implements OnInit {
     let uri = null;
     uri = this.ddiService.getParameterByName('uri');
     this._id = this.ddiService.getParameterByName('dfId');
+    this._metaId = this.ddiService.getParameterByName('metaId');
     console.log(this._id);
 
     this._base_url = this.ddiService.getBaseUrl();
     console.log(this._base_url);
+    console.log("New!");
 
     if (!uri && this._id != null) {
       console.log('Interface setting id ' + this._id);
@@ -57,9 +60,10 @@ export class InterfaceComponent implements OnInit {
 
       // &key=8f18fd62-3c5b-48f9-87d7-3fd181e6b5ed';
     } else {
-      if (!uri && !this._id) {
+      if (!uri) {
         // Just for testing purposes
         uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        //uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
         console.log(uri);
       }
     }
@@ -94,6 +98,7 @@ export class InterfaceComponent implements OnInit {
       .getElementsByTagName('titl')[0].textContent;
     this.showDDI();
   }
+
 
   showVarsGroups() {
     const elm = this.data.getElementsByTagName('varGrp');
@@ -137,6 +142,19 @@ export class InterfaceComponent implements OnInit {
         console.log(obj.var.universe);
         if (typeof obj.var.universe.size === 'undefined') {
           obj.var.universe = {'#text': obj.var.universe};
+        }
+      }
+
+      console.log("Notes");
+      console.log(obj.var.notes);
+      if (typeof obj.var.notes !== 'undefined') {
+        console.log(obj.var.notes);
+        if (typeof obj.var.notes.length !== undefined && obj.var.notes.length == 2 ) {
+          obj.var.notes = {'#cdata': obj.var.notes[1]['#cdata'],
+                                     '#text':obj.var.notes[0]['#text'],
+                                      '@level':obj.var.notes[0]['@level'],
+                                      '@subject':obj.var.notes[0]['@subject'],
+                                       '@type':obj.var.notes[0]['@type']};
         }
       }
 
@@ -234,7 +252,7 @@ export class InterfaceComponent implements OnInit {
             for (let j = 0; j < this._variables[i].catgry.length; j++) {
               doc.startElement('catgry');
               if (typeof this._variables[i].catgry[j].catValu !== 'undefined') {
-                doc.startElement('catgry').text(this._variables[i].catgry[j].catValu);
+                doc.startElement('catValu').text(this._variables[i].catgry[j].catValu);
                 doc.endElement();
               }
               if (typeof this._variables[i].catgry[j].labl !== 'undefined') {
@@ -266,7 +284,11 @@ export class InterfaceComponent implements OnInit {
         }
         // end catgry
         // start qstn
-        if (typeof this._variables[i].qstn !== 'undefined') {
+        if (typeof this._variables[i].qstn !== 'undefined' &&
+            ((typeof this._variables[i].qstn.qstnLit !== 'undefined' && this._variables[i].qstn.qstnLit !== '') ||
+                (typeof this._variables[i].qstn.ivuInstr !== 'undefined' && this._variables[i].qstn.ivuInstr !== '') ||
+            (typeof this._variables[i].qstn.postQTxt !== 'undefined' && this._variables[i].qstn.postQTxt !== ''))) {
+
           doc.startElement('qstn');
           if (typeof this._variables[i].qstn.qstnLit !== 'undefined') {
             doc.startElement('qstnLit').text(this._variables[i].qstn.qstnLit);
@@ -274,6 +296,10 @@ export class InterfaceComponent implements OnInit {
           }
           if (typeof this._variables[i].qstn.ivuInstr !== 'undefined') {
             doc.startElement('ivuInstr').text(this._variables[i].qstn.ivuInstr);
+            doc.endElement();
+          }
+          if (typeof this._variables[i].qstn.postQTxt !== 'undefined') {
+            doc.startElement('postQTxt').text(this._variables[i].qstn.postQTxt);
             doc.endElement();
           }
           doc.endElement();
@@ -287,10 +313,10 @@ export class InterfaceComponent implements OnInit {
         }
         // end varFormat
         // start notes
-        if (typeof this._variables[i].notes !== 'undefined') {
+        if (typeof this._variables[i].notes !== 'undefined' ) {
 
           // start notes cdata
-          if (typeof this._variables[i].notes['#cdata'] !== 'undefined') {
+          if (typeof this._variables[i].notes['#cdata'] !== 'undefined' && this._variables[i].notes['#cdata'] !== '') {
             doc.startElement('notes');
             doc.startCData();
             doc.writeCData(this._variables[i].notes['#cdata']);
@@ -307,7 +333,7 @@ export class InterfaceComponent implements OnInit {
         }
         // end notes
         // start universe
-        if (typeof this._variables[i].universe !== 'undefined') {
+        if (typeof this._variables[i].universe !== 'undefined' && this._variables[i].universe['#text'] !== '') {
           doc.startElement('universe');
           doc.text(this._variables[i].universe['#text']);
           doc.endElement();
@@ -324,8 +350,10 @@ export class InterfaceComponent implements OnInit {
       const tl = this.title + '.xml';
 
       console.log("base_url " + this._base_url)
-      let url = this._base_url + "/api/edit/" + this._id;
+      let url = this._base_url + "/api/edit/" + this._id;// + "/" + this._metaId;
       console.log("url " + url);
+
+      FileSaver.saveAs(text, 'dct.xml');
 
       this.ddiService
           .putDDI(url, doc.toString(), key)

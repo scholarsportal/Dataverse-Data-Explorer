@@ -69,6 +69,7 @@ export class VarDialogComponent implements OnInit {
       qstnLit: this.data ? this.data.qstn['qstnLit'] : '',
       universe: this.data ? this.data.universe['#text'] : '',
       ivuInstr: this.data ? this.data.qstn['ivuInstr'] : '',
+      postQTxt: this.data ? this.data.qstn['postQTxt'] : '',
       notes: this.data ? this.data.notes['#cdata'] : '',
       wgt: this.data ? this.data['@wgt'] : '',
       wgt_var: this.data ? this.data['@wgt-var'] : '',
@@ -109,6 +110,8 @@ export class VarDialogComponent implements OnInit {
     this.updateObjValue(_obj, 'qstn.qstnLit', form.controls.qstnLit);
     // Interviewer Instructions" value="{{data.qstn.ivuInstr
     this.updateObjValue(_obj, 'qstn.ivuInstr', form.controls.ivuInstr);
+    //Post Question" value="{{data.qstn.postQTxt
+    this.updateObjValue(_obj, 'qstn.postQTxt', form.controls.postQTxt);
     // Universe" value="{{data.universe
     this.updateObjValue(_obj, 'universe.#text', form.controls.universe);
     // update notes if available data.notes

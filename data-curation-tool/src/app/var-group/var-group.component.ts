@@ -54,6 +54,7 @@ export class VarGroupComponent implements OnInit {
     var obj = this;
 
     setTimeout(function() {
+      console.log("set time out");
       obj.parentScrollNav.emit();
       obj.onGroupClick(var_group);
     }, 100);
@@ -70,16 +71,20 @@ export class VarGroupComponent implements OnInit {
     this.renameGroup(_obj);
   }
   renameGroup(_obj) {
+    console.log("Rename group");
     _obj.editable = true;
   }
   renameGroupComplete(_obj, _val) {
+    console.log("renameGroupComplete");
     _obj.varGrp.labl = _val;
     _obj.editable = false;
   }
   renameGroupCancel(_obj) {
+    console.log("renameGroupCancel");
     _obj.editable = false;
   }
   groupDelete(_obj) {
+    console.log("delete group");
     for (var i = 0; i < this._variable_groups.length; i++) {
       if (this._variable_groups[i].varGrp['@ID'] == _obj.varGrp['@ID']) {
         this._variable_groups.splice(i, 1);
