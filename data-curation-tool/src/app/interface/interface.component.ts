@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-interface',
@@ -38,7 +38,7 @@ export class InterfaceComponent implements OnInit {
   _id = null; // file id
   _metaId = null;
   _base_url = null;
-  http:HttpClient;
+  http: HttpClient;
 
   constructor(private ddiService: DdiService ) {}
 
@@ -51,7 +51,7 @@ export class InterfaceComponent implements OnInit {
 
     this._base_url = this.ddiService.getBaseUrl();
     console.log(this._base_url);
-    console.log("New!");
+    console.log('New!');
 
     if (!uri && this._id != null) {
       console.log('Interface setting id ' + this._id);
@@ -63,7 +63,7 @@ export class InterfaceComponent implements OnInit {
       if (!uri) {
         // Just for testing purposes
         uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
-        //uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
+        // uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
         console.log(uri);
       }
     }
@@ -118,7 +118,7 @@ export class InterfaceComponent implements OnInit {
     const flat_array = [];
     for (let i = 0; i < variables.length; i++) {
       const obj = variables[i];
-      // make equivlant variable to allow sorting
+      // make equivalent variable to allow sorting
       for (const j in obj.var) {
         if (j.indexOf('@') === 0) {
           obj.var[j.substring(1).toLowerCase()] = obj.var[j];
@@ -145,7 +145,7 @@ export class InterfaceComponent implements OnInit {
         }
       }
 
-      console.log("Notes");
+      console.log('Notes');
       console.log(obj.var.notes);
       if (typeof obj.var.notes !== 'undefined') {
         console.log(obj.var.notes);
@@ -344,14 +344,13 @@ export class InterfaceComponent implements OnInit {
       }
       doc.endDocument();
       console.log(doc);
-      //var t = "Hello!";
       const text = new Blob([doc.toString()], {type: 'application/xml'});
-      console.log("Title " + this.title);
+      console.log('Title ' + this.title);
       const tl = this.title + '.xml';
 
-      console.log("base_url " + this._base_url)
-      let url = this._base_url + "/api/edit/" + this._id;// + "/" + this._metaId;
-      console.log("url " + url);
+      console.log('base_url ' + this._base_url)
+      let url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
+      console.log('url ' + url);
 
       FileSaver.saveAs(text, 'dct.xml');
 
@@ -359,21 +358,17 @@ export class InterfaceComponent implements OnInit {
           .putDDI(url, doc.toString(), key)
           .subscribe(
               data => {
-                console.log("Data ");
+                console.log('Data ');
                 console.log(data)
               },
               error => {
-                console.log("Error");
+                console.log('Error');
                 console.log(error)
               },
-              () => console.log("Ok"));
+              () => console.log('Ok'));
 
     } else {
-      console.log("key is null");
-
-
+      console.log('key is null');
     }
   }
-
-
 }
