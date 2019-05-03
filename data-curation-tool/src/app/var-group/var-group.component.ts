@@ -9,7 +9,7 @@ export class VarGroupComponent implements OnInit {
   constructor() {}
 
   all_active = true;
-  //selectedTab=0;
+  // selectedTab=0;
   source: any;
   @Input() _variable_groups: any;
   @Output() subSetRows: EventEmitter<null> = new EventEmitter();
@@ -29,7 +29,7 @@ export class VarGroupComponent implements OnInit {
       ids.push(Number(this._variable_groups[i].varGrp['@ID'].substring(2)));
     }
     ids.sort();
-    //
+
     var _id = 'VG';
     if (ids.length > 0) {
       _id += String(ids[ids.length - 1] + 1);
@@ -51,7 +51,7 @@ export class VarGroupComponent implements OnInit {
     //
     // this.selectedTab = this._variable_groups.length-1;
     //
-    var obj = this;
+    const obj = this;
 
     setTimeout(function() {
       console.log("set time out");
@@ -71,11 +71,11 @@ export class VarGroupComponent implements OnInit {
     this.renameGroup(_obj);
   }
   renameGroup(_obj) {
-    console.log("Rename group");
+    console.log('Rename group');
     _obj.editable = true;
   }
   renameGroupComplete(_obj, _val) {
-    console.log("renameGroupComplete");
+    console.log('renameGroupComplete');
     _obj.varGrp.labl = _val;
     _obj.editable = false;
   }
@@ -84,7 +84,7 @@ export class VarGroupComponent implements OnInit {
     _obj.editable = false;
   }
   groupDelete(_obj) {
-    console.log("delete group");
+    console.log('delete group');
     for (var i = 0; i < this._variable_groups.length; i++) {
       if (this._variable_groups[i].varGrp['@ID'] == _obj.varGrp['@ID']) {
         this._variable_groups.splice(i, 1);
@@ -93,7 +93,7 @@ export class VarGroupComponent implements OnInit {
   }
   showActive(_id?) {
     this.all_active = false;
-    //show its active
+    // show it's active
     for (var i = 0; i < this._variable_groups.length; i++) {
       if (this._variable_groups[i].varGrp['@ID'] == _id) {
         this._variable_groups[i].active = true;
@@ -118,22 +118,22 @@ export class VarGroupComponent implements OnInit {
   }
   //
   dragenter($event, _row?) {
-    let target = $event.currentTarget;
+    const target = $event.currentTarget;
     if (!this.source) {
-      //broadcast
+      // broadcast
       this.draggedGroup.emit($event.currentTarget.id);
       return;
     }
     if (_row == this.dragged_obj) {
       return;
     }
-    this.dragged_over_obj = _row; //keep track of the dragged over obj to later update the list
-    //need to determine how
+    this.dragged_over_obj = _row; // keep track of the dragged over obj to later update the list
+    // need to determine how
     if (this.isbefore(this.source, target)) {
       target.parentNode.insertBefore(this.source, target); // insert before
       this.dragged_over_dir = 'before';
     } else {
-      target.parentNode.insertBefore(this.source, target.nextSibling); //insert after
+      target.parentNode.insertBefore(this.source, target.nextSibling); // insert after
       this.dragged_over_dir = 'after';
     }
   }
@@ -148,12 +148,12 @@ export class VarGroupComponent implements OnInit {
     return false;
   }
   dragend($event) {
-    //make sure we've dragged over something
+    // make sure we've dragged over something
     if (!this.dragged_over_obj) {
       return;
     }
-    //update the master list
-    //remove the object
+    // update the master list
+    // remove the object
 
     this._variable_groups.splice(
       this._variable_groups
@@ -163,7 +163,7 @@ export class VarGroupComponent implements OnInit {
         .indexOf(this.dragged_obj.varGrp['@ID']),
       1
     );
-    //
+
     var index = this._variable_groups
       .map(function(e) {
         return e.varGrp['@ID'];
@@ -175,7 +175,7 @@ export class VarGroupComponent implements OnInit {
       this._variable_groups.splice(index + 1, 0, this.dragged_obj);
     }
     delete this.dragged_obj;
-    delete this.source; //remove reference
+    delete this.source; // remove reference
   }
 }
 interface VarGroup {

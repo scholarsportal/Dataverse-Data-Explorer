@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
-
-
 @Injectable()
 export class DdiService {
   constructor(private http: HttpClient) {}
@@ -13,9 +11,9 @@ export class DdiService {
 
  putDDI(url: string, body : string, key : string) {
 
-    console.log("my url " + url);
-    console.log("my key " + key);
-    let httpOptions = {
+    console.log('my url ' + url);
+    console.log('my key ' + key);
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml',
 
@@ -24,8 +22,8 @@ export class DdiService {
 
     };
     console.log ('Before sending');
-    return this.http.put(url,body,httpOptions);
-    //return this.http.post(url,body, httpOptions);
+    return this.http.put(url, body, httpOptions);
+    // return this.http.post(url,body, httpOptions);
 
   }
 

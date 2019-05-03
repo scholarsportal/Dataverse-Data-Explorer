@@ -119,7 +119,7 @@ export class VarComponent implements OnInit {
     // make sure all the data is set to show
     for (let i = 0; i < this._variables.length; i++) {
       this._variables[i]._show = true;
-      // also make sure it has a labl
+      // also make sure it has a label
       if (typeof this._variables[i].labl === 'undefined') {
         this._variables[i].labl = { '#text': '' };
       }
@@ -210,7 +210,7 @@ export class VarComponent implements OnInit {
     //
 
     // Showing all
-    this.checkSelection(); // and enable group downdown if applicable
+    this.checkSelection(); // and enable group dropdown if applicable
     if (this.mode === 'group') {
       this.sortByOrder();
     } else {
@@ -404,9 +404,7 @@ export class VarComponent implements OnInit {
     _row._active = true;
   }
   dragend($event) {
-    //
     this.dragged_obj._active = false; // remove the highlight
-    //
     const id = this.dragged_obj['@ID'];
     if (this.dragged_group) {
       // add the dragged var to the dragged group
@@ -416,7 +414,7 @@ export class VarComponent implements OnInit {
       );
       const vars = objgr.varGrp['@var'].split(' ');
       vars.push(id);
-      //
+
       objgr.varGrp['@var'] = vars.join(' ');
       // if we are currently looking at the group which has been dragged to update it
       if (this.group_select['value'] === this.dragged_group) {
