@@ -56,7 +56,7 @@ export class ChartComponent implements OnInit {
     data = [];
     console.log(_data);
     for (let i = 0; i < _data.length; i++) {
-      console.log('chart: data.length ' + _data.length)
+      console.log('chart: data.length ' + _data.length);
       let freq = null;
       let freq_weight = null;
       if (typeof _data[i].catStat !== 'undefined') {
@@ -97,9 +97,9 @@ export class ChartComponent implements OnInit {
     });
 
     // set the dimensions and margins of the graph
-    const margin = { top: 0, right: 20, bottom: 30, left: 90 },
-      width = 500 - margin.left - margin.right,
-      height = max_height - margin.top - margin.bottom;
+    const margin = { top: 0, right: 20, bottom: 30, left: 90 };
+    const width = 500 - margin.left - margin.right;
+    const height = max_height - margin.top - margin.bottom;
 
     // set the ranges
     const y = d3

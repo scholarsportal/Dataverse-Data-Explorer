@@ -24,20 +24,20 @@ export class VarGroupComponent implements OnInit {
   // Add a new group to the list and scroll to show it!
   addTab() {
     // get the next id
-    var ids = [];
-    for (var i = 0; i < this._variable_groups.length; i++) {
+    const ids = [];
+    for (let i = 0; i < this._variable_groups.length; i++) {
       ids.push(Number(this._variable_groups[i].varGrp['@ID'].substring(2)));
     }
     ids.sort();
 
-    var _id = 'VG';
+    let _id = 'VG';
     if (ids.length > 0) {
       _id += String(ids[ids.length - 1] + 1);
     } else {
       _id += '1';
     }
 
-    var var_group = {} as VarGroup;
+    const var_group = {} as VarGroup;
     var_group.varGrp = {
       labl: 'New Group ' + _id,
       '@var': '',
@@ -53,16 +53,16 @@ export class VarGroupComponent implements OnInit {
     //
     const obj = this;
 
-    setTimeout(function() {
-      console.log("set time out");
+    setTimeout(() => {
+      console.log('set time out');
       obj.parentScrollNav.emit();
       obj.onGroupClick(var_group);
     }, 100);
   }
 
   onGroupClick(_obj) {
-    var obj = _obj;
-    var vars = obj.varGrp['@var'].split(' ');
+    const obj = _obj;
+    const vars = obj.varGrp['@var'].split(' ');
     this.subSetRows.emit(vars);
     this.showActive(obj.varGrp['@ID']);
     this.selectGroup.emit(obj.varGrp['@ID']);
@@ -80,13 +80,13 @@ export class VarGroupComponent implements OnInit {
     _obj.editable = false;
   }
   renameGroupCancel(_obj) {
-    console.log("renameGroupCancel");
+    console.log('renameGroupCancel');
     _obj.editable = false;
   }
   groupDelete(_obj) {
     console.log('delete group');
-    for (var i = 0; i < this._variable_groups.length; i++) {
-      if (this._variable_groups[i].varGrp['@ID'] == _obj.varGrp['@ID']) {
+    for (let i = 0; i < this._variable_groups.length; i++) {
+      if (this._variable_groups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
         this._variable_groups.splice(i, 1);
       }
     }
@@ -94,8 +94,8 @@ export class VarGroupComponent implements OnInit {
   showActive(_id?) {
     this.all_active = false;
     // show it's active
-    for (var i = 0; i < this._variable_groups.length; i++) {
-      if (this._variable_groups[i].varGrp['@ID'] == _id) {
+    for (let i = 0; i < this._variable_groups.length; i++) {
+      if (this._variable_groups[i].varGrp['@ID'] === _id) {
         this._variable_groups[i].active = true;
       } else {
         this._variable_groups[i].active = false;
@@ -108,7 +108,7 @@ export class VarGroupComponent implements OnInit {
     this.subSetRows.emit();
     this.disableSelectGroup.emit();
   }
-  //
+
   dragstart($event) {
     this.source = $event.currentTarget;
     $event.dataTransfer.effectAllowed = 'move';
@@ -116,7 +116,7 @@ export class VarGroupComponent implements OnInit {
   trackDragRow(_row) {
     this.dragged_obj = _row;
   }
-  //
+
   dragenter($event, _row?) {
     const target = $event.currentTarget;
     if (!this.source) {
@@ -124,7 +124,7 @@ export class VarGroupComponent implements OnInit {
       this.draggedGroup.emit($event.currentTarget.id);
       return;
     }
-    if (_row == this.dragged_obj) {
+    if (_row === this.dragged_obj) {
       return;
     }
     this.dragged_over_obj = _row; // keep track of the dragged over obj to later update the list
@@ -138,8 +138,8 @@ export class VarGroupComponent implements OnInit {
     }
   }
   isbefore(a, b) {
-    if (a.parentNode == b.parentNode) {
-      for (var cur = a; cur; cur = cur.previousSibling) {
+    if (a.parentNode === b.parentNode) {
+      for (let cur = a; cur; cur = cur.previousSibling) {
         if (cur === b) {
           return true;
         }
@@ -164,12 +164,12 @@ export class VarGroupComponent implements OnInit {
       1
     );
 
-    var index = this._variable_groups
-      .map(function(e) {
+    const index = this._variable_groups
+      .map((e) => {
         return e.varGrp['@ID'];
       })
       .indexOf(this.dragged_over_obj.varGrp['@ID']);
-    if (this.dragged_over_dir == 'before') {
+    if (this.dragged_over_dir === 'before') {
       this._variable_groups.splice(index, 0, this.dragged_obj);
     } else {
       this._variable_groups.splice(index + 1, 0, this.dragged_obj);

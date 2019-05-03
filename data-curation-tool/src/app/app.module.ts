@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   MatButtonModule,
@@ -26,8 +26,6 @@ import {
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 import { AppComponent } from './app.component';
 import { DdiService } from './ddi.service';
@@ -76,7 +74,6 @@ import { ChartComponent } from './chart/chart.component';
     MatSnackBarModule,
     MatTooltipModule,
     MatAutocompleteModule,
-
   ],
   exports: [
   ],

@@ -9,7 +9,7 @@ export class DdiService {
     return this.http.get(url, { responseType: 'text' });
   }
 
- putDDI(url: string, body : string, key : string) {
+ putDDI(url: string, body: string, key: string) {
 
     console.log('my url ' + url);
     console.log('my key ' + key);
@@ -31,8 +31,8 @@ export class DdiService {
   getParameterByName(name) {
     const url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
-    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
     if (!results) {
       return null;
     }
@@ -44,7 +44,7 @@ export class DdiService {
   getBaseUrl() {
     const protocol = window.location.protocol;
     const host = window.location.hostname;
-    let port = window.location.port;
+    const port = window.location.port;
   /*  if (port === '4200') {
       port = '8080';
     }*/

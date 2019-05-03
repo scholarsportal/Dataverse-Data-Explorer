@@ -73,7 +73,7 @@ export class VarComponent implements OnInit {
 
     return displayedColumns;
   }
-  //
+
   selection = new SelectionModel<Element>(true, []);
   public dialogRef: MatDialogRef<VarDialogComponent>;
   public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
@@ -477,8 +477,8 @@ export class VarComponent implements OnInit {
   onEditSelected() {
     const selected_objs = [];
     // show the popup but only allow certain fields be be updated
-    for (let i = 0; i < this.selection.selected.length; i++) {
-      const selected = this.selection.selected[i];
+    for (const i of this.selection.selected) {
+      const selected = i;
       selected_objs.push(selected);
     }
     this.openDialog(selected_objs);

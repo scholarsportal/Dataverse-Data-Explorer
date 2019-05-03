@@ -149,12 +149,12 @@ export class InterfaceComponent implements OnInit {
       console.log(obj.var.notes);
       if (typeof obj.var.notes !== 'undefined') {
         console.log(obj.var.notes);
-        if (typeof obj.var.notes.length !== undefined && obj.var.notes.length == 2 ) {
+        if (typeof obj.var.notes.length !== undefined && obj.var.notes.length === 2 ) {
           obj.var.notes = {'#cdata': obj.var.notes[1]['#cdata'],
-                                     '#text':obj.var.notes[0]['#text'],
-                                      '@level':obj.var.notes[0]['@level'],
-                                      '@subject':obj.var.notes[0]['@subject'],
-                                       '@type':obj.var.notes[0]['@type']};
+                                    '#text': obj.var.notes[0]['#text'],
+                                    '@level': obj.var.notes[0]['@level'],
+                                    '@subject': obj.var.notes[0]['@subject'],
+                                    '@type': obj.var.notes[0]['@type']};
         }
       }
 
@@ -201,7 +201,7 @@ export class InterfaceComponent implements OnInit {
         doc.writeAttribute('var', this._variable_groups[i].varGrp['@var']);
         doc.startElement('labl');
         doc.text(this._variable_groups[i].varGrp.labl);
-        doc.endElement()
+        doc.endElement();
         doc.endElement();
       }
       // add variables
@@ -348,8 +348,8 @@ export class InterfaceComponent implements OnInit {
       console.log('Title ' + this.title);
       const tl = this.title + '.xml';
 
-      console.log('base_url ' + this._base_url)
-      let url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
+      console.log('base_url ' + this._base_url);
+      const url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
       console.log('url ' + url);
 
       FileSaver.saveAs(text, 'dct.xml');
@@ -359,11 +359,11 @@ export class InterfaceComponent implements OnInit {
           .subscribe(
               data => {
                 console.log('Data ');
-                console.log(data)
+                console.log(data);
               },
               error => {
                 console.log('Error');
-                console.log(error)
+                console.log(error);
               },
               () => console.log('Ok'));
 
