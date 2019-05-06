@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localeFrCa from '@angular/common/locales/fr-CA';
+
+// the second parameter 'fr' is optional
+registerLocaleData(localeFrCa, 'fr-CA');
 
 import {
   MatButtonModule,

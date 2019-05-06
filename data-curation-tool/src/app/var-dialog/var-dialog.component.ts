@@ -107,11 +107,11 @@ export class VarDialogComponent implements OnInit {
     this.updateObjValue(_obj, 'labl.#text', form.controls.labl);
     // Literal Question - data.qstn.qstnLit
     this.updateObjValue(_obj, 'qstn.qstnLit', form.controls.qstnLit);
-    // Interviewer Instructions" value="{{data.qstn.ivuInstr
+    // Interviewer Instructions - data.qstn.ivuInstr
     this.updateObjValue(_obj, 'qstn.ivuInstr', form.controls.ivuInstr);
-    // Post Question" value="{{data.qstn.postQTxt
+    // Post Question - data.qstn.postQTxt
     this.updateObjValue(_obj, 'qstn.postQTxt', form.controls.postQTxt);
-    // Universe" value="{{data.universe
+    // Universe - data.universe
     this.updateObjValue(_obj, 'universe.#text', form.controls.universe);
     // update notes if available data.notes
     // TODO surround notes with <![CDATA[ before saving back to xml

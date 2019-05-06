@@ -247,8 +247,8 @@ export class VarComponent implements OnInit {
 
   // get the var
   getObjByID(_id, _data) {
-    for (let i = 0; i < _data.length; i++) {
-      const obj = _data[i];
+    for (const i of _data) {
+      const obj = i;
       if (obj['@ID'] === _id) {
         return obj;
       }
@@ -313,8 +313,8 @@ export class VarComponent implements OnInit {
     // first get the group
     const obj = this.getObjByIDNested(_id, this._variable_groups);
     const vars = obj.varGrp['@var'].split(' ');
-    for (let i = 0; i < this.selection.selected.length; i++) {
-      const selected = this.selection.selected[i];
+    for (const i of this.selection.selected) {
+      const selected = i;
       if (vars.indexOf(selected['@ID']) === -1) {
         vars.push(selected['@ID']);
       }

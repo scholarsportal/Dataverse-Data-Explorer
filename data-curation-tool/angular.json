@@ -52,6 +52,13 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "fr": {
+              "aot": true,
+              "outputPath": "dist/fr/",
+              "i18nFile": "src/locale/messages.fr-CA.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "fr-CA"
             }
           }
         },
@@ -63,6 +70,9 @@
           "configurations": {
             "production": {
               "browserTarget": "data-curation-tool:build:production"
+            },
+            "fr": {
+              "browserTarget": "data-curation-tool:build:fr"
             }
           }
         },
