@@ -9,7 +9,7 @@ export class VarGroupComponent implements OnInit {
   constructor() {}
 
   all_active = true;
-  // selectedTab=0;
+
   source: any;
   @Input() _variable_groups: any;
   @Output() subSetRows: EventEmitter<null> = new EventEmitter();
@@ -17,16 +17,18 @@ export class VarGroupComponent implements OnInit {
   @Output() selectGroup: EventEmitter<null> = new EventEmitter();
   @Output() draggedGroup: EventEmitter<null> = new EventEmitter();
   @Output() disableSelectGroup: EventEmitter<null> = new EventEmitter();
+
   dragged_obj: any;
   dragged_over_obj: any;
   dragged_over_dir = 'before';
+
   ngOnInit() {}
   // Add a new group to the list and scroll to show it!
   addTab() {
     // get the next id
     const ids = [];
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      ids.push(Number(this._variable_groups[i].varGrp['@ID'].substring(2)));
+    for (const i of this._variable_groups) {
+      ids.push(Number(i.varGrp['@ID'].substring(2)));
     }
     ids.sort();
 
@@ -45,12 +47,8 @@ export class VarGroupComponent implements OnInit {
     };
 
     var_group.varGrp['@var'] = '';
-    //
     this._variable_groups.push(var_group);
 
-    //
-    // this.selectedTab = this._variable_groups.length-1;
-    //
     const obj = this;
 
     setTimeout(() => {

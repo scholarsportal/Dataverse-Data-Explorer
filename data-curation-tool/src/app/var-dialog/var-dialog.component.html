@@ -70,16 +70,15 @@
         <mat-grid-tile colspan="1" rowspan="1">
           <section class="example-section">
             <mat-checkbox formControlName="wgt" align="end" checked="{{data['@wgt']}}" i18n>Is Weight</mat-checkbox>
-
           </section>
         </mat-grid-tile>
-             <mat-grid-tile colspan="1" rowspan="1">
-               <button mat-button type="submit" i18n>Update</button>
-             </mat-grid-tile>
-             <mat-grid-tile colspan="1" rowspan="1">
-               <button mat-button type="button" (click)="dialogRef.close()" i18n>Cancel</button>
-             </mat-grid-tile>
-             </mat-grid-list>
-           </mat-dialog-content>
-         </form>
-       </div>
+        <mat-grid-tile colspan="1" rowspan="1">
+          <button mat-button type="submit" i18n>Update</button>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" rowspan="1">
+          <button mat-button type="button" (click)="dialogRef.close()" i18n>Cancel</button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-dialog-content>
+  </form>
+</div>
