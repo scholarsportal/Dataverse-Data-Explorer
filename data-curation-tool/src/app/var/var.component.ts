@@ -108,7 +108,7 @@ export class VarComponent implements OnInit {
       this.filterValues['search'] = value;
       this.datasource.filter = JSON.stringify(this.filterValues);
     });
-    //
+
     this.group_select['hidden'] = true;
   }
 
@@ -176,7 +176,6 @@ export class VarComponent implements OnInit {
     this.id = _id;
     // get the data
     this.openDialog([this.getObjByID(_id, this._variables)]);
-    //
   }
   onSubset(_ids?) {
     if (_ids == null) {
@@ -207,7 +206,6 @@ export class VarComponent implements OnInit {
     obj._active = false;
     this.filterValues['_show'] = true;
     this.datasource.filter = JSON.stringify(this.filterValues);
-    //
 
     // Showing all
     this.checkSelection(); // and enable group dropdown if applicable
