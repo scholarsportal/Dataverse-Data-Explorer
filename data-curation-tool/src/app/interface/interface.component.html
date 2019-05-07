@@ -3,12 +3,18 @@
 </div>
 
 <ng-container class="interface-container">
-  <mat-toolbar class="interface-header">
 
+  <mat-toolbar class="interface-header">
     <span>{{title}}</span>
     <span class="fill-space"></span>
     <span style="float:right">
-      <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Save">
+        <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Download">
+          <mat-icon i18n-aria-label aria-label="Download xml">get_app</mat-icon>
+        </button>
+        <span class="small" i18n>Export</span>
+      </span>
+    <span style="float:right">
+      <button mat-icon-button color="accent" (click)="sendToDV()" i18n-matTooltip matTooltip="Save">
         <mat-icon i18n-aria-label aria-label="Save">save</mat-icon>
       </button>
       <span class="small" i18n>Save</span>
