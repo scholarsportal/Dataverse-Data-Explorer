@@ -1,12 +1,15 @@
-.text-inside-grid  > div{
+.text-inside-grid > div {
   justify-content: flex-start !important;
 }
+
 .field_width {
   width: 480px !important;
 }
-.textarea_height{
-  height:80px;
+
+.textarea_height {
+  height: 80px;
 }
-.mat-dialog-content{
+
+.mat-dialog-content {
   overflow: visible;
 }

@@ -47,24 +47,16 @@ export class InterfaceComponent implements OnInit {
     uri = this.ddiService.getParameterByName('uri');
     this._id = this.ddiService.getParameterByName('dfId');
     this._metaId = this.ddiService.getParameterByName('metaId');
-    console.log(this._id);
 
     this._base_url = this.ddiService.getBaseUrl();
-    console.log(this._base_url);
-    console.log('New!');
 
     if (!uri && this._id != null) {
-      console.log('Interface setting id ' + this._id);
       uri = this._base_url + '/api/access/datafile/' + this._id + '/metadata/ddi';
-      console.log(uri);
-
-      // &key=8f18fd62-3c5b-48f9-87d7-3fd181e6b5ed';
     } else {
       if (!uri) {
         // Just for testing purposes
         uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
         // uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
-        console.log(uri);
       }
     }
     this.getDDI(uri);
@@ -98,7 +90,6 @@ export class InterfaceComponent implements OnInit {
       .getElementsByTagName('titl')[0].textContent;
     this.showDDI();
   }
-
 
   showVarsGroups() {
     const elm = this.data.getElementsByTagName('varGrp');
@@ -139,74 +130,67 @@ export class InterfaceComponent implements OnInit {
         }
       }
       if (typeof obj.var.universe !== 'undefined') {
-        console.log(obj.var.universe);
         if (typeof obj.var.universe.size === 'undefined') {
           obj.var.universe = {'#text': obj.var.universe};
         }
       }
 
-      console.log('Notes');
-      console.log(obj.var.notes);
       if (typeof obj.var.notes !== 'undefined') {
-        console.log(obj.var.notes);
-        if (typeof obj.var.notes.length !== undefined && obj.var.notes.length == 2 ) {
+        if (typeof obj.var.notes.length !== undefined && obj.var.notes.length === 2 ) {
           obj.var.notes = {'#cdata': obj.var.notes[1]['#cdata'],
-                                     '#text':obj.var.notes[0]['#text'],
-                                      '@level':obj.var.notes[0]['@level'],
-                                      '@subject':obj.var.notes[0]['@subject'],
-                                       '@type':obj.var.notes[0]['@type']};
+                                    '#text': obj.var.notes[0]['#text'],
+                                    '@level': obj.var.notes[0]['@level'],
+                                    '@subject': obj.var.notes[0]['@subject'],
+                                    '@type': obj.var.notes[0]['@type']};
         }
       }
-
       flat_array.push(obj.var);
     }
-    //
+
     this._variables = flat_array;
     this.child.onUpdateVars(this._variables);
-    console.log(this._variables.length);
   }
   // pass the selected ids to the var table for display
   broadcastSubSetRows(ids) {
     this.child.onSubset(ids);
   }
+
   broadcastSelect(_id) {
     // set the var table header to show the selection
     this.child.selectGroup(_id);
   }
+
   broadcastDraggedGroup(_id) {
     this.child.draggedGroup(_id);
   }
+
   broadcastDeselectGroup() {
     this.child.disableSelectGroup();
   }
+
   showDDI() {
     this.ddi_loaded = true;
   }
-  onSave() {
-    console.log('GET ALL the JSON and convert it to XML');
-    const key = this.ddiService.getParameterByName('key');
 
-    if (key !== null) {
-
+  // Create the XML File
+  makeXML() {
 
       const doc = new XMLWriter();
       doc.startDocument();
       doc.startElement('dataDscr');
-      console.log(this._variable_groups);
+
       // add groups
-      for (let i = 0; i < this._variable_groups.length; i++) {
-        console.log(this._variable_groups[i]);
+      for (const group of this._variable_groups) {
         doc.startElement('varGrp');
-        doc.writeAttribute('ID', this._variable_groups[i].varGrp['@ID']);
-        doc.writeAttribute('var', this._variable_groups[i].varGrp['@var']);
+        doc.writeAttribute('ID', group.varGrp['@ID']);
+        doc.writeAttribute('var', group.varGrp['@var']);
         doc.startElement('labl');
-        doc.text(this._variable_groups[i].varGrp.labl);
-        doc.endElement()
+        doc.text(group.varGrp.labl);
+        doc.endElement();
         doc.endElement();
       }
       // add variables
       for (let i = 0; i < this._variables.length; i++) {
-        console.log(this._variables[i]);
         // start variable (var)
         doc.startElement('var');
         doc.writeAttribute('ID', this._variables[i]['@ID']);
@@ -342,33 +326,42 @@ export class InterfaceComponent implements OnInit {
         // end variable (var)
         doc.endElement();
       }
+
       doc.endDocument();
-      console.log(doc);
+      return doc;
+  }
+
+  // Save the XML file locally
+  onSave() {
+      const doc = this.makeXML();
       const text = new Blob([doc.toString()], {type: 'application/xml'});
-      console.log('Title ' + this.title);
       const tl = this.title + '.xml';
 
-      console.log('base_url ' + this._base_url)
-      let url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
-      console.log('url ' + url);
-
       FileSaver.saveAs(text, 'dct.xml');
+  }
+
+  // Send the XML to Dataverse
+  sendToDV() {
+    const key = this.ddiService.getParameterByName('key');
+    const doc = this.makeXML();
+
+    if (key !== null) {
+      const url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
 
       this.ddiService
           .putDDI(url, doc.toString(), key)
           .subscribe(
               data => {
                 console.log('Data ');
-                console.log(data)
+                console.log(data);
               },
               error => {
                 console.log('Error');
-                console.log(error)
+                console.log(error);
               },
               () => console.log('Ok'));
-
     } else {
-      console.log('key is null');
+      console.log('API Key missing');
     }
   }
 }

@@ -78,7 +78,7 @@
 
   <!-- ID Column -->
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> ID </mat-header-cell>
     <mat-cell *matCellDef="let row">
       <mat-chip-list>
         <mat-chip
@@ -97,15 +97,15 @@
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Name </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row['@name'] }} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="labl">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Label </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Label </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row.labl['#text'] }} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="catgry">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>
       Category
     </mat-header-cell>
     <!--
@@ -113,7 +113,7 @@
   --></ng-container>
 
   <ng-container matColumnDef="wgt-var">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>
       Weight
     </mat-header-cell>
     <mat-cell *matCellDef="let row">
@@ -122,16 +122,17 @@
   </ng-container>
 
   <ng-container matColumnDef="view">
-    <mat-header-cell *matHeaderCellDef>View</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef i18n>View</mat-header-cell>
 
     <mat-cell *matCellDef="let row; let i = index">
       <button
         mat-icon-button
         color="accent"
         (click)="onView(row['@ID'])"
+        i18n-matTooltip
         matTooltip="View"
       >
-        <mat-icon aria-label="View">visibility</mat-icon>
+        <mat-icon i18n-aria-label aria-label="View">visibility</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
@@ -142,11 +143,12 @@
         mat-icon-button
         color="accent"
         (click)="onEditSelected()"
+        i18n-matTooltip
         matTooltip="Group Edit"
         #group_edit
         disabled="true"
       >
-        <mat-icon aria-label="Group Edit">edit</mat-icon>
+        <mat-icon i18n-aria-label aria-label="Group Edit">edit</mat-icon>
       </button>
     </mat-header-cell>
 
@@ -155,9 +157,10 @@
         mat-icon-button
         color="accent"
         (click)="onEdit(row['@ID'])"
+        i18n-matTooltip
         matTooltip="Edit"
       >
-        <mat-icon aria-label="Edit">edit</mat-icon>
+        <mat-icon i18n-aria-label aria-label="Edit">edit</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
@@ -171,12 +174,6 @@
     (dragenter)="dragenter($event, row)"
     [ngClass]="{ grey: row._show != true, active: row._active == true }"
   >
-  </mat-row
-  >!-- -->
+  </mat-row>
 </mat-table>
 <mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
-<!--
-  <div class="no-results" [style.display]="datasource.renderedData.length == 0 ? '' : 'none'">
-    No results
-  </div>
--->

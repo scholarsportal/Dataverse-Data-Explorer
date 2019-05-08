@@ -1,11 +1,12 @@
 .table-bordered {
   border: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
 }
 
-.table-bordered tr > td,.table-bordered tr > th {
+.table-bordered tr > td,
+.table-bordered tr > th {
   border: 1px solid #ddd;
   padding: 5px;
   text-align: left;

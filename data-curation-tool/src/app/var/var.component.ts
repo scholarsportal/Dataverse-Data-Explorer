@@ -73,7 +73,7 @@ export class VarComponent implements OnInit {
 
     return displayedColumns;
   }
-  //
+
   selection = new SelectionModel<Element>(true, []);
   public dialogRef: MatDialogRef<VarDialogComponent>;
   public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
@@ -108,7 +108,7 @@ export class VarComponent implements OnInit {
       this.filterValues['search'] = value;
       this.datasource.filter = JSON.stringify(this.filterValues);
     });
-    //
+
     this.group_select['hidden'] = true;
   }
 
@@ -176,7 +176,6 @@ export class VarComponent implements OnInit {
     this.id = _id;
     // get the data
     this.openDialog([this.getObjByID(_id, this._variables)]);
-    //
   }
   onSubset(_ids?) {
     if (_ids == null) {
@@ -207,7 +206,6 @@ export class VarComponent implements OnInit {
     obj._active = false;
     this.filterValues['_show'] = true;
     this.datasource.filter = JSON.stringify(this.filterValues);
-    //
 
     // Showing all
     this.checkSelection(); // and enable group dropdown if applicable
@@ -247,8 +245,8 @@ export class VarComponent implements OnInit {
 
   // get the var
   getObjByID(_id, _data) {
-    for (let i = 0; i < _data.length; i++) {
-      const obj = _data[i];
+    for (const i of _data) {
+      const obj = i;
       if (obj['@ID'] === _id) {
         return obj;
       }
@@ -313,8 +311,8 @@ export class VarComponent implements OnInit {
     // first get the group
     const obj = this.getObjByIDNested(_id, this._variable_groups);
     const vars = obj.varGrp['@var'].split(' ');
-    for (let i = 0; i < this.selection.selected.length; i++) {
-      const selected = this.selection.selected[i];
+    for (const i of this.selection.selected) {
+      const selected = i;
       if (vars.indexOf(selected['@ID']) === -1) {
         vars.push(selected['@ID']);
       }
@@ -477,8 +475,8 @@ export class VarComponent implements OnInit {
   onEditSelected() {
     const selected_objs = [];
     // show the popup but only allow certain fields be be updated
-    for (let i = 0; i < this.selection.selected.length; i++) {
-      const selected = this.selection.selected[i];
+    for (const i of this.selection.selected) {
+      const selected = i;
       selected_objs.push(selected);
     }
     this.openDialog(selected_objs);

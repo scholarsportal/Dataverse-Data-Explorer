@@ -56,7 +56,7 @@ export class ChartComponent implements OnInit {
     data = [];
     console.log(_data);
     for (let i = 0; i < _data.length; i++) {
-      console.log('chart: data.length ' + _data.length)
+      console.log('chart: data.length ' + _data.length);
       let freq = null;
       let freq_weight = null;
       if (typeof _data[i].catStat !== 'undefined') {
@@ -97,9 +97,9 @@ export class ChartComponent implements OnInit {
     });
 
     // set the dimensions and margins of the graph
-    const margin = { top: 0, right: 20, bottom: 30, left: 90 },
-      width = 500 - margin.left - margin.right,
-      height = max_height - margin.top - margin.bottom;
+    const margin = { top: 0, right: 20, bottom: 30, left: 90 };
+    const width = 500 - margin.left - margin.right;
+    const height = max_height - margin.top - margin.bottom;
 
     // set the ranges
     const y = d3
@@ -120,19 +120,19 @@ export class ChartComponent implements OnInit {
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     // format the data
-    data.forEach(function(d) {
+    data.forEach((d) => {
       d.freq = +d.freq;
     });
 
     // Scale the range of the data in the domains
     x.domain([
       0,
-      d3.max(data, function(d) {
+      d3.max(data, (d) => {
         return d.freq;
       })
     ]);
     y.domain(
-      data.map(function(d) {
+      data.map((d) => {
         return d.name;
       })
     );
@@ -145,13 +145,13 @@ export class ChartComponent implements OnInit {
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('width', function(d) {
+      .attr('width', (d) => {
         return x(d.freq);
       })
-      .attr('y', function(d) {
+      .attr('y', (d) => {
         return y(d.name);
       })
-      .attr('fill', function(d) {
+      .attr('fill', (d) => {
         count += 1;
         return obj.getColor(count);
       })
@@ -177,7 +177,7 @@ export class ChartComponent implements OnInit {
     return color;
   }
   getRandomColor() {
-    const letters = '0123456789ABCDEF'.split(''); // '0123456789ABCDEF'
+    const letters = '0123456789ABCDEF'.split('');
     let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];

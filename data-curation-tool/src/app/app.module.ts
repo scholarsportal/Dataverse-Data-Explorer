@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localeFrCa from '@angular/common/locales/fr-CA';
+
+// the second parameter 'fr' is optional
+registerLocaleData(localeFrCa, 'fr-CA');
 
 import {
   MatButtonModule,
@@ -26,8 +31,6 @@ import {
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 import { AppComponent } from './app.component';
 import { DdiService } from './ddi.service';
@@ -76,7 +79,6 @@ import { ChartComponent } from './chart/chart.component';
     MatSnackBarModule,
     MatTooltipModule,
     MatAutocompleteModule,
-
   ],
   exports: [
   ],

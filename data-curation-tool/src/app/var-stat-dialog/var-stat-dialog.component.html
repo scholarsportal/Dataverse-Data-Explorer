@@ -1,14 +1,17 @@
 <div mat-dialog-content>
+
   <h1 mat-dialog-title>{{data["@name"]}}: {{data["labl"]["#text"]}}</h1>
-  <app-chart [data]="sorted_categories"></app-chart>
+
+  <app-chart [data]="sortedCategories"></app-chart>
+
   <table class="table-bordered">
   <tr>
-      <th>Values</th>
-      <th>Categories</th>
-      <th>N</th>
-    <th>NW</th>
+      <th i18n>Values</th>
+      <th i18n>Categories</th>
+      <th i18n>Count</th>
+      <th i18n>Weighted Count</th>
   </tr>
-    <tr *ngFor="let row of sorted_categories">
+    <tr *ngFor="let row of sortedCategories">
       <td>{{row.catValu}}</td>
       <td>{{row.labl["#text"]}}</td>
       <td *ngIf="isUndefined(row.catStat); else elseBlock"></td>
@@ -26,8 +29,10 @@
         </ng-template>
       </ng-template>
     </tr>
-
   </table>
 
+  <mat-dialog-actions>
+      <button mat-button mat-dialog-close i18n>Close</button>
+  </mat-dialog-actions>
 
 </div>
