@@ -5,6 +5,7 @@
 <ng-container class="interface-container">
 
   <mat-toolbar class="interface-header">
+    <mat-toolbar-row>
     <span>{{title}}</span>
     <span class="fill-space"></span>
     <span style="float:right">
@@ -19,7 +20,18 @@
       </button>
       <span class="small" i18n>Save</span>
     </span>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="medium">
+      <span>{{filename}}</span>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="medium">
+      <span>{{firstCitat}}&nbsp;</span>
+      <a href="{{doi}}">{{doi}}</a>
+      <span>{{secondCitat}}</span>
+    </mat-toolbar-row>
   </mat-toolbar>
+
+
 
 <mat-sidenav-container >
   <mat-sidenav mode="side" opened class="side_nav" #scrollMe>

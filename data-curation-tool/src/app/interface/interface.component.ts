@@ -33,6 +33,10 @@ export class InterfaceComponent implements OnInit {
   data = null; // store the xml
   ddi_loaded = false; // show the loading
   title;
+  firstCitat;
+  secondCitat;
+  doi;
+  filename;
   _variable_groups = []; // store the variables in an array display
   _variables = []; // store the variables to be broadcast to child
   _id = null; // file id
@@ -46,12 +50,16 @@ export class InterfaceComponent implements OnInit {
     let uri = null;
     uri = this.ddiService.getParameterByName('uri');
     this._id = this.ddiService.getParameterByName('dfId');
-    this._metaId = this.ddiService.getParameterByName('metaId');
+    this._metaId = this.ddiService.getParameterByName('fileMetadataId');
+    console.log(this._metaId);
 
     this._base_url = this.ddiService.getBaseUrl();
 
     if (!uri && this._id != null) {
       uri = this._base_url + '/api/access/datafile/' + this._id + '/metadata/ddi';
+      if (this._metaId != null) {
+        uri = uri + '?fileMetadataId=' + this._metaId;
+      }
     } else {
       if (!uri) {
         // Just for testing purposes
@@ -88,6 +96,21 @@ export class InterfaceComponent implements OnInit {
     this.title = this.data
       .getElementsByTagName('stdyDscr')[0]
       .getElementsByTagName('titl')[0].textContent;
+    const citation = this.data
+      .getElementsByTagName('stdyDscr')[0]
+      .getElementsByTagName('biblCit')[0].textContent;
+    const start = citation.indexOf('http');
+    const temp = citation.substr(start);
+    const end = temp.indexOf(',');
+    this.doi = temp.substr(0, end);
+    this.firstCitat = citation.substr(0, start );
+    this.firstCitat = this.firstCitat;
+    this.secondCitat = temp.substr(end);
+    this.secondCitat = this.secondCitat;
+
+    this.filename = this.data
+      .getElementsByTagName('fileDscr')[0]
+      .getElementsByTagName('fileName')[0].textContent;
     this.showDDI();
   }
 
