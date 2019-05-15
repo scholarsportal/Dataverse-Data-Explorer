@@ -204,13 +204,15 @@ export class InterfaceComponent implements OnInit {
 
       // add groups
       for (const group of this._variable_groups) {
-        doc.startElement('varGrp');
-        doc.writeAttribute('ID', group.varGrp['@ID']);
-        doc.writeAttribute('var', group.varGrp['@var']);
-        doc.startElement('labl');
-        doc.text(group.varGrp.labl);
-        doc.endElement();
-        doc.endElement();
+        if ( group.varGrp.labl !== null && group.varGrp.labl.trim() !== '' ) {
+          doc.startElement('varGrp');
+          doc.writeAttribute('ID', group.varGrp['@ID']);
+          doc.writeAttribute('var', group.varGrp['@var']);
+          doc.startElement('labl');
+          doc.text(group.varGrp.labl);
+          doc.endElement();
+          doc.endElement();
+        }
       }
       // add variables
       for (let i = 0; i < this._variables.length; i++) {

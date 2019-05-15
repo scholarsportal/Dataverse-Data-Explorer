@@ -41,7 +41,7 @@ export class VarGroupComponent implements OnInit {
 
     const var_group = {} as VarGroup;
     var_group.varGrp = {
-      labl: 'New Group ' + _id,
+      labl: '',
       '@var': '',
       '@ID': _id
     };
@@ -50,6 +50,7 @@ export class VarGroupComponent implements OnInit {
     this._variable_groups.push(var_group);
 
     const obj = this;
+    obj._variable_groups[obj._variable_groups.length - 1].editable = true;
 
     setTimeout(() => {
       console.log('set time out');
@@ -74,12 +75,16 @@ export class VarGroupComponent implements OnInit {
   }
   renameGroupComplete(_obj, _val) {
     console.log('renameGroupComplete');
-    _obj.varGrp.labl = _val;
-    _obj.editable = false;
+    if (_val !== null && _val.trim() !== '') {
+      _obj.varGrp.labl = _val.trim();
+      _obj.editable = false;
+    }
   }
   renameGroupCancel(_obj) {
     console.log('renameGroupCancel');
-    _obj.editable = false;
+    if (_obj.varGrp.labl !== null && _obj.varGrp.labl.trim() !== '') {
+      _obj.editable = false;
+    }
   }
   groupDelete(_obj) {
     console.log('delete group');
