@@ -1,10 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 
 @Component({
   selector: 'app-var-group',
   templateUrl: './var-group.component.html',
   styleUrls: ['./var-group.component.css']
 })
+
+
+
 export class VarGroupComponent implements OnInit {
   constructor() {}
 
@@ -18,45 +21,57 @@ export class VarGroupComponent implements OnInit {
   @Output() draggedGroup: EventEmitter<null> = new EventEmitter();
   @Output() disableSelectGroup: EventEmitter<null> = new EventEmitter();
 
+  @ViewChild('titleInput') titleInput: ElementRef
+
   dragged_obj: any;
   dragged_over_obj: any;
   dragged_over_dir = 'before';
 
   ngOnInit() {}
+
   // Add a new group to the list and scroll to show it!
   addTab() {
-    // get the next id
-    const ids = [];
-    for (const i of this._variable_groups) {
-      ids.push(Number(i.varGrp['@ID'].substring(2)));
+
+    const numberOfGroups = this._variable_groups.length;
+    if (numberOfGroups === 0 ||
+      (this._variable_groups[numberOfGroups - 1].varGrp.labl !== 'undefined' &&
+        this._variable_groups[numberOfGroups - 1].varGrp.labl.trim() !== '') ) {
+
+      // get the next id
+      const ids = [];
+      for (const i of this._variable_groups) {
+        ids.push(Number(i.varGrp['@ID'].substring(2)));
+      }
+      ids.sort();
+
+      let _id = 'VG';
+      if (ids.length > 0) {
+        _id += String(ids[ids.length - 1] + 1);
+      } else {
+        _id += '1';
+      }
+
+      const var_group = {} as VarGroup;
+      var_group.varGrp = {
+        labl: '',
+        '@var': '',
+        '@ID': _id
+      };
+
+      var_group.varGrp['@var'] = '';
+      this._variable_groups.push(var_group);
+
+      const obj = this;
+      obj._variable_groups[numberOfGroups].editable = true;
+
+      setTimeout(() => {
+        obj.titleInput.nativeElement.focus();
+        console.log('set time out');
+        obj.parentScrollNav.emit();
+        obj.onGroupClick(var_group);
+      }, 100);
     }
-    ids.sort();
 
-    let _id = 'VG';
-    if (ids.length > 0) {
-      _id += String(ids[ids.length - 1] + 1);
-    } else {
-      _id += '1';
-    }
-
-    const var_group = {} as VarGroup;
-    var_group.varGrp = {
-      labl: '',
-      '@var': '',
-      '@ID': _id
-    };
-
-    var_group.varGrp['@var'] = '';
-    this._variable_groups.push(var_group);
-
-    const obj = this;
-    obj._variable_groups[obj._variable_groups.length - 1].editable = true;
-
-    setTimeout(() => {
-      console.log('set time out');
-      obj.parentScrollNav.emit();
-      obj.onGroupClick(var_group);
-    }, 100);
   }
 
   onGroupClick(_obj) {
