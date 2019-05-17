@@ -116,7 +116,7 @@ export class InterfaceComponent implements OnInit {
 
   showVarsGroups() {
     const elm = this.data.getElementsByTagName('varGrp');
-    for (let i = 0; i < elm.length; i++) {
+    for (const i of elm) {
       const obj = JSON.parse(xml2json(elm[i], ''));
       this._variable_groups.push(obj);
     }

@@ -7,25 +7,29 @@
 }
 
 .mat-column-drag {
-  flex:  0 0 40px;
+  flex:  1 1 40px;
 }
 
 .mat-column-select {
-  flex:  0 0 40px;
+  flex:  1 1 40px;
 }
 
 .mat-column-control {
-  flex:  0 0 30px;
+  flex:  1 1 30px;
+}
+
+.mat-column-wgt-var {
+  flex:  1 1 30px;
 }
 
 .mat-column-id {
-  flex:  0 0 100px;
+  flex:  1 1 75px;
 }
 
 .mat-column-name {
-  flex:  0 0 100px;
+  flex:  1 1 75px;
 }
 
 .mat-column-labl {
-  flex:  0 0 500px;
+  flex:  1 1 500px;
 }

@@ -1,7 +1,22 @@
-.small {
-  font-size: 12px;
+.interface-header {
+  padding-top: 5px;
 }
 
-.medium {
-  font-size: 14px;
+.headertext {
+  height: auto;
+  font-size: 0.7em;
+  font-weight: 400;
+  white-space: normal;
+  padding-bottom: 15px;
+  line-height: 1.1em;
+}
+
+.headertext.title {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.actionbuttons {
+  float: right;
+  font-size: 0.6em;
 }
