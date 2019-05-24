@@ -27,11 +27,11 @@
 }
 
 .mat-column-name {
-  flex:  0 1 150px;
+  flex:  0 1 100px;
 }
 
 .mat-column-labl {
-  flex:  0 1 600px;
+  flex:  1 1 600px;
 }
 
 .mat-column-wgt-var {

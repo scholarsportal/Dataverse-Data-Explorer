@@ -5,6 +5,7 @@
       <span matSuffix><mat-icon>search</mat-icon></span>
     </mat-form-field>
   </mat-grid-tile>
+  <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
   <mat-divider [vertical]="true"></mat-divider>
   <mat-grid-tile>
     <mat-select
@@ -103,7 +104,7 @@
 
   <ng-container matColumnDef="labl">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Label </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length>125)? (row.labl['#text'] | slice:0:125)+'...':(row.labl['#text'])}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length>150)? (row.labl['#text'] | slice:0:150)+'...':(row.labl['#text'])}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="catgry">
@@ -178,4 +179,3 @@
   >
   </mat-row>
 </mat-table>
-<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
