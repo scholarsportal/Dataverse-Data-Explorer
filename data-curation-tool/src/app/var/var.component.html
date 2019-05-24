@@ -50,8 +50,8 @@
       </mat-checkbox>
     </mat-cell>
   </ng-container>
-  <!-- MINUS PLUS Column -->
 
+  <!-- MINUS PLUS Column -->
   <ng-container matColumnDef="control">
     <mat-header-cell *matHeaderCellDef
       ><div style="width:40px;"></div
@@ -100,10 +100,12 @@
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Name </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row['@name'] }} </mat-cell>
   </ng-container>
+
   <ng-container matColumnDef="labl">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Label </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{ row.labl['#text'] }} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length>125)? (row.labl['#text'] | slice:0:125)+'...':(row.labl['#text'])}} </mat-cell>
   </ng-container>
+
   <ng-container matColumnDef="catgry">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n>
       Category
