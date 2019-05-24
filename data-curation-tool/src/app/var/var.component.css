@@ -7,29 +7,37 @@
 }
 
 .mat-column-drag {
-  flex:  1 1 40px;
+  flex:  0 1 50px;
 }
 
 .mat-column-select {
-  flex:  1 1 40px;
+  flex:  0 1 50px;
 }
 
 .mat-column-control {
-  flex:  1 1 30px;
-}
-
-.mat-column-wgt-var {
-  flex:  1 1 30px;
+  flex:  0 1 50px;
 }
 
 .mat-column-id {
-  flex:  1 1 75px;
+  flex:  0 1 100px;
 }
 
 .mat-column-name {
-  flex:  1 1 75px;
+  flex:  0 1 150px;
 }
 
 .mat-column-labl {
-  flex:  1 1 500px;
+  flex:  0 1 600px;
+}
+
+.mat-column-wgt-var {
+  flex:  0 1 100px;
+}
+
+.mat-column-view {
+  flex:  0 1 75px;
+}
+
+.mat-column-action {
+  flex:  0 1 75px;
 }
