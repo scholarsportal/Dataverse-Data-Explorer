@@ -63,7 +63,8 @@ export class InterfaceComponent implements OnInit {
     } else {
       if (!uri) {
         // Just for testing purposes
-        uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        //uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        uri = this._base_url + '/assets/test_groups.xml';
         // uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
       }
     }
@@ -116,8 +117,9 @@ export class InterfaceComponent implements OnInit {
 
   showVarsGroups() {
     const elm = this.data.getElementsByTagName('varGrp');
-    for (const i of elm) {
-      const obj = JSON.parse(xml2json(elm[i], ''));
+    
+    for (const elmIn of elm) {
+      const obj = JSON.parse(xml2json(elmIn, ''));
       this._variable_groups.push(obj);
     }
   }
