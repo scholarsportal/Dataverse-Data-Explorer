@@ -18,12 +18,12 @@
       <ng-template #elseBlock>
         <td *ngIf="isUndefined(row.catStat.length); else elseBlock2"></td>
         <ng-template #elseBlock2>
-          <td>{{row.catStat[0]["#text"]}}</td>
+          <td>{{row.catStat[0]["#text"] | number}}</td>
         </ng-template>
       </ng-template>
       <td *ngIf="isUndefined(row.catStat); else elseBloc"></td>
       <ng-template #elseBloc>
-        <td *ngIf="doesExist(row.catStat.length); else elseBloc2">{{row.catStat[1]["#text"]}}</td>
+        <td *ngIf="doesExist(row.catStat.length); else elseBloc2">{{row.catStat[1]["#text"] | number }}</td>
         <ng-template #elseBloc2>
           <td></td>
         </ng-template>
