@@ -7,11 +7,10 @@ import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} f
 })
 
 
-
 export class VarGroupComponent implements OnInit {
   constructor() {}
 
-  all_active = true;
+  allActive = true;
 
   source: any;
   @Input() _variable_groups: any;
@@ -21,7 +20,7 @@ export class VarGroupComponent implements OnInit {
   @Output() draggedGroup: EventEmitter<null> = new EventEmitter();
   @Output() disableSelectGroup: EventEmitter<null> = new EventEmitter();
 
-  @ViewChild('titleInput') titleInput: ElementRef
+  @ViewChild('titleInput') titleInput: ElementRef;
 
   dragged_obj: any;
   dragged_over_obj: any;
@@ -109,8 +108,9 @@ export class VarGroupComponent implements OnInit {
       }
     }
   }
+
   showActive(_id?) {
-    this.all_active = false;
+    this.allActive = false;
     // show it's active
     for (let i = 0; i < this._variable_groups.length; i++) {
       if (this._variable_groups[i].varGrp['@ID'] === _id) {
@@ -120,9 +120,10 @@ export class VarGroupComponent implements OnInit {
       }
     }
   }
+
   showAll() {
     this.showActive();
-    this.all_active = true;
+    this.allActive = true;
     this.subSetRows.emit();
     this.disableSelectGroup.emit();
   }
@@ -131,6 +132,7 @@ export class VarGroupComponent implements OnInit {
     this.source = $event.currentTarget;
     $event.dataTransfer.effectAllowed = 'move';
   }
+
   trackDragRow(_row) {
     this.dragged_obj = _row;
   }
@@ -155,6 +157,7 @@ export class VarGroupComponent implements OnInit {
       this.dragged_over_dir = 'after';
     }
   }
+
   isbefore(a, b) {
     if (a.parentNode === b.parentNode) {
       for (let cur = a; cur; cur = cur.previousSibling) {
@@ -165,6 +168,7 @@ export class VarGroupComponent implements OnInit {
     }
     return false;
   }
+
   dragend($event) {
     // make sure we've dragged over something
     if (!this.dragged_over_obj) {

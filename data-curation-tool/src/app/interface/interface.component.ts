@@ -31,7 +31,7 @@ export class InterfaceComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   data = null; // store the xml
-  ddi_loaded = false; // show the loading
+  ddiLoaded = false; // show the loading
   title;
   firstCitat;
   secondCitat;
@@ -40,8 +40,8 @@ export class InterfaceComponent implements OnInit {
   _variable_groups = []; // store the variables in an array display
   _variables = []; // store the variables to be broadcast to child
   _id = null; // file id
-  _metaId = null;
-  _base_url = null;
+  metaId = null;
+  baseUrl = null;
   http: HttpClient;
 
   constructor(private ddiService: DdiService ) {}
@@ -50,22 +50,21 @@ export class InterfaceComponent implements OnInit {
     let uri = null;
     uri = this.ddiService.getParameterByName('uri');
     this._id = this.ddiService.getParameterByName('dfId');
-    this._metaId = this.ddiService.getParameterByName('fileMetadataId');
-    console.log(this._metaId);
+    this.metaId = this.ddiService.getParameterByName('fileMetadataId');
 
-    this._base_url = this.ddiService.getBaseUrl();
+    this.baseUrl = this.ddiService.getBaseUrl();
 
     if (!uri && this._id != null) {
-      uri = this._base_url + '/api/access/datafile/' + this._id + '/metadata/ddi';
-      if (this._metaId != null) {
-        uri = uri + '?fileMetadataId=' + this._metaId;
+      uri = this.baseUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
+      if (this.metaId != null) {
+        uri = uri + '?fileMetadataId=' + this.metaId;
       }
     } else {
       if (!uri) {
         // Just for testing purposes
-        //uri = this._base_url + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
-        uri = this._base_url + '/assets/test_groups.xml';
-        // uri = this._base_url + '/assets/arg-drones-E-2014-can.xml';
+        //uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        uri = this.baseUrl + '/assets/test_groups.xml';
+        // uri = this.baseUrl + '/assets/arg-drones-E-2014-can.xml';
       }
     }
     this.getDDI(uri);
@@ -117,7 +116,7 @@ export class InterfaceComponent implements OnInit {
 
   showVarsGroups() {
     const elm = this.data.getElementsByTagName('varGrp');
-    
+
     for (const elmIn of elm) {
       const obj = JSON.parse(xml2json(elmIn, ''));
       this._variable_groups.push(obj);
@@ -194,7 +193,7 @@ export class InterfaceComponent implements OnInit {
   }
 
   showDDI() {
-    this.ddi_loaded = true;
+    this.ddiLoaded = true;
   }
 
   // Create the XML File
@@ -373,7 +372,7 @@ export class InterfaceComponent implements OnInit {
     const doc = this.makeXML();
 
     if (key !== null) {
-      const url = this._base_url + '/api/edit/' + this._id; // + "/" + this._metaId;
+      const url = this.baseUrl + '/api/edit/' + this._id; // + "/" + this.metaId;
 
       this.ddiService
           .putDDI(url, doc.toString(), key)

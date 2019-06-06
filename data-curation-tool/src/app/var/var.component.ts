@@ -215,11 +215,13 @@ export class VarComponent implements OnInit {
       this.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
   }
+
   // when a single row has been updated
   onUpdateVar() {
     this.removeWeightedFreq();
     this.ref.detectChanges();
   }
+
   removeWeightedFreq() {
     console.log('Start removeWeightedFreq');
     const weights = this.getWeights();
@@ -252,15 +254,17 @@ export class VarComponent implements OnInit {
       }
     }
   }
+
   // get the group
   getObjByIDNested(_id, _data) {
-    for (let i = 0; i < _data.length; i++) {
-      const obj = _data[i];
+    for (const i of _data) {
+      const obj = i;
       if (obj.varGrp['@ID'] === _id) {
         return obj;
       }
     }
   }
+
   getWeights() {
     const weights = [];
     console.log('Get weights ' + this._variables.length);

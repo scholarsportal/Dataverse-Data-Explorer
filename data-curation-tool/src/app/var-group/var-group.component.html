@@ -5,7 +5,7 @@
 </mat-nav-list>
 <mat-nav-list>
 
-  <a mat-list-item (click)="showAll()" [ngClass]="{'active': all_active }" i18n>All</a>
+  <a mat-list-item (click)="showAll()" [ngClass]="{'active': allActive }" i18n>All</a>
 
   <a mat-list-item id="{{tab.varGrp['@ID']}}" draggable="true" [disableRipple]="true"  (dragstart)="dragstart($event);onGroupClick(tab);trackDragRow(tab)" (dragenter)="dragenter($event,tab)" (dragend)="dragend($event)"  *ngFor="let tab of _variable_groups" (click)="onGroupClick(tab)" (dblclick)="onGroupDblClick(tab)" [ngClass]="{'active': tab.active }" >
     <mat-icon aria-label="drag" i18n-matTooltip matTooltip="Drag Me" style="margin-left:-7px">drag_indicator</mat-icon>
