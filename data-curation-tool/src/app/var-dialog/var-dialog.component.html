@@ -50,7 +50,7 @@
         <mat-grid-tile colspan="2" rowspan="1" class="field_width">
           <mat-form-field class="field_width">
             <mat-select formControlName="_groups" [(value)]="data['_groups']"  i18n-placeholder placeholder="Group" multiple="true">
-              <mat-option *ngFor="let g of _variable_groups" [value]="g.varGrp['@ID']" >
+              <mat-option *ngFor="let g of variableGroups" [value]="g.varGrp['@ID']" >
                 {{ g.varGrp.labl}}
               </mat-option>
             </mat-select>

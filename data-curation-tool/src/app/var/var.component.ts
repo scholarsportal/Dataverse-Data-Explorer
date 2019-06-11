@@ -28,21 +28,25 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class VarComponent implements OnInit {
   datasource: MatTableDataSource<any>;
   public searchFilter = new FormControl();
+  selection = new SelectionModel<Element>(true, []);
+  public dialogRef: MatDialogRef<VarDialogComponent>;
+  public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
   private filterValues = { search: '', _show: true };
+
   _variables;
   id;
   mode = 'all';
   source: any;
-  dragged_obj: any;
+  draggedObj: any;
   dragged_over_obj: any;
   dragged_over_dir = 'before';
   dragged_group: any;
-  //
-  _variable_groups_vars = [];
-  @Input() _variable_groups: any;
+
+  variableGroupsVars = [];
+  @Input() variableGroups: any;
   @ViewChild('group_select') private group_select: ElementRef;
   @ViewChild('group_edit') private group_edit: ElementRef;
-  //
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   getDisplayedColumns() {
@@ -74,9 +78,6 @@ export class VarComponent implements OnInit {
     return displayedColumns;
   }
 
-  selection = new SelectionModel<Element>(true, []);
-  public dialogRef: MatDialogRef<VarDialogComponent>;
-  public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -185,7 +186,7 @@ export class VarComponent implements OnInit {
     }
 
     const data = [];
-    let ungrouped_count = 0;
+    let ungroupedCount = 0;
     let obj;
     for (let i = 0; i < this._variables.length; i++) {
       obj = this._variables[i];
@@ -194,8 +195,8 @@ export class VarComponent implements OnInit {
           obj._order = _ids.indexOf(obj['@ID']);
           obj._show = true;
         } else {
-          ungrouped_count += 1;
-          obj._order = 99999 + ungrouped_count;
+          ungroupedCount += 1;
+          obj._order = 99999 + ungroupedCount;
           obj._show = false;
         }
       } else if (this.mode === 'all') {
@@ -225,7 +226,7 @@ export class VarComponent implements OnInit {
   removeWeightedFreq() {
     console.log('Start removeWeightedFreq');
     const weights = this.getWeights();
-    const weights_set = new Set(weights);
+    const weightsSet = new Set(weights);
     console.log(weights);
     console.log(this._variables);
 
@@ -233,7 +234,7 @@ export class VarComponent implements OnInit {
       console.log('wgt-var:' + this._variables[i]['@wgt-var']);
       if (typeof this._variables[i]['@wgt-var'] !== 'undefined') {
         if (this._variables[i]['@wgt-var'] !== '') {
-          if (!weights_set.has(this._variables[i]['@wgt-var'])) {
+          if (!weightsSet.has(this._variables[i]['@wgt-var'])) {
             this._variables[i]['@wgt-var'] = '';
             for (let k = 0; k < this._variables[i].catgry.length; k++) {
               this._variables[i].catgry[k].catStat.splice(1, 1);
@@ -287,7 +288,7 @@ export class VarComponent implements OnInit {
     const weights = this.getWeights();
     console.log('w ' + weights.length);
     this.dialogRef.componentInstance.weights = weights;
-    this.dialogRef.componentInstance._variable_groups = this._variable_groups;
+    this.dialogRef.componentInstance.variableGroups = this.variableGroups;
     const sub = this.dialogRef.componentInstance.parentUpdateVar.subscribe(
       () => {
         this.onUpdateVar();
@@ -313,7 +314,7 @@ export class VarComponent implements OnInit {
   }
   addToGroup(_id) {
     // first get the group
-    const obj = this.getObjByIDNested(_id, this._variable_groups);
+    const obj = this.getObjByIDNested(_id, this.variableGroups);
     const vars = obj.varGrp['@var'].split(' ');
     for (const i of this.selection.selected) {
       const selected = i;
@@ -341,7 +342,7 @@ export class VarComponent implements OnInit {
   updateGroupsVars() {
     this.getVariableGroupsVars();
     for (let i = 0; i < this._variables.length; i++) {
-      if (this._variable_groups_vars.indexOf(this._variables[i]['@ID']) > -1) {
+      if (this.variableGroupsVars.indexOf(this._variables[i]['@ID']) > -1) {
         this._variables[i]._in_group = true;
       } else {
         this._variables[i]._in_group = false;
@@ -350,14 +351,14 @@ export class VarComponent implements OnInit {
   }
 
   getVariableGroupsVars() {
-    this._variable_groups_vars = [];
+    this.variableGroupsVars = [];
     // loop though all the variables in the varaible groups and create a complete list
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      const obj = this._variable_groups[i];
+    for (let i = 0; i < this.variableGroups.length; i++) {
+      const obj = this.variableGroups[i];
       const vars = obj.varGrp['@var'].split(' ');
       for (let j = 0; j < vars.length; j++) {
-        if (this._variable_groups_vars.indexOf(vars[j]) === -1) {
-          this._variable_groups_vars.push(vars[j]);
+        if (this.variableGroupsVars.indexOf(vars[j]) === -1) {
+          this.variableGroupsVars.push(vars[j]);
         }
       }
     }
@@ -372,13 +373,13 @@ export class VarComponent implements OnInit {
     $event.dataTransfer.effectAllowed = 'move';
   }
   trackDragRow(_row) {
-    this.dragged_obj = _row;
+    this.draggedObj = _row;
   }
   //
   dragenter($event, _row) {
     const target = $event.currentTarget;
     // let new_dragged_over_obj=false;
-    if (_row === this.dragged_obj) {
+    if (_row === this.draggedObj) {
       return;
     }
     this.dragged_over_obj = _row; // keep track of the dragged over obj to later update the list
@@ -406,13 +407,13 @@ export class VarComponent implements OnInit {
     _row._active = true;
   }
   dragend($event) {
-    this.dragged_obj._active = false; // remove the highlight
-    const id = this.dragged_obj['@ID'];
+    this.draggedObj._active = false; // remove the highlight
+    const id = this.draggedObj['@ID'];
     if (this.dragged_group) {
       // add the dragged var to the dragged group
       const objgr = this.getObjByIDNested(
         this.dragged_group,
-        this._variable_groups
+        this.variableGroups
       );
       const vars = objgr.varGrp['@var'].split(' ');
       vars.push(id);
@@ -442,7 +443,7 @@ export class VarComponent implements OnInit {
   updateGroupVars(_type, _id) {
     const obj = this.getObjByIDNested(
       this.group_select['value'],
-      this._variable_groups
+      this.variableGroups
     );
     const vars = obj.varGrp['@var'].split(' ');
     //
@@ -477,13 +478,13 @@ export class VarComponent implements OnInit {
     return obj;
   }
   onEditSelected() {
-    const selected_objs = [];
+    const selectedObjs = [];
     // show the popup but only allow certain fields be be updated
     for (const i of this.selection.selected) {
       const selected = i;
-      selected_objs.push(selected);
+      selectedObjs.push(selected);
     }
-    this.openDialog(selected_objs);
+    this.openDialog(selectedObjs);
   }
   draggedGroup(_id) {
     this.dragged_group = _id;

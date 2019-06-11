@@ -16,7 +16,7 @@
       disabled="true"
       [hidden]="group_select.hidden"
     >
-      <mat-option *ngFor="let g of _variable_groups" [value]="g.varGrp['@ID']">
+      <mat-option *ngFor="let g of variableGroups" [value]="g.varGrp['@ID']">
         {{ g.varGrp.labl }}
       </mat-option>
     </mat-select>

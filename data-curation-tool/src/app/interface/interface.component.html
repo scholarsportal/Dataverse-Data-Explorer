@@ -31,12 +31,12 @@
 
   <mat-sidenav-container>
     <mat-sidenav mode="side" opened class="side_nav" #scrollMe>
-      <app-var-group [_variable_groups]="_variable_groups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (draggedGroup)="broadcastDraggedGroup($event)" (disableSelectGroup)="broadcastDeselectGroup()"
+      <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (draggedGroup)="broadcastDraggedGroup($event)" (disableSelectGroup)="broadcastDeselectGroup()"
       (parentScrollNav)="scrollNav()"
       ></app-var-group>
     </mat-sidenav>
     <mat-sidenav-content>
-      <app-var [_variable_groups]="_variable_groups"></app-var>
+      <app-var [variableGroups]="variableGroups"></app-var>
     </mat-sidenav-content>
   </mat-sidenav-container>
 

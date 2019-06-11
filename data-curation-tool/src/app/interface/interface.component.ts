@@ -37,7 +37,7 @@ export class InterfaceComponent implements OnInit {
   secondCitat;
   doi;
   filename;
-  _variable_groups = []; // store the variables in an array display
+  variableGroups = []; // store the variables in an array display
   _variables = []; // store the variables to be broadcast to child
   _id = null; // file id
   metaId = null;
@@ -119,7 +119,7 @@ export class InterfaceComponent implements OnInit {
 
     for (const elmIn of elm) {
       const obj = JSON.parse(xml2json(elmIn, ''));
-      this._variable_groups.push(obj);
+      this.variableGroups.push(obj);
     }
   }
 
@@ -204,7 +204,7 @@ export class InterfaceComponent implements OnInit {
       doc.startElement('dataDscr');
 
       // add groups
-      for (const group of this._variable_groups) {
+      for (const group of this.variableGroups) {
         if ( group.varGrp.labl !== null && group.varGrp.labl.trim() !== '' ) {
           doc.startElement('varGrp');
           doc.writeAttribute('ID', group.varGrp['@ID']);

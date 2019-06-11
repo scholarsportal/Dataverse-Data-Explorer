@@ -13,7 +13,7 @@ export class VarGroupComponent implements OnInit {
   allActive = true;
 
   source: any;
-  @Input() _variable_groups: any;
+  @Input() variableGroups: any;
   @Output() subSetRows: EventEmitter<null> = new EventEmitter();
   @Output() parentScrollNav: EventEmitter<null> = new EventEmitter();
   @Output() selectGroup: EventEmitter<null> = new EventEmitter();
@@ -22,7 +22,7 @@ export class VarGroupComponent implements OnInit {
 
   @ViewChild('titleInput') titleInput: ElementRef;
 
-  dragged_obj: any;
+  draggedObj: any;
   dragged_over_obj: any;
   dragged_over_dir = 'before';
 
@@ -31,14 +31,14 @@ export class VarGroupComponent implements OnInit {
   // Add a new group to the list and scroll to show it!
   addTab() {
 
-    const numberOfGroups = this._variable_groups.length;
+    const numberOfGroups = this.variableGroups.length;
     if (numberOfGroups === 0 ||
-      (this._variable_groups[numberOfGroups - 1].varGrp.labl !== 'undefined' &&
-        this._variable_groups[numberOfGroups - 1].varGrp.labl.trim() !== '') ) {
+      (this.variableGroups[numberOfGroups - 1].varGrp.labl !== 'undefined' &&
+        this.variableGroups[numberOfGroups - 1].varGrp.labl.trim() !== '') ) {
 
       // get the next id
       const ids = [];
-      for (const i of this._variable_groups) {
+      for (const i of this.variableGroups) {
         ids.push(Number(i.varGrp['@ID'].substring(2)));
       }
       ids.sort();
@@ -58,10 +58,10 @@ export class VarGroupComponent implements OnInit {
       };
 
       var_group.varGrp['@var'] = '';
-      this._variable_groups.push(var_group);
+      this.variableGroups.push(var_group);
 
       const obj = this;
-      obj._variable_groups[numberOfGroups].editable = true;
+      obj.variableGroups[numberOfGroups].editable = true;
 
       setTimeout(() => {
         obj.titleInput.nativeElement.focus();
@@ -102,9 +102,9 @@ export class VarGroupComponent implements OnInit {
   }
   groupDelete(_obj) {
     console.log('delete group');
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      if (this._variable_groups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
-        this._variable_groups.splice(i, 1);
+    for (let i = 0; i < this.variableGroups.length; i++) {
+      if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
+        this.variableGroups.splice(i, 1);
       }
     }
   }
@@ -112,11 +112,11 @@ export class VarGroupComponent implements OnInit {
   showActive(_id?) {
     this.allActive = false;
     // show it's active
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      if (this._variable_groups[i].varGrp['@ID'] === _id) {
-        this._variable_groups[i].active = true;
+    for (let i = 0; i < this.variableGroups.length; i++) {
+      if (this.variableGroups[i].varGrp['@ID'] === _id) {
+        this.variableGroups[i].active = true;
       } else {
-        this._variable_groups[i].active = false;
+        this.variableGroups[i].active = false;
       }
     }
   }
@@ -134,7 +134,7 @@ export class VarGroupComponent implements OnInit {
   }
 
   trackDragRow(_row) {
-    this.dragged_obj = _row;
+    this.draggedObj = _row;
   }
 
   dragenter($event, _row?) {
@@ -144,7 +144,7 @@ export class VarGroupComponent implements OnInit {
       this.draggedGroup.emit($event.currentTarget.id);
       return;
     }
-    if (_row === this.dragged_obj) {
+    if (_row === this.draggedObj) {
       return;
     }
     this.dragged_over_obj = _row; // keep track of the dragged over obj to later update the list
@@ -177,26 +177,26 @@ export class VarGroupComponent implements OnInit {
     // update the master list
     // remove the object
 
-    this._variable_groups.splice(
-      this._variable_groups
+    this.variableGroups.splice(
+      this.variableGroups
         .map(function(e) {
           return e.varGrp['@ID'];
         })
-        .indexOf(this.dragged_obj.varGrp['@ID']),
+        .indexOf(this.draggedObj.varGrp['@ID']),
       1
     );
 
-    const index = this._variable_groups
+    const index = this.variableGroups
       .map((e) => {
         return e.varGrp['@ID'];
       })
       .indexOf(this.dragged_over_obj.varGrp['@ID']);
     if (this.dragged_over_dir === 'before') {
-      this._variable_groups.splice(index, 0, this.dragged_obj);
+      this.variableGroups.splice(index, 0, this.draggedObj);
     } else {
-      this._variable_groups.splice(index + 1, 0, this.dragged_obj);
+      this.variableGroups.splice(index + 1, 0, this.draggedObj);
     }
-    delete this.dragged_obj;
+    delete this.draggedObj;
     delete this.source; // remove reference
   }
 }

@@ -12,7 +12,7 @@ export class VarDialogComponent implements OnInit {
   @Output() parentUpdateVar: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
   public weights: any;
-  public _variable_groups: any;
+  public variableGroups: any;
   edit_objs: any = [];
 
   weights_and_variable: any;
@@ -45,15 +45,15 @@ export class VarDialogComponent implements OnInit {
     }
     // add the groups - create an id with all of them
     const groups = [];
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      const group_vars = this._variable_groups[i].varGrp['@var'].split(' ');
+    for (let i = 0; i < this.variableGroups.length; i++) {
+      const group_vars = this.variableGroups[i].varGrp['@var'].split(' ');
       if (group_vars.indexOf(this.data['@ID']) > -1) {
-        groups.push(this._variable_groups[i].varGrp['@ID']);
+        groups.push(this.variableGroups[i].varGrp['@ID']);
       }
     }
     this.data['_groups'] = [groups]; // groups;
     this.addOmittedProperties(this.data);
-    console.log('Universe text ' + this.data.universe['#text']);
+    //console.log('Universe text ' + this.data.universe['#text']);
     this.form = this.formBuilder.group({
       id: [
         { value: this.data ? this.data['@ID'] : '', disabled: true },
@@ -143,9 +143,9 @@ export class VarDialogComponent implements OnInit {
 
   getVariableGroup(_id) {
     // loop though all the variables in the varaible groups and create a complete list
-    for (let i = 0; i < this._variable_groups.length; i++) {
-      if (this._variable_groups[i].varGrp['@ID'] === _id) {
-        return this._variable_groups[i].varGrp;
+    for (let i = 0; i < this.variableGroups.length; i++) {
+      if (this.variableGroups[i].varGrp['@ID'] === _id) {
+        return this.variableGroups[i].varGrp;
       }
     }
   }
