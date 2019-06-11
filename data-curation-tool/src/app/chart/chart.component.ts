@@ -8,7 +8,7 @@ import * as d3 from 'd3';
 })
 export class ChartComponent implements OnInit {
   @ViewChild('chart') private chartContainer: ElementRef;
-  color_array = [
+  colorArray = [
     '#3366cc',
     '#dc3912',
     '#ff9900',
@@ -41,7 +41,7 @@ export class ChartComponent implements OnInit {
     '#0c5922',
     '#743411'
   ];
-  max_string_length = 13;
+  maxStringLength = 13;
   @Input() private data: Array<any>;
 
   constructor() {}
@@ -58,7 +58,7 @@ export class ChartComponent implements OnInit {
     for (let i = 0; i < _data.length; i++) {
       console.log('chart: data.length ' + _data.length);
       let freq = null;
-      let freq_weight = null;
+      let freqWeight = null;
       if (typeof _data[i].catStat !== 'undefined') {
         console.log(_data[i].catStat);
         for (let j = 0; j < _data[i].catStat.length; j++) {
@@ -67,7 +67,7 @@ export class ChartComponent implements OnInit {
             freq = sub_obj['#text'];
           } else {
             if (sub_obj['@type'] === 'freq' && sub_obj['@wgtd'] && sub_obj['#text'] !== '') {
-              freq_weight = sub_obj['#text'];
+              freqWeight = sub_obj['#text'];
             }
           }
         }
@@ -78,12 +78,12 @@ export class ChartComponent implements OnInit {
       }
       let short_name = _data[i].labl['#text'];
 
-      if (short_name.length > this.max_string_length) {
-        short_name = short_name.substring(0, this.max_string_length) + '...';
+      if (short_name.length > this.maxStringLength) {
+        short_name = short_name.substring(0, this.maxStringLength) + '...';
       }
       short_name = short_name;
       // switching to weighted frequencies
-      if (freq_weight != null) { freq = freq_weight; }
+      if (freqWeight != null) { freq = freqWeight; }
       data.push({
         name: short_name,
         freq: freq
@@ -169,8 +169,8 @@ export class ChartComponent implements OnInit {
 
   getColor(num) {
     let color;
-    if (num < this.color_array.length) {
-      color = this.color_array[num];
+    if (num < this.colorArray.length) {
+      color = this.colorArray[num];
     } else {
       color = this.getRandomColor();
     }

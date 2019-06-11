@@ -47,6 +47,8 @@
         (click)="$event.stopPropagation()"
         (change)="$event ? selection.toggle(row) : null; checkSelection()"
         [checked]="selection.isSelected(row)"
+        i18n-matTooltip
+        matTooltip="Select"
       >
       </mat-checkbox>
     </mat-cell>
@@ -63,6 +65,8 @@
         mat-icon-button
         color="accent"
         (click)="onRemove(row['@ID'])"
+        i18n-matTooltip
+        matTooltip="Remove from Group"
       >
         <mat-icon aria-label="remove">indeterminate_check_box</mat-icon>
       </button>
@@ -71,6 +75,8 @@
         mat-icon-button
         color="accent"
         (click)="onAdd(row['@ID'])"
+        i18n-matTooltip
+        matTooltip="Add to Group"
       >
         <mat-icon aria-label="add">add_box</mat-icon>
       </button>
@@ -83,12 +89,12 @@
     <mat-cell *matCellDef="let row">
       <mat-chip-list>
         <mat-chip
-          [color]="row['_in_group'] == true ? 'accent' : 'primary'"
+          [color]="primary"
           selected="true"
         >
           {{ row['id'] }}
-        </mat-chip></mat-chip-list
-      >
+        </mat-chip>
+      </mat-chip-list>
     </mat-cell>
   </ng-container>
 
@@ -99,34 +105,29 @@
 
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Name </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{ row['@name'] }} </mat-cell>
+    <mat-cell *matCellDef="let row">{{ (row['@name'].length > 30) ? (row['@name'] | slice:0:30) + '...' : (row['@name']) }}  </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="labl">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Label </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length>150)? (row.labl['#text'] | slice:0:150)+'...':(row.labl['#text'])}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length > 150) ? (row.labl['#text'] | slice:0:150) + '...' : (row.labl['#text'])}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="catgry">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>
-      Category
-    </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Category </mat-header-cell>
     <!--
-      <mat-cell *matCellDef="let row"> <span *ngIf="row.catgry">{{row.catgry.length}}</span> </mat-cell>
-  --></ng-container>
+      <mat-cell *matCellDef="let row"> <span *ngIf="row.catgry">{{row.catgry.length}}</span> </mat-cell>-->
+    </ng-container>
 
   <ng-container matColumnDef="wgt-var">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>
-      Weight
-    </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Weight </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <span *ngIf="row['@wgt-var']">{{ row['@wgt-var'] }}</span></mat-cell
-    >
+      <span *ngIf="row['@wgt-var']">{{ row['@wgt-var'] }}</span>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="view">
-    <mat-header-cell *matHeaderCellDef i18n>View</mat-header-cell>
-
+    <mat-header-cell *matHeaderCellDef i18n> View </mat-header-cell>
     <mat-cell *matCellDef="let row; let i = index">
       <button
         mat-icon-button
