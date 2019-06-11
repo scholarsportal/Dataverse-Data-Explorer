@@ -1,5 +1,5 @@
-.grey {
-  background: #f4f4f4;
+.grey .mat-cell {
+  color: #767676;
 }
 
 .active {

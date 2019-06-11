@@ -86,16 +86,7 @@
   <!-- ID Column -->
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> ID </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <mat-chip-list>
-        <mat-chip
-          [color]="primary"
-          selected="true"
-        >
-          {{ row['id'] }}
-        </mat-chip>
-      </mat-chip-list>
-    </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ row['id'] }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="_order">

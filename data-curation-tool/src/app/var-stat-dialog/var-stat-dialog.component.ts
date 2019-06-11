@@ -13,16 +13,16 @@ export class VarStatDialogComponent implements OnInit {
 
   ngOnInit() {
     if (typeof this.data.catgry !== 'undefined') {
-      console.log(this.data.catgry);
+      //console.log(this.data.catgry);
       if (typeof this.data.catgry.length === 'undefined') {
         this.sortedCategories.push(this.data.catgry);
       } else {
         for (const i of this.data.catgry) {
-          console.log(i);
+          //console.log(i);
           this.sortedCategories.push(i);
         }
       }
-      console.log(this.sortedCategories);
+      //console.log(this.sortedCategories);
       this.sortedCategories.sort((a, b) => {
         return a.catValu - b.catValu;
       });
