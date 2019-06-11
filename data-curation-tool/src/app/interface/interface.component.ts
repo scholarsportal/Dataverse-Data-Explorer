@@ -11,7 +11,7 @@ import { DdiService } from '../ddi.service';
 import { xml2json } from '../../assets/js/xml2json';
 import { json2xml } from '../../assets/js/json2xml';
 
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatSnackBar } from '@angular/material';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
@@ -44,7 +44,10 @@ export class InterfaceComponent implements OnInit {
   baseUrl = null;
   http: HttpClient;
 
-  constructor(private ddiService: DdiService ) {}
+  constructor (
+    private ddiService: DdiService,
+    public snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     let uri = null;
@@ -385,7 +388,12 @@ export class InterfaceComponent implements OnInit {
                 console.log('Error');
                 console.log(error);
               },
-              () => console.log('Ok'));
+              () => {
+                console.log('Ok');
+                this.snackBar.open('Saved to Dataverse', '', {
+                  duration: 1000
+                });
+              });
     } else {
       console.log('API Key missing');
     }
