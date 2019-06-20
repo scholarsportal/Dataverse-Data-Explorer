@@ -11,22 +11,16 @@ export class DdiService {
 
  putDDI(url: string, body: string, key: string) {
 
-    console.log('my url ' + url);
-    console.log('my key ' + key);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml',
-
         'X-Dataverse-key': key
       })
 
     };
-    console.log ('Before sending');
     return this.http.put(url, body, httpOptions);
     // return this.http.post(url,body, httpOptions);
-
   }
-
 
   getParameterByName(name) {
     const url = window.location.href;
@@ -48,10 +42,10 @@ export class DdiService {
   /*  if (port === '4200') {
       port = '8080';
     }*/
-    let base_url = protocol + '//' + host;
+    let baseUrl = protocol + '//' + host;
     if (port != null || typeof port !== 'undefined') {
-      base_url = base_url + ':' + port;
+      baseUrl = baseUrl + ':' + port;
     }
-    return base_url;
+    return baseUrl;
   }
 }

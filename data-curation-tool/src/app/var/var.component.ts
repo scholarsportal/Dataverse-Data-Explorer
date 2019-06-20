@@ -116,7 +116,6 @@ export class VarComponent implements OnInit {
   // Entry point - when data has been loaded
   onUpdateVars(data) {
     this._variables = data;
-    console.log(this._variables);
     // make sure all the data is set to show
     for (let i = 0; i < this._variables.length; i++) {
       this._variables[i]._show = true;
@@ -224,14 +223,10 @@ export class VarComponent implements OnInit {
   }
 
   removeWeightedFreq() {
-    console.log('Start removeWeightedFreq');
     const weights = this.getWeights();
     const weightsSet = new Set(weights);
-    console.log(weights);
-    console.log(this._variables);
 
     for (let i = 0; i < this._variables.length; i++) {
-      console.log('wgt-var:' + this._variables[i]['@wgt-var']);
       if (typeof this._variables[i]['@wgt-var'] !== 'undefined') {
         if (this._variables[i]['@wgt-var'] !== '') {
           if (!weightsSet.has(this._variables[i]['@wgt-var'])) {
@@ -243,7 +238,6 @@ export class VarComponent implements OnInit {
         }
       }
     }
-    console.log('End removeWeightedFreq');
   }
 
   // get the var
@@ -268,14 +262,11 @@ export class VarComponent implements OnInit {
 
   getWeights() {
     const weights = [];
-    console.log('Get weights ' + this._variables.length);
     for (let i = 0; i < this._variables.length; i++) {
       if (this._variables[i]['@wgt'] === 'wgt') {
         weights.push(this._variables[i]['@ID']);
-        console.log(this._variables[i]['@ID']);
       }
     }
-    console.log('End get weights');
     return weights;
   }
   openDialog(data): void {
@@ -284,9 +275,7 @@ export class VarComponent implements OnInit {
       data: data,
       panelClass: 'field_width'
     });
-    console.log('Open dialog');
     const weights = this.getWeights();
-    console.log('w ' + weights.length);
     this.dialogRef.componentInstance.weights = weights;
     this.dialogRef.componentInstance.variableGroups = this.variableGroups;
     const sub = this.dialogRef.componentInstance.parentUpdateVar.subscribe(

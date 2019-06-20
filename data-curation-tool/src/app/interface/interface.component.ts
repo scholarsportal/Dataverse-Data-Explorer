@@ -44,7 +44,7 @@ export class InterfaceComponent implements OnInit {
   baseUrl = null;
   http: HttpClient;
 
-  constructor (
+  constructor(
     private ddiService: DdiService,
     public snackBar: MatSnackBar
   ) {}
@@ -389,9 +389,9 @@ export class InterfaceComponent implements OnInit {
                 console.log(error);
               },
               () => {
-                console.log('Ok');
+                // console.log('Ok');
                 this.snackBar.open('Saved to Dataverse', '', {
-                  duration: 1000
+                  duration: 2000
                 });
               });
     } else {

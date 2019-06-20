@@ -13,9 +13,8 @@ export class VarDialogComponent implements OnInit {
   form: FormGroup;
   public weights: any;
   public variableGroups: any;
-  edit_objs: any = [];
-
-  weights_and_variable: any;
+  editObjs: any = [];
+  weightsAndVariable: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,23 +25,22 @@ export class VarDialogComponent implements OnInit {
 
   ngOnInit() {
     // Note: data is passed as any array to allow for multi editing
-    console.log('OnInit');
-    console.log(this.data);
 
     if (this.data.length > 1) {
-      const selected_ids = [];
+      const selectedIds = [];
       for (let j = 0; j < this.data.length; j++) {
-        selected_ids.push(this.data[j]['@ID']);
+        selectedIds.push(this.data[j]['@ID']);
       }
       const obj = {
-        '@ID': selected_ids.join(','),
+        '@ID': selectedIds.join(','),
         _group_edit: true
       };
-      this.edit_objs = this.data;
+      this.editObjs = this.data;
       this.data = obj;
     } else {
       this.data = this.data[0];
     }
+
     // add the groups - create an id with all of them
     const groups = [];
     for (let i = 0; i < this.variableGroups.length; i++) {
@@ -53,7 +51,7 @@ export class VarDialogComponent implements OnInit {
     }
     this.data['_groups'] = [groups]; // groups;
     this.addOmittedProperties(this.data);
-    //console.log('Universe text ' + this.data.universe['#text']);
+
     this.form = this.formBuilder.group({
       id: [
         { value: this.data ? this.data['@ID'] : '', disabled: true },
@@ -75,10 +73,11 @@ export class VarDialogComponent implements OnInit {
       _groups: this.data ? this.data['_groups'] : []
     });
   }
+
   isSelected(_id) {
-    console.log(_id);
     return true;
   }
+
   addOmittedProperties(_obj) {
     if (typeof _obj.qstn === 'undefined') {
       _obj.qstn = {};
@@ -160,10 +159,11 @@ export class VarDialogComponent implements OnInit {
   }
 
   submit(form) {
-    if (this.edit_objs.length > 0) {
+
+    if (this.editObjs.length > 0) {
       // take all the objects from the
-      for (let i = 0; i < this.edit_objs.length; i++) {
-        this.data = this.edit_objs[i];
+      for (const i of this.editObjs) {
+        this.data = i;
         this.addOmittedProperties(this.data);
         this.updateObjValues(this.data, form);
         this.parentUpdateVar.emit(this.data);
@@ -172,6 +172,7 @@ export class VarDialogComponent implements OnInit {
       this.updateObjValues(this.data, form);
       this.parentUpdateVar.emit(this.data);
     }
+
     if (typeof this.data['@wgt-var'] !== 'undefined') {
       this.calculateWeightedFrequencies();
     } else {
@@ -190,36 +191,32 @@ export class VarDialogComponent implements OnInit {
 
     this.dialogRef.close(`${form}`);
   }
+
   calculateWeightedFrequencies() {
-    console.log('Start calculate freq');
 
-    console.log(this.data);
-
-    const weight_variable = this.data['@wgt-var'];
+    const weightVariable = this.data['@wgt-var'];
     const variable = this.data['@ID'];
-    console.log(weight_variable);
-    if (typeof weight_variable !== 'undefined') {
-      console.log('variable defined');
+
+    if (typeof weightVariable !== 'undefined') {
 
       const id = this.ddiService.getParameterByName('dfId');
 
-      const base_url = this.ddiService.getBaseUrl();
+      const baseUrl = this.ddiService.getBaseUrl();
       const key = this.ddiService.getParameterByName('key');
 
-      const detail_url =
-        base_url +
+      const detailUrl =
+        baseUrl +
         '/api/access/datafile/' +
         id +
         '?format=subset&variables=' +
         variable +
         ',' +
-        weight_variable +
+        weightVariable +
         '&key=' +
         key;
 
-      console.log(detail_url);
       this.ddiService
-        .getDDI(detail_url)
+        .getDDI(detailUrl)
         .subscribe(
           data => this.processVariable(data),
           error => console.log(error),
@@ -227,17 +224,16 @@ export class VarDialogComponent implements OnInit {
         );
       //  http://localhost:8080/api/access/datafile/41?variables=v885
     }
-    console.log('End calculate freq');
   }
 
   processVariable(data) {
-    this.weights_and_variable = data.split('\n');
+    this.weightsAndVariable = data.split('\n');
   }
 
   completeVariable() {
     const map_wf = new Map();
-    for (let i = 1; i < this.weights_and_variable.length; i++) {
-      const vr = this.weights_and_variable[i].split('\t');
+    for (let i = 1; i < this.weightsAndVariable.length; i++) {
+      const vr = this.weightsAndVariable[i].split('\t');
 
       if (map_wf.has(vr[0])) {
         let wt = map_wf.get(vr[0]);
@@ -248,8 +244,6 @@ export class VarDialogComponent implements OnInit {
       }
     }
 
-    // map_wf.forEach((v, k) => {console.log(v + ' ' + k + ';'); });
-    console.log('Complete');
     for (let i = 0; i < this.data.catgry.length; i++) {
       if (!map_wf.has(this.data.catgry[i].catValu)) {
         map_wf.set(this.data.catgry[i].catValu, 0);

@@ -65,7 +65,6 @@ export class VarGroupComponent implements OnInit {
 
       setTimeout(() => {
         obj.titleInput.nativeElement.focus();
-        console.log('set time out');
         obj.parentScrollNav.emit();
         obj.onGroupClick(var_group);
       }, 100);
@@ -84,24 +83,20 @@ export class VarGroupComponent implements OnInit {
     this.renameGroup(_obj);
   }
   renameGroup(_obj) {
-    console.log('Rename group');
     _obj.editable = true;
   }
   renameGroupComplete(_obj, _val) {
-    console.log('renameGroupComplete');
     if (_val !== null && _val.trim() !== '') {
       _obj.varGrp.labl = _val.trim();
       _obj.editable = false;
     }
   }
   renameGroupCancel(_obj) {
-    console.log('renameGroupCancel');
     if (_obj.varGrp.labl !== null && _obj.varGrp.labl.trim() !== '') {
       _obj.editable = false;
     }
   }
   groupDelete(_obj) {
-    console.log('delete group');
     for (let i = 0; i < this.variableGroups.length; i++) {
       if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
         this.variableGroups.splice(i, 1);
