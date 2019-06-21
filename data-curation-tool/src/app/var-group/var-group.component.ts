@@ -107,11 +107,11 @@ export class VarGroupComponent implements OnInit {
   showActive(_id?) {
     this.allActive = false;
     // show it's active
-    for (let i = 0; i < this.variableGroups.length; i++) {
-      if (this.variableGroups[i].varGrp['@ID'] === _id) {
-        this.variableGroups[i].active = true;
+    for (const i of this.variableGroups) {
+      if (i.varGrp['@ID'] === _id) {
+        i.active = true;
       } else {
-        this.variableGroups[i].active = false;
+        i.active = false;
       }
     }
   }

@@ -54,20 +54,17 @@ export class ChartComponent implements OnInit {
     const obj = this;
     let data = this.data;
     data = [];
-    console.log(_data);
     for (let i = 0; i < _data.length; i++) {
-      //console.log('chart: data.length ' + _data.length);
       let freq = null;
       let freqWeight = null;
       if (typeof _data[i].catStat !== 'undefined') {
-        //console.log(_data[i].catStat);
         for (let j = 0; j < _data[i].catStat.length; j++) {
-          const sub_obj = _data[i].catStat[j];
-          if (sub_obj['@type'] === 'freq' && !sub_obj['@wgtd']) {
-            freq = sub_obj['#text'];
+          const subObj = _data[i].catStat[j];
+          if (subObj['@type'] === 'freq' && !subObj['@wgtd']) {
+            freq = subObj['#text'];
           } else {
-            if (sub_obj['@type'] === 'freq' && sub_obj['@wgtd'] && sub_obj['#text'] !== '') {
-              freqWeight = sub_obj['#text'];
+            if (subObj['@type'] === 'freq' && subObj['@wgtd'] && subObj['#text'] !== '') {
+              freqWeight = subObj['#text'];
             }
           }
         }
@@ -76,20 +73,20 @@ export class ChartComponent implements OnInit {
           freq = _data[i].catStat['#text'];
         }
       }
-      let short_name = _data[i].labl['#text'];
+      let shortName = _data[i].labl['#text'];
 
-      if (short_name.length > this.maxStringLength) {
-        short_name = short_name.substring(0, this.maxStringLength) + '...';
+      if (shortName.length > this.maxStringLength) {
+        shortName = shortName.substring(0, this.maxStringLength) + '...';
       }
-      short_name = short_name;
+      shortName = shortName;
       // switching to weighted frequencies
       if (freqWeight != null) { freq = freqWeight; }
       data.push({
-        name: short_name,
+        name: shortName,
         freq: freq
       });
     }
-    const max_height = (data.length + 1) * 25;
+    const maxHeight = (data.length + 1) * 25;
 
     // sort bars based on value
     data = data.sort(function(a, b) {
@@ -99,7 +96,7 @@ export class ChartComponent implements OnInit {
     // set the dimensions and margins of the graph
     const margin = { top: 0, right: 20, bottom: 30, left: 90 };
     const width = 500 - margin.left - margin.right;
-    const height = max_height - margin.top - margin.bottom;
+    const height = maxHeight - margin.top - margin.bottom;
 
     // set the ranges
     const y = d3
@@ -168,7 +165,7 @@ export class ChartComponent implements OnInit {
   }
 
   getColor(num) {
-    let color;
+    let color = '';
     if (num < this.colorArray.length) {
       color = this.colorArray[num];
     } else {

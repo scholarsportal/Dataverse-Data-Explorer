@@ -1,7 +1,7 @@
 <mat-grid-list class="table-controls" cols="3" rowHeight="64">
   <mat-grid-tile>
     <mat-form-field>
-      <input matInput [formControl]="searchFilter" placeholder="Search" />
+      <input matInput [formControl]="searchFilter" i18n-placeholder placeholder="Search" />
       <span matSuffix><mat-icon>search</mat-icon></span>
     </mat-form-field>
   </mat-grid-tile>
@@ -24,15 +24,15 @@
 </mat-grid-list>
 
 <mat-table class="mat-elevation-z8" [dataSource]="datasource" matSort>
-  <!-- drag Icon Column -->
+  <!-- Drag Icon Column -->
   <ng-container matColumnDef="drag">
     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <mat-icon aria-label="drag" matTooltip="Drag Me">drag_indicator</mat-icon>
+      <mat-icon aria-label="drag" i18n-matTooltip matTooltip="Drag">drag_indicator</mat-icon>
     </mat-cell>
   </ng-container>
 
-  <!-- Checkbox Column -->
+  <!-- Checkbox Column in 'All Variables' view -->
   <ng-container matColumnDef="select">
     <mat-header-cell *matHeaderCellDef>
       <mat-checkbox
@@ -54,7 +54,7 @@
     </mat-cell>
   </ng-container>
 
-  <!-- MINUS PLUS Column -->
+  <!-- MINUS PLUS Column in Group view -->
   <ng-container matColumnDef="control">
     <mat-header-cell *matHeaderCellDef
       ><div style="width:40px;"></div
@@ -68,7 +68,7 @@
         i18n-matTooltip
         matTooltip="Remove from Group"
       >
-        <mat-icon aria-label="remove">indeterminate_check_box</mat-icon>
+        <mat-icon i18n-aria-label aria-label="Remove from Group">indeterminate_check_box</mat-icon>
       </button>
       <button
         *ngIf="!row._show"
@@ -78,7 +78,7 @@
         i18n-matTooltip
         matTooltip="Add to Group"
       >
-        <mat-icon aria-label="add">add_box</mat-icon>
+        <mat-icon i18n-aria-label aria-label="Add to Group">add_box</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

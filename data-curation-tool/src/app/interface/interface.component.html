@@ -7,7 +7,15 @@
   <mat-toolbar class="interface-header">
     <mat-toolbar-row>
       <h1 class="headertext title">{{title}}</h1>
-      <span class="fill-space"></span>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="headertext">
+      {{filename}}
+    </mat-toolbar-row>
+    <mat-toolbar-row class="headertext citation">
+      <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+        <span class="fill-space"></span>
       <span class="actionbuttons">
         <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Download">
           <mat-icon i18n-aria-label aria-label="Download">get_app</mat-icon>
@@ -20,12 +28,6 @@
         </button>
         <span i18n>Save</span>
       </span>
-    </mat-toolbar-row>
-    <mat-toolbar-row class="headertext citation">
-      <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
-    </mat-toolbar-row>
-    <mat-toolbar-row class="headertext">
-      {{filename}}
     </mat-toolbar-row>
   </mat-toolbar>
 
