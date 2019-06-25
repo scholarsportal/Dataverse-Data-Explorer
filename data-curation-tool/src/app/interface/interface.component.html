@@ -15,7 +15,10 @@
       <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
     </mat-toolbar-row>
     <mat-toolbar-row>
-        <span class="fill-space"></span>
+      <ng-container *ngIf="!sidenav.opened">
+        <button mat-button (click)="sidenav.toggle()" i18n>Show Groups</button>
+      </ng-container>
+      <span class="fill-space"></span>
       <span class="actionbuttons">
         <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Download">
           <mat-icon i18n-aria-label aria-label="Download">get_app</mat-icon>
@@ -32,7 +35,10 @@
   </mat-toolbar>
 
   <mat-sidenav-container>
-    <mat-sidenav mode="side" opened class="side_nav" #scrollMe>
+    <mat-sidenav mode="side" opened class="side_nav" #sidenav #scrollMe>
+      <button mat-icon-button (click)="sidenav.close()" class="closegroups" i18n-matTooltip matTooltip="Close">
+        <mat-icon i18n-aria-label aria-label="Close">close</mat-icon>
+      </button>
       <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (draggedGroup)="broadcastDraggedGroup($event)" (disableSelectGroup)="broadcastDeselectGroup()"
       (parentScrollNav)="scrollNav()"
       ></app-var-group>

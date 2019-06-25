@@ -15,8 +15,7 @@ body {
 }
 
 .side_nav {
-    width: 250px;
-    display: flex;
+    width: 15%;
     background: #ebeef0;
 }
 
@@ -45,7 +44,7 @@ body {
 
 .mat-cell,
 .mat-header-cell {
-    overflow: visible !important;
+    overflow: visible;
 }
 
 .float-left {

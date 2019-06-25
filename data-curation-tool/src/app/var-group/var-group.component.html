@@ -18,7 +18,7 @@
   (dblclick)="onGroupDblClick(tab)"
   [ngClass]="{'active': tab.active }"
   >
-    <mat-icon aria-label="drag" i18n-matTooltip matTooltip="Drag Me" style="margin-left:-7px">drag_indicator</mat-icon>
+    <mat-icon aria-label="drag" i18n-matTooltip matTooltip="Drag" style="margin-left:-7px">drag_indicator</mat-icon>
     <span *ngIf="!tab.editable">{{tab.varGrp.labl}}</span>
     <mat-form-field
     *ngIf="tab.editable"
@@ -28,7 +28,7 @@
       maxLength="50"
       value="{{tab.varGrp.labl}}"
       #titleInput
-      (keyup.enter) ="renameGroupComplete(tab,titleInput.value )"
+      (keyup.enter)="renameGroupComplete(tab,titleInput.value)"
       >
       <span button mat-icon-button matSuffix color="primary">
         <mat-icon i18n-aria-label aria-label="Done" i18n-matTooltip matTooltip="Save" (click)="renameGroupComplete(tab,titleInput.value )">done</mat-icon>

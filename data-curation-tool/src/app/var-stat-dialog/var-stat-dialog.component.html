@@ -1,16 +1,20 @@
 <div mat-dialog-content>
 
+  <button mat-icon-button mat-dialog-close i18n-matTooltip matTooltip="Close" class="close-dialog">
+      <mat-icon i18n-aria-label aria-label="Close">close</mat-icon>
+  </button>
+
   <h1 mat-dialog-title>{{data["@name"]}}: {{data["labl"]["#text"]}}</h1>
 
   <app-chart [data]="sortedCategories"></app-chart>
 
   <table class="table-bordered">
-  <tr>
-      <th i18n>Values</th>
-      <th i18n>Categories</th>
-      <th i18n>Count</th>
-      <th i18n>Weighted Count</th>
-  </tr>
+    <tr>
+        <th i18n>Values</th>
+        <th i18n>Categories</th>
+        <th i18n>Count</th>
+        <th i18n>Weighted Count</th>
+    </tr>
     <tr *ngFor="let row of sortedCategories">
       <td>{{row.catValu}}</td>
       <td>{{row.labl["#text"]}}</td>
@@ -30,9 +34,5 @@
       </ng-template>
     </tr>
   </table>
-
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close i18n>Close</button>
-  </mat-dialog-actions>
 
 </div>

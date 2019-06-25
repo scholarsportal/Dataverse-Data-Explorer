@@ -11,3 +11,7 @@
   padding: 5px;
   text-align: left;
 }
+
+.close-dialog {
+  float: right;
+}
