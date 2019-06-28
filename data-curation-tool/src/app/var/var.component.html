@@ -113,7 +113,10 @@
   <ng-container matColumnDef="wgt-var">
     <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Weight </mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <span *ngIf="row['@wgt-var']">{{ row['@wgt-var'] }}</span>
+      <span *ngIf="row['@wgt-var'] ; else elseBlock">{{ row['@wgt-var'] }} </span>
+      <ng-template #elseBlock>
+        <span *ngIf="row['@wgt']">{{ row['@wgt'] }}</span>
+      </ng-template>
     </mat-cell>
   </ng-container>
 
