@@ -14,10 +14,22 @@
     <mat-toolbar-row class="headertext citation">
       <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
     </mat-toolbar-row>
+    <mat-divider></mat-divider>
     <mat-toolbar-row>
-      <ng-container *ngIf="!sidenav.opened">
-        <button mat-button (click)="sidenav.toggle()" i18n>Show Groups</button>
-      </ng-container>
+      <span class="groupstoggle">
+        <ng-container *ngIf="sidenav.opened; else showGroups">
+          <button mat-icon-button color="accent" (click)="sidenav.toggle()">
+            <mat-icon i18n-aria-label aria-label="Gide Groups">keyboard_arrow_left</mat-icon>
+          </button>
+          <span i18n>Hide Groups</span>
+        </ng-container>
+        <ng-template #showGroups>
+          <button mat-icon-button color="accent" (click)="sidenav.toggle()">
+            <mat-icon i18n-aria-label aria-label="Show Groups">keyboard_arrow_right</mat-icon>
+          </button>
+          <span i18n>Show Groups</span>
+        </ng-template>
+      </span>
       <span class="fill-space"></span>
       <span class="actionbuttons">
         <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Download">
@@ -36,9 +48,6 @@
 
   <mat-sidenav-container>
     <mat-sidenav mode="side" opened class="side_nav" #sidenav #scrollMe>
-      <button mat-icon-button (click)="sidenav.close()" class="closegroups" i18n-matTooltip matTooltip="Close">
-        <mat-icon i18n-aria-label aria-label="Close">close</mat-icon>
-      </button>
       <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (draggedGroup)="broadcastDraggedGroup($event)" (disableSelectGroup)="broadcastDeselectGroup()"
       (parentScrollNav)="scrollNav()"
       ></app-var-group>
