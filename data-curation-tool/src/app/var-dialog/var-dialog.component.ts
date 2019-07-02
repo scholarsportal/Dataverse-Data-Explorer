@@ -118,7 +118,8 @@ export class VarDialogComponent implements OnInit {
     //
     this.updateObjValue(_obj, '@wgt-var', form.controls.wgt_var);
     //
-    if (form.controls.wgt.value === true) {
+    console.log(form.controls.wgt.value);
+    if (form.controls.wgt.value === true || form.controls.wgt.value === 'wgt') {
       _obj['@wgt'] = 'wgt';
     } else {
       _obj['@wgt'] = '';
