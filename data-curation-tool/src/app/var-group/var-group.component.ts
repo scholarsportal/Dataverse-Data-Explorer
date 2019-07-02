@@ -6,7 +6,6 @@ import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} f
   styleUrls: ['./var-group.component.css']
 })
 
-
 export class VarGroupComponent implements OnInit {
   constructor() {}
 
@@ -17,14 +16,9 @@ export class VarGroupComponent implements OnInit {
   @Output() subSetRows: EventEmitter<null> = new EventEmitter();
   @Output() parentScrollNav: EventEmitter<null> = new EventEmitter();
   @Output() selectGroup: EventEmitter<null> = new EventEmitter();
-  @Output() draggedGroup: EventEmitter<null> = new EventEmitter();
   @Output() disableSelectGroup: EventEmitter<null> = new EventEmitter();
 
   @ViewChild('titleInput') titleInput: ElementRef;
-
-  draggedObj: any;
-  dragged_over_obj: any;
-  dragged_over_dir = 'before';
 
   ngOnInit() {}
 
@@ -121,78 +115,6 @@ export class VarGroupComponent implements OnInit {
     this.allActive = true;
     this.subSetRows.emit();
     this.disableSelectGroup.emit();
-  }
-
-  dragstart($event) {
-    this.source = $event.currentTarget;
-    $event.dataTransfer.effectAllowed = 'move';
-  }
-
-  trackDragRow(_row) {
-    this.draggedObj = _row;
-  }
-
-  dragenter($event, _row?) {
-    const target = $event.currentTarget;
-    if (!this.source) {
-      // broadcast
-      this.draggedGroup.emit($event.currentTarget.id);
-      return;
-    }
-    if (_row === this.draggedObj) {
-      return;
-    }
-    this.dragged_over_obj = _row; // keep track of the dragged over obj to later update the list
-    // need to determine how
-    if (this.isbefore(this.source, target)) {
-      target.parentNode.insertBefore(this.source, target); // insert before
-      this.dragged_over_dir = 'before';
-    } else {
-      target.parentNode.insertBefore(this.source, target.nextSibling); // insert after
-      this.dragged_over_dir = 'after';
-    }
-  }
-
-  isbefore(a, b) {
-    if (a.parentNode === b.parentNode) {
-      for (let cur = a; cur; cur = cur.previousSibling) {
-        if (cur === b) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  dragend($event) {
-    // make sure we've dragged over something
-    if (!this.dragged_over_obj) {
-      return;
-    }
-    // update the master list
-    // remove the object
-
-    this.variableGroups.splice(
-      this.variableGroups
-        .map(function(e) {
-          return e.varGrp['@ID'];
-        })
-        .indexOf(this.draggedObj.varGrp['@ID']),
-      1
-    );
-
-    const index = this.variableGroups
-      .map((e) => {
-        return e.varGrp['@ID'];
-      })
-      .indexOf(this.dragged_over_obj.varGrp['@ID']);
-    if (this.dragged_over_dir === 'before') {
-      this.variableGroups.splice(index, 0, this.draggedObj);
-    } else {
-      this.variableGroups.splice(index + 1, 0, this.draggedObj);
-    }
-    delete this.draggedObj;
-    delete this.source; // remove reference
   }
 }
 interface VarGroup {

@@ -266,14 +266,6 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="58a8fb69e9e08b93e6dba247733e9f0c7a48f426" datatype="html">
-        <source>Drag Me</source>
-        <target>Drag Me</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="8dd413cee2228118c536f503709329a4d1a395e2" datatype="html">
         <source>Done</source>
         <target>Done</target>

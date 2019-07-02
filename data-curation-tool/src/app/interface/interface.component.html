@@ -48,7 +48,7 @@
 
   <mat-sidenav-container>
     <mat-sidenav mode="side" opened class="side_nav" #sidenav #scrollMe>
-      <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (draggedGroup)="broadcastDraggedGroup($event)" (disableSelectGroup)="broadcastDeselectGroup()"
+      <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (disableSelectGroup)="broadcastDeselectGroup()"
       (parentScrollNav)="scrollNav()"
       ></app-var-group>
     </mat-sidenav>

@@ -10,10 +10,6 @@
   color: rgba(0,0,0,.6);
 }
 
-.mat-column-drag {
-  flex:  0 1 50px;
-}
-
 .mat-column-select {
   flex:  0 1 70px;
 }
