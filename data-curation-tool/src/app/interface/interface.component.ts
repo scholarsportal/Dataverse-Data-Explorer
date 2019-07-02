@@ -50,6 +50,7 @@ export class InterfaceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("Start");
     let uri = null;
     uri = this.ddiService.getParameterByName('siteUrl');
     this.baseUrl = this.ddiService.getBaseUrl();
