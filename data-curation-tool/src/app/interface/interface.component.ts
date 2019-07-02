@@ -51,11 +51,10 @@ export class InterfaceComponent implements OnInit {
 
   ngOnInit() {
     let uri = null;
-    uri = this.ddiService.getParameterByName('uri');
+    uri = this.ddiService.getParameterByName('siteUrl');
+    this.baseUrl = this.ddiService.getBaseUrl();
     this._id = this.ddiService.getParameterByName('dfId');
     this.metaId = this.ddiService.getParameterByName('fileMetadataId');
-
-    this.baseUrl = this.ddiService.getBaseUrl();
 
     if (!uri && this._id != null) {
       uri = this.baseUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
@@ -63,7 +62,12 @@ export class InterfaceComponent implements OnInit {
         uri = uri + '?fileMetadataId=' + this.metaId;
       }
     } else {
-      if (!uri) {
+      if (uri) {
+        uri = uri + '/api/access/datafile/' + this._id + '/metadata/ddi';
+        if (this.metaId != null) {
+          uri = uri + '?fileMetadataId=' + this.metaId;
+        }
+      } else {
         // Just for testing purposes
         //uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
         uri = this.baseUrl + '/assets/test_groups.xml';
@@ -115,6 +119,10 @@ export class InterfaceComponent implements OnInit {
       .getElementsByTagName('fileDscr')[0]
       .getElementsByTagName('fileName')[0].textContent;
     this.showDDI();
+
+    const agency =  this.data.getElementsByTagName('IDNo')[0];
+    const obj = JSON.parse(xml2json(agency, ''));
+    console.log(obj);
   }
 
   showVarsGroups() {
@@ -200,10 +208,13 @@ export class InterfaceComponent implements OnInit {
   }
 
   // Create the XML File
-  makeXML() {
+  makeXML(dv) {
 
       const doc = new XMLWriter();
       doc.startDocument();
+      if (dv === false) {
+        this.addStdyAndfileDscr(doc);
+      }
       doc.startElement('dataDscr');
 
       // add groups
@@ -360,9 +371,36 @@ export class InterfaceComponent implements OnInit {
       return doc;
   }
 
+  addStdyAndfileDscr(doc) {
+    doc.startElement('stdyDscr');
+    doc.startElement('citation');
+    doc.startElement('titlStmt');
+    const titl = this.data.getElementsByTagName('titl')[0].textContent;
+    doc.startElement('titl').text(titl);
+    doc.endElement(); // end titl
+    doc.startElement('IDNo');
+    const agency =  this.data.getElementsByTagName('IDNo')[0];
+    const obj = JSON.parse(xml2json(agency, ''));
+    doc.writeAttribute('agency', obj.IDNo['@agency']).text(obj.IDNo['#text']);
+    doc.endElement('IDNo'); // end IDNo
+    doc.endElement(); // end titlStmt
+    doc.startElement('rspStmt');
+    const AuthEnty = this.data.getElementsByTagName('AuthEnty')[0].textContent;
+    doc.startElement('AuthEnty').text(AuthEnty);
+    doc.endElement(); // end AuthEnty
+    doc.endElement(); // end rspStmt
+    const biblCit = this.data.getElementsByTagName('biblCit')[0].textContent;
+    doc.startElement('biblCit').text(biblCit);
+    doc.endElement(); // biblCit
+    doc.endElement(); // end citation
+    doc.endElement(); // end stdyDscr
+
+  }
+
   // Save the XML file locally
   onSave() {
-      const doc = this.makeXML();
+      const dv = false;
+      const doc = this.makeXML(dv);
       const text = new Blob([doc.toString()], {type: 'application/xml'});
       const tl = this.title + '.xml';
 
@@ -372,7 +410,8 @@ export class InterfaceComponent implements OnInit {
   // Send the XML to Dataverse
   sendToDV() {
     const key = this.ddiService.getParameterByName('key');
-    const doc = this.makeXML();
+    const dv = true;
+    const doc = this.makeXML(dv);
 
     if (key !== null) {
       const url = this.baseUrl + '/api/edit/' + this._id; // + "/" + this.metaId;

@@ -2,18 +2,21 @@
   "displayName": "Data Curation Tool",
   "description": "Data Curation Tool for curation of variables",
   "type": "configure",
-  "toolUrl": "dct_explore/index.html",
+  "toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/",
   "toolParameters": {
     "queryParameters": [
-    {
-        "dfId" : "{fileId}"
-    },
-    {
-    "key": "{apiToken}"
-    },
-    {
+     {	
+        "dfId": "{fileId}"	
+     },	
+     {	
+       "siteUrl": "{siteUrl}"	
+     },	
+     {	
+       "key": "{apiToken}"	
+     },
+     {
         "fileMetadataId" : "{fileMetadataId}"
-    }
+     }
     ]
   }
 }
