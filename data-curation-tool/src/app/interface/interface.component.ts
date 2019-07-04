@@ -71,7 +71,9 @@ export class InterfaceComponent implements OnInit {
       } else {
         // Just for testing purposes
         //uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
-        uri = this.baseUrl + '/assets/test_groups.xml';
+        uri = window.location.href;
+        uri = uri + '/assets/test_groups.xml';
+        console.log(uri);
         // uri = this.baseUrl + '/assets/arg-drones-E-2014-can.xml';
       }
     }
