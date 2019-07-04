@@ -221,9 +221,9 @@ export class InterfaceComponent implements OnInit {
 
       const doc = new XMLWriter();
       doc.startDocument();
-      if (dv === false) {
-        this.addStdyAndfileDscr(doc);
-      }
+     // if (dv === false) {
+     //   this.addStdyAndfileDscr(doc);
+     // }
       doc.startElement('dataDscr');
 
       // add groups
