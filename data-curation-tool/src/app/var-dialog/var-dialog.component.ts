@@ -204,17 +204,35 @@ export class VarDialogComponent implements OnInit {
 
       const baseUrl = this.ddiService.getBaseUrl();
       const key = this.ddiService.getParameterByName('key');
+      let siteUrl = null;
+      siteUrl = this.ddiService.getParameterByName('siteUrl');
+      let detailUrl = null;
+      console.log(siteUrl);
 
-      const detailUrl =
-        baseUrl +
-        '/api/access/datafile/' +
-        id +
-        '?format=subset&variables=' +
-        variable +
-        ',' +
-        weightVariable +
-        '&key=' +
-        key;
+      if (!siteUrl) {
+        detailUrl =
+          baseUrl +
+          '/api/access/datafile/' +
+          id +
+          '?format=subset&variables=' +
+          variable +
+          ',' +
+          weightVariable +
+          '&key=' +
+          key;
+      } else {
+        detailUrl =
+          siteUrl +
+          '/api/access/datafile/' +
+          id +
+          '?format=subset&variables=' +
+          variable +
+          ',' +
+          weightVariable +
+          '&key=' +
+          key;
+      }
+
 
       this.ddiService
         .getDDI(detailUrl)
