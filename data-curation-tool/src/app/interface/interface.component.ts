@@ -42,6 +42,7 @@ export class InterfaceComponent implements OnInit {
   _id = null; // file id
   metaId = null;
   baseUrl = null;
+  siteUrl = null;
   http: HttpClient;
 
   constructor(
@@ -52,19 +53,19 @@ export class InterfaceComponent implements OnInit {
   ngOnInit() {
     console.log("Start");
     let uri = null;
-    uri = this.ddiService.getParameterByName('siteUrl');
+    this.siteUrl = this.ddiService.getParameterByName('siteUrl');
     this.baseUrl = this.ddiService.getBaseUrl();
     this._id = this.ddiService.getParameterByName('dfId');
     this.metaId = this.ddiService.getParameterByName('fileMetadataId');
 
-    if (!uri && this._id != null) {
+    if (!this.siteUrl && this._id != null) {
       uri = this.baseUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
       if (this.metaId != null) {
         uri = uri + '?fileMetadataId=' + this.metaId;
       }
     } else {
-      if (uri) {
-        uri = uri + '/api/access/datafile/' + this._id + '/metadata/ddi';
+      if (this.siteUrl) {
+        uri = this.siteUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
         if (this.metaId != null) {
           uri = uri + '?fileMetadataId=' + this.metaId;
         }
@@ -417,7 +418,7 @@ export class InterfaceComponent implements OnInit {
     const doc = this.makeXML(dv);
 
     if (key !== null) {
-      const url = this.baseUrl + '/api/edit/' + this._id; // + "/" + this.metaId;
+      const url = this.siteUrl + '/api/edit/' + this._id; // + "/" + this.metaId;
 
       this.ddiService
           .putDDI(url, doc.toString(), key)
