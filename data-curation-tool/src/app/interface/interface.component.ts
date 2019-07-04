@@ -204,10 +204,6 @@ export class InterfaceComponent implements OnInit {
     this.child.selectGroup(_id);
   }
 
-  broadcastDraggedGroup(_id) {
-    this.child.draggedGroup(_id);
-  }
-
   broadcastDeselectGroup() {
     this.child.disableSelectGroup();
   }
