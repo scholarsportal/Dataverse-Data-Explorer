@@ -51,7 +51,6 @@ export class InterfaceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("Start");
     let uri = null;
     this.siteUrl = this.ddiService.getParameterByName('siteUrl');
     this.baseUrl = this.ddiService.getBaseUrl();
@@ -72,10 +71,16 @@ export class InterfaceComponent implements OnInit {
       } else {
         // Just for testing purposes
         //uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        if (!this._id) {
         uri = window.location.href;
         uri = uri + '/assets/test_groups.xml';
-        console.log(uri);
         // uri = this.baseUrl + '/assets/arg-drones-E-2014-can.xml';
+        } else {
+          uri = this.baseUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
+          if (this.metaId != null) {
+            uri = uri + '?fileMetadataId=' + this.metaId;
+          }
+        }
       }
     }
     this.getDDI(uri);
@@ -416,9 +421,13 @@ export class InterfaceComponent implements OnInit {
     const key = this.ddiService.getParameterByName('key');
     const dv = true;
     const doc = this.makeXML(dv);
-
+    let url = null;
     if (key !== null) {
-      const url = this.siteUrl + '/api/edit/' + this._id; // + "/" + this.metaId;
+      if (this.siteUrl !== null) {
+        url = this.siteUrl + '/api/edit/' + this._id; // + "/" + this.metaId;
+      } else {
+        url = this.baseUrl + '/api/edit/' + this._id;
+      }
 
       this.ddiService
           .putDDI(url, doc.toString(), key)
