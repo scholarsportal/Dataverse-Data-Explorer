@@ -1,5 +1,5 @@
 .interface-header {
-  padding-top: 5px;
+  padding-top: 0.8em;
   border-bottom: solid 1px rgba(0,0,0,.12);
 }
 
@@ -8,7 +8,7 @@
   height: auto;
 }
 
-.headertext {
+.header-text {
   height: auto;
   font-size: 0.7em;
   font-weight: 400;
@@ -17,16 +17,20 @@
   line-height: 1.1em;
 }
 
-.headertext.title {
+.header-text.title {
   font-size: 1.1em;
   font-weight: 500;
 }
 
-.actionbuttons {
+.action-buttons {
   float: right;
   font-size: 0.7em;
 }
 
-.groupstoggle {
+.button-label {
+  padding: 0.3em;
+}
+
+.groups-toggle {
   font-size: 0.7em;
 }

@@ -6,42 +6,41 @@
 
   <mat-toolbar class="interface-header">
     <mat-toolbar-row>
-      <h1 class="headertext title">{{title}}</h1>
+      <h1 class="header-text title">{{title}}</h1>
     </mat-toolbar-row>
-    <mat-toolbar-row class="headertext">
+    <mat-toolbar-row class="header-text">
       {{filename}}
     </mat-toolbar-row>
-    <mat-toolbar-row class="headertext citation">
+    <mat-toolbar-row class="header-text citation">
       <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
     </mat-toolbar-row>
-    <mat-divider></mat-divider>
     <mat-toolbar-row>
-      <span class="groupstoggle">
+      <span class="groups-toggle">
         <ng-container *ngIf="sidenav.opened; else showGroups">
-          <button mat-icon-button color="accent" (click)="sidenav.toggle()">
-            <mat-icon i18n-aria-label aria-label="Gide Groups">keyboard_arrow_left</mat-icon>
+          <button mat-button (click)="sidenav.toggle()">
+            <mat-icon color="accent" i18n-aria-label aria-label="Hide Groups">keyboard_arrow_left</mat-icon>
+            <span class="button-label" i18n>Hide Groups</span>
           </button>
-          <span i18n>Hide Groups</span>
         </ng-container>
         <ng-template #showGroups>
-          <button mat-icon-button color="accent" (click)="sidenav.toggle()">
-            <mat-icon i18n-aria-label aria-label="Show Groups">keyboard_arrow_right</mat-icon>
+          <button mat-button (click)="sidenav.toggle()">
+            <mat-icon color="accent" i18n-aria-label aria-label="Show Groups">keyboard_arrow_right</mat-icon>
+            <span class="button-label" i18n>Show Groups</span>
           </button>
-          <span i18n>Show Groups</span>
         </ng-template>
       </span>
       <span class="fill-space"></span>
-      <span class="actionbuttons">
-        <button mat-icon-button color="accent" (click)="onSave()" i18n-matTooltip matTooltip="Download">
-          <mat-icon i18n-aria-label aria-label="Download">get_app</mat-icon>
+      <span class="action-buttons">
+        <button mat-button (click)="onSave()">
+          <mat-icon color="accent" i18n-aria-label aria-label="Download" i18n-matTooltip matTooltip="Download">get_app</mat-icon>
+          <span class="button-label" i18n>Download</span>
         </button>
-        <span i18n>Download</span>
       </span>
-      <span class="actionbuttons">
-        <button mat-icon-button color="accent" (click)="sendToDV()" i18n-matTooltip matTooltip="Save">
-          <mat-icon i18n-aria-label aria-label="Save">save</mat-icon>
+      <span class="action-buttons">
+        <button mat-button (click)="sendToDV()">
+            <mat-icon color="accent" i18n-aria-label aria-label="Save" i18n-matTooltip matTooltip="Save">save</mat-icon>
+            <span class="button-label" i18n>Save</span>
         </button>
-        <span i18n>Save</span>
       </span>
     </mat-toolbar-row>
   </mat-toolbar>

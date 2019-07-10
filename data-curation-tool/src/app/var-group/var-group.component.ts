@@ -22,19 +22,19 @@ export class VarGroupComponent implements OnInit {
 
   ngOnInit() {}
 
-  // Add a new group to the list and scroll to show it!
+  // Add a new group to the list and scroll to show it
   addTab() {
 
     const numberOfGroups = this.variableGroups.length;
-    if (numberOfGroups === 0 ||
-      (this.variableGroups[numberOfGroups - 1].varGrp.labl !== 'undefined' &&
-        this.variableGroups[numberOfGroups - 1].varGrp.labl.trim() !== '') ) {
+    if (numberOfGroups === 0 || (this.variableGroups[numberOfGroups - 1].varGrp.labl !== 'undefined' && this.variableGroups[numberOfGroups - 1].varGrp.labl.trim() !== '') ) {
 
       // get the next id
       const ids = [];
+
       for (const i of this.variableGroups) {
         ids.push(Number(i.varGrp['@ID'].substring(2)));
       }
+
       ids.sort();
 
       let _id = 'VG';
@@ -44,15 +44,15 @@ export class VarGroupComponent implements OnInit {
         _id += '1';
       }
 
-      const var_group = {} as VarGroup;
-      var_group.varGrp = {
+      const varGroup = {} as VarGroup;
+      varGroup.varGrp = {
         labl: '',
         '@var': '',
         '@ID': _id
       };
 
-      var_group.varGrp['@var'] = '';
-      this.variableGroups.push(var_group);
+      varGroup.varGrp['@var'] = '';
+      this.variableGroups.push(varGroup);
 
       const obj = this;
       obj.variableGroups[numberOfGroups].editable = true;
@@ -60,7 +60,7 @@ export class VarGroupComponent implements OnInit {
       setTimeout(() => {
         obj.titleInput.nativeElement.focus();
         obj.parentScrollNav.emit();
-        obj.onGroupClick(var_group);
+        obj.onGroupClick(varGroup);
       }, 100);
     }
 
@@ -73,29 +73,35 @@ export class VarGroupComponent implements OnInit {
     this.showActive(obj.varGrp['@ID']);
     this.selectGroup.emit(obj.varGrp['@ID']);
   }
+
   onGroupDblClick(_obj) {
     this.renameGroup(_obj);
   }
+
   renameGroup(_obj) {
     _obj.editable = true;
   }
+
   renameGroupComplete(_obj, _val) {
     if (_val !== null && _val.trim() !== '') {
       _obj.varGrp.labl = _val.trim();
       _obj.editable = false;
     }
   }
+
   renameGroupCancel(_obj) {
     if (_obj.varGrp.labl !== null && _obj.varGrp.labl.trim() !== '') {
       _obj.editable = false;
     }
   }
+
   groupDelete(_obj) {
     for (let i = 0; i < this.variableGroups.length; i++) {
       if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
         this.variableGroups.splice(i, 1);
       }
     }
+    this.showAll();
   }
 
   showActive(_id?) {
@@ -117,6 +123,7 @@ export class VarGroupComponent implements OnInit {
     this.disableSelectGroup.emit();
   }
 }
+
 interface VarGroup {
   varGrp: {
     labl: string;
