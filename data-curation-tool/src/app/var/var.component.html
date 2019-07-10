@@ -78,33 +78,30 @@
 
   <!-- ID Column -->
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> ID </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>ID</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row['id'] }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="_order">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> order </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>order</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row['_order'] }} </mat-cell>
   </ng-container>
 
+  <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Name </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Name</mat-header-cell>
     <mat-cell *matCellDef="let row">{{ (row['@name'].length > 30) ? (row['@name'] | slice:0:30) + '...' : (row['@name']) }}  </mat-cell>
   </ng-container>
 
+  <!-- Label Column -->
   <ng-container matColumnDef="labl">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Label </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Label</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length > 150) ? (row.labl['#text'] | slice:0:150) + '...' : (row.labl['#text'])}} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="catgry">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Category </mat-header-cell>
-    <!--
-      <mat-cell *matCellDef="let row"> <span *ngIf="row.catgry">{{row.catgry.length}}</span> </mat-cell>-->
-    </ng-container>
-
+  <!-- Weight Column-->
   <ng-container matColumnDef="wgt-var">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n> Weight </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Weight</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <span *ngIf="row['@wgt-var'] ; else elseBlock">{{ row['@wgt-var'] }} </span>
       <ng-template #elseBlock>
@@ -113,8 +110,9 @@
     </mat-cell>
   </ng-container>
 
+  <!-- View Column-->
   <ng-container matColumnDef="view">
-    <mat-header-cell *matHeaderCellDef i18n> View </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef i18n>View</mat-header-cell>
     <mat-cell *matCellDef="let row; let i = index">
       <button
         mat-icon-button
@@ -128,6 +126,7 @@
     </mat-cell>
   </ng-container>
 
+  <!-- Edit Column -->
   <ng-container matColumnDef="action">
     <mat-header-cell *matHeaderCellDef>
       <button

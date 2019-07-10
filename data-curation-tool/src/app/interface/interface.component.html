@@ -14,12 +14,11 @@
     <mat-toolbar-row class="header-text citation">
       <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>
     </mat-toolbar-row>
-    <mat-divider></mat-divider>
     <mat-toolbar-row>
       <span class="groups-toggle">
         <ng-container *ngIf="sidenav.opened; else showGroups">
           <button mat-button (click)="sidenav.toggle()">
-            <mat-icon color="accent" i18n-aria-label aria-label="Gide Groups">keyboard_arrow_left</mat-icon>
+            <mat-icon color="accent" i18n-aria-label aria-label="Hide Groups">keyboard_arrow_left</mat-icon>
             <span class="button-label" i18n>Hide Groups</span>
           </button>
         </ng-container>
