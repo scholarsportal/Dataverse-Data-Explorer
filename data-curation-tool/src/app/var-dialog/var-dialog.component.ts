@@ -16,6 +16,8 @@ export class VarDialogComponent implements OnInit {
   editObjs: any = [];
   weightsAndVariable: any;
 
+  private originalVarWeight: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
@@ -72,6 +74,8 @@ export class VarDialogComponent implements OnInit {
       wgt_var: this.data ? this.data['@wgt-var'] : '',
       _groups: this.data ? this.data['_groups'] : []
     });
+
+    this.originalVarWeight = this.data['@wgt-var'];
   }
 
   isSelected(_id) {
@@ -191,6 +195,10 @@ export class VarDialogComponent implements OnInit {
     }
 
     this.dialogRef.close(`${form}`);
+  }
+  cancel() {
+    this.dialogRef.close();
+    this.data['@wgt-var'] = this.originalVarWeight;
   }
 
   calculateWeightedFrequencies() {
