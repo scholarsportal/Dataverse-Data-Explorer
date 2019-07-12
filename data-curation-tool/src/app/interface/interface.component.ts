@@ -409,7 +409,7 @@ export class InterfaceComponent implements OnInit {
 
   addFileDscr(doc) {
     doc.startElement('fileDscr');
-    const fileDscr =  this.data.getElementsByTagName('fileDscr')[0];
+    const fileDscr = this.data.getElementsByTagName('fileDscr')[0];
     const obj = JSON.parse(xml2json(fileDscr, ''));
     doc.writeAttribute('ID', obj.fileDscr['@ID']);
     doc.startElement('fileTxt');
@@ -425,12 +425,18 @@ export class InterfaceComponent implements OnInit {
     doc.startElement('fileType').text(obj.fileDscr['fileTxt'].fileType);
     doc.endElement(); // fileType
     doc.endElement(); // fileTxt
-    doc.startElement('notes');
-    doc.writeAttribute('level', obj.fileDscr.notes['@level']);
-    doc.writeAttribute('type', obj.fileDscr.notes['@type']);
-    doc.writeAttribute('subject', obj.fileDscr.notes['@subject']);
-    doc.text(obj.fileDscr.notes['#text']);
-    doc.endElement(); // end notes
+    const notes = fileDscr.getElementsByTagName('notes');
+    console.log(notes);
+    for (const note of notes) {
+      const newNote = JSON.parse(xml2json(note, ''));
+      console.log(newNote);
+      doc.startElement('notes');
+      doc.writeAttribute('level', newNote.notes['@level']);
+      doc.writeAttribute('type', newNote.notes['@type']);
+      doc.writeAttribute('subject', newNote.notes['@subject']);
+      doc.text(newNote.notes['#text']);
+      doc.endElement(); // end notes
+    }
     doc.endElement(); // end fileDscr
   }
 
