@@ -217,9 +217,15 @@ export class InterfaceComponent implements OnInit {
 
       const doc = new XMLWriter();
       doc.startDocument();
-     // if (dv === false) {
-     //   this.addStdyAndfileDscr(doc);
-     // }
+      doc.startElement('codeBook');
+      const codeBook =  this.data.getElementsByTagName('codeBook')[0];
+      const obj = JSON.parse(xml2json(codeBook, ''));
+      doc.writeAttribute('xmlns', obj.codeBook['@xmlns']);
+      doc.writeAttribute('version', obj.codeBook['@version']);
+      if (dv === false) {
+        this.addStdyDscr(doc);
+        this.addFileDscr(doc);
+      }
       doc.startElement('dataDscr');
 
       // add groups
@@ -371,12 +377,12 @@ export class InterfaceComponent implements OnInit {
         // end variable (var)
         doc.endElement();
       }
-
+      doc.endElement();
       doc.endDocument();
       return doc;
   }
 
-  addStdyAndfileDscr(doc) {
+  addStdyDscr(doc) {
     doc.startElement('stdyDscr');
     doc.startElement('citation');
     doc.startElement('titlStmt');
@@ -399,7 +405,33 @@ export class InterfaceComponent implements OnInit {
     doc.endElement(); // biblCit
     doc.endElement(); // end citation
     doc.endElement(); // end stdyDscr
+  }
 
+  addFileDscr(doc) {
+    doc.startElement('fileDscr');
+    const fileDscr =  this.data.getElementsByTagName('fileDscr')[0];
+    const obj = JSON.parse(xml2json(fileDscr, ''));
+    doc.writeAttribute('ID', obj.fileDscr['@ID']);
+    doc.startElement('fileTxt');
+    const fileName = this.data.getElementsByTagName('fileName')[0].textContent;
+    doc.startElement('fileName').text(fileName);
+    doc.endElement(); // end fileName
+    doc.startElement('dimensns');
+    doc.startElement('caseQnty').text(obj.fileDscr['fileTxt'].dimensns['caseQnty']);
+    doc.endElement(); // end caseQnty
+    doc.startElement('varQnty').text(obj.fileDscr['fileTxt'].dimensns['varQnty']);
+    doc.endElement(); // end varQnty
+    doc.endElement(); // end dimensns
+    doc.startElement('fileType').text(obj.fileDscr['fileTxt'].fileType);
+    doc.endElement(); // fileType
+    doc.endElement(); // fileTxt
+    doc.startElement('notes');
+    doc.writeAttribute('level', obj.fileDscr.notes['@level']);
+    doc.writeAttribute('type', obj.fileDscr.notes['@type']);
+    doc.writeAttribute('subject', obj.fileDscr.notes['@subject']);
+    doc.text(obj.fileDscr.notes['#text']);
+    doc.endElement(); // end notes
+    doc.endElement(); // end fileDscr
   }
 
   // Save the XML file locally
@@ -433,6 +465,9 @@ export class InterfaceComponent implements OnInit {
                 console.log(data);
               },
               error => {
+                this.snackBar.open('Cannot save to Dataverse. ' + error, '', {
+                  duration: 2000
+                });
                 console.log('Error');
                 console.log(error);
               },
@@ -443,6 +478,9 @@ export class InterfaceComponent implements OnInit {
                 });
               });
     } else {
+      this.snackBar.open('Cannot save to Dataverse. API key is missing', '', {
+        duration: 2000
+      });
       console.log('API Key missing');
     }
   }
