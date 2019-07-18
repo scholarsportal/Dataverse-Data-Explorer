@@ -115,7 +115,7 @@ export class VarComponent implements OnInit {
       this._variables[i]._show = true;
       // also make sure it has a label
       if (typeof this._variables[i].labl === 'undefined') {
-        this._variables[i].labl = { '#text': '' };
+        this._variables[i].labl = { '#text': '',  '@level': 'variable' };
       }
     }
     // show if var is _in_group
