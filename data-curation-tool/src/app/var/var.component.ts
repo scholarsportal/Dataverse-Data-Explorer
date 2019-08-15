@@ -135,6 +135,11 @@ export class VarComponent implements OnInit {
           return datasort.labl['#text'];
         case '_order':
           return datasort._order;
+        case 'wgt-var':
+          if (datasort['@wgt'] === 'wgt') {
+            return datasort['@wgt'];
+          }
+          return datasort['@wgt-var'];
         default:
           return '';
       }
