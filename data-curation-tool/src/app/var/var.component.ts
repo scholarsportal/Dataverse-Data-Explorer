@@ -259,6 +259,16 @@ export class VarComponent implements OnInit {
     }
   }
 
+  getWeightsNames() {
+    const weightsNames = [];
+    for (let i = 0; i < this._variables.length; i++) {
+      if (this._variables[i]['@wgt'] === 'wgt') {
+        weightsNames.push(this._variables[i]);
+      }
+    }
+    return weightsNames;
+  }
+
   getWeights() {
     const weights = [];
     for (let i = 0; i < this._variables.length; i++) {
@@ -274,8 +284,8 @@ export class VarComponent implements OnInit {
       data: data,
       panelClass: 'field_width'
     });
-    const weights = this.getWeights();
-    this.dialogRef.componentInstance.weights = weights;
+    const weightsNames = this.getWeightsNames();
+    this.dialogRef.componentInstance.weights = weightsNames;
     this.dialogRef.componentInstance.variableGroups = this.variableGroups;
     const sub = this.dialogRef.componentInstance.parentUpdateVar.subscribe(
       () => {

@@ -60,8 +60,8 @@
         <mat-grid-tile colspan="1" rowspan="1">
           <mat-form-field>
             <mat-select formControlName="wgt_var" [(value)]="data['@wgt-var']" i18n-placeholder placeholder="Weight Variable">
-              <mat-option *ngFor="let w of weights" [value]="w">
-                {{ w }}
+              <mat-option *ngFor="let w of weights" [value]="w['@ID']">
+                {{ w['@name'] }}
               </mat-option>
               <mat-option i18n>Unweighted</mat-option>
             </mat-select>
