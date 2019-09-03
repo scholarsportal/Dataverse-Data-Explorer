@@ -19,6 +19,7 @@ import { VarDialogComponent } from '../var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from '../var-stat-dialog/var-stat-dialog.component';
 import { FormControl } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
+import {DdiService} from '../ddi.service';
 
 @Component({
   selector: 'app-var',
@@ -95,10 +96,12 @@ export class VarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public ref: ChangeDetectorRef,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private ddiService: DdiService
   ) {}
 
   ngOnInit() {
+    this.ddiService.currentSearchInput.subscribe(message => this.searchFilter.patchValue(''));
     this.searchFilter.valueChanges.subscribe(value => {
       this.filterValues['search'] = value;
       this.datasource.filter = JSON.stringify(this.filterValues);

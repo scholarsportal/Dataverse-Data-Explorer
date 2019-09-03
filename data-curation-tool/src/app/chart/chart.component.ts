@@ -88,9 +88,9 @@ export class ChartComponent implements OnInit {
     }
     const maxHeight = (data.length + 1) * 25;
 
-    // sort bars based on value
+    // sort based on catStat
     data = data.sort(function(a, b) {
-      return d3.ascending(a.freq, b.freq);
+      return a.catStat - b.catStat;
     });
 
     // set the dimensions and margins of the graph

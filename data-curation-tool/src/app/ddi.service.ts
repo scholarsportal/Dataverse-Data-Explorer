@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class DdiService {
+
+  private searchInput = new BehaviorSubject('');
+  currentSearchInput = this.searchInput.asObservable();
+
   constructor(private http: HttpClient) {}
   getDDI(url: string) {
     return this.http.get(url, { responseType: 'text' });
@@ -47,5 +52,9 @@ export class DdiService {
       baseUrl = baseUrl + ':' + port;
     }
     return baseUrl;
+  }
+
+  clearSearch() {
+    this.searchInput.next('');
   }
 }

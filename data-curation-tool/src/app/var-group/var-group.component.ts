@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {DdiService} from '../ddi.service';
 
 @Component({
   selector: 'app-var-group',
@@ -7,7 +8,7 @@ import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} f
 })
 
 export class VarGroupComponent implements OnInit {
-  constructor() {}
+  constructor(private ddiService: DdiService) {}
 
   allActive = true;
 
@@ -67,6 +68,7 @@ export class VarGroupComponent implements OnInit {
   }
 
   onGroupClick(_obj) {
+    this.ddiService.clearSearch();
     const obj = _obj;
     const vars = obj.varGrp['@var'].split(' ');
     this.subSetRows.emit(vars);
@@ -117,6 +119,7 @@ export class VarGroupComponent implements OnInit {
   }
 
   showAll() {
+    this.ddiService.clearSearch();
     this.showActive();
     this.allActive = true;
     this.subSetRows.emit();
