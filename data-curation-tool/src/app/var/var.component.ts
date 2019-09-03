@@ -281,9 +281,10 @@ export class VarComponent implements OnInit {
     }
     return weights;
   }
+
   openDialog(data): void {
     this.dialogRef = this.dialog.open(VarDialogComponent, {
-      width: '550px',
+      width: '35em',
       data: data,
       panelClass: 'field_width'
     });
@@ -410,15 +411,17 @@ export class VarComponent implements OnInit {
     }
     this.openDialog(selectedObjs);
   }
+
   onView(_id) {
     const data = this.getObjByID(_id, this._variables);
     // open a dialog showing the variables
     this.dialogStatRef = this.dialog.open(VarStatDialogComponent, {
-      width: '550px',
+      width: '35em',
       data: data,
       panelClass: 'field_width'
     });
   }
+
   showMSG(_msg) {
     this.snackBar.open(_msg, '', {
       duration: 1000
