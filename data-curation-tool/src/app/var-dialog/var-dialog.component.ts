@@ -15,7 +15,6 @@ export class VarDialogComponent implements OnInit {
   public variableGroups: any;
   editObjs: any = [];
   weightsAndVariable: any;
-
   private originalVarWeight: any;
 
   constructor(
@@ -45,12 +44,14 @@ export class VarDialogComponent implements OnInit {
 
     // add the groups - create an id with all of them
     const groups = [];
+
     for (let i = 0; i < this.variableGroups.length; i++) {
-      const group_vars = this.variableGroups[i].varGrp['@var'].split(' ');
-      if (group_vars.indexOf(this.data['@ID']) > -1) {
+      const groupVars = this.variableGroups[i].varGrp['@var'].split(' ');
+      if (groupVars.indexOf(this.data['@ID']) > -1) {
         groups.push(this.variableGroups[i].varGrp['@ID']);
       }
     }
+
     this.data['_groups'] = [groups]; // groups;
     this.addOmittedProperties(this.data);
 
@@ -105,6 +106,7 @@ export class VarDialogComponent implements OnInit {
     }
     return _obj;
   }
+
   updateObjValues(_obj, form) {
     // update label
     this.updateObjValue(_obj, 'labl.#text', form.controls.labl);
@@ -146,13 +148,14 @@ export class VarDialogComponent implements OnInit {
   }
 
   getVariableGroup(_id) {
-    // loop though all the variables in the varaible groups and create a complete list
+    // loop though all the variables in the variable groups and create a complete list
     for (let i = 0; i < this.variableGroups.length; i++) {
       if (this.variableGroups[i].varGrp['@ID'] === _id) {
         return this.variableGroups[i].varGrp;
       }
     }
   }
+
   updateObjValue(_obj, _var, _control) {
     if (_control.dirty === true) {
       const stack = _var.split('.');
@@ -164,7 +167,6 @@ export class VarDialogComponent implements OnInit {
   }
 
   submit(form) {
-
     if (this.editObjs.length > 0) {
       // take all the objects from the
       for (const i of this.editObjs) {
@@ -196,6 +198,7 @@ export class VarDialogComponent implements OnInit {
 
     this.dialogRef.close(`${form}`);
   }
+
   cancel() {
     this.dialogRef.close();
     this.data['@wgt-var'] = this.originalVarWeight;
@@ -240,7 +243,6 @@ export class VarDialogComponent implements OnInit {
           '&key=' +
           key;
       }
-
 
       this.ddiService
         .getDDI(detailUrl)
