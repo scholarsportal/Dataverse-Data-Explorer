@@ -139,6 +139,9 @@ export class InterfaceComponent implements OnInit {
 
     for (const elmIn of elm) {
       const obj = JSON.parse(xml2json(elmIn, ''));
+      if (typeof obj.varGrp['@var'] === 'undefined') {
+        obj.varGrp['@var'] = '';
+      }
       this.variableGroups.push(obj);
     }
   }
