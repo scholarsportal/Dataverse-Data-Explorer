@@ -131,22 +131,32 @@ export class VarDialogComponent implements OnInit {
       _obj['@wgt'] = '';
       // this.removeWeightedFrequencies(_obj);
     }
-    // add variable to group
+    // add (remove) variable to (from) group
     if (form.controls._groups.dirty === true) {
+      this.removeVarFromGroups(_obj['@ID']);
+      // add
       for (let i = 0; i < form.controls._groups.value.length; i++) {
         const group = this.getVariableGroup(form.controls._groups.value[i]);
-        // check to see if the selected group already has the selected variable
-        const vars = group['@var'].split(' ');
-        if (vars.indexOf(_obj['@ID']) === -1) {
-          vars.push(_obj['@ID']);
-          // set the vars variable back to the group
-          group['@var'] = vars.join(' ');
+        if (group['@var'] !== '') {
+          group['@var'] = group['@var'] + ' ' + _obj['@ID'];
+        } else {
+          group['@var'] =  _obj['@ID'];
         }
       }
     }
     return _obj;
   }
 
+  removeVarFromGroups(varId) {
+    for (let varGrp of this.variableGroups) {
+      console.log( varGrp.varGrp['@var']);
+      if (varGrp.varGrp['@var'].indexOf(varId) === 0) {
+        varGrp.varGrp['@var'] = varGrp.varGrp['@var'].replace(varId, '');
+      } else if (varGrp.varGrp['@var'].indexOf(varId) !== -1) {
+        varGrp.varGrp['@var'] = varGrp.varGrp['@var'].replace(' ' + varId, '');
+      }
+    }
+  }
   getVariableGroup(_id) {
     // loop though all the variables in the variable groups and create a complete list
     for (let i = 0; i < this.variableGroups.length; i++) {
