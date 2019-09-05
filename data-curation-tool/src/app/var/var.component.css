@@ -41,3 +41,9 @@
 .mat-column-action {
   flex:  0 1 75px;
 }
+
+.unvis {
+  visibility: hidden;
+}
+
+

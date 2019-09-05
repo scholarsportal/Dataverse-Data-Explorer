@@ -216,6 +216,7 @@ export class VarComponent implements OnInit {
     } else {
       this.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
+    this.paginator.firstPage();
   }
 
   // when a single row has been updated

@@ -10,7 +10,7 @@
   <mat-grid-tile>
     <mat-select
       color="primary"
-      (change)="addToGroup($event.value)"
+      (selectionChange)="addToGroup($event.value)"
       placeholder="Add Selected to Group"
       #group_select
       disabled="true"
@@ -158,7 +158,7 @@
   <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
   <mat-row
     *matRowDef="let row; columns: getDisplayedColumns()"
-    [ngClass]="{ grey: row._show != true, active: row._active == true }"
+    [ngClass]="{ unvis: row._show != true , active: row._active == true }"
   >
   </mat-row>
 </mat-table>
