@@ -189,12 +189,14 @@ export class VarComponent implements OnInit {
     const data = [];
     let ungroupedCount = 0;
     let obj;
+    let numberOfItems = 0;
     for (let i = 0; i < this._variables.length; i++) {
       obj = this._variables[i];
       if (this.mode === 'group') {
         if (_ids.indexOf(obj['@ID']) !== -1) {
           obj._order = _ids.indexOf(obj['@ID']);
           obj._show = true;
+          numberOfItems = numberOfItems + 1;
         } else {
           ungroupedCount += 1;
           obj._order = 99999 + ungroupedCount;
@@ -203,6 +205,7 @@ export class VarComponent implements OnInit {
       } else if (this.mode === 'all') {
         obj._order = null;
         obj._show = true;
+        numberOfItems = numberOfItems + 1;
       }
     }
     obj._active = false;
@@ -217,10 +220,12 @@ export class VarComponent implements OnInit {
       this.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
     this.paginator.firstPage();
+    this.datasource._updatePaginator(numberOfItems);
   }
 
   // when a single row has been updated
   onUpdateVar() {
+    console.log('onUpdateVar');
     this.removeWeightedFreq();
     this.ref.detectChanges();
   }
