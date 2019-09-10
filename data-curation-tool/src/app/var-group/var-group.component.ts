@@ -98,12 +98,18 @@ export class VarGroupComponent implements OnInit {
   }
 
   groupDelete(_obj) {
-    for (let i = 0; i < this.variableGroups.length; i++) {
-      if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
-        this.variableGroups.splice(i, 1);
+    console.log(_obj.varGrp);
+    if (confirm('Are you sure to delete ' + _obj.varGrp['labl'])) {
+      for (let i = 0; i < this.variableGroups.length; i++) {
+        if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
+          this.variableGroups.splice(i, 1);
+        }
       }
+      this.showAll();
+    } else {
+      _obj.editable = false;
     }
-    this.showAll();
+
   }
 
   showActive(_id?) {

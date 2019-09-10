@@ -225,7 +225,6 @@ export class VarComponent implements OnInit {
 
   // when a single row has been updated
   onUpdateVar() {
-    console.log('onUpdateVar');
     this.removeWeightedFreq();
     this.ref.detectChanges();
   }
@@ -300,6 +299,13 @@ export class VarComponent implements OnInit {
     const sub = this.dialogRef.componentInstance.parentUpdateVar.subscribe(
       () => {
         this.onUpdateVar();
+        for (let i = 0; i < this.variableGroups.length; i++) {
+          if (this.variableGroups[i].active) {
+            const vars = this.variableGroups[i].varGrp['@var'].split(' ');
+            this.onSubset(vars);
+            break;
+          }
+        }
       }
     );
   }
@@ -337,6 +343,7 @@ export class VarComponent implements OnInit {
     this.group_select['value'] = 0;
     //
     this.updateGroupsVars();
+    this.showMSG('Added to ' + obj.varGrp.labl);
   }
 
   selectGroup(_id) {
@@ -433,4 +440,6 @@ export class VarComponent implements OnInit {
       duration: 1000
     });
   }
+
+
 }
