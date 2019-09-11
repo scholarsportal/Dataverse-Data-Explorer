@@ -13,6 +13,7 @@
         <th i18n>Values</th>
         <th i18n>Categories</th>
         <th i18n>Count</th>
+        <th i18n>Count Percentage(%)</th>
         <th i18n>Weighted Count</th>
     </tr>
     <tr *ngFor="let row of sortedCategories">
@@ -25,6 +26,7 @@
           <td>{{row.catStat[0]["#text"] | number}}</td>
         </ng-template>
       </ng-template>
+      <td>{{row.countPerc | number}}</td>
       <td *ngIf="isUndefined(row.catStat); else elseBloc"></td>
       <ng-template #elseBloc>
         <td *ngIf="doesExist(row.catStat.length); else elseBloc2">{{row.catStat[1]["#text"] | number }}</td>

@@ -131,7 +131,6 @@ export class InterfaceComponent implements OnInit {
 
     const agency =  this.data.getElementsByTagName('IDNo')[0];
     const obj = JSON.parse(xml2json(agency, ''));
-    console.log(obj);
   }
 
   showVarsGroups() {
@@ -168,13 +167,23 @@ export class InterfaceComponent implements OnInit {
           // If there is only one category
           obj.var.catgry = [obj.var.catgry];
         }
+        let sumCount = 0;
         for (let k = 0; k < obj.var.catgry.length; k++) {
           if (typeof obj.var.catgry[k].catStat !== 'undefined') {
             if (typeof obj.var.catgry[k].catStat.length === 'undefined') {
               obj.var.catgry[k].catStat = [obj.var.catgry[k].catStat];
             }
+            // tslint:disable-next-line:radix
+            sumCount = sumCount + parseInt(obj.var.catgry[k].catStat[0]['#text']);
           }
         }
+        for (let k = 0; k < obj.var.catgry.length; k++) {
+          if (typeof obj.var.catgry[k].catStat !== 'undefined') {
+            // tslint:disable-next-line:radix
+            obj.var.catgry[k].countPerc = parseInt(obj.var.catgry[k].catStat[0]['#text']) * 100 / sumCount;
+          }
+        }
+        obj.var.sumCount = sumCount;
       }
       if (typeof obj.var.universe !== 'undefined') {
         if (typeof obj.var.universe.size === 'undefined') {
