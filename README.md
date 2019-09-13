@@ -10,14 +10,39 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 
 ## Installation
 
-Data Curation Tool was created using Angular CLI version 7.
-In order to generate node_modules run ``npm install``
+The Data Curation Tool was created using Angular CLI version 7.
+In order to generate node_modules run `npm install`.
 
-There are three ways to install Data Curation Tool with Dataverse:
+There are three ways to run the Data Curation Tool with Dataverse:
 
-1) The simplest way is to use github as webserver. This is not recomended for production use.
-To do that download the config file DataCuration.json to your local computer that runs Dataverse and then call the following curl command ``curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools``
+### GitHub Pages
 
-2) Another way to use Data Curation tool with Dataverse is to put it in {Dataverse Dir}/src/main/webapp/dct_explore. To do that, in Dataverse-Data-Curation-Tool directory run ``ng build --prod --base-href=dct_explore``.  Then copy content of  Dataverse-Data-Curation-Tool/dist directory into {Dataverse Dir}/src/main/webapp/dct_explore. Compile Dataverse and deploy it. Then run the following curl command ``curl -X POST -H 'Content-type: application/json' --upload-file DataCurationLocalConfigure.json http://localhost:8080/api/admin/externalTools``
+The simplest way to run the Data Curation Tool is to use GitHub Pages as the host. This is not recomended for production use, but is useful for testing the application.
 
-3) The best way to use Data Curation Tool is to use your own webserver. Compile Data Curation Tool using command ``ng build --prod``. Copy content of Dataverse-Data-Curation-Tool/dist directory into dedicated folder in your webserver. In DataCuration.json file in the folowing line ``"toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/"`` replace ``"https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/`` with url of your webserver. Then on your local machine that runs Dataverse execute the folowing curl command ``curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`` 
+To do this, download `DataCuration.json` to the server running Dataverse and run the following command:
+
+`curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
+
+### Inside of the Dataverse application
+
+Another way to use Data Curation tool with Dataverse is to install it in `dataverseDirectory/src/main/webapp/dct_explore`.
+
+To do this, download the Dataverse-Data-Curation-Tool directory, download your npm packages with `npm install`, and run `ng build --prod --base-href=dct_explore`.
+
+Next, copy the contents of `Dataverse-Data-Curation-Tool/dist` into `dataverseDirectory/src/main/webapp/dct_explore`.
+
+Compile Dataverse and deploy it, then run the following command:
+
+`curl -X POST -H 'Content-type: application/json' --upload-file DataCurationLocalConfigure.json http://localhost:8080/api/admin/externalTools`
+
+### As an external tool
+
+The recommended way to install the Data Curation Tool is to use your own webserver. Download your npm packages with `npm install`, and then compile the Data Curation Tool by running `ng build --prod`.
+
+Copy the contents of `Dataverse-Data-Curation-Tool/dist` into a dedicated folder on your webserver.
+
+In the `DataCuration.json` file, edit the folowing line: `"toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/"`, replacing `https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/` with the url of your webserver.
+
+Then on your local machine that runs Dataverse execute the folowing command:
+
+`curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
