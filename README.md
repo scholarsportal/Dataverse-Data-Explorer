@@ -39,7 +39,7 @@ Compile Dataverse and deploy it, then run the following command:
 
 ### As an external application
 
-The recommended way to install the Data Curation Tool is to use your own webserver. Download your npm packages with `npm install`, and then compile the Data Curation Tool by running `ng build --prod`.
+The recommended way to install the Data Curation Tool is to use your own webserver. Download your npm packages with `npm install`, and then compile the Data Curation Tool by running `ng build --prod --base-href {URL of your application}`.
 
 Copy the contents of `Dataverse-Data-Curation-Tool/dist` into a dedicated folder on your webserver.
 
