@@ -13,6 +13,8 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 The Data Curation Tool was created using Angular CLI version 7.
 In order to generate node_modules run `npm install`.
 
+See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+
 There are three ways to run the Data Curation Tool with Dataverse:
 
 ### GitHub Pages
