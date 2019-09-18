@@ -23,7 +23,7 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<mat-table class="mat-elevation-z8" [dataSource]="datasource" matSort>
+<mat-table class="mat-elevation-z8" [dataSource]="datasource" matSort (matSortChange)="sortChange($event)">
 
   <!-- Checkbox Column in 'All Variables' view -->
   <ng-container matColumnDef="select">

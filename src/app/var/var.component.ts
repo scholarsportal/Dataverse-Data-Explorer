@@ -4,7 +4,7 @@ import {
   ViewChild,
   Input,
   ChangeDetectorRef,
-  ElementRef
+  ElementRef, HostListener
 } from '@angular/core';
 import {
   MatPaginator,
@@ -12,7 +12,7 @@ import {
   MatTableDataSource,
   MatSnackBar,
   MatDialog,
-  MatDialogRef
+  MatDialogRef, Sort
 } from '@angular/material';
 
 import { VarDialogComponent } from '../var-dialog/var-dialog.component';
@@ -189,14 +189,13 @@ export class VarComponent implements OnInit {
     const data = [];
     let ungroupedCount = 0;
     let obj;
-    let numberOfItems = 0;
     for (let i = 0; i < this._variables.length; i++) {
       obj = this._variables[i];
       if (this.mode === 'group') {
         if (_ids.indexOf(obj['@ID']) !== -1) {
           obj._order = _ids.indexOf(obj['@ID']);
           obj._show = true;
-          numberOfItems = numberOfItems + 1;
+          data.push(obj);
         } else {
           ungroupedCount += 1;
           obj._order = 99999 + ungroupedCount;
@@ -205,7 +204,7 @@ export class VarComponent implements OnInit {
       } else if (this.mode === 'all') {
         obj._order = null;
         obj._show = true;
-        numberOfItems = numberOfItems + 1;
+        data.push(obj);
       }
     }
     obj._active = false;
@@ -214,13 +213,13 @@ export class VarComponent implements OnInit {
 
     // Showing all
     this.checkSelection(); // and enable group dropdown if applicable
+
+    this.datasource.data = data;
     if (this.mode === 'group') {
       this.sortByOrder();
     } else {
       this.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
-    this.paginator.firstPage();
-    this.datasource._updatePaginator(numberOfItems);
   }
 
   // when a single row has been updated
@@ -440,6 +439,16 @@ export class VarComponent implements OnInit {
       duration: 1000
     });
   }
+  @HostListener('matSortChange', ['$event'])
+  sortChange(sort) {
+    let vars = [];
 
-
+    for (let i = 0; i < this._variables.length; i++) {
+      if (this._variables[i]['_show']) {
+        vars.push(this._variables[i]);
+      }
+    }
+    this.datasource.data = vars;
+    this.datasource.data.sort();
+  }
 }
