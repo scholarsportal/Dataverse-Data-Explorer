@@ -34,3 +34,7 @@
 .groups-toggle {
   font-size: 0.7em;
 }
+
+.group-container {
+  min-height: 100vh;
+}

@@ -45,7 +45,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <mat-sidenav-container>
+  <mat-sidenav-container class="group-container">
     <mat-sidenav mode="side" opened class="side_nav" #sidenav #scrollMe>
       <app-var-group [variableGroups]="variableGroups" (subSetRows)="broadcastSubSetRows($event)" (selectGroup)="broadcastSelect($event)" (disableSelectGroup)="broadcastDeselectGroup()"
       (parentScrollNav)="scrollNav()"
