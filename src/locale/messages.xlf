@@ -159,11 +159,18 @@
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="4b20f02e28e643c86ca3373d969e26314f3eedb4" datatype="html">
+        <source>Count Percentage(%)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="fde73ca8b2fe55c7bdf41f5c725894652ebbc9fc" datatype="html">
         <source>Weighted Count</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7e892ba15f2c6c17e83510e273b3e10fc32ea016" datatype="html">
