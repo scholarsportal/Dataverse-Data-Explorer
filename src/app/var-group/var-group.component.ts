@@ -98,7 +98,7 @@ export class VarGroupComponent implements OnInit {
   }
 
   groupDelete(_obj) {
-    if (confirm('Are you sure to delete ' + _obj.varGrp['labl'])) {
+    if (confirm('Are you sure you want to delete ' + _obj.varGrp['labl'] + '?')) {
       for (let i = 0; i < this.variableGroups.length; i++) {
         if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
           this.variableGroups.splice(i, 1);
@@ -108,7 +108,6 @@ export class VarGroupComponent implements OnInit {
     } else {
       _obj.editable = false;
     }
-
   }
 
   showActive(_id?) {
