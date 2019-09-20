@@ -213,13 +213,13 @@ export class VarComponent implements OnInit {
 
     // Showing all
     this.checkSelection(); // and enable group dropdown if applicable
-
     this.datasource.data = data;
     if (this.mode === 'group') {
       this.sortByOrder();
     } else {
       this.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
+    this.paginator.firstPage();
   }
 
   // when a single row has been updated
