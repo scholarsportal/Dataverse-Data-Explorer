@@ -16,6 +16,9 @@
      },
      {
         "fileMetadataId" : "{fileMetadataId}"
+     },
+     {
+        "dvLocale": "{localeCode}"
      }
     ]
   }
