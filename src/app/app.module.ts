@@ -4,6 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeFrCa from '@angular/common/locales/fr-CA';
 
+import {HttpClient} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+import {TranslateService, TranslateParser } from '@ngx-translate/core';
+import {MatPaginatorIntl} from '@angular/material';
+
+
 // the second parameter 'fr' is optional
 registerLocaleData(localeFrCa, 'fr-CA');
 
@@ -41,6 +49,23 @@ import { VarComponent } from './var/var.component';
 import { VarDialogComponent } from './var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from './var-stat-dialog/var-stat-dialog.component';
 import { ChartComponent } from './chart/chart.component';
+import {MyMatPaginatorIntl} from './mat-paginator-intl';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
+
+export function createMyMatPaginatorIntl(
+
+    translateService: TranslateService,
+
+    translateParser: TranslateParser
+
+) {return new MyMatPaginatorIntl(translateService, translateParser);}
 
 
 @NgModule({
@@ -79,11 +104,25 @@ import { ChartComponent } from './chart/chart.component';
     MatSnackBarModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    TranslateModule.forRoot({loader: {
+      provide: TranslateLoader,
+      useFactory: HttpLoaderFactory,
+      deps: [HttpClient]
+}
+})
   ],
   exports: [
   ],
   entryComponents: [VarDialogComponent, VarStatDialogComponent],
-  providers: [DdiService],
+  providers: [DdiService, MatPaginatorIntl, {
+
+    provide: MatPaginatorIntl,
+
+    deps: [TranslateService, TranslateParser],
+
+    useFactory: createMyMatPaginatorIntl
+
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {DdiService} from '../ddi.service';
 
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-var-group',
   templateUrl: './var-group.component.html',
@@ -8,7 +9,8 @@ import {DdiService} from '../ddi.service';
 })
 
 export class VarGroupComponent implements OnInit {
-  constructor(private ddiService: DdiService) {}
+  constructor(private ddiService: DdiService,
+              public translate: TranslateService) {}
 
   allActive = true;
 
@@ -98,7 +100,8 @@ export class VarGroupComponent implements OnInit {
   }
 
   groupDelete(_obj) {
-    if (confirm('Are you sure you want to delete ' + _obj.varGrp['labl'] + '?')) {
+    //if (confirm('Are you sure you want to delete ' + _obj.varGrp['labl'] + '?')) {
+    if (confirm(this.translate.instant('TS.CONFIRM') + _obj.varGrp['labl'] + '?')) {
       for (let i = 0; i < this.variableGroups.length; i++) {
         if (this.variableGroups[i].varGrp['@ID'] === _obj.varGrp['@ID']) {
           this.variableGroups.splice(i, 1);

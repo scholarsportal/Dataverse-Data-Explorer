@@ -1,11 +1,11 @@
 <mat-nav-list class="groups-list">
   <a mat-list-item (click)="addTab()" class="button-header">
-    <span i18n>Add Group</span>
+    <span>{{'GROUPS.ADD' | translate}}</span>
     <span class="fill-space"></span>
     <mat-icon>add</mat-icon>
   </a>
   <mat-divider></mat-divider>
-  <a mat-list-item (click)="showAll()" [ngClass]="{'active': allActive }" i18n>All Variables</a>
+  <a mat-list-item (click)="showAll()" [ngClass]="{'active': allActive }">{{'GROUPS.ALLVAR' | translate}}</a>
   <mat-divider></mat-divider>
   <a mat-list-item
   id="{{tab.varGrp['@ID']}}"
@@ -27,18 +27,18 @@
       (keyup.enter)="renameGroupComplete(tab,titleInput.value)"
       >
       <span button mat-icon-button matSuffix color="primary">
-        <mat-icon i18n-aria-label aria-label="Done" i18n-matTooltip matTooltip="Save" (click)="renameGroupComplete(tab,titleInput.value )">done</mat-icon>
+        <mat-icon [attr.aria-label]="'GROUPS.DONE | translate'" matTooltip="{{'GROUPS.SAVE' | translate }}" (click)="renameGroupComplete(tab,titleInput.value )">done</mat-icon>
       </span>
       <span button mat-icon-button matSuffix color="primary">
-        <mat-icon i18n-aria-label aria-label="Cancel" i18n-matTooltip matTooltip="Cancel" (click)="renameGroupCancel(tab)">clear</mat-icon>
+        <mat-icon [attr.aria-label]="'GROUPS.CANCEL' | translate" matTooltip="{{'GROUPS.CANCEL' | translate }}" (click)="renameGroupCancel(tab)">clear</mat-icon>
       </span>
       <span button mat-icon-button matSuffix color="primary">
-        <mat-icon i18n-aria-label aria-label="Delete" i18n-matTooltip matTooltip="Delete" (click)="groupDelete(tab)">delete</mat-icon>
+        <mat-icon [attr.aria-label]="'GROUPS.DELETE' | translate" matTooltip="{{'GROUPS.DELETE' | translate }}" (click)="groupDelete(tab)">delete</mat-icon>
       </span>
     </mat-form-field>
     <span class="fill-space"></span>
     <button *ngIf="!tab.editable" mat-icon-button color="primary">
-      <mat-icon i18n-aria-label aria-label="Edit Group Name" i18n-matTooltip matTooltip="Edit Group Name" (click)="renameGroup(tab)">edit</mat-icon>
+      <mat-icon [attr.aria-label]="'GROUPS.EDIT' | translate" matTooltip="{{'GROUPS.EDIT' | translate }}" (click)="renameGroup(tab)">edit</mat-icon>
     </button>
   </a>
 </mat-nav-list>

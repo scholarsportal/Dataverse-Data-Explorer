@@ -1,7 +1,7 @@
 <div mat-dialog-content>
 
-  <button mat-icon-button mat-dialog-close i18n-matTooltip matTooltip="Close" class="close-dialog">
-      <mat-icon i18n-aria-label aria-label="Close">close</mat-icon>
+  <button mat-icon-button mat-dialog-close matTooltip="{{'VARDIALSTAT.CLOSE' | translate}}" class="close-dialog">
+      <mat-icon  [attr.aria-label]="'VARDIALSTAT.CLOSE' | translate">close</mat-icon>
   </button>
 
   <h1 mat-dialog-title>{{data["@name"]}}: {{data["labl"]["#text"]}}</h1>
@@ -10,11 +10,11 @@
 
   <table class="table-bordered">
     <tr>
-        <th i18n>Values</th>
-        <th i18n>Categories</th>
-        <th i18n>Count</th>
-        <th i18n>Count Percentage(%)</th>
-        <th i18n>Weighted Count</th>
+        <th>{{'VARDIALSTAT.VALUES' | translate}}</th>
+        <th>{{'VARDIALSTAT.CATEGORIES' | translate}}</th>
+        <th>{{'VARDIALSTAT.COUNT' | translate}}</th>
+        <th>{{'VARDIALSTAT.COUNTPER' | translate}}</th>
+        <th>{{'VARDIALSTAT.WEIGHTCOUNT' | translate}}</th>
     </tr>
     <tr *ngFor="let row of sortedCategories">
       <td>{{row.catValu}}</td>

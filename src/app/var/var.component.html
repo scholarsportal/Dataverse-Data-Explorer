@@ -1,7 +1,7 @@
 <mat-grid-list class="table-controls" cols="3" rowHeight="64">
   <mat-grid-tile>
     <mat-form-field>
-      <input matInput [formControl]="searchFilter" i18n-placeholder placeholder="Search" />
+      <input matInput [formControl]="searchFilter" placeholder="{{'VAR.SEARCH' | translate}}" />
       <span matSuffix><mat-icon>search</mat-icon></span>
     </mat-form-field>
   </mat-grid-tile>
@@ -11,7 +11,7 @@
     <mat-select
       color="primary"
       (selectionChange)="addToGroup($event.value)"
-      placeholder="Add Selected to Group"
+      placeholder="{{'GROUPS.ADDSELECTED' | translate}}"
       #group_select
       disabled="true"
       [hidden]="group_select.hidden"
@@ -40,8 +40,7 @@
         (click)="$event.stopPropagation()"
         (change)="$event ? selection.toggle(row) : null; checkSelection()"
         [checked]="selection.isSelected(row)"
-        i18n-matTooltip
-        matTooltip="Select"
+        matTooltip="{{'VAR.SELECT' | translate}}"
       >
       </mat-checkbox>
     </mat-cell>
@@ -58,27 +57,25 @@
         mat-icon-button
         color="accent"
         (click)="onRemove(row['@ID'])"
-        i18n-matTooltip
-        matTooltip="Remove from Group"
+        matTooltip="{{'GROUPS.REMOVE' | translate}}"
       >
-        <mat-icon i18n-aria-label aria-label="Remove from Group">indeterminate_check_box</mat-icon>
+        <mat-icon  [attr.aria-label]="'GROUPS.REMOVE' | translate">indeterminate_check_box</mat-icon>
       </button>
       <button
         *ngIf="!row._show"
         mat-icon-button
         color="accent"
         (click)="onAdd(row['@ID'])"
-        i18n-matTooltip
-        matTooltip="Add to Group"
+        matTooltip="{{'GROUPS.ADDTO' | translate}}"
       >
-        <mat-icon i18n-aria-label aria-label="Add to Group">add_box</mat-icon>
+        <mat-icon [attr.aria-label]="'GROUPS.ADDTO' | translate">add_box</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
 
   <!-- ID Column -->
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>ID</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'VAR.ID' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ row['id'] }} </mat-cell>
   </ng-container>
 
@@ -89,19 +86,19 @@
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Name</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'VAR.NAME' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">{{ (row['@name'].length > 30) ? (row['@name'] | slice:0:30) + '...' : (row['@name']) }}  </mat-cell>
   </ng-container>
 
   <!-- Label Column -->
   <ng-container matColumnDef="labl">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Label</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'VAR.LABEL' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{ (row.labl['#text'].length > 150) ? (row.labl['#text'] | slice:0:150) + '...' : (row.labl['#text'])}} </mat-cell>
   </ng-container>
 
   <!-- Weight Column-->
   <ng-container matColumnDef="wgt-var">
-    <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Weight</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'VAR.WEIGHT' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">
       <span *ngIf="row['@wgt-var'] ; else elseBlock">{{ row['@wgt-var'] }} </span>
       <ng-template #elseBlock>
@@ -112,16 +109,15 @@
 
   <!-- View Column-->
   <ng-container matColumnDef="view">
-    <mat-header-cell *matHeaderCellDef i18n>View</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>{{'VAR.VIEW' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row; let i = index">
       <button
         mat-icon-button
         color="accent"
         (click)="onView(row['@ID'])"
-        i18n-matTooltip
-        matTooltip="View"
+        matTooltip="{{'VAR.VIEW' | translate}}"
       >
-        <mat-icon i18n-aria-label aria-label="View">visibility</mat-icon>
+        <mat-icon [attr.aria-label]="'VAR.VIEW' | translate">visibility</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
@@ -133,12 +129,11 @@
         mat-icon-button
         color="accent"
         (click)="onEditSelected()"
-        i18n-matTooltip
-        matTooltip="Group Edit"
+        matTooltip="{{'VAR.GROUPEDIT' | translate}}"
         #group_edit
         disabled="true"
       >
-        <mat-icon i18n-aria-label aria-label="Group Edit">edit</mat-icon>
+        <mat-icon [attr.aria-label]="'VAR.GROUPEDIT' | translate">edit</mat-icon>
       </button>
     </mat-header-cell>
 
@@ -147,10 +142,9 @@
         mat-icon-button
         color="accent"
         (click)="onEdit(row['@ID'])"
-        i18n-matTooltip
-        matTooltip="Edit"
+        matTooltip="{{'VAR.EDIT' | translate}}"
       >
-        <mat-icon i18n-aria-label aria-label="Edit">edit</mat-icon>
+        <mat-icon [attr.aria-label]="'VAR.EDIT' | translate">edit</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

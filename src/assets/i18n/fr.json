@@ -1,0 +1,62 @@
+{
+  "GROUPS": {
+    "HIDE": "Cacher les groupes",
+    "SHOW": "Montrer les groupes",
+    "ADD": "Ajouter un groupe",
+    "ADDTO": "Ajouter au groupe",
+    "ALLVAR": "Toutes les variables",
+    "DONE": "Complété",
+    "SAVE": "Sauvegarder",
+    "CANCEL": "Annuler",
+    "DELETE": "Supprimer",
+    "EDIT": "Modifier le nom du groupe",
+    "ADDSELECTED": "Add Selected to Group FR",
+    "REMOVE" : "Enlever du groupe"
+  },
+  "SAVE": {
+    "SAVE": "Sauvegarder dans Dataverse",
+    "DOWNLOAD": "Télécharger"
+  },
+  "VAR": {
+    "SEARCH": "Recherche",
+    "SELECT": "Sélectionner",
+    "ID": "ID",
+    "NAME": "Nom",
+    "LABEL": "Étiquette",
+    "WEIGHT": "Poids",
+    "VIEW": "Visualiser",
+    "GROUPEDIT": "Modification au groupe",
+    "EDIT": "Modifier"
+  },
+  "VARDIALOG":{
+    "VARINFO": "Information sur la variable",
+    "LITQ": "Question littérale",
+    "INTINSTR": "Instructions à l'intervieweur",
+    "POSTQ": "Afficher question",
+    "UNIVERSE": "Univers",
+    "NOTES" : "Remarques",
+    "GROUP" : "Groupe",
+    "WEIGHTVAR": "Variable de poids",
+    "UNWEIGHTED": "Non-pondéré",
+    "ISWEIGHT": "Pondéré",
+    "UPDATE": "Mettre à jours",
+    "CANCEL": "Annuler"
+  },
+  "VARDIALSTAT": {
+    "CLOSE": "Fermer",
+    "VALUES": "Valeurs",
+    "CATEGORIES": "Catégories",
+    "COUNT": "Nombre",
+    "COUNTPER": "Count Percentage(%)FR",
+    "WEIGHTCOUNT": "Chiffre pondéré"
+  },
+  "TS": {
+    "CONFIRM": "Are you sure you want to delete FR "
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Éléments par page",
+    "NEXT_PAGE": "Page suivante",
+    "PREVIOUS_PAGE": "Page précédente",
+    "RANGE": "{{startIndex}} - {{endIndex}} of {{length}}"
+  }
+}

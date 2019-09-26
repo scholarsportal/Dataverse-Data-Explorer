@@ -16,6 +16,7 @@ import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
 import { HttpClient } from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-interface',
@@ -43,12 +44,21 @@ export class InterfaceComponent implements OnInit {
   metaId = null;
   baseUrl = null;
   siteUrl = null;
+  dvLocale = null;
   http: HttpClient;
+  translate: TranslateService
 
   constructor(
     private ddiService: DdiService,
-    public snackBar: MatSnackBar
-  ) {}
+    public snackBar: MatSnackBar,
+    public translatePar: TranslateService) {
+      this.translate = translatePar;
+      this.translate.addLangs(['en', 'fr']);
+      this.translate.setDefaultLang('en');
+
+      const browserLang = this.translate.getBrowserLang();
+      this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+  }
 
   ngOnInit() {
     let uri = null;
@@ -56,6 +66,16 @@ export class InterfaceComponent implements OnInit {
     this.baseUrl = this.ddiService.getBaseUrl();
     this._id = this.ddiService.getParameterByName('dfId');
     this.metaId = this.ddiService.getParameterByName('fileMetadataId');
+    this.dvLocale = this.ddiService.getParameterByName('dvLocale');
+
+    if (this.dvLocale != null) {
+      if (this.dvLocale === 'en' || this.dvLocale === 'fr') {
+        this.translate.use(this.dvLocale);
+      } else {
+        const browserLang = this.translate.getBrowserLang()
+        this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+      }
+    }
 
     if (!this.siteUrl && this._id != null) {
       uri = this.baseUrl + '/api/access/datafile/' + this._id + '/metadata/ddi';
@@ -70,7 +90,7 @@ export class InterfaceComponent implements OnInit {
         }
       } else {
         // Just for testing purposes
-        //uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
+        // uri = this.baseUrl + '/assets/FOCN_SPSS_20150525_FORMATTED-ddi.xml';
         if (!this._id) {
         uri = window.location.href;
         uri = uri + '/assets/test_groups.xml';
@@ -429,12 +449,12 @@ export class InterfaceComponent implements OnInit {
     doc.startElement('fileName').text(fileName);
     doc.endElement(); // end fileName
     doc.startElement('dimensns');
-    doc.startElement('caseQnty').text(obj.fileDscr['fileTxt'].dimensns['caseQnty']);
+    doc.startElement('caseQnty').text(obj.fileDscr.fileTxt.dimensns.caseQnty);
     doc.endElement(); // end caseQnty
-    doc.startElement('varQnty').text(obj.fileDscr['fileTxt'].dimensns['varQnty']);
+    doc.startElement('varQnty').text(obj.fileDscr.fileTxt.dimensns.varQnty);
     doc.endElement(); // end varQnty
     doc.endElement(); // end dimensns
-    doc.startElement('fileType').text(obj.fileDscr['fileTxt'].fileType);
+    doc.startElement('fileType').text(obj.fileDscr.fileTxt.fileType);
     doc.endElement(); // fileType
     doc.endElement(); // fileTxt
     const notes = fileDscr.getElementsByTagName('notes');
@@ -502,4 +522,5 @@ export class InterfaceComponent implements OnInit {
       console.log('API Key missing');
     }
   }
+
 }

@@ -1,0 +1,62 @@
+{
+  "GROUPS": {
+    "HIDE": "Hide Groups",
+    "SHOW": "Show Groups",
+    "ADD":  "Add Group",
+    "ADDTO": "Add to Group",
+    "ALLVAR": "All Variables",
+    "DONE": "Done",
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit Group Name",
+    "ADDSELECTED": "Add Selected to Group",
+    "REMOVE" : "Remove from Group"
+  },
+  "SAVE": {
+    "SAVE": "Save to Dataverse",
+    "DOWNLOAD": "Download"
+  },
+  "VAR": {
+    "SEARCH": "Search",
+    "SELECT": "Select",
+    "ID": "ID",
+    "NAME": "Name",
+    "LABEL": "Label",
+    "WEIGHT": "Weight",
+    "VIEW": "View",
+    "GROUPEDIT": "Group Edit",
+    "EDIT": "Edit"
+  },
+  "VARDIALOG":{
+    "VARINFO": "Variable Information",
+    "LITQ": "Literal Question",
+    "INTINSTR": "Interviewer Instructions",
+    "POSTQ": "Post Question",
+    "UNIVERSE": "Universe",
+    "NOTES" : "Notes",
+    "GROUP" : "Group",
+    "WEIGHTVAR": "Weight Variable",
+    "UNWEIGHTED": "Unweighted",
+    "ISWEIGHT": "Is Weight",
+    "UPDATE": "Update",
+    "CANCEL": "Cancel"
+  },
+  "VARDIALSTAT": {
+    "CLOSE": "Close",
+    "VALUES": "Values",
+    "CATEGORIES": "Categories",
+    "COUNT": "Count",
+    "COUNTPER": "Count Percentage(%)",
+    "WEIGHTCOUNT": "Weighted Count"
+  },
+  "TS": {
+    "CONFIRM": "Are you sure you want to delete "
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per page",
+    "NEXT_PAGE": "Next page",
+    "PREVIOUS_PAGE": "Previous page",
+    "RANGE": "{{startIndex}} - {{endIndex}} of {{length}}"
+  }
+}
