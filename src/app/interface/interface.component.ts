@@ -69,14 +69,16 @@ export class InterfaceComponent implements OnInit {
     this.dvLocale = this.ddiService.getParameterByName('dvLocale');
 
     if (this.dvLocale != null) {
-      if (this.dvLocale === 'en' || this.dvLocale === 'fr') {
-        this.translate.use(this.dvLocale);
+      if (this.dvLocale === 'en' ) {
+        this.translate.use('English');
+      } else if (this.dvLocale === 'fr') {
+        this.translate.use('Français');
       } else {
         const browserLang = this.translate.getBrowserLang()
         this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
       }
     } else {
-      const browserLang = this.translate.getBrowserLang()
+      const browserLang = this.translate.getBrowserLang();
       this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
     }
 
@@ -108,7 +110,7 @@ export class InterfaceComponent implements OnInit {
     }
     this.getDDI(uri);
 
-    this.translate.getLangs();
+    // this.translate.getLangs();
   }
 
   getDDI(_uri): void {
