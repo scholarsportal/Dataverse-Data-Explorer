@@ -57,6 +57,6 @@
     "ITEMS_PER_PAGE": "Éléments par page",
     "NEXT_PAGE": "Page suivante",
     "PREVIOUS_PAGE": "Page précédente",
-    "RANGE": "{{startIndex}} - {{endIndex}} of {{length}}"
+    "RANGE": "{{startIndex}} - {{endIndex}} de {{length}}"
   }
 }
