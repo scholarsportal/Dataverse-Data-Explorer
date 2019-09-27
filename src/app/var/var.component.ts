@@ -21,12 +21,15 @@ import { FormControl } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import {DdiService} from '../ddi.service';
 
+import {TranslateService} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-var',
   templateUrl: './var.component.html',
   styleUrls: ['./var.component.css']
 })
 export class VarComponent implements OnInit {
+
   datasource: MatTableDataSource<any>;
   public searchFilter = new FormControl();
   selection = new SelectionModel<Element>(true, []);
@@ -97,7 +100,8 @@ export class VarComponent implements OnInit {
     public dialog: MatDialog,
     public ref: ChangeDetectorRef,
     public snackBar: MatSnackBar,
-    private ddiService: DdiService
+    private ddiService: DdiService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -342,7 +346,7 @@ export class VarComponent implements OnInit {
     this.group_select['value'] = 0;
     //
     this.updateGroupsVars();
-    this.showMSG('Added to ' + obj.varGrp.labl);
+    this.showMSG(this.translate.instant('GROUPS.ADDEDTO') + obj.varGrp.labl);
   }
 
   selectGroup(_id) {
@@ -389,11 +393,11 @@ export class VarComponent implements OnInit {
 
   onAdd(_id) {
     const obj = this.updateGroupVars('add', _id);
-    this.showMSG('Added ' + _id + ' to ' + obj.varGrp.labl);
+    this.showMSG(this.translate.instant('GROUPS.ADDEDID', { _id }) + obj.varGrp.labl);
   }
   onRemove(_id) {
     const obj = this.updateGroupVars('remove', _id);
-    this.showMSG('Removed ' + _id + ' from ' + obj.varGrp.labl);
+    this.showMSG(this.translate.instant('GROUPS.REMOVEDID', {_id}) + obj.varGrp.labl);
   }
   updateGroupVars(_type, _id) {
     const obj = this.getObjByIDNested(

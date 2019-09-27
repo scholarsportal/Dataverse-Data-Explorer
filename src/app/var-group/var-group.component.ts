@@ -10,7 +10,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 export class VarGroupComponent implements OnInit {
   constructor(private ddiService: DdiService,
-              public translate: TranslateService) {}
+              private translate: TranslateService) {}
 
   allActive = true;
 

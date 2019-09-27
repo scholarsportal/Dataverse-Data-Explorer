@@ -46,12 +46,12 @@ export class InterfaceComponent implements OnInit {
   siteUrl = null;
   dvLocale = null;
   http: HttpClient;
-  translate: TranslateService
+  translate: TranslateService;
 
   constructor(
     private ddiService: DdiService,
     public snackBar: MatSnackBar,
-    public translatePar: TranslateService) {
+    private translatePar: TranslateService) {
       this.translate = translatePar;
       this.translate.addLangs(['en', 'fr']);
       this.translate.setDefaultLang('en');
@@ -75,6 +75,9 @@ export class InterfaceComponent implements OnInit {
         const browserLang = this.translate.getBrowserLang()
         this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
       }
+    } else {
+      const browserLang = this.translate.getBrowserLang()
+      this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
     }
 
     if (!this.siteUrl && this._id != null) {
@@ -503,7 +506,7 @@ export class InterfaceComponent implements OnInit {
                 console.log(data);
               },
               error => {
-                this.snackBar.open('Cannot save to Dataverse. ' + error, '', {
+                this.snackBar.open(this.translate.instant('SAVE.CANNOT') + error, '', {
                   duration: 2000
                 });
                 console.log('Error');
@@ -511,12 +514,12 @@ export class InterfaceComponent implements OnInit {
               },
               () => {
                 // console.log('Ok');
-                this.snackBar.open('Saved to Dataverse', '', {
+                this.snackBar.open(this.translate.instant('SAVE.SAVED'), '', {
                   duration: 2000
                 });
               });
     } else {
-      this.snackBar.open('Cannot save to Dataverse. API key is missing', '', {
+      this.snackBar.open(this.translate.instant('SAVE.MISSAPI'), '', {
         duration: 2000
       });
       console.log('API Key missing');

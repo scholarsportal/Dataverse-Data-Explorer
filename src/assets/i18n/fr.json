@@ -11,11 +11,17 @@
     "DELETE": "Supprimer",
     "EDIT": "Modifier le nom du groupe",
     "ADDSELECTED": "Add Selected to Group FR",
-    "REMOVE" : "Enlever du groupe"
+    "REMOVE" : "Enlever du groupe",
+    "ADDEDTO": "Added to FR",
+    "ADDEDID":  "Added {{_id}} to FR",
+    "REMOVEDID": "Removed  {{_id}} from FR"
   },
   "SAVE": {
     "SAVE": "Sauvegarder dans Dataverse",
-    "DOWNLOAD": "Télécharger"
+    "DOWNLOAD": "Télécharger",
+    "CANNOT": "Cannot save to Dataverse. FR ",
+    "SAVED": "Saved to Dataverse FR",
+    "MISSAPI": "Cannot save to Dataverse. API key is missing. FR"
   },
   "VAR": {
     "SEARCH": "Recherche",
