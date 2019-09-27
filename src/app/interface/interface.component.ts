@@ -53,11 +53,11 @@ export class InterfaceComponent implements OnInit {
     public snackBar: MatSnackBar,
     private translatePar: TranslateService) {
       this.translate = translatePar;
-      this.translate.addLangs(['en', 'fr']);
-      this.translate.setDefaultLang('en');
+      this.translate.addLangs(['English', 'Français']);
+      this.translate.setDefaultLang('English');
 
       const browserLang = this.translate.getBrowserLang();
-      this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+      this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
   }
 
   ngOnInit() {
@@ -73,11 +73,11 @@ export class InterfaceComponent implements OnInit {
         this.translate.use(this.dvLocale);
       } else {
         const browserLang = this.translate.getBrowserLang()
-        this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+        this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
       }
     } else {
       const browserLang = this.translate.getBrowserLang()
-      this.translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+      this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
     }
 
     if (!this.siteUrl && this._id != null) {
@@ -107,6 +107,8 @@ export class InterfaceComponent implements OnInit {
       }
     }
     this.getDDI(uri);
+
+    this.translate.getLangs();
   }
 
   getDDI(_uri): void {
