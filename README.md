@@ -43,8 +43,8 @@ The recommended way to install the Data Curation Tool is to use your own webserv
 
 Copy the contents of `Dataverse-Data-Curation-Tool/dist` into a dedicated folder on your webserver.
 
-In the `DataCuration.json` file, edit the folowing line: `"toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/"`, replacing `https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/` with the url of your webserver.
+In the `DataCuration.json` file, edit the following line: `"toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/"`, replacing `https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/` with the url of your webserver.
 
-Then on your local machine that runs Dataverse execute the folowing command:
+Then on your local machine that runs Dataverse execute the following command:
 
 `curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
