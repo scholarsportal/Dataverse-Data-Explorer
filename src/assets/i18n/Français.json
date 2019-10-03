@@ -10,21 +10,21 @@
     "CANCEL": "Annuler",
     "DELETE": "Supprimer",
     "EDIT": "Modifier le nom du groupe",
-    "ADDSELECTED": "Add Selected to Group FR",
+    "ADDSELECTED": "Ajouter cette selection à un groupe",
     "REMOVE" : "Enlever du groupe",
-    "ADDEDTO": "Added to FR",
-    "ADDEDID":  "Added {{_id}} to FR",
-    "REMOVEDID": "Removed  {{_id}} from FR"
+    "ADDEDTO": "Ajouté à ",
+    "ADDEDID":  "{{_id}} a été ajoutée à ",
+    "REMOVEDID": "{{_id}} a été retiré de "
   },
   "SAVE": {
     "SAVE": "Sauvegarder dans Dataverse",
     "DOWNLOAD": "Télécharger",
-    "CANNOT": "Cannot save to Dataverse. FR ",
-    "SAVED": "Saved to Dataverse FR",
-    "MISSAPI": "Cannot save to Dataverse. API key is missing. FR"
+    "CANNOT": "N'a pas pu être sauvegardé dans Dataverse.",
+    "SAVED": "A été enregisté dans Dataverse",
+    "MISSAPI": "N'a pas pu être sauvegardé dans Dataverse - La clé API est introuvable."
   },
   "VAR": {
-    "SEARCH": "Recherche",
+    "SEARCH": "Chercher",
     "SELECT": "Sélectionner",
     "ID": "ID",
     "NAME": "Nom",
@@ -53,11 +53,11 @@
     "VALUES": "Valeurs",
     "CATEGORIES": "Catégories",
     "COUNT": "Nombre",
-    "COUNTPER": "Count Percentage(%)FR",
+    "COUNTPER": "Nombre d'observations en %",
     "WEIGHTCOUNT": "Chiffre pondéré"
   },
   "TS": {
-    "CONFIRM": "Are you sure you want to delete FR "
+    "CONFIRM": "Êtes-vous sûr de vouloir supprimer ? "
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Éléments par page",
