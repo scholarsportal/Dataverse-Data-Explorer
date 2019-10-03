@@ -1,7 +1,7 @@
 {
   "GROUPS": {
-    "HIDE": "Cacher les groupes",
-    "SHOW": "Montrer les groupes",
+    "HIDE": "Masquer les groupes",
+    "SHOW": "Afficher les groupes",
     "ADD": "Ajouter un groupe",
     "ADDTO": "Ajouter au groupe",
     "ALLVAR": "Toutes les variables",
@@ -37,15 +37,15 @@
   "VARDIALOG":{
     "VARINFO": "Information sur la variable",
     "LITQ": "Question littérale",
-    "INTINSTR": "Instructions à l'intervieweur",
-    "POSTQ": "Afficher question",
+    "INTINSTR": "Les directives pour l'intervieweur",
+    "POSTQ": "Instruction à propos de la question posée",
     "UNIVERSE": "Univers",
     "NOTES" : "Remarques",
     "GROUP" : "Groupe",
     "WEIGHTVAR": "Variable de poids",
     "UNWEIGHTED": "Non-pondéré",
     "ISWEIGHT": "Pondéré",
-    "UPDATE": "Mettre à jours",
+    "UPDATE": "Mettre à jour",
     "CANCEL": "Annuler"
   },
   "VARDIALSTAT": {
@@ -57,7 +57,7 @@
     "WEIGHTCOUNT": "Chiffre pondéré"
   },
   "TS": {
-    "CONFIRM": "Êtes-vous sûr de vouloir supprimer ? "
+    "CONFIRM": "Êtes-vous sûr de vouloir supprimer "
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Éléments par page",
