@@ -48,3 +48,11 @@ In the `DataCuration.json` file, edit the following line: `"toolUrl": "https://s
 Then on your local machine that runs Dataverse execute the following command:
 
 `curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
+
+### Note about Dataverse versions
+
+For Dataverse `v4.16` corresponding manifest json files are `DataCuration_v4.16.json` and `DataCurationLocalConfigure_v4.16.json`.
+
+For Dataverse `v4.17` corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
+
+The difference between `4.16` and `4.17` is appearrence in `4.17` of two new parameters: `"scope"` and `"localeCode"`.
