@@ -3,6 +3,7 @@
   "description": "Data Curation Tool for curation of variables",
   "scope": "file",
   "type": "configure",
+  "contentType": "text/tab-separated-values",
   "toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/",
   "toolParameters": {
     "queryParameters": [
