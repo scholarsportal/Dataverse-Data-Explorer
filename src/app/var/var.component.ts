@@ -347,6 +347,7 @@ export class VarComponent implements OnInit {
     //
     this.updateGroupsVars();
     this.showMSG(this.translate.instant('GROUPS.ADDEDTO') + obj.varGrp.labl);
+    this.selection.clear();
   }
 
   selectGroup(_id) {
