@@ -3,17 +3,18 @@
 </div>
 
 <ng-container class="interface-container">
-
   <mat-toolbar class="interface-header">
     <mat-toolbar-row>
       <h1 class="header-text title">{{title}}</h1>
+      <span class="fill-space"></span>
+      <mat-form-field class="lang-select">
+        <select matNativeControl title="Language" #langSelect (change)="translate.use(langSelect.value)">
+          <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{lang}}</option>
+        </select>
+      </mat-form-field>
     </mat-toolbar-row>
     <mat-toolbar-row class="header-text">
       {{filename}}
-      <span class="fill-space"></span>
-      <select #langSelect (change)="translate.use(langSelect.value)" >
-        <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{lang}}</option>
-      </select>
     </mat-toolbar-row>
     <mat-toolbar-row class="header-text citation">
       <span>{{firstCitat}}<a href="{{doi}}">{{doi}}</a>{{secondCitat}}</span>

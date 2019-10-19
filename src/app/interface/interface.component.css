@@ -1,9 +1,15 @@
 .interface-header {
   padding-top: 0.8em;
-  border-bottom: solid 1px rgba(0,0,0,.12);
+  border-bottom: solid 1px rgba(0, 0, 0, .12);
 }
 
-.mat-toolbar-row, .mat-toolbar-single-row {
+.mat-form-field.lang-select {
+  font-size: 0.6em;
+  width: 7em;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
   min-height: 40px;
   height: auto;
 }
@@ -38,4 +44,3 @@
 .group-container {
   min-height: 100vh;
 }
-
