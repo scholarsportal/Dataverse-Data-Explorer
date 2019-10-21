@@ -51,8 +51,8 @@ Then on your local machine that runs Dataverse execute the following command:
 
 ### Note about Dataverse versions
 
-For Dataverse `v4.16` corresponding manifest json files are `DataCuration_v4.16.json` and `DataCurationLocalConfigure_v4.16.json`.
+For Dataverse `v4.16` the corresponding manifest json files are `DataCuration_v4.16.json` and `DataCurationLocalConfigure_v4.16.json`.
 
-For Dataverse `v4.17` corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
+For Dataverse `v4.17` the corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
 
-The difference between `4.16` and `4.17` is appearrence in `4.17` of two new parameters: `"scope"` and `"localeCode"`.
+The difference between `4.16` and `4.17` is two new parameters introduced in `4.17`: `"scope"` and `"localeCode"`.
