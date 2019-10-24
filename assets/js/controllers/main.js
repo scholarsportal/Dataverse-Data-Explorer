@@ -19,7 +19,7 @@ angular.module('odesiApp').controller('mainCtrl', function($scope, $http, $route
 		}
 
 		var sessionLang = window.sessionStorage.getItem("language");
-		$scope.lang = (!sessionLang || sessionLang === 'en') ? en : fr;
+		$scope.lang = (!sessionLang || sessionLang === 'en') ? en : (!sessionLang || sessionLang === 'fr') ? fr : es;
 		$scope.baseUrl = $location.host() + ":" + $location.port();
 		//paths for templates
 		$scope.headerTemplatePath = 'templates/header.html';

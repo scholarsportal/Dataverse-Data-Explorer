@@ -1,6 +1,6 @@
 'use strict';
 angular.module('odesiApp').controller('chartCtrl', function($scope, $cookies,sharedVariableStore){
-	$scope.lang = (!$cookies.language || $cookies.language === 'en') ? en : fr;
+	$scope.lang = (!$cookies.language || $cookies.language === 'en') ? en : (!$cookies.language || $cookies.language === 'fr') ? fr : es;
 
 	$scope.$watch ('selectedVariable', function(){
 	$scope.variableCompare=[];//all the selected variables

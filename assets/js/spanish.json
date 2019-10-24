@@ -1,0 +1,51 @@
+var es = {
+	"language":"Español",
+	"topNav":{
+		"search":"Buscar"
+	},
+	"pagination":{
+		"first":"Primero",
+		"last":"Último"
+	},
+	"detailsPage":{
+		"advanced_analysis":"Análisis Avanzado",
+		"all":"Todo",
+		"cases":"Casos",
+		"categories":"Categorías",
+		"cats":"Categorías",
+		"chart_view":"Vista gráfica",
+		"close":"Cerrar",
+		"download":"Descargar",
+		"download_selected":"Descargar subconjunto",
+		"first":"Primero",
+		"interviewerinstruct":"Instrucciones para el entrevistador",
+		"label":"Etiqueta",
+		"last":"Último",
+		"literalquestion":"Pregunta literal",
+		"max":"Máximo",
+		"min":"Mínimo",
+		"missingCases":"Casos que faltan",
+		"name":"Nombre",
+		"n":"N",
+		"notes":"Notas",
+		"nw":"NP",
+		"orig_file_format":"Descargar el fichero original",
+		"prequestion":"Texto anterior a la pregunta",
+		"rdata_format":"Descargar fichero en formato RData",
+		"records":"Registros por página",
+		"results":"Resultados",
+		"summarystats":"Resumen de estadísticas",
+		"tab_delimited":"Descargar fichero delimitado por tabuladores",
+		"table_view":"Vista de tabla",
+		"universe":"Universo",
+		"validCases":"Casos válidos",
+		"values":"Valores",
+		"variable_metadata":"Descargar variables de metadatos",
+		"variable":"Variable",
+		"varID":"ID",
+		"weight":"Peso"
+	},
+	"error":{
+		"no_data":""
+	}
+};

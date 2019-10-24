@@ -6,6 +6,7 @@
 <div id="title">Data Explorer - Beta</div>
 <div class="overlay"></div>
 <div class="pull-right">
+	<button type="button" ng-class="{'hidden': lang.language=='Español', 'btn btn-link' : lang.language=='Español'}" ng-click="switchLanguage('es')" class="btn btn-link"><small><span class="long">Español</span></small></button>
 	<button type="button" ng-class="{'hidden': lang.language=='English', 'btn btn-link' : lang.language=='Français'}" ng-click="switchLanguage('en')" class="btn btn-link"><small><span class="long">English</span></small></button>
 	<button type="button" ng-class="{'hidden': lang.language=='Français', 'btn btn-link' : lang.language=='English'}" ng-click="switchLanguage('fr')" class="btn btn-link"><small><span class="long">Français</span></small></button>
 </div>
