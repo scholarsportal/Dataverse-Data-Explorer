@@ -2,6 +2,8 @@
 
 _Note: this application is still in active development._
 
+The Data Curation tool allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a data set. This stand-alone component is built to complement The Dataverse Project. The Data Curation tool is integrated into dataverse for .tab files under the configure button.
+
 An Angular tool for curating data by adding labels, groups, weights and other details to assist with informed reuse.
 
 This stand-alone component is built to complement [The Dataverse Project](http://dataverse.org/) by adding data level metadata.
@@ -57,20 +59,19 @@ For Dataverse `v4.17` the corresponding manifest json files are `DataCuration_v4
 
 The difference between `4.16` and `4.17` is two new parameters introduced in `4.17`: `"scope"` and `"localeCode"`.
 
-## Data Curation Tool
-The Data Curation tool allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a data set. This stand-alone component is built to complement The Dataverse Project. The Data Curation tool is integrated into dataverse for .tab files under the configure button.
+## Using the Data Curation Tool
 
 ### Main Interface
-Identify a .tab data set you want to look at. Clicking on the configure button brings up another button for the Data Curation Tool. You will then be presented with an option to continue. The main Data Curation Tool page for a variable provides two options: View and Edit.
+Identify a tabular (.tab) data set you want to look at. Clicking on the configure button brings up another button for the Data Curation Tool. You will then be presented with an option to continue. The main Data Curation Tool page for a variable provides two options: View and Edit.
 
 ### View
 This option allows you to view summary statistics about a variable, specifically its values, categories, count, count percentage, and weighted count. A bar chart of the variable is also presented.
 
 ### Edit
-Variable level metadata can be added or amended using the edit option. If you uploaded the dataset from a statistical package, the provided you included it, metadata associated with variables is also saved. If your dataset has variable labels they too will be added and can be edited in the tool. Other fields are “Literal Question”, “Interviewer Instructions”, “Post Question”, Universe”, “Notes”, “Group”, and the option to “Weight Variable” and indicate if a variable is weighted in the tool.
+Variable level metadata can be added or amended using the edit option. If you uploaded the dataset from a statistical package, the provided you included it, metadata associated with variables is also saved. If your dataset has variable labels they too will be added and can be edited in the tool. Other fields are "Literal Question", "Interviewer Instructions", "Post Question", "Universe", "Notes", "Group", and the option to "Weight Variable" and indicate if a variable is weighted in the tool.
 
 ### Groups
-Groups allows you to collect variables together to form a subset of variables in the dataset. Create a group by heading to the “Add Group +” option on the left of the screen – make sure the option is showing, if not, click on “> Show Group”. You can then name your group and save it. Go back to the Data Curation Tool main page by clicking on “All Variables” above, and select the variables you wish to add to your group by checking the box next to the variable ID. By clicking on the “Add Selected to Group” text towards the top of the screen, you can populate your group.
+Groups allows you to collect variables together to form a subset of variables in the dataset. Create a group by heading to the "Add Group +" option on the left of the screen – make sure the option is showing, if not, click on "> Show Group". You can then name your group and save it. Go back to the Data Curation Tool main page by clicking on "All Variables" above, and select the variables you wish to add to your group by checking the box next to the variable ID. By clicking on the "Add Selected to Group" text towards the top of the screen, you can populate your group.
 
 ### Saving changes
-Your edits can be saved directly into your Dataverse by clicking on “Save to Dataverse” towards the top right side of the page. You can also download an XML file of your all or a subset of your Data Curation Tool metadata that contains summary statistics.
+Your edits can be saved directly into your Dataverse by clicking on "Save to Dataverse" towards the top right side of the page. You can also download an XML file of your all or a subset of your Data Curation Tool metadata that contains summary statistics.
