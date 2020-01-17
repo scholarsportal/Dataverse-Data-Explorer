@@ -114,6 +114,25 @@ export class VarComponent implements OnInit {
     this.group_select['hidden'] = true;
   }
 
+  getPageSizeOptions(): number[] {
+    if (typeof this.datasource !== 'undefined') {
+      if (this.datasource.paginator.length > 100) {
+        return [25, 50, 100, this.datasource.paginator.length];
+      } else if (this.datasource.paginator.length > 50 && this.datasource.paginator.length < 100) {
+        return [25, 50, this.datasource.paginator.length];
+      } else if (this.datasource.paginator.length > 25 && this.datasource.paginator.length < 50) {
+        return [25, this.datasource.paginator.length];
+      } else if (this.datasource.paginator.length >= 0 && this.datasource.paginator.length < 25) {
+        return [this.datasource.paginator.length];
+      } else {
+        return [25, 50, 100];
+      }
+    } else {
+      return [25];
+    }
+
+  }
+
   // Entry point - when data has been loaded
   onUpdateVars(data) {
     this._variables = data;

@@ -5,7 +5,7 @@
       <span matSuffix><mat-icon>search</mat-icon></span>
     </mat-form-field>
   </mat-grid-tile>
-  <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="getPageSizeOptions()"></mat-paginator>
   <mat-divider [vertical]="true"></mat-divider>
   <mat-grid-tile>
     <mat-select
