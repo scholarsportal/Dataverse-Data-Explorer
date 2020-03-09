@@ -37,7 +37,7 @@
     </mat-header-cell>
     <mat-cell *matCellDef="let row; let i=index">
       <mat-checkbox
-        (click)="$event.shiftKey ? multipleToggle(row,i, $event) : singleToggle($event)"
+        (click)="$event.shiftKey ? multipleToggle(row,i, $event) : singleToggle(i,$event)"
         (change)="$event ? selection.toggle(row) : null; checkSelection()"
         [checked]="selection.isSelected(row)"
         matTooltip="{{'VAR.SELECT' | translate}}"
@@ -47,6 +47,7 @@
   </ng-container>
 
   <!-- MINUS PLUS Column in Group view -->
+  <!-- (click)="$event.shiftKey ? multipleToggleRemove(row,i, $event) : onRemove(row['@ID'])" -->
   <ng-container matColumnDef="control">
     <mat-header-cell *matHeaderCellDef>
       <!--<div style="width:40px;"></div> -->
@@ -65,7 +66,7 @@
         *ngIf="row._show"
         mat-icon-button
         color="accent"
-        (click)="$event.shiftKey ? multipleToggleRemove(row,i, $event) : onRemove(row['@ID'])"
+        (click)="onRemove(row['@ID'])"
         matTooltip="{{'GROUPS.REMOVE' | translate}}"
       >
         <mat-icon  [attr.aria-label]="'GROUPS.REMOVE' | translate">indeterminate_check_box</mat-icon>

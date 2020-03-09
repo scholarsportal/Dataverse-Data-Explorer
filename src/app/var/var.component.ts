@@ -389,8 +389,8 @@ export class VarComponent implements OnInit {
     this.checkSelection();
   }
 
-  singleToggle(event) {
-    this.startSelection = null;
+  singleToggle(i, event) {
+    this.startSelection = i;
     this.endSelection = null;
     event.stopPropagation();
   }
