@@ -36,6 +36,12 @@ export class VarComponent implements OnInit {
   public dialogRef: MatDialogRef<VarDialogComponent>;
   public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
   private filterValues = { search: '', _show: true };
+  startSelection = null;
+  endSelection = null;
+  renderedData = null;
+
+  startSelectionGroup = null;
+  endSelectionGroup = null;
 
   _variables;
   id;
@@ -149,6 +155,7 @@ export class VarComponent implements OnInit {
 
     this.datasource = new MatTableDataSource(this._variables);
     this.datasource.sort = this.sort;
+
     this.datasource.paginator = this.paginator;
     // sorting
     this.datasource.sortingDataAccessor = (datasort: any, property: string) => {
@@ -172,6 +179,7 @@ export class VarComponent implements OnInit {
     };
     // filter
     this.datasource.filterPredicate = this.createFilter();
+    this.datasource.connect().subscribe(d => this.renderedData = d);
   }
   createFilter(): (data: any, filter: string) => boolean {
     const filterFunction = function(data, filter): boolean {
@@ -202,7 +210,7 @@ export class VarComponent implements OnInit {
     // get the data
     this.openDialog([this.getObjByID(_id, this._variables)]);
   }
-  onSubset(_ids?) {
+  onSubset(_ids, sort?) {
     if (_ids == null) {
       this.mode = 'all';
     } else {
@@ -238,11 +246,17 @@ export class VarComponent implements OnInit {
     this.checkSelection(); // and enable group dropdown if applicable
     this.datasource.data = data;
     if (this.mode === 'group') {
-      this.sortByOrder();
+      if (sort == null || sort) {
+        this.sortByOrder();
+        this.paginator.firstPage();
+      }
     } else {
-      this.sort.sort({ id: '', start: 'asc', disableClear: false });
+      if (sort == null || sort) {
+        this.sort.sort({id: '', start: 'asc', disableClear: false});
+        this.paginator.firstPage();
+      }
     }
-    this.paginator.firstPage();
+
   }
 
   // when a single row has been updated
@@ -331,6 +345,55 @@ export class VarComponent implements OnInit {
       }
     );
   }
+
+  multipleToggle(row, i, event) {
+    let selectFlag = false;
+    if (this.selection.isSelected(row) ) {
+      selectFlag = true;
+      this.selection.deselect(row);
+    } else {
+      selectFlag = false;
+      this.selection.select(row) ;
+    }
+    if (this.startSelection == null) {
+      this.startSelection =  i;
+    } else {
+      this.endSelection = i;
+      let currentIndex = 0;
+      this.renderedData.forEach(r => {
+        if (this.startSelection <= this.endSelection) {
+          if (currentIndex >= this.startSelection && currentIndex <= this.endSelection) {
+            if (selectFlag) {
+              this.selection.deselect(r);
+            } else {
+              this.selection.select(r);
+            }
+          }
+          currentIndex++;
+        } else {
+          if (currentIndex >= this.endSelection && currentIndex <= this.startSelection) {
+            if (selectFlag) {
+              this.selection.deselect(r);
+            } else {
+              this.selection.select(r);
+            }
+          }
+          currentIndex++;
+        }
+      });
+
+      this.startSelection = null;
+      this.endSelection = null;
+    }
+
+    this.checkSelection();
+  }
+
+  singleToggle(event) {
+    this.startSelection = null;
+    this.endSelection = null;
+    event.stopPropagation();
+  }
   checkSelection() {
     // when are in all view mode
     if (this.mode === 'all') {
@@ -415,11 +478,53 @@ export class VarComponent implements OnInit {
     const obj = this.updateGroupVars('add', _id);
     this.showMSG(this.translate.instant('GROUPS.ADDEDID', { _id }) + obj.varGrp.labl);
   }
+
+  onRemoveAll() {
+    const obj = this.getObjByIDNested(
+        this.group_select['value'],
+        this.variableGroups
+    );
+
+    const vars = obj.varGrp['@var'].split(' ');
+    vars.splice(0, vars.length); // empty array (remove all elements from group
+    obj.varGrp['@var'] = vars.join(' ');
+    this.updateGroupsVars();
+    this.onSubset(vars);
+  }
+
+  multipleToggleRemove(row, i, event) {
+    if (this.startSelectionGroup == null) {
+      this.startSelectionGroup =  i;
+    } else {
+      this.endSelectionGroup =  i;
+      console.log(this.datasource.data);
+      let currentIndex = 0;
+      this.renderedData.forEach(r => {
+        if (this.startSelectionGroup <= this.endSelectionGroup) {
+          if (currentIndex >= this.startSelectionGroup && currentIndex <= this.endSelectionGroup) {
+            const obj = this.updateGroupVars('remove', r['@ID'], false);
+            this.showMSG(this.translate.instant('GROUPS.REMOVE'));
+          }
+          currentIndex++;
+        } else {
+          if (currentIndex >= this.endSelectionGroup && currentIndex <= this.startSelectionGroup) {
+            const obj = this.updateGroupVars('remove', r['@ID'], false);
+            this.showMSG(this.translate.instant('GROUPS.REMOVE'));
+          }
+          currentIndex++;
+        }
+      });
+
+      this.startSelectionGroup = null;
+      this.endSelectionGroup = null;
+    }
+    event.stopPropagation();
+  }
   onRemove(_id) {
-    const obj = this.updateGroupVars('remove', _id);
+    const obj = this.updateGroupVars('remove', _id, false);
     this.showMSG(this.translate.instant('GROUPS.REMOVEDID', {_id}) + obj.varGrp.labl);
   }
-  updateGroupVars(_type, _id) {
+  updateGroupVars(_type, _id, sort?) {
     const obj = this.getObjByIDNested(
       this.group_select['value'],
       this.variableGroups
@@ -435,7 +540,7 @@ export class VarComponent implements OnInit {
     obj.varGrp['@var'] = vars.join(' ');
     // reset the table
     this.updateGroupsVars();
-    this.onSubset(vars);
+    this.onSubset(vars, sort);
     return obj;
   }
   onEditSelected() {
@@ -465,6 +570,8 @@ export class VarComponent implements OnInit {
   }
   @HostListener('matSortChange', ['$event'])
   sortChange(sort) {
+    console.log("sortChange");
+    console.log(sort);
     let vars = [];
 
     for (let i = 0; i < this._variables.length; i++) {
@@ -474,5 +581,7 @@ export class VarComponent implements OnInit {
     }
     this.datasource.data = vars;
     this.datasource.data.sort();
+    this.datasource.connect().subscribe(d => this.renderedData = d);
+
   }
 }

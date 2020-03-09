@@ -35,28 +35,37 @@
       >
       </mat-checkbox>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-cell *matCellDef="let row; let i=index">
       <mat-checkbox
-        (click)="$event.stopPropagation()"
+        (click)="$event.shiftKey ? multipleToggle(row,i, $event) : singleToggle($event)"
         (change)="$event ? selection.toggle(row) : null; checkSelection()"
         [checked]="selection.isSelected(row)"
         matTooltip="{{'VAR.SELECT' | translate}}"
-      >
+>
       </mat-checkbox>
     </mat-cell>
   </ng-container>
 
   <!-- MINUS PLUS Column in Group view -->
   <ng-container matColumnDef="control">
-    <mat-header-cell *matHeaderCellDef
-      ><div style="width:40px;"></div
-    ></mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      <!--<div style="width:40px;"></div> -->
+      <button
+              mat-icon-button
+              color="accent"
+              (click)="onRemoveAll()"
+              matTooltip="{{'GROUPS.REMOVEALL' | translate}}"
+      >
+        <mat-icon  [attr.aria-label]="'GROUPS.REMOVE' | translate">indeterminate_check_box</mat-icon>
+      </button>
+
+    </mat-header-cell>
     <mat-cell *matCellDef="let row; let i = index">
       <button
         *ngIf="row._show"
         mat-icon-button
         color="accent"
-        (click)="onRemove(row['@ID'])"
+        (click)="$event.shiftKey ? multipleToggleRemove(row,i, $event) : onRemove(row['@ID'])"
         matTooltip="{{'GROUPS.REMOVE' | translate}}"
       >
         <mat-icon  [attr.aria-label]="'GROUPS.REMOVE' | translate">indeterminate_check_box</mat-icon>

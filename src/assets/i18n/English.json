@@ -14,7 +14,8 @@
     "REMOVE" : "Remove from Group",
     "ADDEDTO": "Added to ",
     "ADDEDID":  "Added {{_id}} to ",
-    "REMOVEDID": "Removed  {{_id}} from "
+    "REMOVEDID": "Removed  {{_id}} from ",
+    "REMOVEALL": "Remove all variables from group"
   },
   "SAVE": {
     "SAVE": "Save to Dataverse",
