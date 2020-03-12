@@ -1,7 +1,5 @@
 # Dataverse-Data-Curation-Tool
 
-_Note: this application is still in active development._
-
 The Data Curation Tool (DCT) allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a data set. This stand-alone component is built to complement [The Dataverse Project](http://dataverse.org/). The Data Curation tool is integrated into dataverse for .tab files under the configure button.
 
 The DCT is an Angular application and uses the Angular Material Design component library.
