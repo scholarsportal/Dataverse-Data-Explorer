@@ -532,7 +532,7 @@ export class InterfaceComponent implements OnInit {
                   duration: 2000
                 });
                 this.child.varChange = false;
-                this.childGroups = false;
+                this.childGroups.groupChange = false;
               });
     } else {
       this.snackBar.open(this.translate.instant('SAVE.MISSAPI'), '', {
