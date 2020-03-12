@@ -4,7 +4,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef
+  ElementRef, HostListener
 } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { DdiService } from '../ddi.service';
@@ -17,6 +17,7 @@ import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
 import { HttpClient } from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
+import {VarGroupComponent} from '../var-group/var-group.component';
 
 @Component({
   selector: 'app-interface',
@@ -29,6 +30,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class InterfaceComponent implements OnInit {
   @ViewChild(VarComponent) child;
+  @ViewChild(VarGroupComponent) childGroups;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   data = null; // store the xml
@@ -58,6 +60,14 @@ export class InterfaceComponent implements OnInit {
 
       const browserLang = this.translate.getBrowserLang();
       this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  doSomething($event) {
+    if ((this.child.varChange === true || this.childGroups.groupChange === true)) {
+      $event.returnValue = 'You have unsaved changes - are you sure you want to exit?';
+      return $event.returnValue;
+    }
   }
 
   ngOnInit() {
@@ -521,6 +531,8 @@ export class InterfaceComponent implements OnInit {
                 this.snackBar.open(this.translate.instant('SAVE.SAVED'), '', {
                   duration: 2000
                 });
+                this.child.varChange = false;
+                this.childGroups = false;
               });
     } else {
       this.snackBar.open(this.translate.instant('SAVE.MISSAPI'), '', {

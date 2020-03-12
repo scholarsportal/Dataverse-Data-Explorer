@@ -23,6 +23,8 @@ export class VarGroupComponent implements OnInit {
 
   @ViewChild('titleInput') titleInput: ElementRef;
 
+  groupChange = false;
+
   ngOnInit() {}
 
   // Add a new group to the list and scroll to show it
@@ -59,7 +61,7 @@ export class VarGroupComponent implements OnInit {
 
       const obj = this;
       obj.variableGroups[numberOfGroups].editable = true;
-
+      this.groupChange = true;
       setTimeout(() => {
         obj.titleInput.nativeElement.focus();
         obj.parentScrollNav.emit();
@@ -91,6 +93,7 @@ export class VarGroupComponent implements OnInit {
       _obj.varGrp.labl = _val.trim();
       _obj.editable = false;
     }
+    this.groupChange = true;
   }
 
   renameGroupCancel(_obj) {
@@ -108,6 +111,7 @@ export class VarGroupComponent implements OnInit {
         }
       }
       this.showAll();
+      this.groupChange = true;
     } else {
       _obj.editable = false;
     }

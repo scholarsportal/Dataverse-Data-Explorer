@@ -48,6 +48,8 @@ export class VarComponent implements OnInit {
   mode = 'all';
   source: any;
 
+  varChange = false;
+
   variableGroupsVars = [];
   @Input() variableGroups: any;
   @ViewChild('group_select') private group_select: ElementRef;
@@ -151,8 +153,7 @@ export class VarComponent implements OnInit {
       }
     }
     // show if var is _in_group
-    this.updateGroupsVars();
-
+    this.updateGroupsVars(true);
     this.datasource = new MatTableDataSource(this._variables);
     this.datasource.sort = this.sort;
 
@@ -261,6 +262,7 @@ export class VarComponent implements OnInit {
 
   // when a single row has been updated
   onUpdateVar() {
+    this.varChange = true;
     this.removeWeightedFreq();
     this.ref.detectChanges();
   }
@@ -440,7 +442,7 @@ export class VarComponent implements OnInit {
   disableSelectGroup() {
     this.group_select['value'] = 0;
   }
-  updateGroupsVars() {
+  updateGroupsVars(load?) {
     this.getVariableGroupsVars();
     for (let i = 0; i < this._variables.length; i++) {
       if (this.variableGroupsVars.indexOf(this._variables[i]['@ID']) > -1) {
@@ -448,6 +450,9 @@ export class VarComponent implements OnInit {
       } else {
         this._variables[i]._in_group = false;
       }
+    }
+    if (load == null || !load) {
+      this.varChange = true;
     }
   }
 
