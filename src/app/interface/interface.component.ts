@@ -64,6 +64,7 @@ export class InterfaceComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   doSomething($event) {
+    console.log(this.child.varChange  + " " + this.childGroups.groupChange);
     if ((this.child.varChange === true || this.childGroups.groupChange === true)) {
       $event.returnValue = 'You have unsaved changes - are you sure you want to exit?';
       return $event.returnValue;
