@@ -62,6 +62,7 @@ export class VarGroupComponent implements OnInit {
       const obj = this;
       obj.variableGroups[numberOfGroups].editable = true;
       this.groupChange = true;
+      console.log("group Change " + this.groupChange);
       setTimeout(() => {
         obj.titleInput.nativeElement.focus();
         obj.parentScrollNav.emit();
