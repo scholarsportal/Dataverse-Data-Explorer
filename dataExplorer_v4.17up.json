@@ -1,0 +1,25 @@
+{
+  "displayName": "Data Explorer",
+  "toolName": "explorer",
+  "description": "The Data Explorer provides a GUI which lists the variables in a tabular data file allowing searching, charting and cross tabulation analysis.",
+  "scope": "file",
+  "type": "explore",
+  "contentType": "text/tab-separated-values",
+  "toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Explorer/",
+  "toolParameters": {
+    "queryParameters": [
+     {	
+        "fileId": "{fileId}"	
+     },	
+     {	
+       "siteUrl": "{siteUrl}"	
+     },	
+     {	
+       "key": "{apiToken}"	
+     },
+     {
+       "dvLocale": "{localeCode}"
+     }
+    ]
+  }
+}
