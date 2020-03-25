@@ -8,13 +8,19 @@ Here's a demo of the tool in action - **this should be used for testing purposes
 
 ## Installation
 
-To install the Data Explorer in your Dataverse installation, download the config file [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer.json) to your local computer, update the 'toolUrl' field for your local installation, and then call the following curl command:
+To install the Data Explorer in your Dataverse installation, download the config file. For versions 4.17 and up download [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer_v4.17up.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer_v4.17up.json), for earlier versions download [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorer.json) to your local computer, update the 'toolUrl' field for your local installation, and then call the following curl command:
+
+For dataverse versions 4.17 and up use:
+
+`curl -X POST -H 'Content-type: application/json' --upload-file dataExplorer_v4.17up.json http://localhost:8080/api/admin/externalTools`
+
+For earlier versions such as 4.16 and smaller use:
 
 `curl -X POST -H 'Content-type: application/json' --upload-file dataExplorer.json http://localhost:8080/api/admin/externalTools`
 
 We highly recommend installing the application for production environments, rather than using the test version available through GitHub pages.
 
-The config file [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal.json) can be used for local installations assuming the Data Explorer application is placed in the Dataverse project directory `{Dataverse Dir}/src/main/webapp/ddi_explore`.
+The config file [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal_v4.17up.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal_v4.17up.json) can be used for local installations for versions of dataverse 4.17 and later, assuming the Data Explorer application is placed in the Dataverse project directory `{Dataverse Dir}/src/main/webapp/ddi_explore`. For earlier versions of dataverse use [https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal.json](https://scholarsportal.github.io/Dataverse-Data-Explorer/dataExplorerLocal.json)
 
 See [http://guides.dataverse.org/en/latest/admin/external-tools.html](http://guides.dataverse.org/en/latest/admin/external-tools.html) for further information on external tools.
 
