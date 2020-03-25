@@ -10,9 +10,6 @@
      },   
      {  
        "key": "{apiToken}"  
-     },
-     {
-       "dvLocale": "{localeCode}"
      }
     ]
   }
