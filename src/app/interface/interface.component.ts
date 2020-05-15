@@ -76,8 +76,8 @@ export class InterfaceComponent implements OnInit {
 
   ngOnInit() {
 
-    this.matomoTracker.setUserId('107');
-    this.matomoTracker.setDocumentTitle('Matomo');
+    // this.matomoTracker.setUserId('107');
+    // this.matomoTracker.setDocumentTitle('Matomo');
 
     let uri = null;
     this.siteUrl = this.ddiService.getParameterByName('siteUrl');
