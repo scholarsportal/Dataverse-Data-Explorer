@@ -19,6 +19,8 @@ import { HttpClient } from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
 import {VarGroupComponent} from '../var-group/var-group.component';
 
+import { MatomoTracker } from 'ngx-matomo';
+
 @Component({
   selector: 'app-interface',
   templateUrl: './interface.component.html',
@@ -51,6 +53,7 @@ export class InterfaceComponent implements OnInit {
   translate: TranslateService;
 
   constructor(
+      private matomoTracker: MatomoTracker,
     private ddiService: DdiService,
     public snackBar: MatSnackBar,
     private translatePar: TranslateService) {
@@ -72,6 +75,10 @@ export class InterfaceComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.matomoTracker.setUserId('107');
+    this.matomoTracker.setDocumentTitle('Matomo');
+
     let uri = null;
     this.siteUrl = this.ddiService.getParameterByName('siteUrl');
     this.baseUrl = this.ddiService.getBaseUrl();
@@ -542,5 +549,4 @@ export class InterfaceComponent implements OnInit {
       console.log('API Key missing');
     }
   }
-
 }

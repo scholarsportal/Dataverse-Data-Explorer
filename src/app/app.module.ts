@@ -11,6 +11,13 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateService, TranslateParser } from '@ngx-translate/core';
 import {MatPaginatorIntl} from '@angular/material';
 
+import { MatomoModule } from 'ngx-matomo';
+
+import { APP_INITIALIZER } from '@angular/core';
+import { ConfigService } from './config.service';
+import { of, Observable, ObservableInput } from '../../node_modules/rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFrCa, 'fr-CA');
@@ -65,9 +72,32 @@ export function createMyMatPaginatorIntl(
 
     translateParser: TranslateParser
 
-) {return new MyMatPaginatorIntl(translateService, translateParser);}
+) {return new MyMatPaginatorIntl(translateService, translateParser); }
 
-
+export function load(http: HttpClient, config: ConfigService): (() => Promise<boolean>) {
+  return (): Promise<boolean> => {
+    return new Promise<boolean>((resolve: (a: boolean) => void): void => {
+      http.get('./config.json')
+          .pipe(
+              map((x: ConfigService) => {
+                config.baseUrl = x.baseUrl;
+                console.log(config.baseUrl);
+                config.id = x.id;
+                resolve(true);
+              }),
+              catchError((x: { status: number }, caught: Observable<void>): ObservableInput<{}> => {
+                if (x.status !== 404) {
+                  resolve(false);
+                }
+                config.baseUrl = '';
+                config.id = -1;
+                resolve(true);
+                return of({});
+              })
+          ).subscribe();
+    });
+  };
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,6 +109,7 @@ export function createMyMatPaginatorIntl(
     ChartComponent
   ],
   imports: [
+    MatomoModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -122,6 +153,14 @@ export function createMyMatPaginatorIntl(
 
     useFactory: createMyMatPaginatorIntl
 
+  }, {
+    provide: APP_INITIALIZER,
+    useFactory: load,
+    deps: [
+      HttpClient,
+      ConfigService
+    ],
+    multi: true
   }],
   bootstrap: [AppComponent]
 })
