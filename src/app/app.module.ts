@@ -77,7 +77,7 @@ export function createMyMatPaginatorIntl(
 export function load(http: HttpClient, config: ConfigService): (() => Promise<boolean>) {
   return (): Promise<boolean> => {
     return new Promise<boolean>((resolve: (a: boolean) => void): void => {
-      http.get('./config.json')
+      http.get('./assets/config.json')
           .pipe(
               map((x: ConfigService) => {
                 config.baseUrl = x.baseUrl;
