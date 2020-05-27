@@ -21,7 +21,7 @@ export class VarGroupComponent implements OnInit {
   @Output() selectGroup: EventEmitter<null> = new EventEmitter();
   @Output() disableSelectGroup: EventEmitter<null> = new EventEmitter();
 
-  @ViewChild('titleInput', { static: false }) titleInput: ElementRef;
+  @ViewChild('titleInput') titleInput: ElementRef;
 
   groupChange = false;
 

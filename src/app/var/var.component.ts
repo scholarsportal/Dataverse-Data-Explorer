@@ -50,7 +50,7 @@ export class VarComponent implements OnInit {
   variableGroupsVars = [];
   @Input() variableGroups: any;
   @ViewChild('group_select', { static: true }) private group_select: ElementRef;
-  @ViewChild('group_edit', { static: false }) private group_edit: ElementRef;
+  @ViewChild('group_edit') private group_edit: ElementRef;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

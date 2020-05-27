@@ -4,6 +4,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "data-curation-tool": {
+      "i18n": {
+        "locales": {
+          "fr-CA": {
+            "translation": "src/locale/messages.fr-CA.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,6 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/data-curation-tool",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -50,14 +59,23 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             },
             "fr": {
               "aot": true,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "outputPath": "dist/fr/",
               "i18nFile": "src/locale/messages.fr-CA.xlf",
-              "i18nFormat": "xlf",
               "i18nLocale": "fr-CA"
             }
           }
