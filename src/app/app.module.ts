@@ -9,7 +9,7 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {TranslateService, TranslateParser } from '@ngx-translate/core';
-import {MatPaginatorIntl} from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 import { MatomoModule } from 'ngx-matomo';
 
@@ -22,28 +22,26 @@ import { map, catchError } from 'rxjs/operators';
 // the second parameter 'fr' is optional
 registerLocaleData(localeFrCa, 'fr-CA');
 
-import {
-  MatButtonModule,
-  MatTableModule,
-  MatSortModule,
-  MatTabsModule,
-  MatIconModule,
-  MatToolbarModule,
-  MatProgressSpinnerModule,
-  MatPaginatorModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatDialogModule,
-  MatSidenavModule,
-  MatListModule,
-  MatCheckboxModule,
-  MatSelectModule,
-  MatGridListModule,
-  MatChipsModule,
-  MatSnackBarModule,
-  MatTooltipModule,
-  MatAutocompleteModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

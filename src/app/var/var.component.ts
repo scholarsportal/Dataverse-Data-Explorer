@@ -6,14 +6,11 @@ import {
   ChangeDetectorRef,
   ElementRef, HostListener
 } from '@angular/core';
-import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
-  MatSnackBar,
-  MatDialog,
-  MatDialogRef, Sort
-} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { VarDialogComponent } from '../var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from '../var-stat-dialog/var-stat-dialog.component';

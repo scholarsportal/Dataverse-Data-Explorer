@@ -11,7 +11,8 @@ import { DdiService } from '../ddi.service';
 import { xml2json } from '../../assets/js/xml2json';
 import { json2xml } from '../../assets/js/json2xml';
 
-import { MatButtonModule, MatSnackBar } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
