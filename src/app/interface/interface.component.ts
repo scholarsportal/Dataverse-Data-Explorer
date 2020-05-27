@@ -31,9 +31,9 @@ import { MatomoTracker } from 'ngx-matomo';
   exports: [MatButtonModule]
 })
 export class InterfaceComponent implements OnInit {
-  @ViewChild(VarComponent) child;
-  @ViewChild(VarGroupComponent) childGroups;
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  @ViewChild(VarComponent, { static: true }) child;
+  @ViewChild(VarGroupComponent, { static: true }) childGroups;
+  @ViewChild('scrollMe', { static: true }) private myScrollContainer: ElementRef;
 
   data = null; // store the xml
   ddiLoaded = false; // show the loading
