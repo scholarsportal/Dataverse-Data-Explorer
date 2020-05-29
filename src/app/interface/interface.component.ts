@@ -2,16 +2,13 @@ import {
   Component,
   OnInit,
   Output,
-  EventEmitter,
   ViewChild,
   ElementRef, HostListener
 } from '@angular/core';
-import { NgModule } from '@angular/core';
+
 import { DdiService } from '../ddi.service';
 import { xml2json } from '../../assets/js/xml2json';
-import { json2xml } from '../../assets/js/json2xml';
 
-import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
@@ -26,10 +23,6 @@ import { MatomoTracker } from 'ngx-matomo';
   selector: 'app-interface',
   templateUrl: './interface.component.html',
   styleUrls: ['./interface.component.css']
-})
-@NgModule({
-  imports: [MatButtonModule],
-  exports: [MatButtonModule]
 })
 export class InterfaceComponent implements OnInit {
   @ViewChild(VarComponent, { static: true }) child;
@@ -76,9 +69,6 @@ export class InterfaceComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // this.matomoTracker.setUserId('107');
-    // this.matomoTracker.setDocumentTitle('Matomo');
 
     let uri = null;
     this.siteUrl = this.ddiService.getParameterByName('siteUrl');
