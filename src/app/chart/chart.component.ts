@@ -7,7 +7,7 @@ import * as d3 from 'd3';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit {
-  @ViewChild('chart') private chartContainer: ElementRef;
+  @ViewChild('chart', { static: true }) private chartContainer: ElementRef;
   colorArray = [
     '#3366cc',
     '#dc3912',

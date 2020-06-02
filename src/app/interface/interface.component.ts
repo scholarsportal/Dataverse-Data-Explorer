@@ -2,16 +2,14 @@ import {
   Component,
   OnInit,
   Output,
-  EventEmitter,
   ViewChild,
   ElementRef, HostListener
 } from '@angular/core';
-import { NgModule } from '@angular/core';
+
 import { DdiService } from '../ddi.service';
 import { xml2json } from '../../assets/js/xml2json';
-import { json2xml } from '../../assets/js/json2xml';
 
-import { MatButtonModule, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
@@ -26,14 +24,10 @@ import { MatomoTracker } from 'ngx-matomo';
   templateUrl: './interface.component.html',
   styleUrls: ['./interface.component.css']
 })
-@NgModule({
-  imports: [MatButtonModule],
-  exports: [MatButtonModule]
-})
 export class InterfaceComponent implements OnInit {
-  @ViewChild(VarComponent) child;
-  @ViewChild(VarGroupComponent) childGroups;
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  @ViewChild(VarComponent, { static: true }) child;
+  @ViewChild(VarGroupComponent, { static: true }) childGroups;
+  @ViewChild('scrollMe', { static: true }) private myScrollContainer: ElementRef;
 
   data = null; // store the xml
   ddiLoaded = false; // show the loading
@@ -75,9 +69,6 @@ export class InterfaceComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // this.matomoTracker.setUserId('107');
-    // this.matomoTracker.setDocumentTitle('Matomo');
 
     let uri = null;
     this.siteUrl = this.ddiService.getParameterByName('siteUrl');

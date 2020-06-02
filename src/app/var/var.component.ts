@@ -6,14 +6,11 @@ import {
   ChangeDetectorRef,
   ElementRef, HostListener
 } from '@angular/core';
-import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
-  MatSnackBar,
-  MatDialog,
-  MatDialogRef, Sort
-} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { VarDialogComponent } from '../var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from '../var-stat-dialog/var-stat-dialog.component';
@@ -52,11 +49,11 @@ export class VarComponent implements OnInit {
 
   variableGroupsVars = [];
   @Input() variableGroups: any;
-  @ViewChild('group_select') private group_select: ElementRef;
+  @ViewChild('group_select', { static: true }) private group_select: ElementRef;
   @ViewChild('group_edit') private group_edit: ElementRef;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   getDisplayedColumns() {
     let displayedColumns = []; // 'order_arrows'
     if (this.mode === 'all') {
