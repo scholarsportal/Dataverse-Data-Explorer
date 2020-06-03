@@ -8,7 +8,7 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 
 ## Installation
 
-The Data Curation Tool was created using Angular CLI version 7.
+The Data Curation Tool was created using Angular CLI version 9.
 In order to generate node_modules run `npm install`.
 
 See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
@@ -51,7 +51,7 @@ Then on your local machine that runs Dataverse execute the following command:
 
 For Dataverse `v4.16` the corresponding manifest json files are `DataCuration_v4.16.json` and `DataCurationLocalConfigure_v4.16.json`.
 
-For Dataverse `v4.17` the corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
+For Dataverse `v4.17` or above, the corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
 
 The difference between `4.16` and `4.17` is two new parameters introduced in `4.17`: `"scope"` and `"localeCode"`.
 
