@@ -39,6 +39,7 @@
     "rxjs": "~6.5.5",
     "serialize-javascript": "^3.0.0",
     "tslib": "^1.10.0",
+    "websocket-extensions": "^0.1.4",
     "xml-writer": "^1.7.0",
     "zone.js": "~0.10.2"
   },
