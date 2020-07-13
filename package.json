@@ -36,6 +36,7 @@
     "kind-of": "^6.0.3",
     "minimist": "^1.2.5",
     "ngx-matomo": "^0.1.4",
+    "npm-registry-fetch": "^4.0.5",
     "rxjs": "~6.5.5",
     "serialize-javascript": "^3.0.0",
     "tslib": "^1.10.0",
