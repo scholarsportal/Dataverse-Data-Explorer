@@ -40,7 +40,7 @@
     "ngx-matomo": "^0.1.4",
     "npm-registry-fetch": "^4.0.5",
     "rxjs": "~6.5.5",
-    "serialize-javascript": "^3.0.0",
+    "serialize-javascript": "^3.1.0",
     "tslib": "^1.10.0",
     "websocket-extensions": "^0.1.4",
     "xml-writer": "^1.7.0",
