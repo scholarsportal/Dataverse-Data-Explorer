@@ -1,0 +1,69 @@
+{
+  "GROUPS": {
+    "HIDE": "Ocultar grupos",
+    "SHOW": "Mostrar grupos",
+    "ADD":  "Adicionar grupos",
+    "ADDTO": "Adicionar no grupo",
+    "ALLVAR": "Todas as variáveis",
+    "DONE": "Salvo",
+    "SAVE": "Salvar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Deletar",
+    "EDIT": "Editar nome do grupo",
+    "ADDSELECTED": "Adicionar selção para o grupo",
+    "REMOVE" : "Remover do grupo",
+    "ADDEDTO": "Adicionado para ",
+    "ADDEDID":  "Adicionado {{_id}} em ",
+    "REMOVEDID": "Removido  {{_id}} de ",
+    "REMOVEALL": "Remover todas as variaveis do grupo"
+  },
+  "SAVE": {
+    "SAVE": "Savar no Dataverse",
+    "DOWNLOAD": "Download",
+    "CANNOT": "Não é possível salvar no Dataverse. ",
+    "SAVED": "Savo no Dataverse",
+    "MISSAPI": "Não é possível salvar para o Dataverse. API key é inválida."
+  },
+  "VAR": {
+    "SEARCH": "Busca",
+    "SELECT": "Selecionar",
+    "ID": "ID",
+    "NAME": "Nome",
+    "LABEL": "Etiqueta",
+    "WEIGHT": "Tamanho",
+    "VIEW": "Ver",
+    "GROUPEDIT": "Editar grupo",
+    "EDIT": "Editar"
+  },
+  "VARDIALOG":{
+    "VARINFO": "Informações da variável",
+    "LITQ": "Questão literal",
+    "INTINSTR": "Instruções do entrevistador",
+    "POSTQ": "Postar pergunta",
+    "UNIVERSE": "Universo",
+    "NOTES" : "Notas",
+    "GROUP" : "Grupo",
+    "WEIGHTVAR": "Peso da variável",
+    "UNWEIGHTED": "Não ponderado",
+    "ISWEIGHT": "tem peso",
+    "UPDATE": "Atualizar",
+    "CANCEL": "Cancelar"
+  },
+  "VARDIALSTAT": {
+    "CLOSE": "Fechar",
+    "VALUES": "Valores",
+    "CATEGORIES": "Categorias",
+    "COUNT": "Contador",
+    "COUNTPER": "Countor Percentual(%)",
+    "WEIGHTCOUNT": "Contagem Ponderada"
+  },
+  "TS": {
+    "CONFIRM": "Tem certeza de que deseja excluir "
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items por pagina",
+    "NEXT_PAGE": "Próxima",
+    "PREVIOUS_PAGE": "Anterior",
+    "RANGE": "{{startIndex}} - {{endIndex}} de {{length}}"
+  }
+}
