@@ -9,6 +9,10 @@
           "fr-CA": {
             "translation": "src/locale/messages.fr-CA.xlf",
             "baseHref": ""
+          },
+          "pt": {
+            "translation": "src/locale/messages.pt.xlf",
+            "baseHref": ""
           }
         }
       },
@@ -77,6 +81,18 @@
               "outputPath": "dist/fr/",
               "i18nFile": "src/locale/messages.fr-CA.xlf",
               "i18nLocale": "fr-CA"
+            },
+            "pt": {
+              "aot": true,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "outputPath": "dist/pt/",
+              "i18nFile": "src/locale/messages.pt.xlf",
+              "i18nLocale": "pt"
             }
           }
         },
@@ -91,6 +107,9 @@
             },
             "fr": {
               "browserTarget": "data-curation-tool:build:fr"
+            },
+            "pt": {
+              "browserTarget": "data-curation-tool:build:pt"
             }
           }
         },

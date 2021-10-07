@@ -52,11 +52,11 @@ export class InterfaceComponent implements OnInit {
     public snackBar: MatSnackBar,
     private translatePar: TranslateService) {
       this.translate = translatePar;
-      this.translate.addLangs(['English', 'Français']);
+      this.translate.addLangs(['English', 'Français', 'Português']);
       this.translate.setDefaultLang('English');
 
       const browserLang = this.translate.getBrowserLang();
-      this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
+      this.translate.use(browserLang.match(/English|Français|Português/) ? browserLang : 'English');
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -84,11 +84,11 @@ export class InterfaceComponent implements OnInit {
         this.translate.use('Français');
       } else {
         const browserLang = this.translate.getBrowserLang()
-        this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
+        this.translate.use(browserLang.match(/English|Français|Português/) ? browserLang : 'English');
       }
     } else {
       const browserLang = this.translate.getBrowserLang();
-      this.translate.use(browserLang.match(/English|Français/) ? browserLang : 'English');
+      this.translate.use(browserLang.match(/English|Français|Português/) ? browserLang : 'English');
     }
 
     if (!this.siteUrl && this._id != null) {
