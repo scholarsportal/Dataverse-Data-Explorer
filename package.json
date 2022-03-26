@@ -37,7 +37,7 @@
     "https-proxy-agent": "^2.2.4",
     "kind-of": "^6.0.3",
     "lodash": "^4.17.19",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "ngx-matomo": "^0.1.4",
     "node-sass": "^4.13.1",
     "npm-registry-fetch": "^4.0.5",
