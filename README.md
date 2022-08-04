@@ -4,7 +4,7 @@ The Data Curation Tool (DCT) allows data owners and curators to view summary sta
 
 The DCT is an Angular application and uses the Angular Material Design component library.
 
-A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?dfId=40620&siteUrl=https://dataverse.scholarsportal.info](https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?dfId=40620&siteUrl=https://dataverse.scholarsportal.info).
+A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?dfId=127759&siteUrl=https://dataverse.scholarsportal.info](https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?dfId=127759&siteUrl=https://dataverse.scholarsportal.info).
 
 ## Installation
 
