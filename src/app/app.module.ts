@@ -11,7 +11,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateService, TranslateParser } from '@ngx-translate/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 
-import { MatomoModule } from 'ngx-matomo';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 import { APP_INITIALIZER } from '@angular/core';
 import { ConfigService } from './config.service';
@@ -107,7 +107,6 @@ export function load(http: HttpClient, config: ConfigService): (() => Promise<bo
     ChartComponent
   ],
   imports: [
-    MatomoModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -138,7 +137,11 @@ export function load(http: HttpClient, config: ConfigService): (() => Promise<bo
       useFactory: HttpLoaderFactory,
       deps: [HttpClient]
 }
-})
+}),
+    NgxMatomoTrackerModule.forRoot({
+      siteId: this.config.id, // your Matomo's site ID (find it in your Matomo's settings)
+      trackerUrl: this.config.baseUrl // your matomo server root url
+    }),
   ],
   exports: [
   ],
@@ -162,4 +165,9 @@ export function load(http: HttpClient, config: ConfigService): (() => Promise<bo
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+      private config: ConfigService,
+  ) {
+  }
+}

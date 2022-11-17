@@ -16,8 +16,8 @@ import * as XMLWriter from 'xml-writer';
 import { HttpClient } from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
 import {VarGroupComponent} from '../var-group/var-group.component';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
-import { MatomoTracker } from 'ngx-matomo';
 
 @Component({
   selector: 'app-interface',
@@ -47,10 +47,11 @@ export class InterfaceComponent implements OnInit {
   translate: TranslateService;
 
   constructor(
-      private matomoTracker: MatomoTracker,
     private ddiService: DdiService,
     public snackBar: MatSnackBar,
+    private readonly tracker: MatomoTracker,
     private translatePar: TranslateService) {
+      this.tracker.trackPageView();
       this.translate = translatePar;
       this.translate.addLangs(['English', 'Français', 'Português']);
       this.translate.setDefaultLang('English');
@@ -83,7 +84,7 @@ export class InterfaceComponent implements OnInit {
       } else if (this.dvLocale === 'fr') {
         this.translate.use('Français');
       } else {
-        const browserLang = this.translate.getBrowserLang()
+        const browserLang = this.translate.getBrowserLang();
         this.translate.use(browserLang.match(/English|Français|Português/) ? browserLang : 'English');
       }
     } else {

@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { MatomoInjector } from 'ngx-matomo';
-import { ConfigService } from './config.service';
 import {DdiService} from './ddi.service';
 
 @Component({
@@ -9,11 +7,6 @@ import {DdiService} from './ddi.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(
-      private config: ConfigService,
-      private matomoInjector: MatomoInjector
-  ) {
-    this.matomoInjector.init(this.config.baseUrl, this.config.id);
-  }
+  constructor() {}
   title = 'data-curation-tool';
 }
