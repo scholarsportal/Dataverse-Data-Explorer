@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
 import {VarGroupComponent} from '../var-group/var-group.component';
 import { MatomoTracker } from '@ngx-matomo/tracker';
+import {ConfigService} from "../config.service";
 
 
 @Component({
@@ -49,9 +50,11 @@ export class InterfaceComponent implements OnInit {
   constructor(
     private ddiService: DdiService,
     public snackBar: MatSnackBar,
-    private readonly tracker: MatomoTracker,
-    private translatePar: TranslateService) {
+    private  tracker: MatomoTracker,
+    private translatePar: TranslateService,
+    private config: ConfigService) {
       this.tracker.trackPageView();
+
       this.translate = translatePar;
       this.translate.addLangs(['English', 'Français', 'Português']);
       this.translate.setDefaultLang('English');
