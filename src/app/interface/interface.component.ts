@@ -9,7 +9,7 @@ import {
 import { DdiService } from '../ddi.service';
 import { xml2json } from '../../assets/js/xml2json';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { VarComponent } from '../var/var.component';
 import * as FileSaver from 'file-saver';
 import * as XMLWriter from 'xml-writer';
