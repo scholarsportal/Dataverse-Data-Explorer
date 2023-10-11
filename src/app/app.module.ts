@@ -97,73 +97,67 @@ export function load(http: HttpClient, config: ConfigService): (() => Promise<bo
   };
 }
 @NgModule({
-  declarations: [
-    AppComponent,
-    InterfaceComponent,
-    VarGroupComponent,
-    VarComponent,
-    VarDialogComponent,
-    VarStatDialogComponent,
-    ChartComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatTableModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatListModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatGridListModule,
-    MatChipsModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    MatAutocompleteModule,
-    TranslateModule.forRoot({loader: {
-      provide: TranslateLoader,
-      useFactory: HttpLoaderFactory,
-      deps: [HttpClient]
-}
-}),
-    NgxMatomoTrackerModule.forRoot({
-      siteId: -1, // your Matomo's site ID (find it in your Matomo's settings)
-      trackerUrl: '' // your matomo server root url
-    }),
-  ],
-  exports: [
-  ],
-  entryComponents: [VarDialogComponent, VarStatDialogComponent],
-  providers: [DdiService, MatPaginatorIntl, {
-
-    provide: MatPaginatorIntl,
-
-    deps: [TranslateService, TranslateParser],
-
-    useFactory: createMyMatPaginatorIntl
-
-  }, {
-    provide: APP_INITIALIZER,
-    useFactory: load,
-    deps: [
-      HttpClient,
-      ConfigService
+    declarations: [
+        AppComponent,
+        InterfaceComponent,
+        VarGroupComponent,
+        VarComponent,
+        VarDialogComponent,
+        VarStatDialogComponent,
+        ChartComponent
     ],
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatTableModule,
+        MatSortModule,
+        MatProgressSpinnerModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSidenavModule,
+        MatListModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatGridListModule,
+        MatChipsModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+        MatAutocompleteModule,
+        TranslateModule.forRoot({ loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        NgxMatomoTrackerModule.forRoot({
+            siteId: -1,
+            trackerUrl: '' // your matomo server root url
+        }),
+    ],
+    exports: [],
+    providers: [DdiService, MatPaginatorIntl, {
+            provide: MatPaginatorIntl,
+            deps: [TranslateService, TranslateParser],
+            useFactory: createMyMatPaginatorIntl
+        }, {
+            provide: APP_INITIALIZER,
+            useFactory: load,
+            deps: [
+                HttpClient,
+                ConfigService
+            ],
+            multi: true
+        }],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(

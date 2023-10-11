@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { DdiService } from '../ddi.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DdiService } from '../ddi.service';
 })
 export class VarDialogComponent implements OnInit {
   @Output() parentUpdateVar: EventEmitter<any> = new EventEmitter<any>();
-  form: FormGroup;
+  form: UntypedFormGroup;
   public weights: any;
   public variableGroups: any;
   editObjs: any = [];
@@ -19,7 +19,7 @@ export class VarDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<VarDialogComponent>,
     private ddiService: DdiService
   ) {}

@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { VarDialogComponent } from '../var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from '../var-stat-dialog/var-stat-dialog.component';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import {DdiService} from '../ddi.service';
 
@@ -28,7 +28,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class VarComponent implements OnInit {
 
   datasource: MatTableDataSource<any>;
-  public searchFilter = new FormControl();
+  public searchFilter = new UntypedFormControl();
   selection = new SelectionModel<Element>(true, []);
   public dialogRef: MatDialogRef<VarDialogComponent>;
   public dialogStatRef: MatDialogRef<VarStatDialogComponent>;
