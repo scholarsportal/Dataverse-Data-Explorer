@@ -1,0 +1,24 @@
+{
+  "displayName": "Data Curation Tool",
+  "description": "Data Curation Tool for curation of variables",
+  "scope": "file",
+  "type": "configure",
+  "contentType": "text/tab-separated-values",
+  "toolUrl": "dct_explore/index.html",
+  "toolParameters": {
+    "queryParameters": [
+    {
+        "dfId" : "{fileId}"
+    },
+    {
+    "key": "{apiToken}"
+    },
+    {
+        "fileMetadataId" : "{fileMetadataId}"
+    },
+    {
+        "dvLocale": "{localeCode}"
+    }
+    ]
+  }
+}

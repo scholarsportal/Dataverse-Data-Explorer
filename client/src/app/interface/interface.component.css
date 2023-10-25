@@ -1,0 +1,46 @@
+.interface-header {
+  padding-top: 0.8em;
+  border-bottom: solid 1px rgba(0, 0, 0, .12);
+}
+
+.mat-form-field.lang-select {
+  font-size: 0.6em;
+  width: 7em;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  min-height: 40px;
+  height: auto;
+}
+
+.header-text {
+  height: auto;
+  font-size: 0.7em;
+  font-weight: 400;
+  white-space: normal;
+  padding-bottom: 10px;
+  line-height: 1.1em;
+}
+
+.header-text.title {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.action-buttons {
+  float: right;
+  font-size: 0.7em;
+}
+
+.button-label {
+  padding: 0.3em;
+}
+
+.groups-toggle {
+  font-size: 0.7em;
+}
+
+.group-container {
+  min-height: 100vh;
+}
