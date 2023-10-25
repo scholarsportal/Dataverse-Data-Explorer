@@ -173,3 +173,16 @@ Remove a specified variable group from state, and change uploaded status to null
 Change a specified variable's 'name' property, and change uploaded status to null.
 *** Group Add SelectedGroup
 Add the list of currently selected variables to a specified variable group.
+#+title: Data Curation Tool
+
+* Run Sequence
+Entry Point: ```interface.component.ts```
+- The interface component uses the ```getBaseUrl()``` to get the baseURL
+- The interface component uses the ```getParameterByName(name)``` to get the siteURL, _id, metaId, and dvLocale
+- The dvLocale is used to set the language
+- If there is not siteURL or _id, the uri created uses a file in the assets folder
+- if there is a siteURL, there are more checks to create the uri
+- The Uri created is passed on ```getDDI()```
+
+* Potential Problems
+- Converting the XML to JSON on the client
