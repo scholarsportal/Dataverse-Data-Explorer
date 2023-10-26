@@ -1,0 +1,31 @@
+#+title: Data Curation Tool
+
+* State management
+The app is an entire state management for a dataset.
+** TODO Users should be able to change variable information. (excluding variable ID and name)
+** TODO Users should be able to create groups
+
+** ACTIONS
+*** Dataset Load Pending
+API has been called and request is in progress.
+*** Dataset Load Success
+API has responded with data
+*** Dataset Load Error
+API could not complete request
+*** Dataset Download
+Download XML to local machine.
+*** Dataset Local Save
+Save dataset changes into local storage
+*** Dataset Upload Pending
+API to upload changed dataset called and in progress.
+*** Dataset Upload Success
+API to upload changed dataset completed successfully.
+*** Dataset Upload Error
+API to upload changed dataset could not complete.
+*** Variable Change Detail
+Change Variable metadata
+*** Variable Add to SelectedGroup
+*** Group Create New
+*** Group Remove
+*** Group Change Name
+*** Group Add SelectedGroup
