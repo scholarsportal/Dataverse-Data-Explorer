@@ -3,10 +3,10 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.css'],
 })
 export class ModalComponent {
-  @ViewChild("modal") modalElementRef?: ElementRef;
+  @ViewChild('modal') modalElementRef?: ElementRef;
   @Input() modalID: string | null = null;
   @Input() customOpenFunction: Function | undefined;
   @Input() customCloseFunction: Function | undefined;

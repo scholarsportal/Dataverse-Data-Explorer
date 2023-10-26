@@ -17,26 +17,63 @@ The app is an entire state management for a dataset.
 ** TODO Users should be able to create groups
 
 ** ACTIONS
+*API CALLS*
+*** Fetch Dataset
+Fetch the dataset for the page using the given fileId and siteUrl
 *** Dataset Load Pending
 API has been called and request is in progress.
 *** Dataset Load Success
 API has responded with data
 *** Dataset Load Error
 API could not complete request
-*** Dataset Download
-Download XML to local machine.
-*** Dataset Local Save
-Save dataset changes into local storage
+*** Dataset Upload Request
+Call Dataverse API to upload local changes.
 *** Dataset Upload Pending
 API to upload changed dataset called and in progress.
 *** Dataset Upload Success
 API to upload changed dataset completed successfully.
 *** Dataset Upload Error
 API to upload changed dataset could not complete.
+*LOCAL CHANGES*
+*** Dataset Download
+Download XML to local machine.
+*** Dataset Local Save
+Save dataset changes into local storage
 *** Variable Change Detail
 Change Variable metadata
 *** Variable Add to SelectedGroup
+Add new variable to list of currently selected variables for bulk edit.
 *** Group Create New
+Create new empty variable group.
 *** Group Remove
+Remove a specified variable group.
 *** Group Change Name
+Change a specified variable group name.
 *** Group Add SelectedGroup
+Add the list of currently selected variables to a specified variable group.
+
+** REDUCERS
+*** Fetch Dataset
+Change dataset status to pending.
+*** Dataset Success
+Change dataset status to success and load dataset into state.
+*** Dataset Load Error
+Change dataset status to error.
+*** Dataset Upload Request
+Change upload status to pending.
+*** Dataset Success
+Change uploaded status to success.
+*** Dataset Load Error
+Change uploaded status to error.
+*** Dataset Download
+Download XML to local machine.
+*** Dataset Local Save
+Save dataset changes into local storage
+*** Variable Change Detail
+Return new object for specified variable, and change uploaded status to null.
+*** Select book
+Add specified book to list of selectedBooks in state.
+*** Select book
+Add specified book to list of selectedBooks in state.
+*** Select book
+Add specified book to list of selectedBooks in state.

@@ -2,48 +2,48 @@ import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
 
 export interface CatStat {
-  "#text": number | string,
-  "@_type": string,
-  "@_wgtd"?: string
+  '#text': number | string;
+  '@_type': string;
+  '@_wgtd'?: string;
 }
 
-export type Catgry = CatStat[]
+export type Catgry = CatStat[];
 
 export interface Variables {
   [id: string]: {
-    "@_ID": string;
-    "@_name": string;
-    "@_intrvl": string;
-    "@_wgt-var": string;
+    '@_ID': string;
+    '@_name': string;
+    '@_intrvl': string;
+    '@_wgt-var': string;
     labl: {
-      "#text": string;
-      "@_level": string;
+      '#text': string;
+      '@_level': string;
     };
     location: {
-      "@_fileid": string;
+      '@_fileid': string;
     };
     notes: {
-      "#text": string;
-      "@_subject": string;
-      "@_level": string;
-      "@_type": string;
+      '#text': string;
+      '@_subject': string;
+      '@_level': string;
+      '@_type': string;
     };
     sumStat: {
-      "#text": number | string;
-      "@_type": string;
+      '#text': number | string;
+      '@_type': string;
     }[];
     varFormat: {
-      "@_type": string;
+      '@_type': string;
     };
     catgry?: Catgry;
-  }
+  };
 }
 
 export interface GraphObject {
   [id: string]: {
     weighted: { label: string; frequency: number }[];
     unweighted: { label: string; frequency: number }[];
-  }
+  };
 }
 
 export interface State {
@@ -74,14 +74,14 @@ const initialState: State = {
     data: null,
     error: null,
     variables: {},
-    groups: null
+    groups: null,
   },
   openGroup: '',
   openVariable: {
     editing: false,
     variable: null,
     graph: null,
-    previouslyOpen: {}
+    previouslyOpen: {},
   },
   upload: {
     status: '',
@@ -93,49 +93,71 @@ const initialState: State = {
 export const reducer = createReducer(
   initialState,
   // When the page first loads
-  on(Actions.fetchDataset, (state) =>
-    ({ ...state, dataset: { ...state.dataset, status: 'init' } })),
-  on(Actions.datasetLoadPending, (state) =>
-    ({ ...state, dataset: { ...state.dataset, status: 'pending' } })),
-  on(Actions.datasetLoadSuccess, (state, { data }) =>
-    ({ ...state, dataset: { ...state.dataset, status: 'success', data, error: null } })),
-  on(Actions.datasetLoadError, (state, { error }) =>
-    ({ ...state, dataset: { ...state.dataset, status: 'error', data: null, error } })),
+  on(Actions.fetchDataset, (state) => ({
+    ...state,
+    dataset: { ...state.dataset, status: 'init' },
+  })),
+  on(Actions.datasetLoadPending, (state) => ({
+    ...state,
+    dataset: { ...state.dataset, status: 'pending' },
+  })),
+  on(Actions.datasetLoadSuccess, (state, { data }) => ({
+    ...state,
+    dataset: { ...state.dataset, status: 'success', data, error: null },
+  })),
+  on(Actions.datasetLoadError, (state, { error }) => ({
+    ...state,
+    dataset: { ...state.dataset, status: 'error', data: null, error },
+  })),
 
   // When the dataset loads
-  on(Actions.datasetCreateMetadataSuccess, (state, { groups, variables }) =>
-    ({ ...state, dataset: { ...state.dataset, groups, variables } })),
-  on(Actions.datasetCreateMetadataError, (state) =>
-    ({ ...state, dataset: { ...state.dataset, groups: [] } })),
+  on(Actions.datasetCreateMetadataSuccess, (state, { groups, variables }) => ({
+    ...state,
+    dataset: { ...state.dataset, groups, variables },
+  })),
+  on(Actions.datasetCreateMetadataError, (state) => ({
+    ...state,
+    dataset: { ...state.dataset, groups: [] },
+  })),
 
   // When the user clicks the chart button
-  on(Actions.variableViewChart, (state, { variable }) =>
-    ({ ...state, openVariable: { ...state.openVariable, editing: false, variable: variable } })),
-  on(Actions.variableCreateGraphSuccess, (state, { id, weighted, unweighted }) =>
-  ({
-    ...state, openVariable: {
-      ...state.openVariable, graph: { weighted, unweighted }, previouslyOpen: {
-        ...state.openVariable.previouslyOpen,
-        [id]: { weighted, unweighted }
-      }
-    }
-  }
-  )),
-  on(Actions.variableCreateGraphError, (state) =>
-  ({
-    ...state, openVariable: {
-      ...state.openVariable, graph: null
-    }
-  }
-  )),
+  on(Actions.variableViewChart, (state, { variable }) => ({
+    ...state,
+    openVariable: { ...state.openVariable, editing: false, variable: variable },
+  })),
+  on(
+    Actions.variableCreateGraphSuccess,
+    (state, { id, weighted, unweighted }) => ({
+      ...state,
+      openVariable: {
+        ...state.openVariable,
+        graph: { weighted, unweighted },
+        previouslyOpen: {
+          ...state.openVariable.previouslyOpen,
+          [id]: { weighted, unweighted },
+        },
+      },
+    })
+  ),
+  on(Actions.variableCreateGraphError, (state) => ({
+    ...state,
+    openVariable: {
+      ...state.openVariable,
+      graph: null,
+    },
+  })),
 
   // When the user clicks the edit button
-  on(Actions.variableViewDetail, (state, { variable }) =>
-    ({ ...state, openVariable: { ...state.openVariable, editing: true, variable: variable } })),
+  on(Actions.variableViewDetail, (state, { variable }) => ({
+    ...state,
+    openVariable: { ...state.openVariable, editing: true, variable: variable },
+  })),
 
   // When the user clicks a group
-  on(Actions.groupSelected, (state, { groupID }) =>
-    ({ ...state, openGroup: groupID })),
+  on(Actions.groupSelected, (state, { groupID }) => ({
+    ...state,
+    openGroup: groupID,
+  }))
 
   // User selects a group
   // on(Actions.datasetGroupVariablesUpdatedSuccess, (state, { groupID, variables }) =>

@@ -1,65 +1,69 @@
-<ngx-datatable #table class="material" [rows]="vars$" [columns]="columns" [limit]="10" [columnMode]="ColumnMode.force"
-    [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [sortType]="SortType.multi">
+<ngx-datatable
+  #table
+  class="material"
+  [rows]="vars$"
+  [columns]="columns"
+  [limit]="10"
+  [columnMode]="ColumnMode.force"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  rowHeight="auto"
+  [sortType]="SortType.multi"
+>
+  <ngx-datatable-column name="ID" headerClass="datatable-header">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      {{ row["@_ID"] }}
+    </ng-template>
+  </ngx-datatable-column>
 
-    <ngx-datatable-column name="ID" headerClass="datatable-header">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{row['@_ID']}}
-        </ng-template>
-    </ngx-datatable-column>
+  <ngx-datatable-column name="Name" headerClass="datatable-header">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      {{ row["@_name"] }}
+    </ng-template>
+  </ngx-datatable-column>
 
-    <ngx-datatable-column name="Name" headerClass="datatable-header">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{row['@_name']}}
-        </ng-template>
-    </ngx-datatable-column>
+  <ngx-datatable-column name="Label">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      {{ row.labl ? row["labl"]["#text"] : "No Label" }}
+    </ng-template>
+  </ngx-datatable-column>
 
-    <ngx-datatable-column name="Label">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{row.labl ? row['labl']['#text'] : "No Label"}}
-        </ng-template>
-    </ngx-datatable-column>
+  <ngx-datatable-column name="Weight">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      {{ row["@_wgt-var"] ? row["@_wgt-var"] : "No Weight" }}
+    </ng-template>
+  </ngx-datatable-column>
 
-    <ngx-datatable-column name="Weight">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{row['@_wgt-var'] ? row['@_wgt-var'] : "No Weight"}}
-        </ng-template>
-    </ngx-datatable-column>
+  <ngx-datatable-column name="View">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      <button (click)="viewChart(row)">View Variable</button>
+    </ng-template>
+  </ngx-datatable-column>
 
-    <ngx-datatable-column name="View">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <button (click)="viewChart(row)">View Variable</button>
-        </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column name="Edit">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <button (click)="editVar(row)">Edit Variable</button>
-        </ng-template>
-    </ngx-datatable-column>
-
+  <ngx-datatable-column name="Edit">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      <button (click)="editVar(row)">Edit Variable</button>
+    </ng-template>
+  </ngx-datatable-column>
 </ngx-datatable>
 
 <app-modal class="w-max">
-    <!-- MODAL HEADER -->
-    <div class="modal-header flex flex-col">
-        <div class="text-2xl">{{ heading }}</div>
-    </div>
+  <!-- MODAL HEADER -->
+  <div class="modal-header flex flex-col">
+    <div class="text-2xl">{{ heading }}</div>
+  </div>
 
-    <!-- MAIN MODAL SECTION -->
-    <div class="modal-body">
-        <app-form *ngIf="isEditing$ | async; else chart"></app-form>
-        <ng-template #chart>
-            <app-chart></app-chart>
-        </ng-template>
-    </div>
+  <!-- MAIN MODAL SECTION -->
+  <div class="modal-body">
+    <app-form *ngIf="isEditing$ | async; else chart"></app-form>
+    <ng-template #chart>
+      <app-chart></app-chart>
+    </ng-template>
+  </div>
 
-    <!-- MODAL FOOTER -->
-    <div class="modal-footer">
-        <button (click)="close()">
-            Update
-        </button>
-        <button (click)="close()">
-            Cancel
-        </button>
-    </div>
+  <!-- MODAL FOOTER -->
+  <div class="modal-footer">
+    <button (click)="close()">Update</button>
+    <button (click)="close()">Cancel</button>
+  </div>
 </app-modal>
