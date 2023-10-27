@@ -1,4 +1,4 @@
-import { State, createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromReducer from './reducers';
 
 export const selectFeature =
