@@ -12,7 +12,6 @@ export class DdiService {
   constructor(private http: HttpClient) {}
 
   get(fileID: string, siteURL: string): Observable<any> {
-    console.log(fileID)
     const parameters = {
       siteURL: siteURL,
       fileID: fileID

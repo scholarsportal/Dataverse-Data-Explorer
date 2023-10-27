@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log('dasdf')
-    this.store.dispatch(fetchDataset({fileID: '', siteURL: ''}))
+    this.store.dispatch(fetchDataset({fileID: '127759', siteURL: 'https://borealisdata.ca'}))
   }
 }

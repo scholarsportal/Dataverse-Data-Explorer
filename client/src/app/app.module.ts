@@ -11,6 +11,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from 'src/state/reducers';
 import { DataFetchEffect } from 'src/state/init.effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,11 @@ import { DataFetchEffect } from 'src/state/init.effects';
   ],
   imports: [
     BrowserModule,
+    // Add this line to activate http client
+    HttpClientModule,
     StoreModule.forRoot({ dataset: appReducer }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    // Add this line to 'activate effects for actions'
     EffectsModule.forRoot([DataFetchEffect])
   ],
   providers: [],
