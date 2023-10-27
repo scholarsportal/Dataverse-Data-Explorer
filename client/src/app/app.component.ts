@@ -8,7 +8,7 @@ import { fetchDataset } from 'src/state/actions';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'client';
+  title = 'Data Curation Tool';
 
   constructor(private store: Store) {
   }

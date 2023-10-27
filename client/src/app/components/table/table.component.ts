@@ -11,10 +11,11 @@ import { ModalComponent } from '../modal/modal.component';
 export class TableComponent implements OnInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
 
-  columns = [{name: 'ID'},{name: 'Name'},{name: 'Label'},{name: 'Weight'},{name: 'View'},{name: 'Edit'},]
+  columns = [{ name: 'ID' }, { name: 'Name' }, { name: 'Label' }, { name: 'Weight' }, { name: 'View' }, { name: 'Edit' },]
   dtOptions: any;
   selected = []
   currentVar: any = undefined;
+  editing: boolean = false;
 
   vars$ = this.store.select(selectDatasetVars);
   loaded$ = this.store.select(getDataFetchStatus)
@@ -27,23 +28,25 @@ export class TableComponent implements OnInit {
       paging: true,
       pagingType: 'full_numbers',
       columns: [
-      {"data": "ID"},
-      {"data": "Name"},
-      {"data": "Label"},
-      {"data": "Weight"},
-      {"data": "View"},
-      {"data": "Edit"},
+        { "data": "ID" },
+        { "data": "Name" },
+        { "data": "Label" },
+        { "data": "Weight" },
+        { "data": "View" },
+        { "data": "Edit" },
       ]
     };
   }
 
-  show(value: any){
+  show(value: any, edit: boolean = false) {
     this.currentVar = value
+    if (edit) {
+      this.editing = false
+    } else {
+      this.editing = true
+    }
     console.log(value)
     this.modalComponent?.openModal();
   }
 
-  edit(value: any){
-    console.log(value)
-  }
 }

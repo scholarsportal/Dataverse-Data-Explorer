@@ -27,55 +27,58 @@
 
 <ngx-datatable #table [rows]="vars$ | async" [columns]="columns">
 
-        <ngx-datatable-column name="ID">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{row['@_ID']}}
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="ID">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['@_ID']}}
+        </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Name">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{row['@_name']}}
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Name">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['@_name']}}
+        </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Label">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{row.labl ? row['labl']['#text'] : "No Label"}}
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Label">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row.labl ? row['labl']['#text'] : "No Label"}}
+        </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Weight">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{row['wgt-var'] ? row['wgt-var']['#text'] : "No Weight"}}
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Weight">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['wgt-var'] ? row['wgt-var']['#text'] : "No Weight"}}
+        </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="View">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{row['@_ID']}}
-                <button (click)="show(row)">View Variable</button>
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="View">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <button (click)="show(row)">View Variable</button>
+        </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Edit"></ngx-datatable-column>
+    <ngx-datatable-column name="Edit">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <button (click)="show(row, true)">Edit Variable</button>
+        </ng-template>
+    </ngx-datatable-column>
 
-    </ngx-datatable>
+</ngx-datatable>
 
 <app-modal class="w-max">
-  <!-- MODAL HEADER -->
-  <div class="modal-header flex flex-col">
-  </div>
+    <!-- MODAL HEADER -->
+    <div class="modal-header flex flex-col">
+    </div>
 
-  <!-- MAIN MODAL SECTION -->
-  <div class="modal-body">
-      BODY
-  </div>
+    <!-- MAIN MODAL SECTION -->
+    <div class="modal-body">
+        BODY
+    </div>
 
-  <!-- MODAL FOOTER -->
-  <div class="modal-footer">
-    <button>
-      {{ "fjd" }}
-    </button>
-  </div>
+    <!-- MODAL FOOTER -->
+    <div class="modal-footer">
+        <button>
+            {{ "fjd" }}
+        </button>
+    </div>
 </app-modal>
