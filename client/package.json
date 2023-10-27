@@ -21,6 +21,7 @@
     "@ngrx/effects": "^16.3.0",
     "@ngrx/store": "^16.3.0",
     "@ngrx/store-devtools": "^16.3.0",
+    "@swimlane/ngx-datatable": "^20.1.0",
     "angular-datatables": "^16.0.0",
     "datatables.net": "^1.11.3",
     "datatables.net-dt": "^1.11.3",

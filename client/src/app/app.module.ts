@@ -1,6 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -13,6 +12,9 @@ import { appReducer } from 'src/state/reducers';
 import { DataFetchEffect } from 'src/state/init.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ChartComponent } from './components/modal/chart/chart.component';
+import { FormComponent } from './components/modal/form/form.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { DataTablesModule } from 'angular-datatables';
     HeaderComponent,
     SidebarComponent,
     TableComponent,
-    ModalComponent
+    ModalComponent,
+    ChartComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,8 @@ import { DataTablesModule } from 'angular-datatables';
     // Add this line to 'activate effects for actions'
     EffectsModule.forRoot([DataFetchEffect]),
     // Angular Datatables
-    DataTablesModule
+    DataTablesModule,
+    NgxDatatableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
