@@ -1,1 +1,17 @@
-<p>table works!</p>
+    <table *ngIf="loaded$ | async as loadedValue">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Weight</th>
+            <th>View</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of vars$ | async">
+                <td>
+                {{show(item)}}
+                {{item['@_ID']}}
+                </td>
+            </tr>
+        </tbody>
+    </table>

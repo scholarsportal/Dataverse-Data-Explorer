@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from 'src/state/reducers';
 import { DataFetchEffect } from 'src/state/init.effects';
 import { HttpClientModule } from '@angular/common/http';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
     StoreModule.forRoot({ dataset: appReducer }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     // Add this line to 'activate effects for actions'
-    EffectsModule.forRoot([DataFetchEffect])
+    EffectsModule.forRoot([DataFetchEffect]),
+    // Angular Datatables
+    DataTablesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
