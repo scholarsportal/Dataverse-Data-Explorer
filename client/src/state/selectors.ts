@@ -14,3 +14,11 @@ export const selectDatasetTitle = createSelector(selectFeature, (state) => {
 export const selectDatasetVars = createSelector(selectFeature, (state) => {
     return state.dataset.data?.codeBook?.dataDscr?.var
 });
+
+export const checkEditing = createSelector(selectFeature, (state) => {
+    return state.openVariable.editing
+})
+
+export const getVariable = createSelector(selectFeature, (state) => {
+    return state.openVariable.variable
+})

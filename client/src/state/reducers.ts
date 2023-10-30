@@ -7,6 +7,10 @@ export interface State {
     data: any;
     error: any;
   };
+  openVariable: {
+    editing: boolean;
+    variable: any;
+  };
   upload: {
     status: string;
     error: any;
@@ -21,6 +25,10 @@ const initialState: State = {
     data: null,
     error: null,
   },
+  openVariable: {
+    editing: false,
+    variable: null
+  },
   upload: {
     status: '',
     error: null,
@@ -34,6 +42,8 @@ export const reducer = createReducer(
   on(Actions.fetchDataset, (state) => ({ ...state, dataset: { status: 'pending', data: null, error: null } })),
   on(Actions.datasetLoadPending, (state) => ({ ...state, dataset: { ...state.dataset, status: 'pending' } })),
   on(Actions.datasetLoadSuccess, (state, { data }) => ({ ...state, dataset: { status: 'success', data, error: null } })),
+  on(Actions.variableViewChart, (state, { variable }) => ({ ...state, openVariable: { editing: false, variable: variable } })),
+  on(Actions.variableViewDetail, (state, { variable }) => ({ ...state, openVariable: { editing: true, variable: variable } })),
   // on(Actions.datasetLoadError, (state, { error }) => ({ ...state, dataset: { status: 'error', data: null, error } })),
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),

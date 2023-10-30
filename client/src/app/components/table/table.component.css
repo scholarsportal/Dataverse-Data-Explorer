@@ -1,0 +1,3 @@
+.modal {
+    @apply w-max rounded-md m-3;
+}

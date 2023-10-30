@@ -25,7 +25,11 @@ export const datasetDownload = createAction('[Dataset] Download');
 // The header component will display 'Local Copy Saved' when this is dipatched
 export const datasetLocalSave = createAction('[Dataset] Local Save', props<{dataset: any}>());
 // The modal component will listen for this and launch a modal using the variable data
+export const variableViewDetail = createAction('[Variable] View Detail', props<{ variable: string }>());
+// The modal component will listen for this and launch a modal using the variable data
 export const variableChangeDetail = createAction('[Variable] Change Detail', props<{ variable: any }>());
+// The modal component will listen for this and launch a modal using the variable data
+export const variableViewChart = createAction('[Variable] View Chart', props<{ variable: string }>());
 // The table component will dispatch the variable id, to be added to the current list of selected variables
 export const variableAddToSelectGroup = createAction('[Variable] Add To Select Group', props<{ variable: any }>());
 // Add the current list of selected variables to the list of variables in specified group.

@@ -7,17 +7,13 @@ import { selectData, selectDatasetTitle } from 'src/state/selectors';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   title$ = this.store.select(selectDatasetTitle);
   data: any
 
   constructor(private store: Store) {
   }
-
-  ngOnInit(): void {
-    console.log("he")
-    }
 
   show(){
     this.store.select(selectData).subscribe((data) => {

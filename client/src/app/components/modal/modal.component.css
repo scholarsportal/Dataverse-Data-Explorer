@@ -1,0 +1,19 @@
+.modal {
+  @apply fixed w-full md:w-2/3 inset-0 z-40 rounded-lg border bg-white border-gray-300;
+}
+
+.modal-button {
+  @apply rounded-lg bg-black px-4 py-2 text-white font-bold;
+}
+
+.modal-header {
+  @apply min-h-max border-b p-3;
+}
+
+.modal-body {
+  @apply m-3;
+}
+
+.modal-footer {
+  @apply border-t mt-3 p-3;
+}

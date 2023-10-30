@@ -1,30 +1,3 @@
-<!-- <table datatable [dtOptions]="dtOptions" *ngIf="loaded$ | async as loadedValue">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Label</th>
-            <th>Weight</th>
-            <th>View</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of vars$ | async">
-            <td>
-                {{item['@_ID']}}
-            </td>
-            <td>
-                {{item['@_name']}}
-            </td>
-            <td>
-                {{item.labl ? item['labl']['#text'] : "No Label"}}
-            </td>
-            <td>{{item.labl ? item['labl']['#text'] : "No Label"}}</td>
-            <td>Edit</td>
-        </tr>
-    </tbody>
-</table> -->
-
 <ngx-datatable #table [rows]="vars$ | async" [columns]="columns">
 
     <ngx-datatable-column name="ID">
@@ -47,19 +20,19 @@
 
     <ngx-datatable-column name="Weight">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{row['wgt-var'] ? row['wgt-var']['#text'] : "No Weight"}}
+            {{row['@_wgt-var'] ? row['@_wgt-var'] : "No Weight"}}
         </ng-template>
     </ngx-datatable-column>
 
     <ngx-datatable-column name="View">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <button (click)="show(row)">View Variable</button>
+            <button (click)="viewChart(row)">View Variable</button>
         </ng-template>
     </ngx-datatable-column>
 
     <ngx-datatable-column name="Edit">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <button (click)="show(row, true)">Edit Variable</button>
+            <button (click)="editVar(row)">Edit Variable</button>
         </ng-template>
     </ngx-datatable-column>
 
@@ -68,17 +41,24 @@
 <app-modal class="w-max">
     <!-- MODAL HEADER -->
     <div class="modal-header flex flex-col">
+        <div class="text-2xl">{{ heading }}</div>
     </div>
 
     <!-- MAIN MODAL SECTION -->
     <div class="modal-body">
-        BODY
+        <app-form *ngIf="isEditing$ | async; else chart"></app-form>
+        <ng-template #chart>
+            <app-chart></app-chart>
+        </ng-template>
     </div>
 
     <!-- MODAL FOOTER -->
     <div class="modal-footer">
-        <button>
-            {{ "fjd" }}
+        <button (click)="close()">
+            Update
+        </button>
+        <button (click)="close()">
+            Cancel
         </button>
     </div>
 </app-modal>
