@@ -26,10 +26,14 @@ export const datasetDownload = createAction('[Dataset] Download');
 export const datasetLocalSave = createAction('[Dataset] Local Save', props<{dataset: any}>());
 // The modal component will listen for this and launch a modal using the variable data
 export const variableViewDetail = createAction('[Variable] View Detail', props<{ variable: string }>());
+// Notify component on graph creation success
+export const variableCreateGraphSuccess = createAction('[Variable] Create Graph Success', props<{id: string, weighted: any, unweighted: any }>());
+// Throw an error if the calculation cannot be completed for some reason
+export const variableCreateGraphError = createAction('[Variable] Create Graph Error', props<{ error: any }>());
 // The modal component will listen for this and launch a modal using the variable data
 export const variableChangeDetail = createAction('[Variable] Change Detail', props<{ variable: any }>());
 // The modal component will listen for this and launch a modal using the variable data
-export const variableViewChart = createAction('[Variable] View Chart', props<{ variable: string }>());
+export const variableViewChart = createAction('[Variable] View Chart', props<{ id: string, variable: string }>());
 // The table component will dispatch the variable id, to be added to the current list of selected variables
 export const variableAddToSelectGroup = createAction('[Variable] Add To Select Group', props<{ variable: any }>());
 // Add the current list of selected variables to the list of variables in specified group.

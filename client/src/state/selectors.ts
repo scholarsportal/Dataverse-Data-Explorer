@@ -22,3 +22,11 @@ export const checkEditing = createSelector(selectFeature, (state) => {
 export const getVariable = createSelector(selectFeature, (state) => {
     return state.openVariable.variable
 })
+
+export const getOpenVariableGraphValues = createSelector(selectFeature, (state) => {
+    return state.openVariable.graph
+})
+
+export const getVariablePreviouslyOpen = (id: string) => createSelector(selectFeature, (state) => {
+    return state.openVariable.previouslyOpen[id]
+})

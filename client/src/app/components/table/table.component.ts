@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getDataFetchStatus, selectDatasetVars, checkEditing, getVariable } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
@@ -41,7 +41,7 @@ export class TableComponent {
   }
 
   viewChart(value: any) {
-    this.store.dispatch(variableViewChart({ variable: value }))
+    this.store.dispatch(variableViewChart({ id: value['@_ID'], variable: value }))
     this.setHeading(value)
     this.modalComponent?.openModal();
   }
