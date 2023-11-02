@@ -1,6 +1,44 @@
 import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
 
+export interface CatStat {
+  "#text": number | string,
+  "@_type": string,
+  "@_wgtd"?: string
+}
+
+export type Catgry = CatStat[]
+
+export interface Variables {
+  [id: string]: {
+    "@_ID": string;
+    "@_name": string;
+    "@_intrvl": string;
+    "@_wgt-var": string;
+    labl: {
+      "#text": string;
+      "@_level": string;
+    };
+    location: {
+      "@_fileid": string;
+    };
+    notes: {
+      "#text": string;
+      "@_subject": string;
+      "@_level": string;
+      "@_type": string;
+    };
+    sumStat: {
+      "#text": number | string;
+      "@_type": string;
+    }[];
+    varFormat: {
+      "@_type": string;
+    };
+    catgry?: Catgry;
+  }
+}
+
 export interface GraphObject {
   [id: string]: {
     weighted: { label: string; frequency: number }[];
@@ -13,6 +51,8 @@ export interface State {
     status: string;
     data: any;
     error: any;
+    variables: Variables;
+    groups: any;
   };
   openVariable: {
     editing: boolean;
@@ -25,7 +65,6 @@ export interface State {
     error: any;
   };
   variables: any[];
-  groups: any[];
 }
 
 const initialState: State = {
@@ -33,6 +72,8 @@ const initialState: State = {
     status: '',
     data: null,
     error: null,
+    variables: {},
+    groups: null
   },
   openVariable: {
     editing: false,
@@ -45,34 +86,50 @@ const initialState: State = {
     error: null,
   },
   variables: [],
-  groups: [],
 };
 
 export const reducer = createReducer(
   initialState,
-  on(Actions.fetchDataset, (state) => ({ ...state, dataset: { status: 'pending', data: null, error: null } })),
-  on(Actions.datasetLoadPending, (state) => ({ ...state, dataset: { ...state.dataset, status: 'pending' } })),
-  on(Actions.datasetLoadSuccess, (state, { data }) => ({ ...state, dataset: { status: 'success', data, error: null } })),
-  on(Actions.variableViewChart, (state, { variable }) => ({ ...state, openVariable: { ...state.openVariable, editing: false, variable: variable } })),
-  on(Actions.variableViewDetail, (state, { variable }) => ({ ...state, openVariable: { ...state.openVariable, editing: true, variable: variable } })),
+  // When the page first loads
+  on(Actions.fetchDataset, (state) =>
+    ({ ...state, dataset: { ...state.dataset, status: 'init' } })),
+  on(Actions.datasetLoadPending, (state) =>
+    ({ ...state, dataset: { ...state.dataset, status: 'pending' } })),
+  on(Actions.datasetLoadSuccess, (state, { data }) =>
+    ({ ...state, dataset: { ...state.dataset, status: 'success', data, error: null } })),
+  on(Actions.datasetLoadError, (state, { error }) =>
+    ({ ...state, dataset: {...state.dataset, status: 'error', data: null, error } })),
+
+  // When the dataset loads
+  on(Actions.datasetCreateMetadataSuccess, (state, { groups, variables }) =>
+    ({ ...state, dataset: {...state.dataset, groups, variables } })),
+  on(Actions.datasetCreateMetadataError, (state) =>
+    ({ ...state, dataset: {...state.dataset, groups: [] } })),
+
+  // When the user clicks the chart button
+  on(Actions.variableViewChart, (state, { variable }) =>
+    ({ ...state, openVariable: { ...state.openVariable, editing: false, variable: variable } })),
   on(Actions.variableCreateGraphSuccess, (state, { id, weighted, unweighted }) =>
-  ({
-    ...state, openVariable: {
-      ...state.openVariable, graph: {weighted, unweighted}, previouslyOpen: {
-        ...state.openVariable.previouslyOpen,
-        [id]: { weighted, unweighted }
+    ({
+      ...state, openVariable: {
+        ...state.openVariable, graph: { weighted, unweighted }, previouslyOpen: {
+          ...state.openVariable.previouslyOpen,
+          [id]: { weighted, unweighted }
+        }
       }
     }
-  }
-  )),
-  on(Actions.variableCreateGraphError, (state, {error}) =>
-  ({
-    ...state, openVariable: {
-      ...state.openVariable, graph: null
-    }
-  }
-  )),
-  // on(Actions.datasetLoadError, (state, { error }) => ({ ...state, dataset: { status: 'error', data: null, error } })),
+    )),
+  on(Actions.variableCreateGraphError, (state) =>
+    ({
+       ...state, openVariable: {
+       ...state.openVariable, graph: null
+       }
+     }
+    )),
+
+  // When the user clicks the edit button
+  on(Actions.variableViewDetail, (state, { variable }) =>
+    ({ ...state, openVariable: { ...state.openVariable, editing: true, variable: variable } })),
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),

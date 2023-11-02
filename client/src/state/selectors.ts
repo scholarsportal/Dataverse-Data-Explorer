@@ -5,6 +5,12 @@ export const selectFeature = createFeatureSelector<fromReducer.State>('dataset')
 
 export const selectData = createSelector(selectFeature, (state) => state.dataset.data);
 
+export const selectGroups = createSelector(selectFeature, (state) => state.dataset.groups);
+
+export const selectVariableByID = (id: string) => createSelector(selectFeature, (state) => {
+    return state.dataset.variables[id]
+})
+
 export const getDataFetchStatus = createSelector(selectFeature, (state) => state.dataset.status);
 
 export const selectDatasetTitle = createSelector(selectFeature, (state) => {

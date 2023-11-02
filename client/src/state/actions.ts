@@ -1,4 +1,7 @@
 import { createAction, props } from '@ngrx/store';
+import { Variables } from './reducers';
+
+// When the data is fetched from the API, it will create variable groups
 
 /* API CALLS */
 // On first page load, the API will be called with a siteURL and fileID
@@ -20,20 +23,27 @@ export const datasetUploadSuccess = createAction('[Dataset] Upload Success');
 export const datasetUploadError = createAction('[Dataset] Upload Error', props<{ error: any }>());
 
 /* LOCAL CHANGES */
-// The notification component will display download when this is dipatched
-export const datasetDownload = createAction('[Dataset] Download');
-// The header component will display 'Local Copy Saved' when this is dipatched
-export const datasetLocalSave = createAction('[Dataset] Local Save', props<{dataset: any}>());
+// Create variable groups and list of variables for easy access and change
+export const datasetCreateMetadata = createAction('[Dataset] Create Variable Groups and Variables', props<{ data: any }>());
+// Variable group created successfully
+export const datasetCreateMetadataSuccess = createAction('[Create Variable Group] Success', props<{ groups: any[], variables: Variables }>());
+// Variable group could not created
+export const datasetCreateMetadataError = createAction('[Create Variable Group] Error', props<{ error: any }>());
 // The modal component will listen for this and launch a modal using the variable data
 export const variableViewDetail = createAction('[Variable] View Detail', props<{ variable: string }>());
 // Notify component on graph creation success
-export const variableCreateGraphSuccess = createAction('[Variable] Create Graph Success', props<{id: string, weighted: any, unweighted: any }>());
+export const variableCreateGraphSuccess = createAction('[Variable] Create Graph Success', props<{ id: string, weighted: any, unweighted: any }>());
 // Throw an error if the calculation cannot be completed for some reason
 export const variableCreateGraphError = createAction('[Variable] Create Graph Error', props<{ error: any }>());
 // The modal component will listen for this and launch a modal using the variable data
 export const variableChangeDetail = createAction('[Variable] Change Detail', props<{ variable: any }>());
 // The modal component will listen for this and launch a modal using the variable data
 export const variableViewChart = createAction('[Variable] View Chart', props<{ id: string, variable: string }>());
+
+// The notification component will display download when this is dipatched
+export const datasetDownload = createAction('[Dataset] Download');
+// The header component will display 'Local Copy Saved' when this is dipatched
+export const datasetLocalSave = createAction('[Dataset] Local Save', props<{ dataset: any }>());
 // The table component will dispatch the variable id, to be added to the current list of selected variables
 export const variableAddToSelectGroup = createAction('[Variable] Add To Select Group', props<{ variable: any }>());
 // Add the current list of selected variables to the list of variables in specified group.

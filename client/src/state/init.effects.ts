@@ -1,20 +1,40 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from "rxjs";
+import { catchError, map, mergeMap, of, switchMap } from "rxjs";
 import { DdiService } from "src/app/services/ddi.service";
-import { fetchDataset } from "./actions";
 import * as fromActions from "./actions";
+import { Variables } from "./reducers";
 
 @Injectable()
 export class DataFetchEffect {
     fetchDataset$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(fetchDataset),
+            ofType(fromActions.fetchDataset),
             switchMap(action =>
                 this.ddi.get(action.fileID, action.siteURL).pipe(map(data => fromActions.datasetLoadSuccess({ data })),
                     catchError(error => of(fromActions.datasetLoadError(error)))))
         )
     )
+
+    createVariableGroups = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromActions.datasetLoadSuccess),
+            mergeMap(action => {
+                const { data } = action;
+                try {
+                    // Here, we create metadata from the loaded data and dispatch the success or error action accordingly
+                    // If the metadata returns a warning (it loads the variables and groups with hiccups), we need to handle that gracefully
+                    const metadata = this.createVarMetadata(data.codeBook);
+                    return of(fromActions.datasetCreateMetadataSuccess({ groups: metadata.groups, variables: metadata.variables }));
+                } catch (error) {
+                    return of(fromActions.datasetCreateMetadataError({ error }));
+                }
+            }),
+            catchError(error => {
+                return of(fromActions.datasetCreateMetadataError({ error }))
+            })
+        )
+    );
 
     createNewVarGraph$ = createEffect(() =>
         this.actions$.pipe(
@@ -31,6 +51,26 @@ export class DataFetchEffect {
         ))
 
     constructor(private actions$: Actions, private ddi: DdiService) {}
+
+    createVarMetadata(data: any) {
+
+        const variables: Variables = {};
+        const groups: any = {}
+
+        const vars: any = data.dataDscr.var || [];
+        vars.forEach(( item: any ) => variables[item['@_ID']] = item);
+
+        const varGrps: any = data.dataDscr.varGrp || [];
+        varGrps.forEach(( item: any ) => {
+            // Here I have the option to create the variabes directly in the groups
+            // by using the resulting variable list as a reference.
+            // I am choosing not to, because the potential worst case complexity is
+            // n^n
+            groups[item['@_ID']] = { item, variable: item['@_var'].split(" ") }
+        });
+
+        return { groups, variables }
+    }
 
     createGraphObject(variable: any) {
         // Perform the calculations and return the result.

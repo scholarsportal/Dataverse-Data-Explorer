@@ -26,7 +26,6 @@ export class DdiService {
     return this.http.get<any>(this.searchURL, options).pipe(
       map(data => {
         if (data) {
-          console.log(data)
           return data;
         }
       })
