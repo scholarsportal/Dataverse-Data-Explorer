@@ -54,6 +54,7 @@ export interface State {
     variables: Variables;
     groups: any;
   };
+  openGroup: string;
   openVariable: {
     editing: boolean;
     variable: any;
@@ -75,6 +76,7 @@ const initialState: State = {
     variables: {},
     groups: null
   },
+  openGroup: '',
   openVariable: {
     editing: false,
     variable: null,
@@ -98,38 +100,61 @@ export const reducer = createReducer(
   on(Actions.datasetLoadSuccess, (state, { data }) =>
     ({ ...state, dataset: { ...state.dataset, status: 'success', data, error: null } })),
   on(Actions.datasetLoadError, (state, { error }) =>
-    ({ ...state, dataset: {...state.dataset, status: 'error', data: null, error } })),
+    ({ ...state, dataset: { ...state.dataset, status: 'error', data: null, error } })),
 
   // When the dataset loads
   on(Actions.datasetCreateMetadataSuccess, (state, { groups, variables }) =>
-    ({ ...state, dataset: {...state.dataset, groups, variables } })),
+    ({ ...state, dataset: { ...state.dataset, groups, variables } })),
   on(Actions.datasetCreateMetadataError, (state) =>
-    ({ ...state, dataset: {...state.dataset, groups: [] } })),
+    ({ ...state, dataset: { ...state.dataset, groups: [] } })),
 
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { variable }) =>
     ({ ...state, openVariable: { ...state.openVariable, editing: false, variable: variable } })),
   on(Actions.variableCreateGraphSuccess, (state, { id, weighted, unweighted }) =>
-    ({
-      ...state, openVariable: {
-        ...state.openVariable, graph: { weighted, unweighted }, previouslyOpen: {
-          ...state.openVariable.previouslyOpen,
-          [id]: { weighted, unweighted }
-        }
+  ({
+    ...state, openVariable: {
+      ...state.openVariable, graph: { weighted, unweighted }, previouslyOpen: {
+        ...state.openVariable.previouslyOpen,
+        [id]: { weighted, unweighted }
       }
     }
-    )),
+  }
+  )),
   on(Actions.variableCreateGraphError, (state) =>
-    ({
-       ...state, openVariable: {
-       ...state.openVariable, graph: null
-       }
-     }
-    )),
+  ({
+    ...state, openVariable: {
+      ...state.openVariable, graph: null
+    }
+  }
+  )),
 
   // When the user clicks the edit button
   on(Actions.variableViewDetail, (state, { variable }) =>
     ({ ...state, openVariable: { ...state.openVariable, editing: true, variable: variable } })),
+
+  // When the user clicks a group
+  on(Actions.groupSelected, (state, { groupID }) =>
+    ({ ...state, openGroup: groupID })),
+
+  // User selects a book
+  on(Actions.datasetGroupVariablesUpdatedSuccess, (state, { groupID, variables }) =>
+  ({
+    ...state,
+    openGroup: groupID,
+    dataset: {
+      ...state.dataset,
+      groups: {
+        ...state.dataset.groups,
+        [groupID]: {
+          ...state.dataset.groups[groupID],
+          variables
+        }
+      }
+    }
+  })
+  ),
+
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),

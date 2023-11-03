@@ -11,6 +11,13 @@ export const selectVariableByID = (id: string) => createSelector(selectFeature, 
     return state.dataset.variables[id]
 })
 
+// Create a new selector to get variables by an array of IDs
+export const selectVariablesByIDs = (ids: string[]) =>
+  createSelector(
+    selectFeature,
+    (state) => ids.map((id) => selectVariableByID(id)(state))
+  );
+
 export const getDataFetchStatus = createSelector(selectFeature, (state) => state.dataset.status);
 
 export const selectDatasetTitle = createSelector(selectFeature, (state) => {

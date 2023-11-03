@@ -1,6 +1,7 @@
 <ul *ngIf="groups$ | async" class="flex flex-col h-max w-full">
     <div class="text-xl font-bold">Groups</div>
-    <li *ngFor="let item of ( groups$ | async ) | keyvalue" id="{{  item.key  }}" class="my-2">
+    <button class="my-2" (click)="changeGroup('')">All Variables</button>
+    <button *ngFor="let item of ( groups$ | async ) | keyvalue" id="{{  item.key  }}" class="my-2 text-left" (click)="changeGroup(item.value)">
         {{getLabel( item.value )}}
-    </li>
+    </button>
 </ul>

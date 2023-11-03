@@ -36,6 +36,22 @@ export class DataFetchEffect {
         )
     );
 
+    // createGroupVariables$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(fromActions.groupSelected),
+    //         switchMap(action => {
+    //             const { groupID, data } = action;
+    //             try {
+
+    //                 const {variables, other} = this.createGroupVars(groupID, data);
+    //                 return of(fromActions.datasetGroupVariablesUpdatedSuccess({groupID, variables, other}));
+    //             } catch (error) {
+    //                 return of(fromActions.datasetCreateMetadataError({error}))
+    //             }
+    //         })
+    //     )
+    //     )
+
     createNewVarGraph$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromActions.variableViewChart),
@@ -51,6 +67,14 @@ export class DataFetchEffect {
         ))
 
     constructor(private actions$: Actions, private ddi: DdiService) {}
+
+    createGroupVars(groupID: any, data: any){
+        console.log(groupID)
+        console.log(data)
+        const variables = {}
+        const other = {}
+        return {variables, other}
+    }
 
     createVarMetadata(data: any) {
 
