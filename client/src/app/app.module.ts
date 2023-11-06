@@ -15,6 +15,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartComponent } from './components/modal/chart/chart.component';
 import { FormComponent } from './components/modal/form/form.component';
+import { GroupTableComponent } from './components/table/group-table/group-table.component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 
 @NgModule({
   declarations: [
@@ -24,16 +26,21 @@ import { FormComponent } from './components/modal/form/form.component';
     TableComponent,
     ModalComponent,
     ChartComponent,
-    FormComponent
+    FormComponent,
+    GroupTableComponent
   ],
   imports: [
     BrowserModule,
     // Add this line to activate http client
     HttpClientModule,
-    StoreModule.forRoot({ dataset: appReducer }, {}),
+    StoreModule.forRoot({ globalState: appReducer }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     // Add this line to 'activate effects for actions'
     EffectsModule.forRoot([DataFetchEffect]),
+    // Using ngIf with ngRx
+    LetDirective,
+    // Using @Input with ngRx
+    PushPipe,
     // Angular Datatables
     DataTablesModule,
     NgxDatatableModule

@@ -137,23 +137,23 @@ export const reducer = createReducer(
   on(Actions.groupSelected, (state, { groupID }) =>
     ({ ...state, openGroup: groupID })),
 
-  // User selects a book
-  on(Actions.datasetGroupVariablesUpdatedSuccess, (state, { groupID, variables }) =>
-  ({
-    ...state,
-    openGroup: groupID,
-    dataset: {
-      ...state.dataset,
-      groups: {
-        ...state.dataset.groups,
-        [groupID]: {
-          ...state.dataset.groups[groupID],
-          variables
-        }
-      }
-    }
-  })
-  ),
+  // User selects a group
+  // on(Actions.datasetGroupVariablesUpdatedSuccess, (state, { groupID, variables }) =>
+  // ({
+  //   ...state,
+  //   openGroup: groupID,
+  //   dataset: {
+  //     ...state.dataset,
+  //     groups: {
+  //       ...state.dataset.groups,
+  //       [groupID]: {
+  //         ...state.dataset.groups[groupID],
+  //         variables
+  //       }
+  //     }
+  //   }
+  // })
+  // ),
 
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),

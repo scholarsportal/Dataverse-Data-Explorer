@@ -14,10 +14,4 @@ export class HeaderComponent {
 
   constructor(private store: Store) {
   }
-
-  show(){
-    this.store.select(selectData).subscribe((data) => {
-      if(data) console.log(data.codeBook)
-    })
-  }
 }

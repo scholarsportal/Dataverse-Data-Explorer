@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { groupSelected } from 'src/state/actions';
-import { selectGroups, selectVariablesByIDs } from 'src/state/selectors';
+import { selectGroups } from 'src/state/selectors';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,9 +18,13 @@ export class SidebarComponent {
     return selection?.item?.labl || "<NO LABEL ON GROUP>"
   }
 
-  changeGroup(selection: any) {
-    console.log(selection.item['@_ID'])
-    const groupID = { groupID: selection.item['@_ID'] }
-    this.store.dispatch(groupSelected(groupID))
+  changeGroup(selection: any | string) {
+    if (selection === '') {
+      this.store.dispatch(groupSelected({groupID: ''}))
+    } else {
+      const groupID = { groupID: selection.item['@_ID'] }
+      // console.log(groupID)
+      this.store.dispatch(groupSelected(groupID))
+    }
   }
 }

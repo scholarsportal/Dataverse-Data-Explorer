@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fetchDataset } from 'src/state/actions';
+import { checkOpenGroup, selectDatasetVars } from 'src/state/selectors';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,13 @@ import { fetchDataset } from 'src/state/actions';
 })
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
+  openGroup$ = this.store.select(checkOpenGroup)
+  vars$: any = this.store.select(selectDatasetVars);
 
   constructor(private store: Store) {
   }
 
-  ngOnInit(){
-    this.store.dispatch(fetchDataset({fileID: '661483', siteURL: 'https://borealisdata.ca'}))
+  ngOnInit() {
+    this.store.dispatch(fetchDataset({ fileID: '661483', siteURL: 'https://borealisdata.ca' }))
   }
 }

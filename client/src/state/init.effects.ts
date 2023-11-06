@@ -36,22 +36,6 @@ export class DataFetchEffect {
         )
     );
 
-    // createGroupVariables$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(fromActions.groupSelected),
-    //         switchMap(action => {
-    //             const { groupID, data } = action;
-    //             try {
-
-    //                 const {variables, other} = this.createGroupVars(groupID, data);
-    //                 return of(fromActions.datasetGroupVariablesUpdatedSuccess({groupID, variables, other}));
-    //             } catch (error) {
-    //                 return of(fromActions.datasetCreateMetadataError({error}))
-    //             }
-    //         })
-    //     )
-    //     )
-
     createNewVarGraph$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromActions.variableViewChart),
@@ -68,24 +52,16 @@ export class DataFetchEffect {
 
     constructor(private actions$: Actions, private ddi: DdiService) {}
 
-    createGroupVars(groupID: any, data: any){
-        console.log(groupID)
-        console.log(data)
-        const variables = {}
-        const other = {}
-        return {variables, other}
-    }
-
     createVarMetadata(data: any) {
 
         const variables: Variables = {};
         const groups: any = {}
 
         const vars: any = data.dataDscr.var || [];
-        vars.forEach(( item: any ) => variables[item['@_ID']] = item);
+        vars.forEach((item: any) => variables[item['@_ID']] = item);
 
         const varGrps: any = data.dataDscr.varGrp || [];
-        varGrps.forEach(( item: any ) => {
+        varGrps.forEach((item: any) => {
             // Here I have the option to create the variabes directly in the groups
             // by using the resulting variable list as a reference.
             // I am choosing not to, because the potential worst case complexity is
@@ -106,8 +82,6 @@ export class DataFetchEffect {
                 return weighted ? weighted['#text'] : null;
             })(), // Modify this calculation as needed
         }));
-
-        console.log(weighted)
 
         const unweighted = variable.catgry.map((item: any) => ({
             label: item.label,

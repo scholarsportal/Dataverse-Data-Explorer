@@ -22,7 +22,6 @@ export class ChartComponent implements OnInit {
     this.store.select(getOpenVariableGraphValues).subscribe((data) => {
       this.clearSVG()
       if (data) {
-        console.log(data)
         this.createSVG();
         this.drawBars(data.weighted || data.unweighted || [])
       }
