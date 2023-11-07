@@ -25,22 +25,53 @@ export const selectGroupVariables = createSelector(selectVariables, selectGroups
     }
 })
 
+export const selectGroupTitles = createSelector(selectGroups, (groups) => {
+    return Object.values(groups).map((item: any) => item.labl)
+})
+
 export const getDataFetchStatus = createSelector(selectFeature, (state) => state.dataset.status);
 
 export const selectDatasetTitle = createSelector(selectFeature, (state) => {
     return state.dataset.data?.codeBook?.stdyDscr?.citation?.titlStmt?.titl
 });
 
-export const selectDatasetVars = createSelector(selectFeature, (state) => {
-    return state.dataset.data?.codeBook?.dataDscr?.var
-});
-
 export const checkEditing = createSelector(selectFeature, (state) => {
     return state.openVariable.editing
 })
 
-export const getVariable = createSelector(selectFeature, (state) => {
+export const selectOpenVariable = createSelector(selectFeature, (state) => {
     return state.openVariable.variable
+})
+
+export const selectOpenVarDetail = createSelector(selectOpenVariable, selectGroups, (variable, groups) => {
+    if (variable && groups) {
+        console.log(variable)
+        console.log(groups)
+        const group: any = Object.values(groups).find((item: any) => item.variable.includes(variable['@_ID'])) || null;
+        const groupLabel = group ? group.item.labl : ''
+        // for (const key in groups) {
+        //     console.log(groups[ key ].variable.includes(variable['@_ID'])){group = groups[ key ]}
+        // }
+        const literalQuestion = variable.qstn?.qstnLit || '';
+        const interviewerQuestion = variable.qstn?.ivuInstr || '';
+        const postQuestion = variable.qstn?.postQTxt || '';
+        const universe = variable['universe'] || '';
+        const notes = Array.isArray(variable['notes']) ? variable['notes'][0] : '';
+        return {
+            id: variable['@_ID'],
+            name: variable['@_name'],
+            label: variable['labl']['#text'],
+            literalQuestion: literalQuestion,
+            interviewerQuestion: interviewerQuestion,
+            postQuestion: postQuestion,
+            universe: universe,
+            notes: notes,
+            group: groupLabel,
+            isWeight: variable['@_wgt'] ? true : false,
+            weightVar: variable['@_wgt-var'] ? variable['@_wgt-var'] : '',
+        }
+    }
+    return undefined
 })
 
 export const getOpenVariableGraphValues = createSelector(selectFeature, (state) => {

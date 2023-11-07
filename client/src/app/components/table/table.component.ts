@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getDataFetchStatus, selectDatasetVars, checkEditing, selectGroupVariables } from 'src/state/selectors';
+import { getDataFetchStatus, checkEditing, selectGroupVariables, selectVariables } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
 import { variableViewChart, variableViewDetail } from 'src/state/actions';
 
@@ -13,18 +13,19 @@ export class TableComponent implements OnChanges, OnInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
 
   columns = [{ name: 'ID' }, { name: 'Name' }, { name: 'Label' }, { name: 'Weight' }, { name: 'View' }, { name: 'Edit' },]
-  selectedVariables = []
   heading = "";
   @Input() openGroup?: string;
-  vars$ = [];
+  vars$: any;
   loaded$ = this.store.select(getDataFetchStatus)
   isEditing$ = this.store.select(checkEditing)
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store.select(selectDatasetVars).subscribe(data => {
-      this.vars$ = data
+    this.store.select(selectVariables).subscribe(data => {
+      if (data) {
+        this.vars$ = Object.values(data)
+      }
     })
   }
 
