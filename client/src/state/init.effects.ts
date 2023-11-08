@@ -7,6 +7,9 @@ import { Variables } from "./reducers";
 
 @Injectable()
 export class DataFetchEffect {
+    // this side effect is called when the fetchDataset action is called,
+    // it makes the actual http request and calls success if we get data
+    // and error if we do not
     fetchDataset$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromActions.fetchDataset),

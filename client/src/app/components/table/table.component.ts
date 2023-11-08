@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { getDataFetchStatus, checkEditing, selectGroupVariables, selectVariables } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
 import { variableViewChart, variableViewDetail } from 'src/state/actions';
+import { ColumnMode, SortType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-table',
@@ -13,6 +14,8 @@ export class TableComponent implements OnChanges, OnInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
 
   columns = [{ name: 'ID' }, { name: 'Name' }, { name: 'Label' }, { name: 'Weight' }, { name: 'View' }, { name: 'Edit' },]
+  ColumnMode = ColumnMode;
+  SortType = SortType;
   heading = "";
   @Input() openGroup?: string;
   vars$: any;

@@ -1,12 +1,13 @@
-<ngx-datatable #table [rows]="vars$" [columns]="columns">
+<ngx-datatable #table class="material" [rows]="vars$" [columns]="columns" [limit]="10" [columnMode]="ColumnMode.force"
+    [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [sortType]="SortType.multi">
 
-    <ngx-datatable-column name="ID">
+    <ngx-datatable-column name="ID" headerClass="datatable-header">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
             {{row['@_ID']}}
         </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column name="Name">
+    <ngx-datatable-column name="Name" headerClass="datatable-header">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
             {{row['@_name']}}
         </ng-template>

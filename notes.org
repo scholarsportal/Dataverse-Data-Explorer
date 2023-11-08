@@ -1,4 +1,100 @@
-#+title: Data Curation Tool
+#+TITLE: Data Curation Tool
+#+AUTHOR: nana.
+#+DATE: 2023-10-26
+
+* Project Overview
+
+** Project Name: Odesi - Data Curation Tool
+** Client: Angular v16
+** Server: BunJS
+
+* Table of Contents
+  :PROPERTIES:
+  :TOC: headlines 2
+  :END:
+
+* Introduction
+  - Create a web app that customers can use to view and edit metadata of Dataverse files.
+
+* Code Structure
+  - Provide an overview of the project's directory structure and where code files are located.
+
+* Client
+** Components
+  - There are 5 main components in the client:
+    - header
+    - sidebar
+    - table
+    - modal
+
+** Key Dependencies
+  - ngRx
+  - d3
+
+* Server
+** Components
+  - BunJS.
+
+** Key Dependencies
+  - BunJS.
+  - fast-xml-parser.
+
+* Development Environment
+  - This is here from the template and isn't necessary to understand the project. That being said, this project was developed
+    on ArchLinux, using only DoomEmacs, the UI was largely viewed on Firefox 118.0.2, but also Chromium.
+    Endpoints were tested initially using Postman.
+
+* Configuration
+    - Both the client and the server need .env files.
+      - client uses it for matomo secret
+      - server uses it for dataverse api
+
+* Code Blocks
+
+** Angular Code
+
+*** Component: [Component Name]
+    :PROPERTIES:
+    :ID: angular-component-code
+    :END:
+
+    #+BEGIN_SRC javascript
+    // Angular component code goes here
+    #+END_SRC
+
+** Node.js Code
+
+*** Module: [Module Name]
+    :PROPERTIES:
+    :ID: nodejs-module-code
+    :END:
+
+    #+BEGIN_SRC javascript
+    // Node.js module code goes here
+    #+END_SRC
+
+* Issues and Challenges
+  - Document any issues or challenges faced during development.
+
+* Future Work
+  - Describe any planned enhancements or features for the project.
+
+* References
+  - List any external resources or documentation referenced during the project.
+
+* Conclusion
+  - Summarize the current state of the project.
+
+* TODO List
+  - [ ] Ability to add variable to groups
+  - [ ] Ability to create groups
+  - [ ] Import XML
+
+* Notes
+  - Any additional notes or remarks can be added here.
+
+* End of Document
+
 
 * State management
 The app is an entire state management for a dataset.

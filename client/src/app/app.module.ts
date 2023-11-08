@@ -17,6 +17,7 @@ import { ChartComponent } from './components/modal/chart/chart.component';
 import { FormComponent } from './components/modal/form/form.component';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PushPipe,
     // Angular Datatables
     DataTablesModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
