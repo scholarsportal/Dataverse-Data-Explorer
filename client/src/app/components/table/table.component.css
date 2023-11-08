@@ -7,6 +7,3 @@
 .datatable-header {
   @apply select-none cursor-grabbing;
 }
-.datatable-header {
-    @apply select-none cursor-grabbing;
-}
