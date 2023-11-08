@@ -45,13 +45,8 @@ export const selectOpenVariable = createSelector(selectFeature, (state) => {
 
 export const selectOpenVarDetail = createSelector(selectOpenVariable, selectGroups, (variable, groups) => {
     if (variable && groups) {
-        console.log(variable)
-        console.log(groups)
         const group: any = Object.values(groups).find((item: any) => item.variable.includes(variable['@_ID'])) || null;
         const groupLabel = group ? group.item.labl : ''
-        // for (const key in groups) {
-        //     console.log(groups[ key ].variable.includes(variable['@_ID'])){group = groups[ key ]}
-        // }
         const literalQuestion = variable.qstn?.qstnLit || '';
         const interviewerQuestion = variable.qstn?.ivuInstr || '';
         const postQuestion = variable.qstn?.postQTxt || '';

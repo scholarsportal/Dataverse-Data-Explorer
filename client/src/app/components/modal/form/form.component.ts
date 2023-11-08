@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { combineLatest, combineLatestAll, merge } from 'rxjs';
 import { selectGroupTitles, selectGroups, selectOpenVarDetail, selectOpenVariable } from 'src/state/selectors';
 
 @Component({
@@ -19,28 +20,35 @@ export class FormComponent implements OnInit {
     postQuestion: new FormControl(''),
     universe: new FormControl(''),
     notes: new FormControl(''),
-    group: new FormGroup(''),
+    group: new FormControl(''),
     isWeight: new FormControl(false),
     weightVar: new FormControl(''),
   })
-  groups$ = this.store.select(selectGroups)
-  groupTitles$ = this.store.select(selectGroupTitles)
+  groups: any = [];
+  group = "";
 
   constructor(private store: Store) {
   }
 
   ngOnInit(): void {
-    this.store.select(selectOpenVarDetail).subscribe(data => {
-      if (data) {
-        console.log(data);
-        this.variableForm.patchValue(data);
-        console.log(this.variableForm);
+    const groupDetails = this.store.select(selectGroups)
+    const variableDetails = this.store.select(selectOpenVarDetail)
+    const componentVariables = combineLatest([ groupDetails, variableDetails ])
+    componentVariables.subscribe(data => {
+      if (data && ( data[1] && data[0] )) {
+        this.groups = data[0]
+        this.variableForm.patchValue(data[1]);
+        this.group = data[1].group
       }
     })
   }
 
   getGroupsLabel(value: any) {
     return value?.item?.labl
+  }
+
+  checkSelected(value: any) {
+    return value.item.labl === this.group
   }
 
 }
