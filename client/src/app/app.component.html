@@ -1,1 +1,5 @@
-<app-home></app-home>
+<app-header class="fixed top-0 left-0 w-full z-50"></app-header>
+<div class="flex flex-row h-screen m-4 mt-20">
+    <app-sidebar class="h-screen fixed w-max mr-2 pr-3 border-r"></app-sidebar>
+    <app-table class="w-full ml-64 overflow-y-auto" [openGroup]="openGroup$ | ngrxPush"></app-table>
+</div>
