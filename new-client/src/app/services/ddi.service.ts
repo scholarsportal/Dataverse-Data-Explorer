@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class DdiService {
   private searchURL = `${environment.domain}/`;
   constructor(private http: HttpClient) {}
+
   get(fileID: string, siteURL: string): Observable<any> {
     const parameters = {
       siteURL: siteURL,
