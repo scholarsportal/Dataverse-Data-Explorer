@@ -1,0 +1,44 @@
+<mat-nav-list class="groups-list">
+  <a mat-list-item (click)="addTab()" class="button-header">
+    <span>{{'GROUPS.ADD' | translate}}</span>
+    <span class="fill-space"></span>
+    <mat-icon>add</mat-icon>
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-list-item (click)="showAll()" [ngClass]="{'active': allActive }">{{'GROUPS.ALLVAR' | translate}}</a>
+  <mat-divider></mat-divider>
+  <a mat-list-item
+  id="{{tab.varGrp['@ID']}}"
+  [disableRipple]="true"
+  *ngFor="let tab of variableGroups"
+  (click)="onGroupClick(tab)"
+  (dblclick)="onGroupDblClick(tab)"
+  [ngClass]="{'active': tab.active }"
+  >
+    <span *ngIf="!tab.editable">{{tab.varGrp.labl}}</span>
+    <mat-form-field
+    *ngIf="tab.editable"
+    class="fixed_width"
+    >
+      <input matInput
+      maxLength="50"
+      value="{{tab.varGrp.labl}}"
+      #titleInput
+      (keyup.enter)="renameGroupComplete(tab,titleInput.value)"
+      >
+      <span button mat-icon-button matSuffix color="primary">
+        <mat-icon [attr.aria-label]="'GROUPS.DONE | translate'" matTooltip="{{'GROUPS.SAVE' | translate }}" (click)="renameGroupComplete(tab,titleInput.value )">done</mat-icon>
+      </span>
+      <span button mat-icon-button matSuffix color="primary">
+        <mat-icon [attr.aria-label]="'GROUPS.CANCEL' | translate" matTooltip="{{'GROUPS.CANCEL' | translate }}" (click)="renameGroupCancel(tab)">clear</mat-icon>
+      </span>
+      <span button mat-icon-button matSuffix color="primary">
+        <mat-icon [attr.aria-label]="'GROUPS.DELETE' | translate" matTooltip="{{'GROUPS.DELETE' | translate }}" (click)="groupDelete(tab)">delete</mat-icon>
+      </span>
+    </mat-form-field>
+    <span class="fill-space"></span>
+    <button *ngIf="!tab.editable" mat-icon-button color="primary">
+      <mat-icon [attr.aria-label]="'GROUPS.EDIT' | translate" matTooltip="{{'GROUPS.EDIT' | translate }}" (click)="renameGroup(tab)">edit</mat-icon>
+    </button>
+  </a>
+</mat-nav-list>
