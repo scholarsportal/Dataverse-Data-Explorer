@@ -7,12 +7,16 @@ import { DdiService } from './service/ddi.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private data;
+  data = undefined;
+
   constructor(private ddi: DdiService) {}
 
   ngOnInit(): void {
     this.ddi.get('127759', 'https://borealisdata.ca').subscribe((data: any) => {
-      if (data) console.log(data);
+      if (data) {
+        console.log(data);
+        this.data = data;
+      }
     });
   }
 }

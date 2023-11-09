@@ -54,7 +54,9 @@ import { VarDialogComponent } from './var-dialog/var-dialog.component';
 import { VarStatDialogComponent } from './var-stat-dialog/var-stat-dialog.component';
 import { ChartComponent } from './chart/chart.component';
 import { MyMatPaginatorIntl } from './mat-paginator-intl';
-import { HomeComponent } from './pages/home/HomeComponent';
+import { HomeComponent } from './pages/home/home.component';
+import { HeaderComponent } from './components/common/header/header.component';
+import { SidebarComponent } from './components/common/sidebar/sidebar.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -115,7 +117,9 @@ export function load(
     VarDialogComponent,
     VarStatDialogComponent,
     ChartComponent,
-    HomeComponent
+    HomeComponent,
+    HeaderComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
