@@ -28,9 +28,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ModalComponent,
     ChartComponent,
     FormComponent,
-    HomeComponent,
-    HeaderComponent,
-    SidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,9 +47,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // Angular Datatables
     DataTablesModule,
     NgxDatatableModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
