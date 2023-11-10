@@ -17,7 +17,16 @@ import { ChartComponent } from './components/modal/chart/chart.component';
 import { FormComponent } from './components/modal/form/form.component';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// Material Design Components
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+// New Import
 
 @NgModule({
   declarations: [
@@ -47,6 +56,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // Angular Datatables
     DataTablesModule,
     NgxDatatableModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
     BrowserAnimationsModule
   ],
   providers: [],

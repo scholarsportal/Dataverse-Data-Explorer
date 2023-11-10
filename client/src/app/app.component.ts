@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(
-      fetchDataset({ fileID: '661483', siteURL: 'https://borealisdata.ca' })
+      fetchDataset({ fileID: '663968', siteURL: 'https://borealisdata.ca' })
     );
   }
 }

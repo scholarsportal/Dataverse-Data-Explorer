@@ -1,7 +1,10 @@
 import { Request, Response, Router } from "express";
 import { XMLParser } from "fast-xml-parser";
+import download from "./download/download.route";
 
 const routes = Router();
+
+routes.use("/download", download);
 
 routes.get("/", async function (req: Request, res: Response) {
   const siteURL = req.query.siteURL;

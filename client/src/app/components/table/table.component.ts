@@ -3,6 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  AfterViewInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -16,14 +17,23 @@ import {
 import { ModalComponent } from '../modal/modal.component';
 import { variableViewChart, variableViewDetail } from 'src/state/actions';
 import { ColumnMode, SortType } from '@swimlane/ngx-datatable';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
-export class TableComponent implements OnChanges, OnInit {
+export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
+
+  // Material Table
+  columnMat = ['ID', 'Name', 'Label', 'Weight', 'View', 'Edit'];
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort;
+  sortedData: any;
 
   columns = [
     { name: 'ID' },
@@ -46,9 +56,15 @@ export class TableComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.store.select(selectVariables).subscribe((data) => {
       if (data) {
-        this.vars$ = Object.values(data);
+        // this.vars$ = Object.values(data)
+        this.vars$ = new MatTableDataSource(Object.values(data));
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.vars$.paginator = this.paginator;
+    this.vars$.sort = this.sort;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,6 +74,31 @@ export class TableComponent implements OnChanges, OnInit {
         this.vars$ = data;
       });
     }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.vars$.filter = filterValue.trim().toLowerCase();
+
+    if (this.vars$.paginator) {
+      this.vars$.paginator.firstPage();
+    }
+  }
+
+  // TODO: TO FIX
+  sortData(sort: Sort) {
+    const data = this.vars$;
+    console.log(data);
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sortData(data, sort);
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   setHeading(value: any) {
