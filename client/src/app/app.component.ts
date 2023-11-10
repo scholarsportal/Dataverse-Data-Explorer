@@ -6,16 +6,17 @@ import { checkOpenGroup } from 'src/state/selectors';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
-  openGroup$ = this.store.select(checkOpenGroup)
+  openGroup$ = this.store.select(checkOpenGroup);
 
-  constructor(private store: Store) {
-  }
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(fetchDataset({ fileID: '661483', siteURL: 'https://borealisdata.ca' }))
+    this.store.dispatch(
+      fetchDataset({ fileID: '661483', siteURL: 'https://borealisdata.ca' })
+    );
   }
 }
