@@ -65,15 +65,15 @@ Change upload status to pending.
 Change uploaded status to success.
 *** Dataset Load Error
 Change uploaded status to error.
-*** Dataset Download
-Download XML to local machine.
-*** Dataset Local Save
-Save dataset changes into local storage
 *** Variable Change Detail
 Return new object for specified variable, and change uploaded status to null.
-*** Select book
-Add specified book to list of selectedBooks in state.
-*** Select book
-Add specified book to list of selectedBooks in state.
-*** Select book
-Add specified book to list of selectedBooks in state.
+*** Variable Add to SelectedGroup
+Add variable to list of selected variables.
+*** Group Create New
+Add new empty variable group to state, and change uploaded status to null.
+*** Group Remove
+Remove a specified variable group from state, and change uploaded status to null.
+*** Group Change Name
+Change a specified variable's 'name' property, and change uploaded status to null.
+*** Group Add SelectedGroup
+Add the list of currently selected variables to a specified variable group.
