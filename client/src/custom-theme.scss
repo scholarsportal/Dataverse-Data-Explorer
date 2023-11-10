@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -20,16 +19,17 @@ $client-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$client-theme: mat.define-light-theme((
-  color: (
-    primary: $client-primary,
-    accent: $client-accent,
-    warn: $client-warn,
+$client-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $client-primary,
+      accent: $client-accent,
+      warn: $client-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($client-theme);
-
