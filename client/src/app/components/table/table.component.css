@@ -1,6 +1,6 @@
 .modal {
-    @apply w-max rounded-md m-3;
+  @apply w-max rounded-md m-3;
 }
 .datatable-header {
-    @apply select-none cursor-grabbing;
+  @apply select-none cursor-grabbing;
 }
