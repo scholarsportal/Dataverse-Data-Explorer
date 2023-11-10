@@ -107,6 +107,7 @@ Entry Point: ```interface.component.ts```
 
 * Potential Problems
 - Converting the XML to JSON on the client
+
 * State management
 The app is an entire state management for a dataset.
 ** TODO Users should be able to change variable information. (excluding variable ID and name)
@@ -173,6 +174,7 @@ Remove a specified variable group from state, and change uploaded status to null
 Change a specified variable's 'name' property, and change uploaded status to null.
 *** Group Add SelectedGroup
 Add the list of currently selected variables to a specified variable group.
+
 #+title: Data Curation Tool
 
 * Run Sequence
