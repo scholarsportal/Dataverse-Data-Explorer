@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="fd0576119e96aaa73d0133b72d44d2afc6df3bb0" datatype="html">
+        <source>Variable Information</source>
+        <target>Information sur la variable</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="45cc8ca94b5a50842a9a8ef804a5ab089a38ae5c" datatype="html">
+        <source>ID</source>
+        <target>ID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cff1428d10d59d14e45edec3c735a27b5482db59" datatype="html">
+        <source>Name</source>
+        <target>Nom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="863226cffd5b66a6fee9810a9282a5006d6ef576" datatype="html">
+        <source>Label</source>
+        <target>Étiquette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a3bd3d2322a5b9a41adee53cf2811a3e869888da" datatype="html">
+        <source>Literal Question</source>
+        <target>Question littérale</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="23de7190aa7da9d704243fd67c251d8d239a17f4" datatype="html">
+        <source>Interviewer Instructions</source>
+        <target>Instructions à l'intervieweur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2c27fc1b8e902f7355d6925646af035de714e146" datatype="html">
+        <source>Post Question</source>
+        <target>Afficher question</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d2d576d25bdc97968ed7248a05be1498782f7caa" datatype="html">
+        <source>Universe</source>
+        <target>Univers</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fcde58253a4cfd52c228eebdae74e1be7a1ab714" datatype="html">
+        <source>Notes</source>
+        <target>Remarques</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4c90059afafb7e160384d9f512797c95bb95c6dc" datatype="html">
+        <source>Group</source>
+        <target>Groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d30adcfd802b4ac8d0681e67dc201ca889661dfd" datatype="html">
+        <source>Unweighted</source>
+        <target>Non-pondéré</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6e5bedb2a7077f3f5a985f802b7663e600d64708" datatype="html">
+        <source>Weight Variable</source>
+        <target>Variable de poids</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d1cd9707c5826f57c8133a95f7dfecde3e69cea1" datatype="html">
+        <source>Is Weight</source>
+        <target>Pondéré</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="047f50bc5b5d17b5bec0196355953e1a5c590ddb" datatype="html">
+        <source>Update</source>
+        <target>Mettre à jours</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d7b35c384aecd25a516200d6921836374613dfe7" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-dialog/var-dialog.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f4e529ae5ffd73001d1ff4bbdeeb0a72e342e5c8" datatype="html">
+        <source>Close</source>
+        <target>Fermer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="809b0c848932a41318f77a2aace904ef429c13f4" datatype="html">
+        <source>Values</source>
+        <target>Valeurs</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="04201f9d27abd7d6f58a4328ab98063ce1072006" datatype="html">
+        <source>Categories</source>
+        <target>Catégories</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="06412bce0f4fe4311193e9763666089bf9d980da" datatype="html">
+        <source>Count</source>
+        <target>Nombre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4b20f02e28e643c86ca3373d969e26314f3eedb4" datatype="html">
+        <source>Count Percentage(%)</source>
+        <target>FR Count Percentage(%)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fde73ca8b2fe55c7bdf41f5c725894652ebbc9fc" datatype="html">
+        <source>Weighted Count</source>
+        <target>Chiffre pondéré</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-stat-dialog/var-stat-dialog.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7e892ba15f2c6c17e83510e273b3e10fc32ea016" datatype="html">
+        <source>Search</source>
+        <target>Recherche</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9ca82952a6bc860b5391d5975322d8af8ceddfa4" datatype="html">
+        <source>Select</source>
+        <target>Sélectionner</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5fb7d2f79388ee2293f0bff99fa3c9783b0652f6" datatype="html">
+        <source>Remove from Group</source>
+        <target>Enlever du groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f5292bb56f7def7b111b6472c41f15f276dcd49e" datatype="html">
+        <source>Add to Group</source>
+        <target>Ajouter au groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="919f2fd60a898850c24b1584362bbf18a4628bcb" datatype="html">
+        <source>Weight</source>
+        <target>Poids</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6829218544e108e152f5fa72cb79c4ccb82e0d06" datatype="html">
+        <source>View</source>
+        <target>Visualiser</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="78bd2cf35463ea237922000c3e694e26a0a5b8a7" datatype="html">
+        <source>Group Edit</source>
+        <target>Modification au groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="28f86ffd419b869711aa13f5e5ff54be6d70731c" datatype="html">
+        <source>Edit</source>
+        <target>Modifier</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var/var.component.html</context>
+          <context context-type="linenumber">151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3e5d1f2de467095cb60e180992da78aef4227f11" datatype="html">
+        <source>Hide Groups</source>
+        <target>Cacher les groupes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d8fb1c832ef4363e15e5b73cd887a5ca461518fc" datatype="html">
+        <source>Show Groups</source>
+        <target>Montrer les groupes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dc75033a5238fdc4f462212c847a45ba8018a3fd" datatype="html">
+        <source>Download</source>
+        <target>Télécharger</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
+        <source>Save</source>
+        <target>Sauvegarder</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/interface/interface.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21caf49ce3bfe3f6b84d8b9b5de1f8e39f55c835" datatype="html">
+        <source>Add Group</source>
+        <target>Ajouter un groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4a4c80526ad606c5efd19e6fb7f04081c675d741" datatype="html">
+        <source>All Variables</source>
+        <target>Toutes les variables</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8dd413cee2228118c536f503709329a4d1a395e2" datatype="html">
+        <source>Done</source>
+        <target>Terminé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="826b25211922a1b46436589233cb6f1a163d89b7" datatype="html">
+        <source>Delete</source>
+        <target>Supprimer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dafe1d2d247039dbf82ab0a32559f20d1b5655a4" datatype="html">
+        <source>Edit Group Name</source>
+        <target>Modifier le nom du groupe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/var-group/var-group.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

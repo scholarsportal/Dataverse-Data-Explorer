@@ -1,0 +1,22 @@
+{
+  "displayName": "Data Curation Tool",
+  "description": "Data Curation Tool for curation of variables",
+  "type": "configure",
+  "toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/",
+  "toolParameters": {
+    "queryParameters": [
+     {	
+        "dfId": "{fileId}"	
+     },	
+     {	
+       "siteUrl": "{siteUrl}"	
+     },	
+     {	
+       "key": "{apiToken}"	
+     },
+     {
+        "fileMetadataId" : "{fileMetadataId}"
+     }
+    ]
+  }
+}
