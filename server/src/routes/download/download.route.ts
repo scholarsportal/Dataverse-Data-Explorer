@@ -16,7 +16,7 @@ download.get("/", async function(req: Request, res: Response) {
         const request = await fetch(fetchURL)
         const response = await request.text()
         const parsedJSON = new XMLParser(options).parse(response)
-        console.log(parsedJSON)
+        // console.log(parsedJSON)
         res.json(parsedJSON)
     }
 });
