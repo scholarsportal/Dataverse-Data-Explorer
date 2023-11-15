@@ -1,12 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { combineLatest, combineLatestAll, merge } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { VarGroups } from 'src/state/reducers';
 import {
-  selectGroupTitles,
   selectGroups,
   selectOpenVarDetail,
-  selectOpenVariable,
 } from 'src/state/selectors';
 
 @Component({
@@ -25,33 +24,36 @@ export class FormComponent implements OnInit {
     postQuestion: new FormControl(''),
     universe: new FormControl(''),
     notes: new FormControl(''),
-    group: new FormControl(''),
+    group: new FormControl([]),
     isWeight: new FormControl(false),
     weightVar: new FormControl(''),
   });
-  groups: any = [];
+  groups: VarGroups = {};
   group = '';
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    const groupDetails = this.store.select(selectGroups);
     const variableDetails = this.store.select(selectOpenVarDetail);
-    const componentVariables = combineLatest([groupDetails, variableDetails]);
-    componentVariables.subscribe((data) => {
-      if (data && data[1] && data[0]) {
-        this.groups = data[0];
-        this.variableForm.patchValue(data[1]);
-        this.group = data[1].group;
+    variableDetails.subscribe(({ variable, groups }) => {
+      if (variable && groups) {
+        this.groups = groups;
+        const variableGroups = Object.keys( variable.groups ) as never[]
+        this.variableForm.patchValue(variable);
+        this.variableForm.patchValue({ group: variableGroups });
+        console.log(this.variableForm)
       }
     });
   }
 
   getGroupsLabel(value: any) {
-    return value?.item?.labl;
+    console.log(value.labl['#text'])
+    return value.labl['#text']
   }
 
   checkSelected(value: any) {
-    return value.item.labl === this.group;
+    console.log(value)
+    // return value.labl['#text'] === this.group;
+    return false
   }
 }

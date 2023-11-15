@@ -66,7 +66,7 @@ export function parseJSON(dataset: any) {
     // TODO: Create error handler
   }
   const variables: Variables = {}
-  const variableGroups: VarGroups = {}
+  const groups: VarGroups = {}
   const citation: Citation = dataset.codeBook.stdyDscr.citation
 
   const vars = dataset.codeBook.dataDscr.var
@@ -90,8 +90,9 @@ export function parseJSON(dataset: any) {
     item['@_var'].split(" ").forEach((id: string) => {
       variables[id].groups[item['@_ID']] = item['labl']
     });
-    variableGroups[item['@_ID']] = item
+
+    groups[item['@_ID']] = { ...item, '@_var': item['@_var'].split(' ') }
   });
 
-  return { variables, variableGroups, citation }
+  return { variables, groups, citation }
 }

@@ -15,37 +15,36 @@ export class DataFetchEffect {
       ofType(fromActions.fetchDataset),
       switchMap((action) =>
         this.ddi.get(action.fileID, action.siteURL).pipe(
-          map((data) => fromActions.datasetLoadSuccess({ data })),
+          map(({variables, groups, citation}) => fromActions.datasetLoadSuccess({ variables, groups, citation })),
           catchError((error) => of(fromActions.datasetLoadError(error)))
         )
       )
     )
   );
-
-  createVariableGroups = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.datasetLoadSuccess),
-      mergeMap((action) => {
-        const { data } = action;
-        try {
-          // Here, we create metadata from the loaded data and dispatch the success or error action accordingly
-          // If the metadata returns a warning (it loads the variables and groups with hiccups), we need to handle that gracefully
-          const metadata = this.createVarMetadata(data.codeBook);
-          return of(
-            fromActions.datasetCreateMetadataSuccess({
-              groups: metadata.groups,
-              variables: metadata.variables,
-            })
-          );
-        } catch (error) {
-          return of(fromActions.datasetCreateMetadataError({ error }));
-        }
-      }),
-      catchError((error) => {
-        return of(fromActions.datasetCreateMetadataError({ error }));
-      })
-    )
-  );
+  // createVariableGroups = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(fromActions.datasetLoadSuccess),
+  //     mergeMap((action) => {
+  //       const { data } = action;
+  //       try {
+  //         // Here, we create metadata from the loaded data and dispatch the success or error action accordingly
+  //         // If the metadata returns a warning (it loads the variables and groups with hiccups), we need to handle that gracefully
+  //         const metadata = this.createVarMetadata(data.codeBook);
+  //         return of(
+  //           fromActions.datasetCreateMetadataSuccess({
+  //             groups: metadata.groups,
+  //             variables: metadata.variables,
+  //           })
+  //         );
+  //       } catch (error) {
+  //         return of(fromActions.datasetCreateMetadataError({ error }));
+  //       }
+  //     }),
+  //     catchError((error) => {
+  //       return of(fromActions.datasetCreateMetadataError({ error }));
+  //     })
+  //   )
+  // );
 
   createNewVarGraph$ = createEffect(() =>
     this.actions$.pipe(
@@ -66,24 +65,24 @@ export class DataFetchEffect {
 
   constructor(private actions$: Actions, private ddi: DdiService) {}
 
-  createVarMetadata(data: any) {
-    const variables: Variables = {};
-    const groups: any = {};
+  // createVarMetadata(data: any) {
+  //   const variables: Variables = {};
+  //   const groups: any = {};
 
-    const vars: any = data.dataDscr.var || [];
-    vars.forEach((item: any) => (variables[item['@_ID']] = item));
+  //   const vars: any = data.dataDscr.var || [];
+  //   vars.forEach((item: any) => (variables[item['@_ID']] = item));
 
-    const varGrps: any = data.dataDscr.varGrp || [];
-    varGrps.forEach((item: any) => {
-      // Here I have the option to create the variabes directly in the groups
-      // by using the resulting variable list as a reference.
-      // I am choosing not to, because the potential worst case complexity is
-      // n^n
-      groups[item['@_ID']] = { item, variable: item['@_var'].split(' ') };
-    });
+  //   const varGrps: any = data.dataDscr.varGrp || [];
+  //   varGrps.forEach((item: any) => {
+  //     // Here I have the option to create the variabes directly in the groups
+  //     // by using the resulting variable list as a reference.
+  //     // I am choosing not to, because the potential worst case complexity is
+  //     // n^n
+  //     groups[item['@_ID']] = { item, variable: item['@_var'].split(' ') };
+  //   });
 
-    return { groups, variables };
-  }
+  //   return { groups, variables };
+  // }
 
   createGraphObject(variable: any) {
     // Perform the calculations and return the result.

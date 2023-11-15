@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectData, selectDatasetTitle } from 'src/state/selectors';
+import { selectDatasetTitle } from 'src/state/selectors';
 
 @Component({
   selector: 'app-header',

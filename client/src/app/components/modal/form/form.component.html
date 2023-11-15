@@ -1,89 +1,59 @@
 <form [formGroup]="variableForm" class="flex flex-col">
-  <div class="flex flex-row">
+    <div class="flex flex-row">
+        <label class="form-label">
+            ID
+            <input type="text" formControlName="id" id="@_ID" name="ID" />
+        </label>
+        <label class="form-label">
+            Name
+            <input type="text" formControlName="name" id="@_name" name="name" />
+        </label>
+    </div>
     <label class="form-label">
-      ID
-      <input type="text" formControlName="id" id="@_ID" name="ID" />
+        Label
+        <input type="text" formControlName="label" id="labl" name="label" />
     </label>
     <label class="form-label">
-      Name
-      <input type="text" formControlName="name" id="@_name" name="name" />
-    </label>
-  </div>
-  <label class="form-label">
-    Label
-    <input type="text" formControlName="label" id="labl" name="label" />
-  </label>
-  <label class="form-label">
-    Literal Question
-    <input
-      type="text"
-      formControlName="literalQuestion"
-      id="qstLit"
-      name="qstLit"
-    />
-  </label>
-  <label class="form-label">
-    Interviewer Instructions
-    <input
-      type="text"
-      formControlName="interviewerQuestion"
-      id="ivuInstr"
-      name="ivuInstr"
-    />
-  </label>
-  <label class="form-label">
-    Post Question
-    <input
-      type="text"
-      formControlName="postQuestion"
-      id="postQTxt"
-      name="postQTxt"
-    />
-  </label>
-  <label class="form-label">
-    Universe
-    <input
-      type="text"
-      formControlName="universe"
-      id="universe"
-      name="universe"
-    />
-  </label>
-  <label class="form-label">
-    Notes
-    <input type="text" formControlName="notes" id="notes" name="notes" />
-  </label>
-  <label class="form-label">
-    Group
-    <select formControlName="group" id="group" name="group">
-      <option
-        *ngFor="let item of groups | keyvalue"
-        [selected]="checkSelected(item.value)"
-      >
-        {{ getGroupsLabel(item.value) }}
-      </option>
-    </select>
-  </label>
-  <div class="flex flex-row">
-    <label class="form-label">
-      Weight Variable
-      <select formControlName="group" id="group" name="group">
-        <option
-          *ngFor="let item of groups | keyvalue"
-          [selected]="checkSelected(item.value)"
-        >
-          {{ getGroupsLabel(item.value) }}
-        </option>
-      </select>
+        Literal Question
+        <input type="text" formControlName="literalQuestion" id="qstLit" name="qstLit" />
     </label>
     <label class="form-label">
-      <input
-        formControlName="isWeight"
-        type="checkbox"
-        name="isWeight"
-        value="isWeight"
-      />
-      Is Weight
+        Interviewer Instructions
+        <input type="text" formControlName="interviewerQuestion" id="ivuInstr" name="ivuInstr" />
     </label>
-  </div>
+    <label class="form-label">
+        Post Question
+        <input type="text" formControlName="postQuestion" id="postQTxt" name="postQTxt" />
+    </label>
+    <label class="form-label">
+        Universe
+        <input type="text" formControlName="universe" id="universe" name="universe" />
+    </label>
+    <label class="form-label">
+        Notes
+        <input type="text" formControlName="notes" id="notes" name="notes" />
+    </label>
+    <label class="form-label">
+        Group
+        <select formControlName="group" id="group" name="group" multiple>
+            <option *ngFor="let group of groups | keyvalue" [value]="group.value['@_ID']">
+                {{ group.value.labl }}
+            </option>
+        </select>
+    </label>
+    <div class="flex flex-row">
+        <label class="form-label">
+            Weight Variable
+            <select formControlName="group" id="group" name="group">
+                <option *ngFor="let item of groups | keyvalue"
+                >
+                    {{ getGroupsLabel(item.value) }}
+                </option>
+            </select>
+        </label>
+        <label class="form-label">
+            <input formControlName="isWeight" type="checkbox" name="isWeight" value="isWeight" />
+            Is Weight
+        </label>
+    </div>
 </form>

@@ -4,11 +4,6 @@ import * as fromReducer from './reducers';
 export const selectFeature =
   createFeatureSelector<fromReducer.State>('globalState'); // Replace with your feature name
 
-export const selectData = createSelector(
-  selectFeature,
-  (state) => state.dataset.data
-);
-
 export const selectVariables = createSelector(
   selectFeature,
   (state) => state.dataset.variables
@@ -21,7 +16,7 @@ export const selectGroups = createSelector(
 
 export const checkOpenGroup = createSelector(
   selectFeature,
-  (state) => state.openGroup
+  (state) => state.changeGroup
 );
 
 export const selectGroupVariables = createSelector(
@@ -34,11 +29,12 @@ export const selectGroupVariables = createSelector(
       if (!openGroup) {
         return Object.values(variables);
       } else {
-        const groupVars = groups[openGroup]['variable'];
+        const groupVars = groups[openGroup]['@_var'];
         const computedVars = groupVars.map((item: any) => variables[item]);
         return computedVars;
       }
     }
+    return [];
   }
 );
 
@@ -52,7 +48,7 @@ export const getDataFetchStatus = createSelector(
 );
 
 export const selectDatasetTitle = createSelector(selectFeature, (state) => {
-  return state.dataset.data?.codeBook?.stdyDscr?.citation?.titlStmt?.titl;
+  return state.dataset.citation?.titlStmt?.titl;
 });
 
 export const checkEditing = createSelector(selectFeature, (state) => {
@@ -68,33 +64,9 @@ export const selectOpenVarDetail = createSelector(
   selectGroups,
   (variable, groups) => {
     if (variable && groups) {
-      const group: any =
-        Object.values(groups).find((item: any) =>
-          item.variable.includes(variable['@_ID'])
-        ) || null;
-      const groupLabel = group ? group.item.labl : '';
-      const literalQuestion = variable.qstn?.qstnLit || '';
-      const interviewerQuestion = variable.qstn?.ivuInstr || '';
-      const postQuestion = variable.qstn?.postQTxt || '';
-      const universe = variable['universe'] || '';
-      const notes = Array.isArray(variable['notes'])
-        ? variable['notes'][0]
-        : '';
-      return {
-        id: variable['@_ID'],
-        name: variable['@_name'],
-        label: variable['labl']['#text'],
-        literalQuestion: literalQuestion,
-        interviewerQuestion: interviewerQuestion,
-        postQuestion: postQuestion,
-        universe: universe,
-        notes: notes,
-        group: groupLabel,
-        isWeight: variable['@_wgt'] ? true : false,
-        weightVar: variable['@_wgt-var'] ? variable['@_wgt-var'] : '',
-      };
+      return { variable, groups }
     }
-    return undefined;
+    return { variable: {}, groups: {} };
   }
 );
 

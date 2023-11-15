@@ -18,8 +18,7 @@ download.get("/", async function(req: Request, res: Response) {
         const response = await request.text()
         const json = new XMLParser(options).parse(response)
         const parsedJSON = parseJSON(json)
-        console.log(parsedJSON.variables)
-        res.json(json)
+        res.json(parsedJSON)
     }
 });
 

@@ -1,13 +1,32 @@
 import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
 
-export interface CatStat {
+interface Citation {
+  titlStmt: {
+    titl: string;
+    IDNo: string;
+  };
+  rspStmt: {
+    AuthEnty: string;
+  };
+  biblCit: string;
+}
+
+interface CatStat {
   '#text': number | string;
   '@_type': string;
   '@_wgtd'?: string;
 }
 
-export type Catgry = CatStat[];
+type Catgry = CatStat[];
+
+export interface VarGroups {
+  [id: string]: {
+    '@_ID': string;
+    'labl': string;
+    '@_var': string[];
+  }
+}
 
 export interface Variables {
   [id: string]: {
@@ -22,12 +41,12 @@ export interface Variables {
     location: {
       '@_fileid': string;
     };
-    notes: {
+    notes: (string | {
       '#text': string;
       '@_subject': string;
       '@_level': string;
-      '@_type': string;
-    };
+      '@_type': string
+    })[];
     sumStat: {
       '#text': number | string;
       '@_type': string;
@@ -35,9 +54,16 @@ export interface Variables {
     varFormat: {
       '@_type': string;
     };
+    universe: string;
+    groups: {
+      [id: string]: {
+        label: string
+      }
+    },
     catgry?: Catgry;
   };
 }
+
 
 export interface GraphObject {
   [id: string]: {
@@ -49,12 +75,16 @@ export interface GraphObject {
 export interface State {
   dataset: {
     status: string;
-    data: any;
     error: any;
+    citation: Citation;
     variables: Variables;
-    groups: any;
+    groups: VarGroups;
   };
-  openGroup: string;
+  changeGroup: string;
+  openModal: {
+    open: boolean;
+    modalMode: 'editing' | 'chart' | 'settings' | '';
+  };
   openVariable: {
     editing: boolean;
     variable: any;
@@ -71,12 +101,25 @@ export interface State {
 const initialState: State = {
   dataset: {
     status: '',
-    data: null,
     error: null,
+    citation: {
+      titlStmt: {
+        titl: "",
+        IDNo: "",
+      },
+      rspStmt: {
+        AuthEnty: "",
+      },
+      biblCit: "",
+    },
     variables: {},
-    groups: null,
+    groups: {},
   },
-  openGroup: '',
+  changeGroup: '',
+  openModal: {
+    open: false,
+    modalMode: '',
+  },
   openVariable: {
     editing: false,
     variable: null,
@@ -101,28 +144,19 @@ export const reducer = createReducer(
     ...state,
     dataset: { ...state.dataset, status: 'pending' },
   })),
-  on(Actions.datasetLoadSuccess, (state, { data }) => ({
+  on(Actions.datasetLoadSuccess, (state, { variables, groups, citation }) => ({
     ...state,
-    dataset: { ...state.dataset, status: 'success', data, error: null },
+    dataset: { ...state.dataset, status: 'success', variables, groups, citation, error: null },
   })),
   on(Actions.datasetLoadError, (state, { error }) => ({
     ...state,
     dataset: { ...state.dataset, status: 'error', data: null, error },
   })),
 
-  // When the dataset loads
-  on(Actions.datasetCreateMetadataSuccess, (state, { groups, variables }) => ({
-    ...state,
-    dataset: { ...state.dataset, groups, variables },
-  })),
-  on(Actions.datasetCreateMetadataError, (state) => ({
-    ...state,
-    dataset: { ...state.dataset, groups: [] },
-  })),
-
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { variable }) => ({
     ...state,
+    openModal: { open: true, modalMode: 'chart' as const},
     openVariable: { ...state.openVariable, editing: false, variable: variable },
   })),
   on(
@@ -156,26 +190,8 @@ export const reducer = createReducer(
   // When the user clicks a group
   on(Actions.groupSelected, (state, { groupID }) => ({
     ...state,
-    openGroup: groupID,
+    changeGroup: groupID,
   }))
-
-  // User selects a group
-  // on(Actions.datasetGroupVariablesUpdatedSuccess, (state, { groupID, variables }) =>
-  // ({
-  //   ...state,
-  //   openGroup: groupID,
-  //   dataset: {
-  //     ...state.dataset,
-  //     groups: {
-  //       ...state.dataset.groups,
-  //       [groupID]: {
-  //         ...state.dataset.groups[groupID],
-  //         variables
-  //       }
-  //     }
-  //   }
-  // })
-  // ),
 
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),

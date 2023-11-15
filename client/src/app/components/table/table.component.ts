@@ -108,11 +108,12 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   viewChart(value: any) {
-    this.store.dispatch(
-      variableViewChart({ id: value['@_ID'], variable: value })
-    );
-    this.setHeading(value);
-    this.modalComponent?.openModal();
+    // console.log(value)
+    // this.store.dispatch(
+    //   variableViewChart({ id: value['@_ID'], variable: value })
+    // );
+    // this.setHeading(value);
+    // this.modalComponent?.openModal();
   }
 
   editVar(value: any) {

@@ -15,14 +15,15 @@ export class SidebarComponent {
   constructor(private store: Store) {}
 
   getLabel(selection: any) {
-    return selection?.item?.labl || '<NO LABEL ON GROUP>';
+    return selection?.labl || '<NO LABEL ON GROUP>';
   }
 
   changeGroup(selection: any | string) {
+    console.log(selection)
     if (selection === '') {
       this.store.dispatch(groupSelected({ groupID: '' }));
     } else {
-      const groupID = { groupID: selection.item['@_ID'] };
+      const groupID = { groupID: selection['@_ID'] };
       // console.log(groupID)
       this.store.dispatch(groupSelected(groupID));
     }
