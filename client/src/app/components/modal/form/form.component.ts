@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { VarGroups } from 'src/state/reducers';
 import {
-  selectGroups,
   selectOpenVarDetail,
+  selectVariableDetail,
 } from 'src/state/selectors';
 
 @Component({
@@ -26,34 +26,31 @@ export class FormComponent implements OnInit {
     notes: new FormControl(''),
     group: new FormControl([]),
     isWeight: new FormControl(false),
-    weightVar: new FormControl(''),
+    weightVar: new FormControl(null),
   });
   groups: VarGroups = {};
+  varWeights: any = [];
+  weight: any = '';
+  weightName: any = '';
   group = '';
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     const variableDetails = this.store.select(selectOpenVarDetail);
-    variableDetails.subscribe(({ variable, groups }) => {
-      if (variable && groups) {
+    variableDetails.subscribe(({ variable, groups, varWeights }) => {
+      if (variable && groups && varWeights) {
         this.groups = groups;
-        const variableGroups = Object.keys( variable.groups ) as never[]
+        this.varWeights = varWeights;
+        this.weight = variable.weightVar
         this.variableForm.patchValue(variable);
-        this.variableForm.patchValue({ group: variableGroups });
-        console.log(this.variableForm)
       }
     });
   }
 
-  getGroupsLabel(value: any) {
-    console.log(value.labl['#text'])
-    return value.labl['#text']
-  }
-
-  checkSelected(value: any) {
-    console.log(value)
-    // return value.labl['#text'] === this.group;
-    return false
+  getWeightsLabels() {
+    const values: any = []
+    Object.values(this.varWeights).map((variable: any) => values.push(variable['@_name']));
+    return values
   }
 }

@@ -15,7 +15,7 @@ export const datasetLoadPending = createAction('[Dataset] Load Pending');
 // component will be loaded with the data from the API
 export const datasetLoadSuccess = createAction(
   '[Dataset] Load Success',
-  props<{ variables: any, groups: any, citation: any }>()
+  props<{ variables: any, groups: any, citation: any, varWeights: any }>()
 );
 // If the API call errors, the 404 component will be displayed, with the error.message displayed below.
 export const datasetLoadError = createAction(

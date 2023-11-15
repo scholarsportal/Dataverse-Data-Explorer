@@ -25,6 +25,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MultiselectDropdownComponent } from './components/modal/form/multiselect-dropdown/multiselect-dropdown.component';
 
 // New Import
 
@@ -37,6 +39,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ModalComponent,
     ChartComponent,
     FormComponent,
+    MultiselectDropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSortModule,
     MatInputModule,
     MatFormFieldModule,
+    MatOptionModule,
     BrowserAnimationsModule,
   ],
   providers: [],

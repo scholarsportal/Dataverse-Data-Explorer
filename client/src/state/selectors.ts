@@ -14,6 +14,12 @@ export const selectGroups = createSelector(
   (state) => state.dataset.groups
 );
 
+export const selectVariableWeights = createSelector(selectVariables, selectFeature, (variables, state) => {
+  const variableWeights: any = []
+  Object.keys(state.dataset.varWeights).map((varID: string) => variableWeights.push(variables[varID]))
+  return variableWeights
+})
+
 export const checkOpenGroup = createSelector(
   selectFeature,
   (state) => state.changeGroup
@@ -62,13 +68,32 @@ export const selectOpenVariable = createSelector(selectFeature, (state) => {
 export const selectOpenVarDetail = createSelector(
   selectOpenVariable,
   selectGroups,
-  (variable, groups) => {
-    if (variable && groups) {
-      return { variable, groups }
+  selectVariableWeights,
+  selectVariables,
+  (openVariable, groups, varWeights, variables) => {
+    if (openVariable && groups && varWeights) {
+      const variable: any = {
+        id: openVariable['@_ID'],
+        name: openVariable['@_name'],
+        label: openVariable.labl['#text'],
+        literalQuestion: openVariable.qstn?.qstnLit,
+        interviewerQuestion: openVariable.qstn?.ivuInstr,
+        postQuestion: openVariable.qstn?.postQTxt,
+        universe: openVariable.universe,
+        notes: openVariable.notes[1],
+        group: openVariable.groups,
+        isWeight: openVariable['@_wgt'] ? true : false,
+        weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',
+      }
+      return { variable, groups, varWeights }
     }
     return { variable: {}, groups: {} };
   }
 );
+
+export const selectVariableDetail = (id: string) => createSelector(selectFeature, (state) => {
+  return state.dataset.variables[id]
+})
 
 export const getOpenVariableGraphValues = createSelector(
   selectFeature,

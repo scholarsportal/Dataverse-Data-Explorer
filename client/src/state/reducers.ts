@@ -33,7 +33,6 @@ export interface Variables {
     '@_ID': string;
     '@_name': string;
     '@_intrvl': string;
-    '@_wgt-var': string;
     labl: {
       '#text': string;
       '@_level': string;
@@ -45,8 +44,13 @@ export interface Variables {
       '#text': string;
       '@_subject': string;
       '@_level': string;
-      '@_type': string
+      '@_type': string;
     })[];
+    qstn: {
+      qstnLit: string;
+      ivuInstr: string;
+      postQTxt: string;
+    },
     sumStat: {
       '#text': number | string;
       '@_type': string;
@@ -61,6 +65,8 @@ export interface Variables {
       }
     },
     catgry?: Catgry;
+    '@_wgt-var'?: string;
+    '@_wgt'?: 'wgt';
   };
 }
 
@@ -79,6 +85,7 @@ export interface State {
     citation: Citation;
     variables: Variables;
     groups: VarGroups;
+    varWeights: any;
   };
   changeGroup: string;
   openModal: {
@@ -114,6 +121,7 @@ const initialState: State = {
     },
     variables: {},
     groups: {},
+    varWeights: {},
   },
   changeGroup: '',
   openModal: {
@@ -144,9 +152,9 @@ export const reducer = createReducer(
     ...state,
     dataset: { ...state.dataset, status: 'pending' },
   })),
-  on(Actions.datasetLoadSuccess, (state, { variables, groups, citation }) => ({
+  on(Actions.datasetLoadSuccess, (state, { variables, groups, citation, varWeights }) => ({
     ...state,
-    dataset: { ...state.dataset, status: 'success', variables, groups, citation, error: null },
+    dataset: { ...state.dataset, status: 'success', variables, groups, citation, varWeights, error: null },
   })),
   on(Actions.datasetLoadError, (state, { error }) => ({
     ...state,
@@ -159,8 +167,8 @@ export const reducer = createReducer(
     openModal: { open: true, modalMode: 'chart' as const},
     openVariable: { ...state.openVariable, editing: false, variable: variable },
   })),
-  on(
-    Actions.variableCreateGraphSuccess,
+
+  on(Actions.variableCreateGraphSuccess,
     (state, { id, weighted, unweighted }) => ({
       ...state,
       openVariable: {

@@ -15,7 +15,7 @@ export class DataFetchEffect {
       ofType(fromActions.fetchDataset),
       switchMap((action) =>
         this.ddi.get(action.fileID, action.siteURL).pipe(
-          map(({variables, groups, citation}) => fromActions.datasetLoadSuccess({ variables, groups, citation })),
+          map(({variables, groups, citation, varWeights}) => fromActions.datasetLoadSuccess({ variables, groups, citation, varWeights })),
           catchError((error) => of(fromActions.datasetLoadError(error)))
         )
       )

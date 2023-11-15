@@ -71,6 +71,7 @@ export function parseJSON(dataset: any) {
 
   const vars = dataset.codeBook.dataDscr.var
   const varGrp = dataset.codeBook.dataDscr.varGrp
+  const varWeights: any = {}
 
   // Create variables
   vars.forEach((item: any) => {
@@ -81,6 +82,12 @@ export function parseJSON(dataset: any) {
     Array.isArray(item.notes) ? (notes = item.notes) : (notes = [item.notes || '', ''])
 
     variables[item['@_ID']] = { ...item, notes, groups: {} }
+
+    // if the variable has a weight var, we add that variable to var weights
+      // in its correspoding weight
+    if(item['@_wgt-var']){
+      varWeights[item['@_wgt-var']] = true
+    }
   });
 
   // Create variable groups
@@ -94,5 +101,5 @@ export function parseJSON(dataset: any) {
     groups[item['@_ID']] = { ...item, '@_var': item['@_var'].split(' ') }
   });
 
-  return { variables, groups, citation }
+  return { variables, groups, citation, varWeights }
 }
