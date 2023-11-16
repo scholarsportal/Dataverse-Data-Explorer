@@ -164,7 +164,7 @@ export const reducer = createReducer(
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { variable }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'chart' as const},
+    openModal: { open: true, modalMode: 'chart' as const },
     openVariable: { ...state.openVariable, editing: false, variable: variable },
   })),
 
@@ -194,6 +194,26 @@ export const reducer = createReducer(
     ...state,
     openVariable: { ...state.openVariable, editing: true, variable: variable },
   })),
+  on(Actions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
+    const updatedGroups = {
+      ...state.dataset.groups,
+      [groupID]: {
+        ...state.dataset.groups[groupID],
+        '@_var': [
+          ...(state.dataset.groups[groupID]['@_var'] || []), // Ensure '@_var' is an array
+          ...variableIDs,
+        ],
+      },
+    };
+
+    return {
+      ...state,
+      dataset: {
+        ...state.dataset,
+        groups: updatedGroups,
+      },
+    };
+  }),
 
   // When the user clicks a group
   on(Actions.groupSelected, (state, { groupID }) => ({

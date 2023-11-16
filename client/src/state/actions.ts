@@ -48,8 +48,9 @@ export const variableViewChart = createAction(
 // The table component will dispatch the variable id, to be added to the current list of selected variables
 export const variableAddToSelectGroup = createAction(
   '[Variable] Add To Select Group',
-  props<{ variableID: string }>()
+  props<{ variableIDs: string[], groupID: string }>()
 );
+
 // Remove a specified group from the list of groups
 export const groupRemove = createAction(
   '[Group] Remove',

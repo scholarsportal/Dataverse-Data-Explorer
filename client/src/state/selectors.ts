@@ -62,7 +62,11 @@ export const checkEditing = createSelector(selectFeature, (state) => {
 });
 
 export const selectOpenVariable = createSelector(selectFeature, (state) => {
-  return state.openVariable.variable;
+  return state.openVariable?.variable;
+});
+
+export const selectOpenVariableGroups = createSelector(selectOpenVariable, (state) => {
+  return state.groups;
 });
 
 export const selectOpenVarDetail = createSelector(
