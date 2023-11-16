@@ -1,0 +1,11 @@
+.group-button {
+    @apply w-full h-8 px-2 border rounded-md;
+}
+
+.group-input {
+    @apply flex flex-row w-full h-8 px-2 border rounded-md;
+}
+
+.selected {
+    @apply bg-gray-300;
+}

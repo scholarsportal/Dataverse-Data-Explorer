@@ -219,8 +219,21 @@ export const reducer = createReducer(
   on(Actions.groupSelected, (state, { groupID }) => ({
     ...state,
     changeGroup: groupID,
+  })),
+  on(Actions.groupCreateNew, (state, { groupID, label }) => ({
+    ...state,
+    dataset: {
+      ...state.dataset,
+      groups: {
+        ...state.dataset.groups,
+        [groupID]: {
+          "@_ID": groupID,
+          labl: label,
+          "@_var": []
+        }
+      }
+    }
   }))
-
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),

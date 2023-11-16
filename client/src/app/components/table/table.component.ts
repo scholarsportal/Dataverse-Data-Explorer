@@ -47,7 +47,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   SortType = SortType;
   heading = '';
   @Input() openGroup?: string;
-  vars$: any;
+  vars$: any = null;
   loaded$ = this.store.select(getDataFetchStatus);
   isEditing$ = this.store.select(checkEditing);
 
@@ -58,20 +58,30 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
       if (data) {
         // this.vars$ = Object.values(data)
         this.vars$ = new MatTableDataSource(Object.values(data));
+        this.vars$.paginator = this.paginator;
+        this.vars$.sort = this.sort;
       }
     });
   }
 
   ngAfterViewInit() {
-    this.vars$.paginator = this.paginator;
-    this.vars$.sort = this.sort;
+    this.store.select(selectVariables).subscribe((data) => {
+      if (data) {
+        // this.vars$ = Object.values(data)
+        this.vars$ = new MatTableDataSource(Object.values(data));
+        this.vars$.paginator = this.paginator;
+        this.vars$.sort = this.sort;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const openGroup = changes['openGroup'];
     if (openGroup.previousValue !== openGroup.currentValue) {
       this.store.select(selectGroupVariables).subscribe((data: any) => {
-        this.vars$ = data;
+        this.vars$ = new MatTableDataSource(data);
+        this.vars$.paginator = this.paginator;
+        this.vars$.sort = this.sort;
       });
     }
   }
@@ -108,12 +118,11 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   viewChart(value: any) {
-    // console.log(value)
-    // this.store.dispatch(
-    //   variableViewChart({ id: value['@_ID'], variable: value })
-    // );
-    // this.setHeading(value);
-    // this.modalComponent?.openModal();
+    this.store.dispatch(
+      variableViewChart({ id: value['@_ID'], variable: value })
+    );
+    this.setHeading(value);
+    this.modalComponent?.openModal();
   }
 
   editVar(value: any) {

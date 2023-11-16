@@ -45,6 +45,13 @@ export const variableViewChart = createAction(
   '[Variable] View Chart',
   props<{ id: string; variable: string }>()
 );
+
+// Any time the user makes changes
+export const changesMade = createAction('[State] Changes Made', props<{ variables: any, groups: any }>)
+
+// Any time the user makes changes
+export const changesSaved = createAction('[State] Changes Made', props<{ variables: any, groups: any }>)
+
 // The table component will dispatch the variable id, to be added to the current list of selected variables
 export const variableAddToSelectGroup = createAction(
   '[Variable] Add To Select Group',
@@ -57,7 +64,11 @@ export const groupRemove = createAction(
   props<{ groupID: string }>()
 );
 // Add a new empty variable group to the list of groups
-export const groupCreateNew = createAction('[Group] Create New');
+export const groupCreateNew = createAction('[Group] Create New', props<{ groupID: string, label: string }>());
+
+// Group creation success
+export const groupCreateNewError = createAction('[Group Create New] Error');
+
 // View variables in selected group
 export const groupSelected = createAction(
   '[Group] Change Selected',
