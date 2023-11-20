@@ -26,6 +26,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MultiselectDropdownComponent } from './components/modal/form/multiselect-dropdown/multiselect-dropdown.component';
 
 // New Import
@@ -65,6 +66,7 @@ import { MultiselectDropdownComponent } from './components/modal/form/multiselec
     MatInputModule,
     MatFormFieldModule,
     MatOptionModule,
+    MatCheckboxModule,
     BrowserAnimationsModule,
   ],
   providers: [],

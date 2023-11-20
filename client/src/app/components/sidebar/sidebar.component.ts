@@ -16,11 +16,7 @@ export class SidebarComponent {
   editingMode: boolean = false;
   newGroupName: string = '';
 
-  constructor(private store: Store) {
-    this.groups$.subscribe((data) => {
-      console.log(data)
-    })
-  }
+  constructor(private store: Store) {}
 
   getLabel(selection: any) {
     return selection?.labl || '<NO LABEL ON GROUP>';
@@ -36,7 +32,6 @@ export class SidebarComponent {
 
   checkSelectedGroup(group: any) {
     this.selectedGroup$.subscribe((data) => {
-      console.log(data)
       return data ? (group['@_ID'] === data) : false
     })
     return false

@@ -1,8 +1,8 @@
-<div class="text-3xl text-center font-bold">Groups</div>
-<div class="group-container">
+<aside class="group-container">
+    <div class="my-3 text-3xl text-center font-bold">Groups</div>
     <button *ngIf="!editingMode" class="group-button" (click)="toggleEditingMode()">Add a new Group</button>
     <div *ngIf="editingMode" class="group-input">
-        <input type="text" [(ngModel)]="newGroupName" placeholder="Enter group name" />
+        <input type="text" [(ngModel)]="newGroupName" placeholder="Enter group name">
 
         <!-- CONFIRM BUTTON -->
         <button (click)="confirmGroup()" class="confirm-button">
@@ -22,13 +22,12 @@
             </svg>
         </button>
     </div>
-</div>
-<ul *ngIf="checkGroups(( groups$ | async ))" class="flex flex-col h-max w-full">
-    <button class="my-2 text-left" (click)="changeGroup('')">All Variables</button>
-    <button *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}"
-            class="my-2 text-left"
-      [ngClass]="(selectedGroup$ | async) === getID(item.value) ? 'selected' : ''"
-        (click)="changeGroup(item.value)">
-        {{ getLabel(item.value) }}
-    </button>
-</ul>
+    <ul *ngIf="checkGroups(( groups$ | async ))" class="flex flex-col h-max w-full">
+        <button class="my-2 text-left" (click)="changeGroup('')">All Variables</button>
+        <button *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}" class="my-2 text-left"
+            [ngClass]="(selectedGroup$ | async) === getID(item.value) ? 'selected' : ''"
+            (click)="changeGroup(item.value)">
+            {{ getLabel(item.value) }}
+        </button>
+    </ul>
+</aside>

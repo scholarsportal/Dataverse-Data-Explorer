@@ -20,6 +20,8 @@ import { ColumnMode, SortType } from '@swimlane/ngx-datatable';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { VarGroups, Variables } from 'src/state/reducers';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-table',
@@ -28,38 +30,26 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
-
-  // Material Table
-  columnMat = ['ID', 'Name', 'Label', 'Weight', 'View', 'Edit'];
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
-  sortedData: any;
-
-  columns = [
-    { name: 'ID' },
-    { name: 'Name' },
-    { name: 'Label' },
-    { name: 'Weight' },
-    { name: 'View' },
-    { name: 'Edit' },
-  ];
-  ColumnMode = ColumnMode;
-  SortType = SortType;
-  heading = '';
   @Input() openGroup?: string;
-  vars$: any = null;
-  loaded$ = this.store.select(getDataFetchStatus);
+
   isEditing$ = this.store.select(checkEditing);
+  vars: any = null;
+  selected = false;
+  selection: any = new SelectionModel<any>(true, [])
+
+  columnMat = ['check', 'ID', 'Name', 'Label', 'Weight', 'View', 'Edit'];
+  heading = '';
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.select(selectVariables).subscribe((data) => {
       if (data) {
-        // this.vars$ = Object.values(data)
-        this.vars$ = new MatTableDataSource(Object.values(data));
-        this.vars$.paginator = this.paginator;
-        this.vars$.sort = this.sort;
+        this.vars = new MatTableDataSource(Object.values(data));
+        this.vars.paginator = this.paginator;
+        this.vars.sort = this.sort;
       }
     });
   }
@@ -67,10 +57,9 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.store.select(selectVariables).subscribe((data) => {
       if (data) {
-        // this.vars$ = Object.values(data)
-        this.vars$ = new MatTableDataSource(Object.values(data));
-        this.vars$.paginator = this.paginator;
-        this.vars$.sort = this.sort;
+        this.vars = new MatTableDataSource(Object.values(data));
+        this.vars.paginator = this.paginator;
+        this.vars.sort = this.sort;
       }
     });
   }
@@ -79,36 +68,20 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     const openGroup = changes['openGroup'];
     if (openGroup.previousValue !== openGroup.currentValue) {
       this.store.select(selectGroupVariables).subscribe((data: any) => {
-        this.vars$ = new MatTableDataSource(data);
-        this.vars$.paginator = this.paginator;
-        this.vars$.sort = this.sort;
+        this.vars = new MatTableDataSource(data);
+        this.vars.paginator = this.paginator;
+        this.vars.sort = this.sort;
       });
     }
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.vars$.filter = filterValue.trim().toLowerCase();
+    this.vars.filter = filterValue.trim().toLowerCase();
 
-    if (this.vars$.paginator) {
-      this.vars$.paginator.firstPage();
+    if (this.vars.paginator) {
+      this.vars.paginator.firstPage();
     }
-  }
-
-  // TODO: TO FIX
-  sortData(sort: Sort) {
-    const data = this.vars$;
-    console.log(data);
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sortData(data, sort);
-  }
-
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   setHeading(value: any) {
@@ -129,6 +102,31 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     this.store.dispatch(variableViewDetail({ variable: value }));
     this.setHeading(value);
     this.modalComponent?.openModal();
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.vars.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.vars.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
   close() {
