@@ -1,11 +1,18 @@
-<div class="fixed top-0 pt-20 z-30 w-screen flex flex-row justify-around">
+<div class="fixed bg-white top-0 pt-20 z-30 w-screen flex flex-row justify-around">
+    <!-- Filter Search -->
     <label class="my-auto">Filter
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
     </label>
-    <mat-paginator [pageSizeOptions]="[15, 50, 100]" aria-label="Select variable page"></mat-paginator>
+    <!-- Group Selection Dropdown -->
+    <select name="groups" id="" class="rounded-md h-max p-1.5 my-auto">
+        <option value="">--Please Choose A Group--</option>
+        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}">{{ getLabel(item.value) }}</option>
+    </select>
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[12, 20, 50, 100]" aria-label="Select variable page"></mat-paginator>
 </div>
 
-<mat-table [dataSource]="vars" matSort class="w-full static ">
+<mat-table [dataSource]="vars" matSort class="w-full relative top-6">
     <tr mat-header-row *matHeaderRowDef="columnMat;" class=""></tr>
     <tr mat-row *matRowDef="let row; columns: columnMat" class=""></tr>
 
@@ -52,7 +59,7 @@
     <ng-container matColumnDef="Weight">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="weight">Weight</th>
         <td mat-cell *matCellDef="let row">
-            {{ row['@_wgt-var'] ? row['@_wgt-var'] : 'No Weight Assigned' }}
+            {{ row['@_wgt-var'] ? row['@_wgt-var'] : '' }}
         </td>
     </ng-container>
 

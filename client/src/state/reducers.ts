@@ -92,6 +92,7 @@ export interface State {
     open: boolean;
     modalMode: 'editing' | 'chart' | 'settings' | '';
   };
+  notificationStack: {notificationType: string; message: string}[] | []
   openVariable: {
     editing: boolean;
     variable: any;
@@ -104,6 +105,8 @@ export interface State {
   };
   variables: any[];
 }
+
+const MAX_NOTIFICATIONS = 5;
 
 const initialState: State = {
   dataset: {
@@ -128,6 +131,7 @@ const initialState: State = {
     open: false,
     modalMode: '',
   },
+  notificationStack: [],
   openVariable: {
     editing: false,
     variable: null,
@@ -233,7 +237,20 @@ export const reducer = createReducer(
         }
       }
     }
-  }))
+  })),
+
+
+  // Notifications
+  on(Actions.pushNotification, (state, {notificationType, message}) => {
+    let updatedStack = [...state.notificationStack];
+
+    // Max of 5 notifications at a time
+    if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
+
+    updatedStack.push({notificationType, message})
+
+    return { ...state, notificationStack: updatedStack }
+  }),
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),

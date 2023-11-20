@@ -75,6 +75,12 @@ export const groupSelected = createAction(
   props<{ groupID: string }>()
 );
 
+// Send new notification (capped at 5 in stack, see init.effect.ts for more)
+export const sendNotification = createAction('[Notification] Sending New Notification', props<{ notificationType: string, message: string }>())
+
+// Notification successfully added to stack
+export const pushNotification = createAction('[Notification] Pushing New Notification', props<{ notificationType: string, message: string }>())
+
 /* LOCAL CHANGES */
 // Create variable groups and list of variables for easy access and change
 export const datasetCreateMetadata = createAction(

@@ -13,6 +13,7 @@ import {
   checkEditing,
   selectGroupVariables,
   selectVariables,
+  selectGroups,
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
 import { variableViewChart, variableViewDetail } from 'src/state/actions';
@@ -35,6 +36,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() openGroup?: string;
 
   isEditing$ = this.store.select(checkEditing);
+  groups$ = this.store.select(selectGroups);
   vars: any = null;
   selected = false;
   selection: any = new SelectionModel<any>(true, [])
@@ -96,6 +98,10 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     );
     this.setHeading(value);
     this.modalComponent?.openModal();
+  }
+
+  getLabel(option: any){
+    return option.labl || "<ERROR: NO LABEL>"
   }
 
   editVar(value: any) {
