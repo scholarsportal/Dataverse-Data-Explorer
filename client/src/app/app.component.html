@@ -1,3 +1,5 @@
+<app-notification></app-notification>
+<app-header class="bg-white fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
 <div *ngIf="(loaded$ | async) === 'success'" class="flex flex-row w-full h-screen m-4 mt-20">
   <app-sidebar class="fixed inset-y-0 top-0 left-0 z-40 w-64 h-screen pt-20 px-4 transition-transform bg-white border-r border-gray-200"></app-sidebar>
   <app-table

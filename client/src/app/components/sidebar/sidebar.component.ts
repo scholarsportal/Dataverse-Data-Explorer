@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { groupCreateNew, groupSelected } from 'src/state/actions';
-import { checkOpenGroup, selectGroups } from 'src/state/selectors';
+import { checkOpenGroup, selectGroups, selectRecentlyChangedGroup } from 'src/state/selectors';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,6 +11,7 @@ import { checkOpenGroup, selectGroups } from 'src/state/selectors';
 export class SidebarComponent {
   groups$ = this.store.select(selectGroups);
   selectedGroup$ = this.store.select(checkOpenGroup)
+  recentlyChanged$ = this.store.select(selectRecentlyChangedGroup)
   isSidebarExpanded = false;
   addingNew = false;
   editingMode: boolean = false;
@@ -31,10 +32,7 @@ export class SidebarComponent {
   }
 
   checkSelectedGroup(group: any) {
-    this.selectedGroup$.subscribe((data) => {
-      return data ? (group['@_ID'] === data) : false
-    })
-    return false
+    console.log(group)
   }
 
   changeGroup(selection: any | string) {

@@ -35,78 +35,90 @@ export const selectGroupVariables = createSelector(
       if (!openGroup) {
         return Object.values(variables);
       } else {
-        const groupVars = groups[openGroup]['@_var'];
-        const computedVars = groupVars.map((item: any) => variables[item]);
-        return computedVars;
-      }
+        console.log(groups[openGroup]['@_var'])
+      const groupVars = groups[openGroup]['@_var'] || [];
+      const computedVars = groupVars.map((item: any) => variables[item]);
+      console.log(computedVars)
+      return computedVars.length ? computedVars : undefined;
     }
-    return [];
   }
+  return [];
+}
 );
 
 export const selectGroupTitles = createSelector(selectGroups, (groups) => {
-  return Object.values(groups).map((item: any) => item.labl);
+return Object.values(groups).map((item: any) => item.labl);
 });
 
 export const getDataFetchStatus = createSelector(
-  selectFeature,
-  (state) => state.dataset.status
+selectFeature,
+(state) => state.dataset.status
 );
 
 export const selectDatasetTitle = createSelector(selectFeature, (state) => {
-  return state.dataset.citation?.titlStmt?.titl;
+return state.dataset.citation?.titlStmt?.titl;
 });
 
 export const checkEditing = createSelector(selectFeature, (state) => {
-  return state.openVariable.editing;
+return state.openVariable.editing;
 });
 
 export const selectOpenVariable = createSelector(selectFeature, (state) => {
-  return state.openVariable?.variable;
+return state.openVariable?.variable;
 });
 
 export const selectOpenVariableGroups = createSelector(selectOpenVariable, (state) => {
-  return state.groups;
+return state.groups;
 });
 
 export const selectOpenVarDetail = createSelector(
-  selectOpenVariable,
-  selectGroups,
-  selectVariableWeights,
-  selectVariables,
-  (openVariable, groups, varWeights, variables) => {
-    if (openVariable && groups && varWeights) {
-      const variable: any = {
-        id: openVariable['@_ID'],
-        name: openVariable['@_name'],
-        label: openVariable.labl['#text'],
-        literalQuestion: openVariable.qstn?.qstnLit,
-        interviewerQuestion: openVariable.qstn?.ivuInstr,
-        postQuestion: openVariable.qstn?.postQTxt,
-        universe: openVariable.universe,
-        notes: openVariable.notes[1],
-        group: openVariable.groups,
-        isWeight: openVariable['@_wgt'] ? true : false,
-        weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',
-      }
-      return { variable, groups, varWeights }
+selectOpenVariable,
+selectGroups,
+selectVariableWeights,
+selectVariables,
+(openVariable, groups, varWeights, variables) => {
+  if (openVariable && groups && varWeights) {
+    const variable: any = {
+      id: openVariable['@_ID'],
+      name: openVariable['@_name'],
+      label: openVariable.labl['#text'],
+      literalQuestion: openVariable.qstn?.qstnLit,
+      interviewerQuestion: openVariable.qstn?.ivuInstr,
+      postQuestion: openVariable.qstn?.postQTxt,
+      universe: openVariable.universe,
+      notes: openVariable.notes[1],
+      group: openVariable.groups,
+      isWeight: openVariable['@_wgt'] ? true : false,
+      weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',
     }
-    return { variable: {}, groups: {} };
+    return { variable, groups, varWeights }
   }
+  return { variable: {}, groups: {} };
+}
 );
 
 export const selectVariableDetail = (id: string) => createSelector(selectFeature, (state) => {
-  return state.dataset.variables[id]
+return state.dataset.variables[id]
 })
 
 export const getOpenVariableGraphValues = createSelector(
-  selectFeature,
-  (state) => {
-    return state.openVariable.graph;
-  }
+selectFeature,
+(state) => {
+  return state.openVariable.graph;
+}
 );
 
 export const getVariablePreviouslyOpen = (id: string) =>
-  createSelector(selectFeature, (state) => {
-    return state.openVariable.previouslyOpen[id];
-  });
+createSelector(selectFeature, (state) => {
+  return state.openVariable.previouslyOpen[id];
+});
+
+
+export const selectRecentlyChangedGroup = createSelector(selectFeature, (state) => {
+  return state.recentlyChanged;
+});
+
+
+export const selectNotifications = createSelector(selectFeature, (state) => {
+return state.notificationStack
+})

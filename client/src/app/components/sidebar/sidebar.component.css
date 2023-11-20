@@ -9,3 +9,7 @@
 .selected {
     @apply bg-gray-300;
 }
+
+.changed {
+    @apply bg-pink-500;
+}

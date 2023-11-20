@@ -58,11 +58,17 @@ export const variableAddToSelectGroup = createAction(
   props<{ variableIDs: string[], groupID: string }>()
 );
 
+// Remove given variable list from selected group
+export const variableRemoveFromSelectGroup = createAction(
+  '[Variable] Add To Select Group',
+  props<{ variableIDs: string[], groupID: string }>()
+);
 // Remove a specified group from the list of groups
 export const groupRemove = createAction(
   '[Group] Remove',
   props<{ groupID: string }>()
 );
+
 // Add a new empty variable group to the list of groups
 export const groupCreateNew = createAction('[Group] Create New', props<{ groupID: string, label: string }>());
 
@@ -75,11 +81,20 @@ export const groupSelected = createAction(
   props<{ groupID: string }>()
 );
 
-// Send new notification (capped at 5 in stack, see init.effect.ts for more)
-export const sendNotification = createAction('[Notification] Sending New Notification', props<{ notificationType: string, message: string }>())
+// A Variable Has recently been changed
+export const groupDetailChanged = createAction(
+  '[Group] Changed Recently',
+  props<{ groupID: string }>()
+);
+
+// // Send new notification (capped at 5 in stack, see init.effect.ts for more)
+// export const sendNotification = createAction('[Notification] Sending New Notification', props<{ notificationType: string, message: string }>())
 
 // Notification successfully added to stack
 export const pushNotification = createAction('[Notification] Pushing New Notification', props<{ notificationType: string, message: string }>())
+
+// Remove a notification
+export const removeNotification = createAction('[Notification] Removing Notification', props<{ index: number }>())
 
 /* LOCAL CHANGES */
 // Create variable groups and list of variables for easy access and change

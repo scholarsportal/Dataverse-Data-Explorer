@@ -88,11 +88,12 @@ export interface State {
     varWeights: any;
   };
   changeGroup: string;
+  recentlyChanged: string;
   openModal: {
     open: boolean;
     modalMode: 'editing' | 'chart' | 'settings' | '';
   };
-  notificationStack: {notificationType: string; message: string}[] | []
+  notificationStack: {notificationType: string; message: string} | {}
   openVariable: {
     editing: boolean;
     variable: any;
@@ -105,8 +106,6 @@ export interface State {
   };
   variables: any[];
 }
-
-const MAX_NOTIFICATIONS = 5;
 
 const initialState: State = {
   dataset: {
@@ -127,11 +126,12 @@ const initialState: State = {
     varWeights: {},
   },
   changeGroup: '',
+  recentlyChanged: '',
   openModal: {
     open: false,
     modalMode: '',
   },
-  notificationStack: [],
+  notificationStack: {},
   openVariable: {
     editing: false,
     variable: null,
@@ -198,31 +198,12 @@ export const reducer = createReducer(
     ...state,
     openVariable: { ...state.openVariable, editing: true, variable: variable },
   })),
-  on(Actions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
-    const updatedGroups = {
-      ...state.dataset.groups,
-      [groupID]: {
-        ...state.dataset.groups[groupID],
-        '@_var': [
-          ...(state.dataset.groups[groupID]['@_var'] || []), // Ensure '@_var' is an array
-          ...variableIDs,
-        ],
-      },
-    };
-
-    return {
-      ...state,
-      dataset: {
-        ...state.dataset,
-        groups: updatedGroups,
-      },
-    };
-  }),
 
   // When the user clicks a group
   on(Actions.groupSelected, (state, { groupID }) => ({
     ...state,
     changeGroup: groupID,
+    recentlyChanged: ''
   })),
   on(Actions.groupCreateNew, (state, { groupID, label }) => ({
     ...state,
@@ -236,21 +217,73 @@ export const reducer = createReducer(
           "@_var": []
         }
       }
-    }
+    },
+    recentlyChanged: groupID
   })),
+  on(Actions.groupDetailChanged, (state, { groupID }) => ({
+    ...state,
+    recentlyChanged: groupID
+  })),
+  on(Actions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
+    const updatedGroups = {
+      ...state.dataset.groups,
+      [groupID]: {
+        ...state.dataset.groups[groupID],
+        '@_var': [
+          ...(state.dataset.groups[groupID]['@_var'] || []), // Ensure '@_var' is an array
+          ...variableIDs,
+        ],
+      },
+    };
 
+    console.log(updatedGroups)
+    return {
+      ...state,
+      recentlyChanged: groupID,
+      dataset: {
+        ...state.dataset,
+        groups: updatedGroups,
+      }
+    };
+  }),
+  on(Actions.variableRemoveFromSelectGroup, (state, { variableIDs, groupID }) => {
+    // select the corresponding group
+    const groupToUpdate = state.dataset.groups[groupID];
+    // create a new list, by filtering out the ids that are in the input
+    const updatedVarList = (groupToUpdate['@_var'] || []).filter((id: string) => !variableIDs.includes(id))
+
+    // create new group state
+    const updatedGroups = {
+      ...state.dataset.groups,
+      [groupID]: {
+        ...groupToUpdate,
+        '@_var': updatedVarList
+      }
+    }
+
+    // update the state
+    return {
+      ...state,
+      dataset: {
+        ...state.dataset,
+        groups: updatedGroups
+      }
+    }
+  }),
 
   // Notifications
   on(Actions.pushNotification, (state, {notificationType, message}) => {
-    let updatedStack = [...state.notificationStack];
+    let updatedStack = {notificationType, message};
 
     // Max of 5 notifications at a time
-    if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
-
-    updatedStack.push({notificationType, message})
+    // if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
 
     return { ...state, notificationStack: updatedStack }
   }),
+
+  // on(Actions.removeNotification, (state, {index}) => {
+  //   return { ...state, notificationStack: state.notificationStack.splice(index, 1)}
+  // }),
   // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
   // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),

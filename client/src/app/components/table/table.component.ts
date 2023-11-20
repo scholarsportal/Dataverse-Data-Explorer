@@ -14,14 +14,13 @@ import {
   selectGroupVariables,
   selectVariables,
   selectGroups,
+  checkOpenGroup,
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
-import { variableViewChart, variableViewDetail } from 'src/state/actions';
-import { ColumnMode, SortType } from '@swimlane/ngx-datatable';
-import { MatTableDataSource } from '@angular/material/table';
+import { variableAddToSelectGroup, variableRemoveFromSelectGroup, variableViewChart, variableViewDetail } from 'src/state/actions';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { VarGroups, Variables } from 'src/state/reducers';
 import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
@@ -32,11 +31,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
   @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatSort) sort?: MatSort;
   @Input() openGroup?: string;
 
   isEditing$ = this.store.select(checkEditing);
   groups$ = this.store.select(selectGroups);
+  selectedGroup$ = this.store.select(checkOpenGroup)
+  vars$ = this.store.select(selectVariables)
   vars: any = null;
   selected = false;
   selection: any = new SelectionModel<any>(true, [])
@@ -64,6 +66,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
         this.vars.sort = this.sort;
       }
     });
+    this.table?.renderRows()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -74,9 +77,31 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
         this.vars.paginator = this.paginator;
         this.vars.sort = this.sort;
       });
+      this.table?.renderRows()
     }
   }
 
+  addToGroup(group: any) {
+    console.log(group['@_ID'])
+    console.log(this.selection.selected)
+    this.store.dispatch(variableAddToSelectGroup({ groupID: group['@_ID'], variableIDs: this.selection.selected }))
+  }
+
+  removeFromGroup() {
+    this.selectedGroup$.subscribe((group) => {
+      if (group) {
+        this.store.dispatch(variableRemoveFromSelectGroup({groupID: group, variableIDs: this.selection.selected}))
+        this.table?.renderRows()
+        this.vars._updateChangeSubscription()
+      }
+    })
+  }
+
+  getLabel(option: any) {
+    return option.labl || "<ERROR: NO LABEL>"
+  }
+
+  // FILTER
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.vars.filter = filterValue.trim().toLowerCase();
@@ -86,30 +111,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     }
   }
 
-  setHeading(value: any) {
-    const name = value['@_name'] || '';
-    const label = value['labl']['#text'] || 'No Label';
-    this.heading = `${name}: ${label}`;
-  }
-
-  viewChart(value: any) {
-    this.store.dispatch(
-      variableViewChart({ id: value['@_ID'], variable: value })
-    );
-    this.setHeading(value);
-    this.modalComponent?.openModal();
-  }
-
-  getLabel(option: any){
-    return option.labl || "<ERROR: NO LABEL>"
-  }
-
-  editVar(value: any) {
-    this.store.dispatch(variableViewDetail({ variable: value }));
-    this.setHeading(value);
-    this.modalComponent?.openModal();
-  }
-
+  // SELECT (CHECKBOX)
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -124,7 +126,8 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
       return;
     }
 
-    this.selection.select(...this.vars.data);
+    const idsToAdd = this.vars.data.map((item: any) => item['@_ID']);
+    this.selection.select(...idsToAdd);
   }
 
   /** The label for the checkbox on the passed row */
@@ -135,7 +138,28 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
+  // MODAL
+  setHeading(value: any) {
+    const name = value['@_name'] || '';
+    const label = value['labl']['#text'] || 'No Label';
+    this.heading = `${name}: ${label}`;
+  }
+
+  viewChart(value: any) {
+    this.store.dispatch(
+      variableViewChart({ id: value['@_ID'], variable: value })
+    );
+    this.setHeading(value);
+    this.modalComponent?.openModal();
+  }
+
   close() {
     this.modalComponent?.closeModal();
+  }
+
+  editVar(value: any) {
+    this.store.dispatch(variableViewDetail({ variable: value }));
+    this.setHeading(value);
+    this.modalComponent?.openModal();
   }
 }

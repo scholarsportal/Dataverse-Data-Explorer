@@ -4,12 +4,17 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
     </label>
     <!-- Group Selection Dropdown -->
-    <select name="groups" id="" class="rounded-md h-max p-1.5 my-auto">
-        <option value="">--Please Choose A Group--</option>
-        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}">{{ getLabel(item.value) }}</option>
+    <select *ngIf="selection.selected.length" name="groups" id="" class="bg-gray-100 border border-gray-300 rounded-md h-max p-1.5 my-auto">
+        <option value="">Add to Group</option>
+        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}" (click)="addToGroup(item.value)">{{ getLabel(item.value) }}</option>
     </select>
+    <button *ngIf="selection.selected.length && (selectedGroup$ | async)"
+            class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto"
+            (click)="removeFromGroup()"
+    >
+        Remove From Variable Group</button>
     <!-- Paginator -->
-    <mat-paginator [pageSizeOptions]="[12, 20, 50, 100]" aria-label="Select variable page"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
 </div>
 
 <mat-table [dataSource]="vars" matSort class="w-full relative top-6">
@@ -31,8 +36,8 @@
             </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row['@_ID']) : null"
+                [checked]="selection.isSelected(row['@_ID'])" [aria-label]="checkboxLabel(row['@_ID'])">
             </mat-checkbox>
         </td>
     </ng-container>

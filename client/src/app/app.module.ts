@@ -27,9 +27,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MultiselectDropdownComponent } from './components/modal/form/multiselect-dropdown/multiselect-dropdown.component';
 
 // New Import
+import { MultiselectDropdownComponent } from './components/modal/form/multiselect-dropdown/multiselect-dropdown.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { CdkColumnDef } from '@angular/cdk/table';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { MultiselectDropdownComponent } from './components/modal/form/multiselec
     ChartComponent,
     FormComponent,
     MultiselectDropdownComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,7 @@ import { MultiselectDropdownComponent } from './components/modal/form/multiselec
     MatCheckboxModule,
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [CdkColumnDef],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
