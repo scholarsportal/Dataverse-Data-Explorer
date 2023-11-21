@@ -75,7 +75,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     const openGroup = changes['openGroup'];
     if (openGroup.previousValue !== openGroup.currentValue) {
       this.store.select(selectGroupVariables).subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
         this.vars = new MatTableDataSource(data);
         this.vars.paginator = this.paginator;
         this.vars.sort = this.sort;
@@ -85,8 +85,8 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   addToGroup(group: any) {
-    console.log(group['@_ID'])
-    console.log(this.selection.selected)
+    // console.log(group['@_ID'])
+    // console.log(this.selection.selected)
     this.store.dispatch(variableAddToSelectGroup({ groupID: group['@_ID'], variableIDs: this.selection.selected }))
   }
 
@@ -108,7 +108,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   // FILTER
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(filterValue)
+    // console.log(filterValue)
     this.vars.filter = filterValue.trim().toLowerCase();
 
     if (this.vars.paginator) {

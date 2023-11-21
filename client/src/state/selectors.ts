@@ -37,7 +37,6 @@ export const selectGroupVariables = createSelector(
       } else {
       const groupVars = groups[openGroup]['@_var'] || [];
       const computedVars = groupVars.map((item: any) => variables[item]);
-      console.log(computedVars)
       return computedVars.length ? computedVars : [];
     }
   }
