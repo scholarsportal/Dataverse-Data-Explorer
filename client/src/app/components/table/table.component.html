@@ -21,12 +21,13 @@
     <tr mat-header-row *matHeaderRowDef="columnMat;" class=""></tr>
     <tr mat-row *matRowDef="let row; columns: columnMat" class=""></tr>
 
+    <!-- TODO: THIS THROWS AN ERROR ON EMPTY DATASET -->
     <!-- Row shown when there is no matching data. -->
-    <tr mat-row *matNoDataRow>
-        <td mat-cell colspan="4">
-            No data matching the filter "{{ input.value }}"
-        </td>
-    </tr>
+    <!-- <tr mat-row *matNoDataRow>
+         <td mat-cell colspan="4">
+         No data matching the filter "{{ input.value }}"
+         </td>
+         </tr> -->
 
     <!-- Checkbox Column -->
     <ng-container matColumnDef="check">

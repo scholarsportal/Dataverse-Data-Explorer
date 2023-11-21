@@ -52,9 +52,11 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     this.store.select(selectVariables).subscribe((data) => {
       if (data) {
         this.vars = new MatTableDataSource(Object.values(data));
+      } else {
+        this.vars = new MatTableDataSource([])
+      }
         this.vars.paginator = this.paginator;
         this.vars.sort = this.sort;
-      }
     });
   }
 
@@ -73,6 +75,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     const openGroup = changes['openGroup'];
     if (openGroup.previousValue !== openGroup.currentValue) {
       this.store.select(selectGroupVariables).subscribe((data: any) => {
+        console.log(data)
         this.vars = new MatTableDataSource(data);
         this.vars.paginator = this.paginator;
         this.vars.sort = this.sort;
@@ -88,11 +91,12 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   removeFromGroup() {
+    // this.vars.filter
+    // this.table?.renderRows()
+    // this.vars._updateChangeSubscription()
     this.selectedGroup$.subscribe((group) => {
       if (group) {
-        this.store.dispatch(variableRemoveFromSelectGroup({groupID: group, variableIDs: this.selection.selected}))
-        this.table?.renderRows()
-        this.vars._updateChangeSubscription()
+        this.store.dispatch(variableRemoveFromSelectGroup({ groupID: group, variableIDs: this.selection.selected }))
       }
     })
   }
@@ -104,6 +108,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   // FILTER
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue)
     this.vars.filter = filterValue.trim().toLowerCase();
 
     if (this.vars.paginator) {

@@ -60,7 +60,7 @@ export const variableAddToSelectGroup = createAction(
 
 // Remove given variable list from selected group
 export const variableRemoveFromSelectGroup = createAction(
-  '[Variable] Add To Select Group',
+  '[Variable] Remove To Select Group',
   props<{ variableIDs: string[], groupID: string }>()
 );
 // Remove a specified group from the list of groups

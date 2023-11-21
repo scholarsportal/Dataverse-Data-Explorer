@@ -35,11 +35,10 @@ export const selectGroupVariables = createSelector(
       if (!openGroup) {
         return Object.values(variables);
       } else {
-        console.log(groups[openGroup]['@_var'])
       const groupVars = groups[openGroup]['@_var'] || [];
       const computedVars = groupVars.map((item: any) => variables[item]);
       console.log(computedVars)
-      return computedVars.length ? computedVars : undefined;
+      return computedVars.length ? computedVars : [];
     }
   }
   return [];
