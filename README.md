@@ -30,47 +30,6 @@ Process Two
 cd server 
 bun run start
 ```
-
-### GitHub Pages
-
-The simplest way to run the Data Curation Tool is to use GitHub Pages as the host. This is not recomended for production use, but is useful for testing the application.
-
-To do this, download `DataCuration.json` to the server running Dataverse and run the following command:
-
-`curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
-
-### Inside of the Dataverse application
-
-Another way to use Data Curation tool with Dataverse is to install it in `dataverseDirectory/src/main/webapp/dct_explore`.
-
-To do this, download the Dataverse-Data-Curation-Tool directory, download your npm packages with `npm install`, and run `ng build --prod --base-href=dct_explore`.
-
-Next, copy the contents of `Dataverse-Data-Curation-Tool/dist` into `dataverseDirectory/src/main/webapp/dct_explore`.
-
-Compile Dataverse and deploy it, then run the following command:
-
-`curl -X POST -H 'Content-type: application/json' --upload-file DataCurationLocalConfigure.json http://localhost:8080/api/admin/externalTools`
-
-### As an external application
-
-The recommended way to install the Data Curation Tool is to use your own webserver. Download your npm packages with `npm install`, and then compile the Data Curation Tool by running `ng build --prod --base-href {URL of your application}`. The base-href value should include a trailing slash.
-
-Copy the contents of `Dataverse-Data-Curation-Tool/dist` into a dedicated folder on your webserver.
-
-In the `DataCuration.json` file, edit the following line: `"toolUrl": "https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/"`, replacing `https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/` with the url of your webserver.
-
-Then on your local machine that runs Dataverse execute the following command:
-
-`curl -X POST -H 'Content-type: application/json' --upload-file DataCuration.json http://localhost:8080/api/admin/externalTools`
-
-### Note about Dataverse versions
-
-For Dataverse `v4.16` the corresponding manifest json files are `DataCuration_v4.16.json` and `DataCurationLocalConfigure_v4.16.json`.
-
-For Dataverse `v4.17` or above, the corresponding manifest json files are `DataCuration_v4.17up.json` and `DataCurationLocalConfigure_v4.17up.json`.
-
-The difference between `4.16` and `4.17` is two new parameters introduced in `4.17`: `"scope"` and `"localeCode"`.
-
 ## Using the Data Curation Tool
 
 ### Main Interface
@@ -96,3 +55,8 @@ Your edits can be saved to your dataset by clicking "Save to Dataverse" towards 
 ### DDI HTML Codebook
 
 Once you have made your edits and have published the dataset, the changes will be reflected in the DDI HTML codebook within Dataverse. To view this codebook, go to the page for your file in Dataverse, click "Export Metadata", and select "DDI HTML Codebook".
+
+![Data Curation Tool Launch Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/docs/img/Data%20Curation%20Tool%20Launch%20Process.drawio.png?raw=true "Launch Activity Diagram")
+
+
+![Modal Open Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/docs/img/lauch%20modal%20with%20id.drawio.png "Modal Launch Activity Diagram")
