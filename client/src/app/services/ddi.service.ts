@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment.development';
 })
 export class DdiService {
   private searchURL = `${environment.domain}/download`;
+  private variableURL = `${environment.domain}/variable`;
 
   constructor(private http: HttpClient) {}
 

@@ -108,7 +108,7 @@
     <div class="modal-body">
         <app-form *ngIf="isEditing$ | async; else chart"></app-form>
         <ng-template #chart>
-            <app-chart></app-chart>
+            <app-chart class="w-full py-3"></app-chart>
         </ng-template>
     </div>
 

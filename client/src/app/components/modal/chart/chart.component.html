@@ -1,4 +1,26 @@
 <div *ngIf="!(hasGraph$ | async)" class="text-3xl font-bold">
   This Variable has no data
 </div>
-<figure id="bar"></figure>
+<figure id="bar" class="w-full"></figure>
+<table class="table-auto border mx-auto my-3">
+  <thead>
+    <tr class="border">
+      <th class="border table-header">Values</th>
+      <th class="border table-header">Categories</th>
+      <th class="border table-header">Count</th>
+      <th class="border table-header">Count (%)</th>
+      <th class="border table-header">Weighted Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Sample data rows -->
+    <tr *ngFor="let item of data | keyvalue" class="my-3 border-b">
+      <td class="border-r p-2">{{getLabel(item.value)}}</td>
+      <td class="border-r p-2">{{getCategories(item.value)}}</td>
+      <td class="border-r p-2">{{getCount(item.value)}}</td>
+      <td class="border-r p-2">{{getCountPercent(item.value)}}</td>
+      <td class="border-r p-2">{{getCountWeighted(item.value)}}</td>
+    </tr>
+    <!-- Add more rows as needed -->
+  </tbody>
+</table>
