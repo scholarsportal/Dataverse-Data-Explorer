@@ -38,12 +38,12 @@ export const datasetUploadError = createAction(
 // When the user presses the edit button for a variable
 export const variableViewDetail = createAction(
   '[Variable] View Detail',
-  props<{ variable: string }>()
+  props<{ id: string }>()
 );
 // When the user presses the chart button for a variable
 export const variableViewChart = createAction(
   '[Variable] View Chart',
-  props<{ id: string; variable: string }>()
+  props<{ id: string; }>()
 );
 
 // Any time the user makes changes

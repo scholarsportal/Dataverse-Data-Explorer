@@ -15,7 +15,7 @@ export class DataFetchEffect {
       ofType(fromActions.fetchDataset),
       switchMap((action) =>
         this.ddi.get(action.fileID, action.siteURL).pipe(
-          map(({variables, groups, citation, varWeights}) => fromActions.datasetLoadSuccess({ variables, groups, citation, varWeights })),
+          map(({ variables, groups, citation, varWeights }) => fromActions.datasetLoadSuccess({ variables, groups, citation, varWeights })),
           catchError((error) => of(fromActions.datasetLoadError(error)))
         )
       )
@@ -46,22 +46,34 @@ export class DataFetchEffect {
   //   )
   // );
 
-  createNewVarGraph$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.variableViewChart),
-      switchMap((action) => {
-        const { variable } = action;
-        try {
-          const { id, weighted, unweighted } = this.createGraphObject(variable);
-          return of(
-            fromActions.variableCreateGraphSuccess({ id, weighted, unweighted })
-          );
-        } catch (error) {
-          return of(fromActions.variableCreateGraphError({ error }));
-        }
-      })
-    )
-  );
+  // createNewVarGraph$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(fromActions.variableViewChart),
+  //     switchMap((action) => {
+  //       const { variable } = action;
+  //       try {
+  //         // const { id, weighted, unweighted } = this.createGraphObject(variable);
+  //         let values = new Map();
+
+  //         variable['catgry'].forEach((item: any) => {
+  //           values.set(item.catValu, {
+  //             category: item.labl['#text'],
+  //             count: item.catstat[0]['#text'],
+  //             weightedCount: item.catstat[1]['#text'],
+  //           })
+  //         });
+
+  //         console.log(values)
+  //         console.log(this.createGraphObject(variable))
+  //         return of(
+  //           fromActions.variableCreateGraphSuccess({ id: '', weighted: '', unweighted: '' })
+  //         );
+  //       } catch (error) {
+  //         return of(fromActions.variableCreateGraphError({ error }));
+  //       }
+  //     })
+  //   )
+  // );
 
   constructor(private actions$: Actions, private ddi: DdiService) {}
 
@@ -85,8 +97,16 @@ export class DataFetchEffect {
   // }
 
   createGraphObject(variable: any) {
-    // Perform the calculations and return the result.
-    // Example logic for calculating weighted and unweighted variables:
+    let values = new Map();
+
+    variable['catgry'].forEach((item: any) => {
+      values.set(item.catValu, {
+        category: item.labl['#text'],
+        count: item.catstat[0]['#text'],
+        weightedCount: item.catstat[1]['#text'],
+      })
+    });
+
     const weighted = variable.catgry.map((item: any) => ({
       label: item.labl['#text'],
       frequency: (() => {
@@ -100,6 +120,6 @@ export class DataFetchEffect {
       frequency: item.frequency,
     }));
 
-    return { id: variable['@_ID'], weighted, unweighted };
+    return { id: variable['@_ID'], weighted, unweighted: values };
   }
 }

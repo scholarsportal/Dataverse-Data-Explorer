@@ -18,7 +18,14 @@ interface CatStat {
   '@_wgtd'?: string;
 }
 
-type Catgry = CatStat[];
+interface Catgry {
+  catStat: CatStat[];
+  catValu: number;
+  labl: {
+    '#text': string;
+    '@_level': string;
+  }
+};
 
 export interface VarGroups {
   [id: string]: {
@@ -92,8 +99,9 @@ export interface State {
   openModal: {
     open: boolean;
     modalMode: 'editing' | 'chart' | 'settings' | '';
+    variable: string | null;
   };
-  notificationStack: {notificationType: string; message: string} | {}
+  notificationStack: { notificationType: string; message: string } | {}
   openVariable: {
     editing: boolean;
     variable: any;
@@ -104,7 +112,6 @@ export interface State {
     status: string;
     error: any;
   };
-  variables: any[];
 }
 
 const initialState: State = {
@@ -130,6 +137,7 @@ const initialState: State = {
   openModal: {
     open: false,
     modalMode: '',
+    variable: null,
   },
   notificationStack: {},
   openVariable: {
@@ -142,7 +150,6 @@ const initialState: State = {
     status: '',
     error: null,
   },
-  variables: [],
 };
 
 export const reducer = createReducer(
@@ -166,10 +173,10 @@ export const reducer = createReducer(
   })),
 
   // When the user clicks the chart button
-  on(Actions.variableViewChart, (state, { variable }) => ({
+  on(Actions.variableViewChart, (state, { id }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'chart' as const },
-    openVariable: { ...state.openVariable, editing: false, variable: variable },
+    openModal: { open: true, modalMode: 'chart' as const, variable: id },
+    openVariable: { ...state.openVariable, editing: false, variable: state.dataset.variables[id] },
   })),
 
   on(Actions.variableCreateGraphSuccess,
@@ -194,9 +201,10 @@ export const reducer = createReducer(
   })),
 
   // When the user clicks the edit button
-  on(Actions.variableViewDetail, (state, { variable }) => ({
+  on(Actions.variableViewDetail, (state, { id }) => ({
     ...state,
-    openVariable: { ...state.openVariable, editing: true, variable: variable },
+    openModal: { open: true, modalMode: 'editing' as const, variable: id },
+    openVariable: { ...state.openVariable, editing: true, variable: id },
   })),
 
   // When the user clicks a group
@@ -236,7 +244,6 @@ export const reducer = createReducer(
       },
     };
 
-    console.log(updatedGroups)
     return {
       ...state,
       recentlyChanged: groupID,
@@ -272,8 +279,8 @@ export const reducer = createReducer(
   }),
 
   // Notifications
-  on(Actions.pushNotification, (state, {notificationType, message}) => {
-    let updatedStack = {notificationType, message};
+  on(Actions.pushNotification, (state, { notificationType, message }) => {
+    let updatedStack = { notificationType, message };
 
     // Max of 5 notifications at a time
     // if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }

@@ -99,19 +99,6 @@ export const selectVariableDetail = (id: string) => createSelector(selectFeature
 return state.dataset.variables[id]
 })
 
-export const getOpenVariableGraphValues = createSelector(
-selectFeature,
-(state) => {
-  return state.openVariable.graph;
-}
-);
-
-export const getVariablePreviouslyOpen = (id: string) =>
-createSelector(selectFeature, (state) => {
-  return state.openVariable.previouslyOpen[id];
-});
-
-
 export const selectRecentlyChangedGroup = createSelector(selectFeature, (state) => {
   return state.recentlyChanged;
 });
