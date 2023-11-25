@@ -1,103 +1,104 @@
-<div class="fixed bg-white top-0 pt-20 z-30 w-screen flex flex-row justify-around">
+<div class="fixed w-full pl-72 bg-white flex flex-row justify-between">
     <!-- Filter Search -->
-    <label class="my-auto">Filter
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
+    <label class="my-auto sr-only">
+        Search
     </label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="table-search icon my-2" #input />
     <!-- Group Selection Dropdown -->
-    <select *ngIf="selection.selected.length" name="groups" id="" class="bg-gray-100 border border-gray-300 rounded-md h-max p-1.5 my-auto">
+    <select *ngIf="selection.selected.length" name="groups" id=""
+        class="bg-gray-100 border border-gray-300 rounded-md h-max p-1.5 my-auto">
         <option value="">Add to Group</option>
-        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}" (click)="addToGroup(item.value)">{{ getLabel(item.value) }}</option>
+        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}" (click)="addToGroup(item.value)">{{
+            getLabel(item.value) }}</option>
     </select>
     <button *ngIf="selection.selected.length && (selectedGroup$ | async)"
-            class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto"
-            (click)="removeFromGroup()"
-    >
+        class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
         Remove From Variable Group</button>
     <!-- Paginator -->
     <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
 </div>
+<div class="table-container pl-72 top-0 mt-16">
+    <table mat-table [dataSource]="vars" matSort class="">
+        <tr mat-header-row *matHeaderRowDef="columnMat; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnMat"></tr>
 
-<mat-table [dataSource]="vars" matSort class="w-full relative top-6">
-    <tr mat-header-row *matHeaderRowDef="columnMat;" class=""></tr>
-    <tr mat-row *matRowDef="let row; columns: columnMat" class=""></tr>
-
-    <!-- TODO: THIS THROWS AN ERROR ON EMPTY DATASET -->
-    <!-- Row shown when there is no matching data. -->
-    <!-- <tr mat-row *matNoDataRow>
+        <!-- TODO: THIS THROWS AN ERROR ON EMPTY DATASET -->
+        <!-- Row shown when there is no matching data. -->
+        <!-- <tr mat-row *matNoDataRow>
          <td mat-cell colspan="4">
          No data matching the filter "{{ input.value }}"
          </td>
          </tr> -->
 
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="check">
-        <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-            </mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row['@_ID']) : null"
-                [checked]="selection.isSelected(row['@_ID'])" [aria-label]="checkboxLabel(row['@_ID'])">
-            </mat-checkbox>
-        </td>
-    </ng-container>
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row['@_ID']) : null"
+                    [checked]="selection.isSelected(row['@_ID'])" [aria-label]="checkboxLabel(row['@_ID'])">
+                </mat-checkbox>
+            </td>
+        </ng-container>
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="ID">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
-        <td mat-cell *matCellDef="let row">{{ row['@_ID'] }}</td>
-    </ng-container>
+        <!-- ID Column -->
+        <ng-container matColumnDef="ID">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
+            <td mat-cell *matCellDef="let row">{{ row['@_ID'] }}</td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Name</th>
-        <td mat-cell *matCellDef="let row">{{ row['@_name'] }}</td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Name</th>
+            <td mat-cell *matCellDef="let row">{{ row['@_name'] }}</td>
+        </ng-container>
 
-    <!-- Label Column -->
-    <ng-container matColumnDef="Label">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="label">Label</th>
-        <td mat-cell *matCellDef="let row">{{ row['labl']['#text'] }}</td>
-    </ng-container>
+        <!-- Label Column -->
+        <ng-container matColumnDef="Label">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="label">Label</th>
+            <td mat-cell *matCellDef="let row">{{ row['labl']['#text'] }}</td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="Weight">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="weight">Weight</th>
-        <td mat-cell *matCellDef="let row">
-            {{ row['@_wgt-var'] ? row['@_wgt-var'] : '' }}
-        </td>
-    </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Weight">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="weight">Weight</th>
+            <td mat-cell *matCellDef="let row">
+                {{ row['@_wgt-var'] ? row['@_wgt-var'] : '' }}
+            </td>
+        </ng-container>
 
-    <!-- View Column -->
-    <ng-container matColumnDef="View">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>View</th>
-        <td mat-cell *matCellDef="let row">
-            <button (click)="viewChart(row)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-                </svg>
-            </button>
-        </td>
-    </ng-container>
+        <!-- View Column -->
+        <ng-container matColumnDef="View">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>View</th>
+            <td mat-cell *matCellDef="let row">
+                <button (click)="viewChart(row)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path
+                            d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" />
+                    </svg>
+                </button>
+            </td>
+        </ng-container>
 
-    <!-- Edit Column -->
-    <ng-container matColumnDef="Edit">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit Variable</th>
-        <td mat-cell *matCellDef="let row">
-            <button (click)="editVar(row)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                </svg>
-            </button>
-        </td>
-    </ng-container>
-</mat-table>
-
+        <!-- Edit Column -->
+        <ng-container matColumnDef="Edit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+            <td mat-cell *matCellDef="let row">
+                <button (click)="editVar(row)" class="mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                        <path
+                            d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                    </svg>
+                </button>
+            </td>
+        </ng-container>
+    </table>
+</div>
 <app-modal class="w-max">
     <!-- MODAL HEADER -->
     <div class="modal-header flex flex-col">

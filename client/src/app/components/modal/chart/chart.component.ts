@@ -70,7 +70,7 @@ this.svg = d3
     .append('svg')
     .attr('width', this.width + this.margin * 2)
     .attr('height', this.height + this.margin * 2 + 50) // Adding extra space for x-axis labels
-    .attr('class', 'mx-auto w-2/3')
+    .attr('class', 'mx-auto')
     .append('g')
     .attr('transform', 'translate(' + this.margin + ',' + (this.margin + 50) + ')'); // Adjusting y-axis position
 }
@@ -92,7 +92,7 @@ private drawBars(data: any[]): void {
   // Draw the Y-axis on the DOM
   this.svg
     .append('g')
-    .attr('class', 'y-axis text-label')
+    .attr('class', 'y-axis')
     .call(d3.axisLeft(y))
     .selectAll('text')
     .attr('transform', 'translate(-10,0)rotate(-45)')
