@@ -7,7 +7,7 @@
 }
 
 .selected {
-    @apply bg-gray-300;
+    @apply bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
 }
 
 .changed {

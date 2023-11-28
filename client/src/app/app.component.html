@@ -1,7 +1,7 @@
 <app-notification></app-notification>
-<app-header class="bg-white fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
+<app-header class="background on-background-text fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
 <div *ngIf="(loaded$ | async) === 'success'" class="flex flex-row w-full h-screen m-4 mt-16">
-  <app-sidebar class="sidebar"></app-sidebar>
+  <app-sidebar class="outline sidebar"></app-sidebar>
   <app-table
     class="w-full"
     [openGroup]="openGroup$ | ngrxPush"

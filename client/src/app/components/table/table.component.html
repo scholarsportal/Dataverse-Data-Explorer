@@ -1,4 +1,4 @@
-<div class="fixed w-full pl-72 bg-white flex flex-row justify-between">
+<div class="fixed w-full pl-72 surface on-surface-text flex flex-row justify-between">
     <!-- Filter Search -->
     <label class="my-auto sr-only">
         Search
@@ -15,10 +15,10 @@
         class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
         Remove From Variable Group</button>
     <!-- Paginator -->
-    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page" class="surface on-surface-text"></mat-paginator>
 </div>
-<div class="table-container pl-72 top-0 mt-16">
-    <table mat-table [dataSource]="vars" matSort class="">
+<div class="surface table-container pl-72 top-0 mt-16">
+    <table mat-table [dataSource]="vars" matSort class="surface ">
         <tr mat-header-row *matHeaderRowDef="columnMat; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columnMat"></tr>
 
