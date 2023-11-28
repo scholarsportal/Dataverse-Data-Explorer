@@ -7,6 +7,8 @@ const routes = Router();
 
 routes.use("/download", download);
 
+routes.use("/weights", download);
+
 // routes.get("/", async function (req: Request, res: Response) {
 //     const siteURL = req.query.siteURL;
 //     const fileID = req.query.fileID;

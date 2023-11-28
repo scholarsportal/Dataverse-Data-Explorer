@@ -15,7 +15,7 @@
         class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
         Remove From Variable Group</button>
     <!-- Paginator -->
-    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page" class="surface on-surface-text"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
 </div>
 <div class="surface table-container pl-72 top-0 mt-16">
     <table mat-table [dataSource]="vars" matSort class="surface ">

@@ -69,6 +69,18 @@ export const selectOpenVariableGroups = createSelector(selectOpenVariable, (stat
 return state.groups;
 });
 
+export const selectCheckOpenModal = createSelector(selectFeature, (state) => {
+  return state.openModal.open
+})
+
+export const selectCheckOpenModalMode = createSelector(selectFeature, (state) => {
+  return state.openModal.modalMode
+})
+
+export const selectCheckOpenModalState = createSelector(selectFeature, (state) => {
+  return state.openModal.state
+})
+
 export const selectOpenVarDetail = createSelector(
 selectOpenVariable,
 selectGroups,

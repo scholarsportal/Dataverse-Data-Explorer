@@ -11,8 +11,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from 'src/state/reducers';
 import { DataFetchEffect } from 'src/state/init.effects';
 import { HttpClientModule } from '@angular/common/http';
-import { DataTablesModule } from 'angular-datatables';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartComponent } from './components/modal/chart/chart.component';
 import { FormComponent } from './components/modal/form/form.component';
 import { LetDirective, PushPipe } from '@ngrx/component';
@@ -60,9 +58,6 @@ import { CdkColumnDef } from '@angular/cdk/table';
     LetDirective,
     // Using @Input with ngRx
     PushPipe,
-    // Angular Datatables
-    DataTablesModule,
-    NgxDatatableModule,
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
