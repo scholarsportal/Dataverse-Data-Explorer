@@ -98,8 +98,8 @@ export interface State {
   recentlyChanged: string;
   openModal: {
     open: boolean;
-    modalMode: 'editing' | 'chart' | 'settings' | '';
-    variable: string | null;
+    modalMode: 'Edit' | 'View' | 'settings' | '';
+    variable: any | null;
     state: 'saved' | 'changes' | '';
   };
   notificationStack: { notificationType: string; message: string } | {}
@@ -177,7 +177,7 @@ export const reducer = createReducer(
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { id }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'chart' as const, variable: id, state: 'saved' as const },
+    openModal: { open: true, modalMode: 'View' as const, variable: state.dataset.variables[id], state: 'saved' as const },
     openVariable: { ...state.openVariable, editing: false, variable: state.dataset.variables[id] },
   })),
 
@@ -205,7 +205,7 @@ export const reducer = createReducer(
   // When the user clicks the edit button
   on(Actions.variableViewDetail, (state, { id }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'editing' as const, variable: id, state: 'saved' as const },
+    openModal: { open: true, modalMode: 'Edit' as const, variable: state.dataset.variables[id], state: 'saved' as const },
     openVariable: { ...state.openVariable, editing: true, variable: id },
   })),
 

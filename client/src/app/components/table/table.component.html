@@ -100,22 +100,19 @@
     </table>
 </div>
 <app-modal class="w-max">
-    <!-- MODAL HEADER -->
-    <div class="modal-header flex flex-col">
-        <div class="text-2xl">{{ heading }}</div>
-    </div>
+    <!-- <div class="modal-header flex flex-col">
+            <div class="text-2xl">{{ heading }}</div>
+        </div>
 
-    <!-- MAIN MODAL SECTION -->
-    <div class="modal-body">
-        <app-form *ngIf="isEditing$ | async; else chart"></app-form>
-        <ng-template #chart>
-            <app-chart class="w-full py-3"></app-chart>
-        </ng-template>
-    </div>
+        <div class="modal-body">
+            <app-form *ngIf="isEditing$ | async; else chart"></app-form>
+            <ng-template #chart>
+                <app-chart class="w-full py-3"></app-chart>
+            </ng-template>
+        </div>
 
-    <!-- MODAL FOOTER -->
-    <div class="modal-footer">
-        <button (click)="close()">Update</button>
-        <button (click)="close()">Cancel</button>
-    </div>
+        <div class="modal-footer">
+            <button (click)="close()">Update</button>
+            <button (click)="close()">Cancel</button>
+        </div> -->
 </app-modal>

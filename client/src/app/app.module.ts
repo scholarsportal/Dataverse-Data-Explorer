@@ -48,7 +48,7 @@ import { CdkColumnDef } from '@angular/cdk/table';
     // Add this line to activate http client
     HttpClientModule,
     StoreModule.forRoot({ globalState: appReducer }, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
     // Add this to activate Forms
     FormsModule,
     ReactiveFormsModule,

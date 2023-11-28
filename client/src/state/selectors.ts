@@ -57,10 +57,6 @@ export const selectDatasetTitle = createSelector(selectFeature, (state) => {
 return state.dataset.citation?.titlStmt?.titl;
 });
 
-export const checkEditing = createSelector(selectFeature, (state) => {
-return state.openVariable.editing;
-});
-
 export const selectOpenVariable = createSelector(selectFeature, (state) => {
 return state.openVariable?.variable;
 });
@@ -79,6 +75,22 @@ export const selectCheckOpenModalMode = createSelector(selectFeature, (state) =>
 
 export const selectCheckOpenModalState = createSelector(selectFeature, (state) => {
   return state.openModal.state
+})
+
+export const selectCheckOpenModalVariable = createSelector(selectFeature, (state) => {
+  return state.openModal.variable
+})
+
+export const selectCheckOpenModalLabel = createSelector(selectFeature, (state) => {
+  return state.openModal.variable?.labl['#text']
+})
+
+export const selectCheckOpenModalID = createSelector(selectFeature, (state) => {
+  return state.openModal.variable ? state.openModal.variable['@_ID'] : null;
+})
+
+export const selectCheckOpenModalName = createSelector(selectFeature, (state) => {
+  return state.openModal.variable ? state.openModal.variable['@_name'] : null;
 })
 
 export const selectOpenVarDetail = createSelector(

@@ -9,8 +9,6 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  getDataFetchStatus,
-  checkEditing,
   selectGroupVariables,
   selectVariables,
   selectGroups,
@@ -35,7 +33,6 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   @ViewChild(MatSort) sort?: MatSort;
   @Input() openGroup?: string;
 
-  isEditing$ = this.store.select(checkEditing);
   groups$ = this.store.select(selectGroups);
   selectedGroup$ = this.store.select(checkOpenGroup)
   vars$ = this.store.select(selectVariables)
@@ -164,7 +161,7 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
 
   editVar(value: any) {
     console.log(value)
-    this.store.dispatch(variableViewDetail({ id: value }));
+    this.store.dispatch(variableViewDetail({ id: value['@_ID'] }));
     this.setHeading(value);
     this.modalComponent?.openModal();
   }

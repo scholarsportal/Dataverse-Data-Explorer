@@ -1,15 +1,28 @@
 <!-- MODAL -->
 <!-- Based on https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog -->
 <dialog #modal id="{{ modalID }}" class="modal">
-  <div class="modal-header">
-    <ng-content select=".modal-header"></ng-content>
-  <hr class="mt-3 mx-8">
-  </div>
-  <div class="modal-body">
-    <ng-content select=".modal-body"></ng-content>
+    <div class="modal-header">
+        <h2>{{( mode$ | async )}} Variable</h2>
+        <hr class="mt-3 mx-8">
+    </div>
+    @if ((open$ | async)) {
+    <div class="modal-body">
+        @if ((mode$ | async) === 'View') {
+        <div>{{ ((label$ | async)) }}</div>
+        }
 
-  </div>
-  <div class="modal-footer">
-    <ng-content select=".modal-footer"></ng-content>
-  </div>
+        <div>ID: {{ (( id$ | async)) }}</div>
+        <div>Name: {{ (( name$ | async)) }}</div>
+
+        @if((mode$ | async) === 'View') {
+          <app-chart></app-chart>
+        }
+        @else {
+          <app-form></app-form>
+        }
+    </div>
+    }
+    <div class="modal-footer">
+        <ng-content select=".modal-footer"></ng-content>
+    </div>
 </dialog>
