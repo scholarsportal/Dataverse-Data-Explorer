@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { VarGroups } from 'src/state/reducers';
-import {
-  selectOpenVarDetail,
-  selectVariableDetail,
-} from 'src/state/selectors';
+import { ModalComponent } from '../modal.component';
+import { VarGroups } from 'src/state/interface';
+import { selectOpenModalDetail } from 'src/state/selectors/modal.selectors';
 
 @Component({
   selector: 'app-form',
@@ -14,6 +11,7 @@ import {
   styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit {
+  @ViewChild(ModalComponent) modalComponent?: ModalComponent;
   variables: any;
   variableForm = new FormGroup({
     id: new FormControl(''),
@@ -37,7 +35,7 @@ export class FormComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    const variableDetails = this.store.select(selectOpenVarDetail);
+    const variableDetails = this.store.select(selectOpenModalDetail);
     variableDetails.subscribe(({ variable, groups, varWeights }) => {
       if (variable && groups && varWeights) {
         this.groups = groups;
@@ -46,6 +44,16 @@ export class FormComponent implements OnInit {
         this.variableForm.patchValue(variable);
       }
     });
+  }
+
+  close() {
+    this.modalComponent?.closeModal();
+  }
+
+  // TODO: Check if current variable has changes (using ngRx selector), if changes, show "Are you Sure", else,
+    // close dialogue
+  handleCancel() {
+    console.log('')
   }
 
   getWeightsLabels() {

@@ -1,119 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
-
-interface Citation {
-  titlStmt: {
-    titl: string;
-    IDNo: string;
-  };
-  rspStmt: {
-    AuthEnty: string;
-  };
-  biblCit: string;
-}
-
-interface CatStat {
-  '#text': number | string;
-  '@_type': string;
-  '@_wgtd'?: string;
-}
-
-interface Catgry {
-  catStat: CatStat[];
-  catValu: number;
-  labl: {
-    '#text': string;
-    '@_level': string;
-  }
-};
-
-export interface VarGroups {
-  [id: string]: {
-    '@_ID': string;
-    'labl': string;
-    '@_var': string[];
-  }
-}
-
-export interface Variables {
-  [id: string]: {
-    '@_ID': string;
-    '@_name': string;
-    '@_intrvl': string;
-    labl: {
-      '#text': string;
-      '@_level': string;
-    };
-    location: {
-      '@_fileid': string;
-    };
-    notes: (string | {
-      '#text': string;
-      '@_subject': string;
-      '@_level': string;
-      '@_type': string;
-    })[];
-    qstn: {
-      qstnLit: string;
-      ivuInstr: string;
-      postQTxt: string;
-    },
-    sumStat: {
-      '#text': number | string;
-      '@_type': string;
-    }[];
-    varFormat: {
-      '@_type': string;
-    };
-    universe: string;
-    groups: {
-      [id: string]: {
-        label: string
-      }
-    },
-    catgry?: Catgry;
-    '@_wgt-var'?: string;
-    '@_wgt'?: 'wgt';
-  };
-}
-
-
-export interface GraphObject {
-  [id: string]: {
-    weighted: { label: string; frequency: number }[];
-    unweighted: { label: string; frequency: number }[];
-  };
-}
-
-export interface State {
-  dataset: {
-    status: string;
-    error: any;
-    citation: Citation;
-    variables: Variables;
-    groups: VarGroups;
-    varWeights: any;
-  };
-  changeGroup: string;
-  recentlyChanged: string;
-  openModal: {
-    open: boolean;
-    modalMode: 'Edit' | 'View' | 'settings' | '';
-    variable: any | null;
-    state: 'saved' | 'changes' | '';
-  };
-  notificationStack: { notificationType: string; message: string } | {}
-  openVariable: {
-    editing: boolean;
-    variable: any;
-    graph: any;
-    previouslyOpen: GraphObject;
-  };
-  upload: {
-    status: string;
-    error: any;
-  };
-}
+import { State } from './interface';
 
 const initialState: State = {
   dataset: {
@@ -137,17 +24,13 @@ const initialState: State = {
   recentlyChanged: '',
   openModal: {
     open: false,
+    id: null,
     modalMode: '',
     variable: null,
+    graph: null,
     state: 'saved'
   },
   notificationStack: {},
-  openVariable: {
-    editing: false,
-    variable: null,
-    graph: null,
-    previouslyOpen: {},
-  },
   upload: {
     status: '',
     error: null,
@@ -177,27 +60,22 @@ export const reducer = createReducer(
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { id }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'View' as const, variable: state.dataset.variables[id], state: 'saved' as const },
-    openVariable: { ...state.openVariable, editing: false, variable: state.dataset.variables[id] },
+    openModal: {...state.openModal, id, open: true, modalMode: 'View', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
 
   on(Actions.variableCreateGraphSuccess,
-    (state, { id, weighted, unweighted }) => ({
+    (state, { weighted, unweighted }) => ({
       ...state,
-      openVariable: {
-        ...state.openVariable,
+      openModal: {
+        ...state.openModal,
         graph: { weighted, unweighted },
-        previouslyOpen: {
-          ...state.openVariable.previouslyOpen,
-          [id]: { weighted, unweighted },
-        },
       },
     })
   ),
   on(Actions.variableCreateGraphError, (state) => ({
     ...state,
-    openVariable: {
-      ...state.openVariable,
+    openModal: {
+      ...state.openModal,
       graph: null,
     },
   })),
@@ -205,9 +83,48 @@ export const reducer = createReducer(
   // When the user clicks the edit button
   on(Actions.variableViewDetail, (state, { id }) => ({
     ...state,
-    openModal: { open: true, modalMode: 'Edit' as const, variable: state.dataset.variables[id], state: 'saved' as const },
-    openVariable: { ...state.openVariable, editing: true, variable: id },
+    openModal: {...state.openModal, id, open: true, modalMode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
+  on(Actions.openVariableChangeMode, (state, { mode }) => ({
+    ...state,
+    openModal: { ...state.openModal, modalMode: mode }
+  })),
+  on(Actions.openVariableSwitchToPrev, (state) => {
+    let newIndex = Object.keys(state.dataset.variables).length - 1;
+    const currentVariable = state.openModal.variable
+    const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
+
+    if(currentVariableIndex > 1){
+      newIndex = currentVariableIndex - 1
+    }
+
+    return {
+      ...state,
+      openModal: {
+        ...state.openModal,
+        variable: Object.values(state.dataset.variables)[newIndex],
+        state: 'saved' as const,
+      }
+    }
+  }),
+  on(Actions.openVariableSwitchToNext, (state) => {
+    let newIndex = 0;
+    const currentVariable = state.openModal.variable
+    const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
+
+    if(currentVariableIndex < ( Object.values(state.dataset.variables).length - 1 )){
+      newIndex = currentVariableIndex + 1
+    }
+
+    return {
+      ...state,
+      openModal: {
+        ...state.openModal,
+        variable: Object.values(state.dataset.variables)[newIndex],
+        state: 'saved' as const,
+      }
+    }
+  }),
 
   // When the user clicks a group
   on(Actions.groupSelected, (state, { groupID }) => ({
@@ -228,10 +145,6 @@ export const reducer = createReducer(
         }
       }
     },
-    recentlyChanged: groupID
-  })),
-  on(Actions.groupDetailChanged, (state, { groupID }) => ({
-    ...state,
     recentlyChanged: groupID
   })),
   on(Actions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
@@ -279,6 +192,10 @@ export const reducer = createReducer(
       }
     }
   }),
+  on(Actions.groupDetailChanged, (state, { groupID }) => ({
+    ...state,
+    recentlyChanged: groupID
+  })),
 
   // Notifications
   on(Actions.pushNotification, (state, { notificationType, message }) => {

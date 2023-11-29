@@ -1,3 +1,6 @@
 .form-label {
     @apply flex flex-col;
 }
+.form-input {
+    @apply rounded h-max px-2 pb-6 pt-2 m-2 border border-light-outline dark:border-dark-outline;
+}

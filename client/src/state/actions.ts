@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { Variables } from './reducers';
 
 // When the data is fetched from the API, it will create variable groups
 
@@ -46,6 +45,21 @@ export const variableViewChart = createAction(
   props<{ id: string; }>()
 );
 
+// When the user presses the chart button for a variable
+export const openVariableChangeMode = createAction(
+  '[Variable] Change Mode',
+  props<{ mode: 'View' | 'Edit' ; }>()
+);
+
+// When the user presses the chart button for a variable
+export const openVariableSwitchToNext = createAction(
+  '[Variable] Next Var',
+);
+
+// When the user presses the chart button for a variable
+export const openVariableSwitchToPrev = createAction(
+  '[Variable] Previous Variable',
+);
 // Any time the user makes changes
 export const changesMade = createAction('[State] Changes Made', props<{ variables: any, groups: any }>)
 
@@ -102,21 +116,13 @@ export const datasetCreateMetadata = createAction(
   '[Create Variables and Init Groups] Init groups and variables',
   props<{ data: any }>()
 );
-// Variable group created successfully
-export const datasetCreateMetadataSuccess = createAction(
-  '[Create Variables and Init Groups] Success',
-  props<{ groups: any[]; variables: Variables }>()
-);
+
 // Variable group could not created
 export const datasetCreateMetadataError = createAction(
   '[Create Variables and Init Groups] Error',
   props<{ error: any }>()
 );
-// Variable group created successfully for this ID
-export const datasetGroupVariablesUpdatedSuccess = createAction(
-  '[Create Group Variables] Success',
-  props<{ groupID: any; variables: Variables; other: any }>()
-);
+
 // Variable group could not created
 export const datasetGroupVariablesUpdatedError = createAction(
   '[Create Group Variables] Error',

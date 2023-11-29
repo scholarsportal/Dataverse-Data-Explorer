@@ -20,9 +20,8 @@ body {
 /* } */
 
 @layer base {
-  :root {
     .mat-mdc-table {
-      @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+      @apply !bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
     }
     .mat-mdc-cell {
       @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
@@ -34,7 +33,6 @@ body {
     --mdc-checkbox-selected-icon-color: orange;
     --mdc-checkbox-selected-hover-icon-color: red;
     --mdc-checkbox-unselected-hover-icon-color: red;
-  }
 }
 
 @layer components {
@@ -56,7 +54,7 @@ body {
 
   /* Primary Container */
   .primary-container {
-    @apply bg-light-primary-container dark:bg-primary-container-dark;
+    @apply bg-light-primary-container dark:bg-dark-primary-container;
   }
   .primary-container-text {
     @apply text-light-primary-container dark:text-dark-primary-container;

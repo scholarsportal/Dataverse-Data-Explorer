@@ -1,8 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromReducer from './reducers';
+import { State } from './interface';
 
 export const selectFeature =
-  createFeatureSelector<fromReducer.State>('globalState'); // Replace with your feature name
+  createFeatureSelector<State>('globalState'); // Replace with your feature name
 
 export const selectVariables = createSelector(
   selectFeature,
@@ -44,10 +44,6 @@ export const selectGroupVariables = createSelector(
 }
 );
 
-export const selectGroupTitles = createSelector(selectGroups, (groups) => {
-return Object.values(groups).map((item: any) => item.labl);
-});
-
 export const getDataFetchStatus = createSelector(
 selectFeature,
 (state) => state.dataset.status
@@ -57,71 +53,6 @@ export const selectDatasetTitle = createSelector(selectFeature, (state) => {
 return state.dataset.citation?.titlStmt?.titl;
 });
 
-export const selectOpenVariable = createSelector(selectFeature, (state) => {
-return state.openVariable?.variable;
-});
-
-export const selectOpenVariableGroups = createSelector(selectOpenVariable, (state) => {
-return state.groups;
-});
-
-export const selectCheckOpenModal = createSelector(selectFeature, (state) => {
-  return state.openModal.open
-})
-
-export const selectCheckOpenModalMode = createSelector(selectFeature, (state) => {
-  return state.openModal.modalMode
-})
-
-export const selectCheckOpenModalState = createSelector(selectFeature, (state) => {
-  return state.openModal.state
-})
-
-export const selectCheckOpenModalVariable = createSelector(selectFeature, (state) => {
-  return state.openModal.variable
-})
-
-export const selectCheckOpenModalLabel = createSelector(selectFeature, (state) => {
-  return state.openModal.variable?.labl['#text']
-})
-
-export const selectCheckOpenModalID = createSelector(selectFeature, (state) => {
-  return state.openModal.variable ? state.openModal.variable['@_ID'] : null;
-})
-
-export const selectCheckOpenModalName = createSelector(selectFeature, (state) => {
-  return state.openModal.variable ? state.openModal.variable['@_name'] : null;
-})
-
-export const selectOpenVarDetail = createSelector(
-selectOpenVariable,
-selectGroups,
-selectVariableWeights,
-selectVariables,
-(openVariable, groups, varWeights, variables) => {
-  if (openVariable && groups && varWeights) {
-    const variable: any = {
-      id: openVariable['@_ID'],
-      name: openVariable['@_name'],
-      label: openVariable.labl['#text'],
-      literalQuestion: openVariable.qstn?.qstnLit,
-      interviewerQuestion: openVariable.qstn?.ivuInstr,
-      postQuestion: openVariable.qstn?.postQTxt,
-      universe: openVariable.universe,
-      notes: openVariable.notes[1],
-      group: openVariable.groups,
-      isWeight: openVariable['@_wgt'] ? true : false,
-      weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',
-    }
-    return { variable, groups, varWeights }
-  }
-  return { variable: {}, groups: {} };
-}
-);
-
-export const selectVariableDetail = (id: string) => createSelector(selectFeature, (state) => {
-return state.dataset.variables[id]
-})
 
 export const selectRecentlyChangedGroup = createSelector(selectFeature, (state) => {
   return state.recentlyChanged;
@@ -129,5 +60,5 @@ export const selectRecentlyChangedGroup = createSelector(selectFeature, (state) 
 
 
 export const selectNotifications = createSelector(selectFeature, (state) => {
-return state.notificationStack
+  return state.notificationStack
 })

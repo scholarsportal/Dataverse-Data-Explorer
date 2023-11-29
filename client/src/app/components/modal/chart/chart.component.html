@@ -1,26 +1,67 @@
-<div *ngIf="!(hasGraph$ | async)" class="text-3xl font-bold">
-  This Variable has no data
-</div>
-<figure id="bar" class="px-7"></figure>
-<table class="table-auto border mx-auto my-3">
-  <thead>
-    <tr class="border">
-      <th class="border table-header">Values</th>
-      <th class="border table-header">Categories</th>
-      <th class="border table-header">Count</th>
-      <th class="border table-header">Count (%)</th>
-      <th class="border table-header">Weighted Count</th>
+<figure id="bar"></figure>
+<table class="mx-auto mb-4">
+    <thead>
+        <tr class="border-b">
+            <th class="table-header">Values</th>
+            <th class="table-header">Categories</th>
+            <th class="table-header">Count</th>
+            <th class="table-header">Count (%)</th>
+            <th class="table-header">Weighted Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of data | keyvalue" class="my-3 border-b">
+            <td class="border-b p-2">{{item.key}}</td>
+            <td class="border-b p-2">{{getCategories(item.value)}}</td>
+            <td class="border-b p-2">{{getCount(item.value)}}</td>
+            <td class="border-b p-2">{{getCountPercent(item.value)}}</td>
+            <td class="border-b p-2">{{getCountWeighted(item.value)}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 class="text-xl">Summary Statistics</h3>
+<table class="mx-auto mb-4">
+    @for( stat of sumStats; track stat.key; let idx = $index) {
+    <tr class="border-b">
+        <th class="text-left">{{getSumStatHeader(idx)}}</th>
+        <td class="border-b p-2">{{getSumStatData(idx)}}</td>
     </tr>
-  </thead>
-  <tbody>
-    <!-- Sample data rows -->
-    <tr *ngFor="let item of data | keyvalue" class="my-3 border-b">
-      <td class="border-r p-2">{{item.key}}</td>
-      <td class="border-r p-2">{{getCategories(item.value)}}</td>
-      <td class="border-r p-2">{{getCount(item.value)}}</td>
-      <td class="border-r p-2">{{getCountPercent(item.value)}}</td>
-      <td class="border-r p-2">{{getCountWeighted(item.value)}}</td>
+    }
+</table>
+
+<h3 class="text-xl mt-8">Variable Information</h3>
+<table class="mx-auto">
+    <tr class="border-b">
+        <th class="text-left">Literal Question</th>
+        <td class="border-b p-2">{{variable['literalQuestion'] ? variable['literalQuestion'] : ''}}</td>
     </tr>
-    <!-- Add more rows as needed -->
-  </tbody>
+    <tr class="border-b">
+        <th class="text-left">Interviewer Instructions</th>
+        <td class="border-b p-2">{{variable['interviewerQuestion'] ? variable['interviewerQuestion'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Post Questions</th>
+        <td class="border-b p-2">{{variable['postQuestion'] ? variable['postQuestion'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Universe</th>
+        <td class="border-b p-2">{{variable['universe'] ? variable['universe'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Notes</th>
+        <td class="border-b p-2">{{variable['notes'] ? variable['notes'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Groups</th>
+        <td class="border-b p-2">{{variable['literalQuestion'] ? variable['literalQuestion'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Weight Variable</th>
+        <td class="border-b p-2">{{variable['weightVar'] ? variable['weightVar'] : ''}}</td>
+    </tr>
+    <tr class="border-b">
+        <th class="text-left">Is Weight</th>
+        <td class="border-b p-2">{{variable['isWeight'] ? 'True' : 'False'}}</td>
+    </tr>
 </table>

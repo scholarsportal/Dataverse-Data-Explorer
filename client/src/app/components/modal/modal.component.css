@@ -7,7 +7,7 @@
 }
 
 .modal-header {
-  @apply min-h-max p-3;
+  @apply min-h-max p-2 my-auto;
 }
 
 .modal-body {

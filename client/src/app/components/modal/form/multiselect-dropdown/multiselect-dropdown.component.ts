@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectGroups, selectOpenVariableGroups } from 'src/state/selectors';
+import { selectGroups } from 'src/state/selectors';
+import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
 
 @Component({
   selector: 'app-multiselect-dropdown',

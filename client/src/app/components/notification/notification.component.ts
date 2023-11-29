@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription, take, timer } from 'rxjs';
 import { removeNotification } from 'src/state/actions';
-import { State } from 'src/state/reducers';
+import { State } from 'src/state/interface';
 import { selectNotifications } from 'src/state/selectors';
 
 @Component({

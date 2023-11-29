@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectOpenVarDetail, selectOpenVariable } from 'src/state/selectors';
 import * as d3 from 'd3';
+import { selectOpenModalDetail } from 'src/state/selectors/modal.selectors';
+import { getSumStatData, getSumStatHeader, getVariableData } from './chart.util';
 
 @Component({
   selector: 'app-chart',
@@ -11,40 +12,33 @@ import * as d3 from 'd3';
 export class ChartComponent implements OnInit {
   data: any = {};
   total: any = 0;
-  hasGraph$ = this.store.select(selectOpenVarDetail);
-  values = new Map();
+  sumStats: any = [];
+  variable: any = {}
   private svg: any;
-  private margin = 50;
-  private width = 500 - this.margin * 2;
-  private height = 400 - this.margin * 2;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   ngOnInit(): void {
-    this.store.select(selectOpenVariable).subscribe((data) => {
+    this.store.select(selectOpenModalDetail).subscribe(({ data, total, sumStats, variable }) => {
       this.clearSVG();
       if (data) {
-        const graphData: any = []
-
-        data['catgry'].forEach((item: any) => {
-          this.total += item.catStat[0]['#text']
-          this.data = {
-            ...this.data,
-            [item.catValu]: {
-              category: item.labl['#text'],
-              count: item.catStat[0]['#text'],
-              weightedCount: item.catStat[1]['#text'],
-            }
-          }
-          graphData.push({ label: item.labl['#text'], frequency: item.catStat[1]['#text'] })
-        });
-
-        this.createSVG();
-        this.drawBars(Object.values(this.data));
+        this.data = data;
+        this.total = total
+        this.sumStats = sumStats
+        this.variable = variable
+        console.log(this.variable)
+        this.createSVG(Object.values(data));
+        this.drawBars(Object.values(data));
       }
     });
-
   }
+
+  getSumStatData = (index: number) => getSumStatData(index, this.sumStats)
+
+  getSumStatHeader = (index: number) => getSumStatHeader(index)
+
+  getVariableData = (index: number) => getVariableData(index, this.variable)
 
   getCategories(value: any) {
     return value.category
@@ -64,86 +58,105 @@ export class ChartComponent implements OnInit {
     return (Math.round((value.weightedCount + Number.EPSILON) * 1000) / 1000).toLocaleString('en', { useGrouping: true })
   }
 
-  private createSVG(): void {
-this.svg = d3
-    .select('figure#bar')
-    .append('svg')
-    .attr('width', this.width + this.margin * 2)
-    .attr('height', this.height + this.margin * 2 + 50) // Adding extra space for x-axis labels
-    .attr('class', 'mx-auto')
-    .append('g')
-    .attr('transform', 'translate(' + this.margin + ',' + (this.margin + 50) + ')'); // Adjusting y-axis position
-}
+  private truncateText(text: string): string {
+    const maxLength = 13;
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + '...';
+    }
+    return text;
+  }
 
-private drawBars(data: any[]): void {
-  // Create the Y-axis band scale
-  const y = d3
-    .scaleBand()
-    .range([0, this.height])
-    .domain(data.map((d) => d.category))
-    .padding(0.2);
+  private createSVG(data: any[]): void {
+    const maxHeight = (data.length + 1) * 25;
+    const margin = { top: 0, bottom: 50, left: 90, right: 20 }
+    const width = 500 - margin.left - margin.right;
+    const height = maxHeight - margin.top - margin.bottom;
 
-  // Create the X-axis linear scale
-  const x = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, (d) => d.weightedCount)])
-    .range([0, this.width]);
+    this.svg = d3
+      .select('figure#bar')
+      .append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      // .attr('class', 'mx-auto')
+      .append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'); // Adjusting y-axis position
+  }
 
-  // Draw the Y-axis on the DOM
-  this.svg
-    .append('g')
-    .attr('class', 'y-axis')
-    .call(d3.axisLeft(y))
-    .selectAll('text')
-    .attr('transform', 'translate(-10,0)rotate(-45)')
-    .style('text-anchor', 'end');
+  private drawBars(data: any[]): void {
+    const maxHeight = (data.length + 1) * 25;
+    const margin = { top: 0, bottom: 50, left: 90, right: 20 }
+    const width = 500 - margin.left - margin.right;
+    const height = maxHeight - margin.top - margin.bottom;
 
-  // Draw the X-axis on the DOM
-  this.svg
-    .append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', 'translate(0,' + this.height + ')')
-    .call(d3.axisBottom(x))
-    .selectAll('text')
-    .attr('transform', 'translate(-10,0)rotate(-45)')
-    .style('text-anchor', 'end');
-  // Create and fill the bars with random colors from interpolateSpectral
-  const colorScale = d3.scaleSequential(d3.interpolateSpectral).domain([0, data.length]);
+    // Create the Y-axis band scale
+    const y = d3
+      .scaleBand()
+      .range([height, 0])
+      .domain(data.map((d) => this.truncateText(d.category)))
+      .padding(0.3);
 
-  // Create and update the bars with transitions
-  const bars = this.svg.selectAll('rect').data(data);
+    // Create the X-axis linear scale
+    const x = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.weightedCount)])
+      .range([0, width]);
 
-  // Exit old bars
-  bars
-    .exit()
-    .transition()
-    .duration(500)
-    .attr('width', 0)
-    .remove();
+    // Draw the Y-axis on the DOM
+    this.svg
+      .append('g')
+      .attr('class', 'y-axis')
+      .call(d3.axisLeft(y))
+      .selectAll('text')
+      .attr('transform', 'translate(-10,0)rotate(-45)')
+      .style('text-anchor', 'end');
 
-  // Update existing bars
-  bars
-    .transition()
-    .duration(500)
-    .attr('y', (d: any) => y(d.category))
-    .attr('width', (d: any) => x(d.weightedCount))
-    .attr('height', y.bandwidth());
+    // Draw the X-axis on the DOM
+    this.svg
+      .append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'translate(-10,0)rotate(-45)')
+      .style('text-anchor', 'end');
 
-  // Enter new bars
-  bars
-    .enter()
-    .append('rect')
-    .attr('y', (d: any) => y(d.category))
-    .attr('height', y.bandwidth())
-    .attr('fill', (_: any, i: any) => colorScale(i))
-    .transition()
-    .duration(500)
-    .attr('width', (d: any) => x(d.weightedCount));
+    // Create and fill the bars with random colors from interpolateSpectral
+    const colorScale = d3.scaleSequential(d3.interpolateSpectral).domain([0, data.length]);
 
-  // Update the Y-axis and X-axis class attributes for selection
-  this.svg.select('.y-axis').attr('class', 'y-axis');
-  this.svg.select('.x-axis').attr('class', 'x-axis');
-}
+    // Create and update the bars with transitions
+    const bars = this.svg.selectAll('rect').data(data);
+
+    // Exit old bars
+    bars
+      .exit()
+      .transition()
+      .duration(500)
+      .attr('width', 0)
+      .remove();
+
+    // Update existing bars
+    bars
+      .transition()
+      .duration(500)
+      .attr('y', (d: any) => y(this.truncateText(d.category)))
+      .attr('width', (d: any) => x(d.weightedCount))
+      .attr('height', y.bandwidth());
+
+    // Enter new bars
+    bars
+      .enter()
+      .append('rect')
+      .attr('y', (d: any) => y(this.truncateText(d.category)))
+      .attr('height', y.bandwidth())
+      .attr('fill', (_: any, i: any) => colorScale(i))
+      .transition()
+      .duration(500)
+      .attr('width', (d: any) => x(d.weightedCount));
+
+    // Update the Y-axis and X-axis class attributes for selection
+    this.svg.select('.y-axis').attr('class', 'y-axis');
+    this.svg.select('.x-axis').attr('class', 'x-axis');
+  }
 
   private clearSVG(): void {
     d3.select('figure#bar').selectAll('svg').remove();
