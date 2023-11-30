@@ -1,9 +1,12 @@
+.sidebar {
+    @apply w-72;
+}
 .group-button {
     @apply flex flex-row justify-between h-max px-2 py-2 text-base border rounded-md;
 }
 
 .group-input {
-    @apply flex flex-row w-full h-8 px-2 border rounded-md;
+    @apply flex flex-row focus:outline focus:ring focus:bg-light-outline focus:bg-dark-outline;
 }
 
 .selected {

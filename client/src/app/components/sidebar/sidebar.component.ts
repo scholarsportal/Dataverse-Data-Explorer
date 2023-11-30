@@ -12,7 +12,6 @@ export class SidebarComponent {
   groups$ = this.store.select(selectGroups);
   selectedGroup$ = this.store.select(checkOpenGroup)
   recentlyChanged$ = this.store.select(selectRecentlyChangedGroup)
-  isSidebarExpanded = false;
   addingNew = false;
   editingMode: boolean = false;
   newGroupName: string = '';

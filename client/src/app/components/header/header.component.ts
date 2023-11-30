@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectDatasetTitle } from 'src/state/selectors';
+import { selectDatasetCitation, selectDatasetTitle } from 'src/state/selectors';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +9,7 @@ import { selectDatasetTitle } from 'src/state/selectors';
 })
 export class HeaderComponent {
   title$ = this.store.select(selectDatasetTitle);
+  citation$ = this.store.select(selectDatasetCitation);
   data: any;
 
   constructor(private store: Store) {}

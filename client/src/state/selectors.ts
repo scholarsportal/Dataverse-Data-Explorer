@@ -53,6 +53,9 @@ export const selectDatasetTitle = createSelector(selectFeature, (state) => {
 return state.dataset.citation?.titlStmt?.titl;
 });
 
+export const selectDatasetCitation = createSelector(selectFeature, (state) => {
+return state.dataset.citation?.biblCit;
+});
 
 export const selectRecentlyChangedGroup = createSelector(selectFeature, (state) => {
   return state.recentlyChanged;

@@ -1,9 +1,9 @@
-<app-notification></app-notification>
-<app-header class="background on-background-text fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
-<div *ngIf="(loaded$ | async) === 'success'" class="background on-background-text flex flex-row w-full h-screen m-4 mt-16">
-  <app-sidebar class="outline sidebar"></app-sidebar>
+<!-- <app-notification></app-notification> -->
+<app-header class="surface-variant on-surface-variant-text fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
+<div *ngIf="(loaded$ | async) === 'success'" class="background on-background-text flex flex-row w-full h-screen mt-40">
+  <app-sidebar class="surface-variant on-surface-variant-text sidebar"></app-sidebar>
   <app-table
-    class="w-full"
+    class="w-full overflow-y-scroll overscroll-contain"
     [openGroup]="openGroup$ | ngrxPush"
   ></app-table>
 </div>

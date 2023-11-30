@@ -23,7 +23,7 @@
 <h3 class="text-xl">Summary Statistics</h3>
 <table class="mx-auto mb-4">
     @for( stat of sumStats; track stat.key; let idx = $index) {
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">{{getSumStatHeader(idx)}}</th>
         <td class="border-b p-2">{{getSumStatData(idx)}}</td>
     </tr>
@@ -32,35 +32,35 @@
 
 <h3 class="text-xl mt-8">Variable Information</h3>
 <table class="mx-auto">
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Literal Question</th>
         <td class="border-b p-2">{{variable['literalQuestion'] ? variable['literalQuestion'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Interviewer Instructions</th>
         <td class="border-b p-2">{{variable['interviewerQuestion'] ? variable['interviewerQuestion'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Post Questions</th>
         <td class="border-b p-2">{{variable['postQuestion'] ? variable['postQuestion'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Universe</th>
         <td class="border-b p-2">{{variable['universe'] ? variable['universe'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Notes</th>
         <td class="border-b p-2">{{variable['notes'] ? variable['notes'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Groups</th>
         <td class="border-b p-2">{{variable['literalQuestion'] ? variable['literalQuestion'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Weight Variable</th>
         <td class="border-b p-2">{{variable['weightVar'] ? variable['weightVar'] : ''}}</td>
     </tr>
-    <tr class="border-b">
+    <tr class="table-row border-b">
         <th class="text-left">Is Weight</th>
         <td class="border-b p-2">{{variable['isWeight'] ? 'True' : 'False'}}</td>
     </tr>

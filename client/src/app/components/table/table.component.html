@@ -1,4 +1,4 @@
-<div class="fixed w-full pl-72 surface on-surface-text flex flex-row justify-between">
+<div class="fixed w-full surface on-surface-text flex flex-row justify-between">
     <!-- Filter Search -->
     <label class="my-auto sr-only">
         Search
@@ -17,7 +17,7 @@
     <!-- Paginator -->
     <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
 </div>
-<div class="surface table-container pl-72 top-0 mt-16">
+<div class="surface table-container top-0 mt-16">
     <table mat-table [dataSource]="vars" matSort class="surface ">
         <tr mat-header-row *matHeaderRowDef="columnMat; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columnMat"></tr>
