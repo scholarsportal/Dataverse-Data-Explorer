@@ -1,9 +1,9 @@
 <!-- <app-notification></app-notification> -->
 <app-header class="surface-variant on-surface-variant-text fixed inset-x-0 top-0 left-0 w-full z-50"></app-header>
 <div *ngIf="(loaded$ | async) === 'success'" class="background on-background-text flex flex-row w-full h-screen mt-40">
-  <app-sidebar class="surface-variant on-surface-variant-text sidebar"></app-sidebar>
+  <app-sidebar class="surface-variant on-surface-variant-text sidebar overflow-auto "></app-sidebar>
   <app-table
-    class="w-full overflow-y-scroll overscroll-contain"
+    class="w-full fixed"
     [openGroup]="openGroup$ | ngrxPush"
   ></app-table>
 </div>
