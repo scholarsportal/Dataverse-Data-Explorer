@@ -38,12 +38,7 @@ export interface Variables {
     location: {
       '@_fileid': string;
     };
-    notes: (string | {
-      '#text': string;
-      '@_subject': string;
-      '@_level': string;
-      '@_type': string
-    })[];
+    notes: string;
     sumStat: {
       '#text': number | string;
       '@_type': string;
@@ -79,7 +74,7 @@ export function parseJSON(dataset: any) {
 
     // check if variable has notes (notes are second object in array)
     // if not we create the expected object anyway for consistency
-    Array.isArray(item.notes) ? (notes = item.notes) : (notes = [item.notes || '', ''])
+    Array.isArray(item.notes) ? (notes = item.notes.at(-1)) : (notes = '')
 
     variables[item['@_ID']] = { ...item, notes, groups: {} }
 

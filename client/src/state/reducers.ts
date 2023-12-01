@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
+import * as ModalActions from './actions/modal.actions';
 import { State } from './interface';
 
 const initialState: State = {
@@ -22,10 +23,10 @@ const initialState: State = {
   },
   changeGroup: '',
   recentlyChanged: '',
-  openModal: {
+  modal: {
     open: false,
     id: null,
-    modalMode: '',
+    mode: '',
     variable: null,
     graph: null,
     state: 'saved'
@@ -39,6 +40,7 @@ const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
+
   // When the page first loads
   on(Actions.fetchDataset, (state) => ({
     ...state,
@@ -60,22 +62,22 @@ export const reducer = createReducer(
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { id }) => ({
     ...state,
-    openModal: {...state.openModal, id, open: true, modalMode: 'View', variable: state.dataset.variables[id], state: 'saved' as const },
+    modal: {...state.modal, id, open: true, mode: 'View', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
 
   on(Actions.variableCreateGraphSuccess,
     (state, { weighted, unweighted }) => ({
       ...state,
-      openModal: {
-        ...state.openModal,
+      modal: {
+        ...state.modal,
         graph: { weighted, unweighted },
       },
     })
   ),
   on(Actions.variableCreateGraphError, (state) => ({
     ...state,
-    openModal: {
-      ...state.openModal,
+    modal: {
+      ...state.modal,
       graph: null,
     },
   })),
@@ -83,15 +85,15 @@ export const reducer = createReducer(
   // When the user clicks the edit button
   on(Actions.variableViewDetail, (state, { id }) => ({
     ...state,
-    openModal: {...state.openModal, id, open: true, modalMode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
+    modal: {...state.modal, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
   on(Actions.openVariableChangeMode, (state, { mode }) => ({
     ...state,
-    openModal: { ...state.openModal, modalMode: mode }
+    modal: { ...state.modal, mode: mode }
   })),
   on(Actions.openVariableSwitchToPrev, (state) => {
     let newIndex = Object.keys(state.dataset.variables).length - 1;
-    const currentVariable = state.openModal.variable
+    const currentVariable = state.modal.variable
     const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
 
     if(currentVariableIndex > 1){
@@ -100,8 +102,8 @@ export const reducer = createReducer(
 
     return {
       ...state,
-      openModal: {
-        ...state.openModal,
+      modal: {
+        ...state.modal,
         variable: Object.values(state.dataset.variables)[newIndex],
         state: 'saved' as const,
       }
@@ -109,7 +111,7 @@ export const reducer = createReducer(
   }),
   on(Actions.openVariableSwitchToNext, (state) => {
     let newIndex = 0;
-    const currentVariable = state.openModal.variable
+    const currentVariable = state.modal.variable
     const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
 
     if(currentVariableIndex < ( Object.values(state.dataset.variables).length - 1 )){
@@ -118,8 +120,8 @@ export const reducer = createReducer(
 
     return {
       ...state,
-      openModal: {
-        ...state.openModal,
+      modal: {
+        ...state.modal,
         variable: Object.values(state.dataset.variables)[newIndex],
         state: 'saved' as const,
       }
@@ -196,27 +198,31 @@ export const reducer = createReducer(
     ...state,
     recentlyChanged: groupID
   })),
+  on(ModalActions.variableChangeDetail, (state, {id, variable }) => ({
+
+    ...state, dataset: {
+      ...state.dataset,
+      variables: {
+        ...state.dataset.variables,
+        [id]: variable
+      }
+    }
+
+  })),
 
   // Notifications
-  on(Actions.pushNotification, (state, { notificationType, message }) => {
-    let updatedStack = { notificationType, message };
+  // on(Actions.pushNotification, (state, { notificationType, message }) => {
+  //   let updatedStack = { notificationType, message };
 
-    // Max of 5 notifications at a time
-    // if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
+  //   // Max of 5 notifications at a time
+  //   // if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
 
-    return { ...state, notificationStack: updatedStack }
-  }),
+  //   return { ...state, notificationStack: updatedStack }
+  // }),
 
   // on(Actions.removeNotification, (state, {index}) => {
   //   return { ...state, notificationStack: state.notificationStack.splice(index, 1)}
   // }),
-  // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
-  // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
-  // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),
-  // on(Actions.datasetUploadError, (state, { error }) => ({ ...state, upload: { status: 'error', error } })),
-  // on(Actions.datasetDownload, (state) => state), // No state change needed for download
-  // on(Actions.datasetLocalSave, (state) => state), // No state change needed for local save
-  // on(Actions.variableChangeDetail, (state, { variable }) => ({ ...state, variables: [...state.variables], upload: { status: '', error: null } })),
   // on(Actions.variableAddToSelectedGroup, (state, { variable }) => ({ ...state, variables: [...state.variables], upload: { status: '', error: null } })),
   //   on(Actions.groupCreateNew, (state) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } }))),
   // on(Actions.groupRemove, (state, { groupId }) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } })),

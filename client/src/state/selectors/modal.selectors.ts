@@ -4,42 +4,42 @@ import { selectGroups, selectVariableWeights, selectVariables } from "../selecto
 
 const selectFeature = createFeatureSelector<State>('globalState');
 
-export const selectOpenModal = createSelector(selectFeature, (state) => state.openModal)
+export const selectOpenModal = createSelector(selectFeature, (state) => state.modal)
 
 export const selectOpenVariable = createSelector(selectFeature, (state) => {
-    return state.openModal?.variable;
+    return state.modal?.variable;
 });
 
 export const selectOpenVariableGroups = createSelector(selectOpenVariable, (state) => {
     return state.groups;
 });
 
-export const selectCheckOpenModal = createSelector(selectFeature, (state) => {
-    return state.openModal.open
+export const selectCheckModalOpen = createSelector(selectFeature, (state) => {
+    return state.modal.open
 })
 
-export const selectCheckOpenModalMode = createSelector(selectFeature, (state) => {
-    return state.openModal.modalMode
+export const selectCheckModalMode = createSelector(selectFeature, (state) => {
+    return state.modal.mode
 })
 
-export const selectCheckOpenModalState = createSelector(selectFeature, (state) => {
-    return state.openModal.state
+export const selectCheckModalState = createSelector(selectFeature, (state) => {
+    return state.modal.state
 })
 
-export const selectCheckOpenModalVariable = createSelector(selectFeature, (state) => {
-    return state.openModal.variable
+export const selectCheckModalVariable = createSelector(selectFeature, (state) => {
+    return state.modal.variable
 })
 
-export const selectCheckOpenModalLabel = createSelector(selectFeature, (state) => {
-    return state.openModal.variable?.labl['#text']
+export const selectCheckModalLabel = createSelector(selectFeature, (state) => {
+    return state.modal.variable?.labl['#text']
 })
 
-export const selectCheckOpenModalID = createSelector(selectFeature, (state) => {
-    return state.openModal.variable ? state.openModal.variable['@_ID'] : null;
+export const selectCheckModalID = createSelector(selectFeature, (state) => {
+    return state.modal.variable ? state.modal.variable['@_ID'] : null;
 })
 
-export const selectCheckOpenModalName = createSelector(selectFeature, (state) => {
-    return state.openModal.variable ? state.openModal.variable['@_name'] : null;
+export const selectCheckModalName = createSelector(selectFeature, (state) => {
+    return state.modal.variable ? state.modal.variable['@_name'] : null;
 })
 
 export const selectOpenModalDetail = createSelector(
@@ -76,7 +76,7 @@ export const selectOpenModalDetail = createSelector(
                 interviewerQuestion: openVariable.qstn?.ivuInstr,
                 postQuestion: openVariable.qstn?.postQTxt,
                 universe: openVariable.universe,
-                notes: openVariable.notes[1],
+                notes: openVariable.notes,
                 group: openVariable.groups,
                 isWeight: openVariable['@_wgt'] ? true : false,
                 weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',

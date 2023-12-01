@@ -160,7 +160,6 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   editVar(value: any) {
-    console.log(value)
     this.store.dispatch(variableViewDetail({ id: value['@_ID'] }));
     this.setHeading(value);
     this.modalComponent?.openModal();

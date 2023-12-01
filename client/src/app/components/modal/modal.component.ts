@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { openVariableChangeMode, openVariableSwitchToNext, openVariableSwitchToPrev } from 'src/state/actions';
-import { selectCheckOpenModal, selectCheckOpenModalID, selectCheckOpenModalLabel, selectCheckOpenModalMode, selectCheckOpenModalName, selectCheckOpenModalState, selectCheckOpenModalVariable } from 'src/state/selectors/modal.selectors';
+import { selectCheckModalOpen, selectCheckModalID, selectCheckModalLabel, selectCheckModalMode, selectCheckModalName, selectCheckModalState, selectCheckModalVariable } from 'src/state/selectors/modal.selectors';
 
 @Component({
   selector: 'app-modal',
@@ -14,18 +14,18 @@ export class ModalComponent {
   @Input() customOpenFunction: Function | undefined;
   @Input() customCloseFunction: Function | undefined;
 
-  open$ = this.store.select(selectCheckOpenModal)
-  mode$ = this.store.select(selectCheckOpenModalMode)
-  state$ = this.store.select(selectCheckOpenModalState)
-  label$ = this.store.select(selectCheckOpenModalLabel)
-  name$ = this.store.select(selectCheckOpenModalName)
-  id$ = this.store.select(selectCheckOpenModalID)
-  variable$ = this.store.select(selectCheckOpenModalVariable)
+  open$ = this.store.select(selectCheckModalOpen)
+  mode$ = this.store.select(selectCheckModalMode)
+  state$ = this.store.select(selectCheckModalState)
+  label$ = this.store.select(selectCheckModalLabel)
+  name$ = this.store.select(selectCheckModalName)
+  id$ = this.store.select(selectCheckModalID)
+  variable$ = this.store.select(selectCheckModalVariable)
 
   mode: any;
 
   constructor(private store: Store) {
-    store.select(selectCheckOpenModalMode).subscribe((data: any) => {
+    store.select(selectCheckModalMode).subscribe((data: any) => {
       this.mode = data;
     })
   }

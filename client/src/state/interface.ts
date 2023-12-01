@@ -1,14 +1,3 @@
-interface Citation {
-  titlStmt: {
-    titl: string;
-    IDNo: string;
-  };
-  rspStmt: {
-    AuthEnty: string;
-  };
-  biblCit: string;
-}
-
 interface CatStat {
   '#text': number | string;
   '@_type': string;
@@ -23,6 +12,17 @@ interface Catgry {
     '@_level': string;
   }
 };
+
+export interface Citation {
+  titlStmt: {
+    titl: string;
+    IDNo: string;
+  };
+  rspStmt: {
+    AuthEnty: string;
+  };
+  biblCit: string;
+}
 
 export interface VarGroups {
   [id: string]: {
@@ -44,12 +44,7 @@ export interface Variables {
     location: {
       '@_fileid': string;
     };
-    notes: (string | {
-      '#text': string;
-      '@_subject': string;
-      '@_level': string;
-      '@_type': string;
-    })[];
+    notes: string;
     qstn: {
       qstnLit: string;
       ivuInstr: string;
@@ -93,9 +88,9 @@ export interface State {
   };
   changeGroup: string;
   recentlyChanged: string;
-  openModal: {
+  modal: {
     open: boolean;
-    modalMode: string;
+    mode: string;
     id: string | null;
     variable: any | null;
     graph: any | null;
@@ -106,4 +101,53 @@ export interface State {
     status: string;
     error: any;
   };
+}
+
+export interface VariableForm {
+    id: string;
+    name: string;
+    label: string;
+    literalQuestion: string;
+    interviewerQuestion: string;
+    postQuestion: string;
+    universe: string;
+    notes: string;
+    group: string;
+    isWeight: boolean;
+    weightVar: string;
+}
+
+export interface SingleVariable {
+    '@_ID': string;
+    '@_name': string;
+    '@_intrvl': string;
+    labl: {
+      '#text': string;
+      '@_level': string;
+    };
+    location: {
+      '@_fileid': string;
+    };
+    notes: string;
+    qstn: {
+      qstnLit: string;
+      ivuInstr: string;
+      postQTxt: string;
+    },
+    sumStat: {
+      '#text': number | string;
+      '@_type': string;
+    }[];
+    varFormat: {
+      '@_type': string;
+    };
+    universe: string;
+    groups: {
+      [id: string]: {
+        label: string
+      }
+    },
+    catgry?: Catgry;
+    '@_wgt-var'?: string;
+    '@_wgt'?: 'wgt';
 }
