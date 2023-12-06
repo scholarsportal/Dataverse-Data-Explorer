@@ -1,9 +1,9 @@
-<div class="fixed w-full surface on-surface-text flex flex-row justify-between">
+<div class="fixed w-full pl-72 mt-4 py-2 surface on-surface-text flex flex-row justify-between">
     <!-- Filter Search -->
-    <label class="my-auto sr-only">
+    <label class="my-auto mx-2 sr-only">
         Search
     </label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="table-search icon my-2" #input />
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="table-search icon m-2" #input />
     <!-- Group Selection Dropdown -->
     <select *ngIf="selection.selected.length" name="groups" id=""
         class="bg-gray-100 border border-gray-300 rounded-md h-max p-1.5 my-auto">
@@ -15,9 +15,9 @@
         class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
         Remove From Variable Group</button>
     <!-- Paginator -->
-    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" aria-label="Select variable page"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[15, 30, 50, 100]" [color]="" class="" aria-label="Select variable page"></mat-paginator>
 </div>
-<div class="surface table-container top-0 mt-14 mx-1 pl-72">
+<div class="surface table-container top-0 mt-20 ml-72">
     <table mat-table [dataSource]="vars" matSort class="surface ">
         <tr mat-header-row *matHeaderRowDef="columnMat; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columnMat"></tr>

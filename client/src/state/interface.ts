@@ -69,6 +69,13 @@ export interface Variables {
   };
 }
 
+export type VariableGroups = {
+  [key: string]: {
+    groups: {
+      [id: string]: string
+    }
+  }
+}
 
 export interface GraphObject {
   [id: string]: {
@@ -83,6 +90,7 @@ export interface State {
     error: any;
     citation: Citation;
     variables: Variables;
+    variableGroups: VariableGroups;
     groups: VarGroups;
     varWeights: any;
   };
@@ -93,7 +101,7 @@ export interface State {
     mode: string;
     id: string | null;
     variable: any | null;
-    graph: any | null;
+    groups: any | null;
     state: 'saved' | 'changes' | '';
   };
   notificationStack: { notificationType: string; message: string } | {}

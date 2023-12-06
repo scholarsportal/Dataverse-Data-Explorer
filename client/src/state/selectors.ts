@@ -14,6 +14,11 @@ export const selectGroups = createSelector(
   (state) => state.dataset.groups
 );
 
+export const selectVariableGroups = createSelector(
+  selectFeature,
+  (state) => state.dataset.variableGroups
+);
+
 export const selectVariableWeights = createSelector(selectVariables, selectFeature, (variables, state) => {
   const variableWeights: any = []
   Object.keys(state.dataset.varWeights).map((varID: string) => variableWeights.push(variables[varID]))

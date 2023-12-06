@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import * as Actions from './actions';
 import * as ModalActions from './actions/modal.actions';
+import * as GroupActions from './actions/group.actions';
+import * as DatasetActions from './actions/dataset.actions';
 import { State } from './interface';
 
 const initialState: State = {
@@ -18,6 +20,7 @@ const initialState: State = {
       biblCit: "",
     },
     variables: {},
+    variableGroups: {},
     groups: {},
     varWeights: {},
   },
@@ -28,7 +31,7 @@ const initialState: State = {
     id: null,
     mode: '',
     variable: null,
-    graph: null,
+    groups: null,
     state: 'saved'
   },
   notificationStack: {},
@@ -41,7 +44,7 @@ const initialState: State = {
 export const reducer = createReducer(
   initialState,
 
-  // When the page first loads
+  // Dataset actions
   on(Actions.fetchDataset, (state) => ({
     ...state,
     dataset: { ...state.dataset, status: 'init' },
@@ -58,40 +61,56 @@ export const reducer = createReducer(
     ...state,
     dataset: { ...state.dataset, status: 'error', data: null, error },
   })),
+  // When the variable groups are calculated
+  on(DatasetActions.datasetVariableGroupsLoaded, (state, { variableGroups }) => ({
+    ...state,
+    dataset: {
+      ...state.dataset,
+      variableGroups
+    }
+  })),
 
   // When the user clicks the chart button
   on(Actions.variableViewChart, (state, { id }) => ({
     ...state,
-    modal: {...state.modal, id, open: true, mode: 'View', variable: state.dataset.variables[id], state: 'saved' as const },
-  })),
-
-  on(Actions.variableCreateGraphSuccess,
-    (state, { weighted, unweighted }) => ({
-      ...state,
-      modal: {
-        ...state.modal,
-        graph: { weighted, unweighted },
-      },
-    })
-  ),
-  on(Actions.variableCreateGraphError, (state) => ({
-    ...state,
-    modal: {
-      ...state.modal,
-      graph: null,
-    },
+    modal: { groups: state.dataset.variableGroups[id].groups, id, open: true, mode: 'View', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
 
   // When the user clicks the edit button
   on(Actions.variableViewDetail, (state, { id }) => ({
     ...state,
-    modal: {...state.modal, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
+    modal: { groups: state.dataset.variableGroups[id].groups, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
-  on(Actions.openVariableChangeMode, (state, { mode }) => ({
+  on(ModalActions.variableChangeDetail, (state, {id, variable }) => ({
+
+    ...state,
+    modal: {
+    ...state.modal,
+      changes: 'saved' as const
+    },
+    dataset: {
+      ...state.dataset,
+      variables: {
+        ...state.dataset.variables,
+        [id]: variable
+      }
+    }
+
+  })),
+  on(ModalActions.openModalChangesMade, (state) => ({
+    ...state,
+    modal: {
+      ...state.modal,
+      state: 'changes' as const
+    }
+  })),
+
+  // Change variables and/or variable modes
+  on(ModalActions.openVariableChangeMode, (state, { mode }) => ({
     ...state,
     modal: { ...state.modal, mode: mode }
   })),
-  on(Actions.openVariableSwitchToPrev, (state) => {
+  on(ModalActions.openVariableSwitchToPrev, (state) => {
     let newIndex = Object.keys(state.dataset.variables).length - 1;
     const currentVariable = state.modal.variable
     const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
@@ -104,12 +123,13 @@ export const reducer = createReducer(
       ...state,
       modal: {
         ...state.modal,
+        groups: Object.values( state.dataset.variableGroups )[newIndex].groups,
         variable: Object.values(state.dataset.variables)[newIndex],
         state: 'saved' as const,
       }
     }
   }),
-  on(Actions.openVariableSwitchToNext, (state) => {
+  on(ModalActions.openVariableSwitchToNext, (state) => {
     let newIndex = 0;
     const currentVariable = state.modal.variable
     const currentVariableIndex = Object.values(state.dataset.variables).indexOf(currentVariable)
@@ -122,6 +142,7 @@ export const reducer = createReducer(
       ...state,
       modal: {
         ...state.modal,
+        groups: Object.values( state.dataset.variableGroups )[newIndex].groups,
         variable: Object.values(state.dataset.variables)[newIndex],
         state: 'saved' as const,
       }
@@ -129,12 +150,12 @@ export const reducer = createReducer(
   }),
 
   // When the user clicks a group
-  on(Actions.groupSelected, (state, { groupID }) => ({
+  on(GroupActions.groupSelected, (state, { groupID }) => ({
     ...state,
     changeGroup: groupID,
     recentlyChanged: ''
   })),
-  on(Actions.groupCreateNew, (state, { groupID, label }) => ({
+  on(GroupActions.groupCreateNew, (state, { groupID, label }) => ({
     ...state,
     dataset: {
       ...state.dataset,
@@ -149,15 +170,16 @@ export const reducer = createReducer(
     },
     recentlyChanged: groupID
   })),
-  on(Actions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
+  on(GroupActions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
+    const group = [variableIDs, state.dataset.groups[groupID]['@_var'] || []]
+    const merge = [...new Set(group.flat())]
+    console.log(merge)
+    // console.log(conc)
     const updatedGroups = {
       ...state.dataset.groups,
       [groupID]: {
         ...state.dataset.groups[groupID],
-        '@_var': [
-          ...(state.dataset.groups[groupID]['@_var'] || []), // Ensure '@_var' is an array
-          ...variableIDs,
-        ],
+        '@_var': merge
       },
     };
 
@@ -170,7 +192,7 @@ export const reducer = createReducer(
       }
     };
   }),
-  on(Actions.variableRemoveFromSelectGroup, (state, { variableIDs, groupID }) => {
+  on(GroupActions.variableRemoveFromSelectGroup, (state, { variableIDs, groupID }) => {
     // select the corresponding group
     const groupToUpdate = state.dataset.groups[groupID];
     // create a new list, by filtering out the ids that are in the input
@@ -194,40 +216,19 @@ export const reducer = createReducer(
       }
     }
   }),
-  on(Actions.groupDetailChanged, (state, { groupID }) => ({
+  on(GroupActions.groupDetailChanged, (state, { groupID }) => ({
     ...state,
     recentlyChanged: groupID
   })),
-  on(ModalActions.variableChangeDetail, (state, {id, variable }) => ({
+  on(GroupActions.groupDelete, (state, { groupID }) => {
+    const groupVariables = state.dataset.groups[groupID]
+    console.log(groupVariables)
 
-    ...state, dataset: {
-      ...state.dataset,
-      variables: {
-        ...state.dataset.variables,
-        [id]: variable
-      }
+    return {
+      ...state
     }
+  }),
 
-  })),
-
-  // Notifications
-  // on(Actions.pushNotification, (state, { notificationType, message }) => {
-  //   let updatedStack = { notificationType, message };
-
-  //   // Max of 5 notifications at a time
-  //   // if(updatedStack.length === MAX_NOTIFICATIONS) { updatedStack = updatedStack.slice(1) }
-
-  //   return { ...state, notificationStack: updatedStack }
-  // }),
-
-  // on(Actions.removeNotification, (state, {index}) => {
-  //   return { ...state, notificationStack: state.notificationStack.splice(index, 1)}
-  // }),
-  // on(Actions.variableAddToSelectedGroup, (state, { variable }) => ({ ...state, variables: [...state.variables], upload: { status: '', error: null } })),
-  //   on(Actions.groupCreateNew, (state) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } }))),
-  // on(Actions.groupRemove, (state, { groupId }) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } })),
-  // on(Actions.groupChangeName, (state, { groupId, newName }) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } })),
-  // on(Actions.groupAddSelectedGroup, (state, { groupId }) => ({ ...state, groups: [...state.groups], upload: { status: '', error: null } }),
 );
 
 export function appReducer(state: State | undefined, action: any) {

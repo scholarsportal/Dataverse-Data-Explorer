@@ -4,7 +4,8 @@ import { catchError, map, of, switchMap } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
 import * as fromActions from './actions';
 import * as ModalActions from './actions/modal.actions';
-import { SingleVariable } from './interface';
+import * as DatasetActions from './actions/dataset.actions';
+import { SingleVariable, VariableGroups } from './interface';
 
 @Injectable()
 export class DataFetchEffect {
@@ -22,6 +23,25 @@ export class DataFetchEffect {
       )
     )
   );
+
+  createVariableGroups = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.datasetLoadSuccess),
+      map((action) => {
+        const { groups } = action
+        let variableGroups: VariableGroups = {}
+        Object.keys( action.variables ).map((item: any) => {
+            variableGroups[item] = { groups: {} }
+        });
+
+        Object.values(groups).map((item: any) => {
+          item['@_var'].forEach((variable: string) => {
+              variableGroups[variable].groups[item['@_ID']] = item['labl']
+          })
+        })
+        return DatasetActions.datasetVariableGroupsLoaded({ variableGroups })
+      })
+    ))
 
   saveVariable$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { groupCreateNew, groupSelected } from 'src/state/actions';
+import { groupCreateNew, groupSelected } from 'src/state/actions/group.actions';
 import { checkOpenGroup, selectGroups, selectRecentlyChangedGroup } from 'src/state/selectors';
 
 @Component({
@@ -13,7 +13,7 @@ export class SidebarComponent {
   selectedGroup$ = this.store.select(checkOpenGroup)
   recentlyChanged$ = this.store.select(selectRecentlyChangedGroup)
   addingNew = false;
-  editingMode: boolean = false;
+  addingNewGroup: boolean = false;
   newGroupName: string = '';
 
   constructor(private store: Store) {}
@@ -30,16 +30,11 @@ export class SidebarComponent {
     return Object.keys(groups).length > 0
   }
 
-  checkSelectedGroup(group: any) {
-    console.log(group)
-  }
-
   changeGroup(selection: any | string) {
     if (selection === '') {
       this.store.dispatch(groupSelected({ groupID: '' }));
     } else {
       const groupID = { groupID: selection['@_ID'] };
-      // console.log(groupID)
       this.store.dispatch(groupSelected(groupID));
     }
   }
@@ -47,13 +42,12 @@ export class SidebarComponent {
   addGroup() {
     const id = `NVG${Math.floor(Math.random() * 1000000)}`
     const name = this.newGroupName
-    console.log(id)
     this.store.dispatch(groupCreateNew({ groupID: id, label: name }))
   }
 
-  toggleEditingMode() {
-    this.editingMode = !this.editingMode;
-    if (!this.editingMode) {
+  toggleAddingNewGroup() {
+    this.addingNewGroup = !this.addingNewGroup;
+    if (!this.addingNewGroup) {
       this.newGroupName = ''; // Reset the input field when exiting edit mode
     }
   }
@@ -61,7 +55,7 @@ export class SidebarComponent {
   confirmGroup() {
     if (this.newGroupName.trim() !== '') {
       // Perform actions with the entered group name (e.g., add it to a list)
-      console.log('Group name:', this.newGroupName);
+      // console.log('Group name:', this.newGroupName);
       this.addGroup()
       // Reset the UI
       this.resetUI();
@@ -75,7 +69,7 @@ export class SidebarComponent {
   }
 
   resetUI() {
-    this.editingMode = false;
+    this.addingNewGroup = false;
     this.newGroupName = '';
   }
 }

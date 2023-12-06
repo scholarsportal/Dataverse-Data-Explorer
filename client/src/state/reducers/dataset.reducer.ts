@@ -55,6 +55,13 @@ const datasetReducer = createReducer(
       error,
   })),
 
+  // TODO: The rest of these actions
+  // on(Actions.datasetUploadRequest, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
+  // on(Actions.datasetUploadPending, (state) => ({ ...state, upload: { status: 'pending', error: null } })),
+  // on(Actions.datasetUploadSuccess, (state) => ({ ...state, upload: { status: 'success', error: null } })),
+  // on(Actions.datasetUploadError, (state, { error }) => ({ ...state, upload: { status: 'error', error } })),
+  // on(Actions.datasetDownload, (state) => state), // No state change needed for download
+  // on(Actions.datasetLocalSave, (state) => state), // No state change needed for local save
 );
 
 export function datasetReducerFn(state: DatasetState, action: any) {

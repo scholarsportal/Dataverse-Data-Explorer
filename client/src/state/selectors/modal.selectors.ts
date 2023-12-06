@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { State } from "../interface";
-import { selectGroups, selectVariableWeights, selectVariables } from "../selectors";
+import { selectGroups, selectVariableWeights, selectVariables, selectVariableGroups } from "../selectors";
 
 const selectFeature = createFeatureSelector<State>('globalState');
 
@@ -10,8 +10,8 @@ export const selectOpenVariable = createSelector(selectFeature, (state) => {
     return state.modal?.variable;
 });
 
-export const selectOpenVariableGroups = createSelector(selectOpenVariable, (state) => {
-    return state.groups;
+export const selectOpenVariableGroups = createSelector(selectOpenModal, (modal) => {
+    return modal.groups
 });
 
 export const selectCheckModalOpen = createSelector(selectFeature, (state) => {

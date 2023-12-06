@@ -5,8 +5,20 @@
     @apply flex flex-row justify-between h-max px-2 py-2 text-base border rounded-md;
 }
 
-.group-input {
-    @apply flex flex-row focus:outline focus:ring focus:bg-light-outline focus:bg-dark-outline;
+/* .group-input { */
+/*     @apply flex flex-row focus:outline focus:ring focus:bg-light-outline focus:bg-dark-outline; */
+/* } */
+
+.all-vars {
+    @apply bg-light-inverse-surface text-light-surface dark:bg-dark-inverse-surface dark:text-dark-surface;
+}
+
+.confirm-button {
+    @apply p-2 bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
+}
+
+.cancel-button {
+    @apply p-2 rounded-r bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
 }
 
 .selected {

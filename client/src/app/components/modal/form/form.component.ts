@@ -4,7 +4,8 @@ import { Store } from '@ngrx/store';
 import { ModalComponent } from '../modal.component';
 import { SingleVariable, VarGroups } from 'src/state/interface';
 import { selectOpenModalDetail, selectOpenVariable } from 'src/state/selectors/modal.selectors';
-import { Observable, take } from 'rxjs';
+import { openModalChangesMade } from 'src/state/actions/modal.actions';
+import { Observable, debounceTime, take } from 'rxjs';
 import { updateGroups } from './form.util';
 
 @Component({
@@ -33,6 +34,8 @@ export class FormComponent implements OnInit {
   weight: any = '';
   weightName: any = '';
   group = '';
+  private initialFormValue: any;
+  private changesOccurred: boolean = false
 
   constructor(private store: Store) {}
 
@@ -40,16 +43,31 @@ export class FormComponent implements OnInit {
     const variableDetails = this.store.select(selectOpenModalDetail);
     variableDetails.subscribe(({ variable, groups, varWeights }) => {
       if (variable && groups && varWeights) {
+        console.log(groups)
         this.groups = groups;
         this.varWeights = varWeights;
         this.weight = variable.weightVar
         this.variableForm.patchValue(variable);
+      }
+      this.initialFormValue = variable
+    });
+    // Listen for changes in the form and dispatch 'changesMade' action
+    this.variableForm.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      const currentFormValue = this.variableForm.value;
+      if (!this.changesOccurred && !this.areFormsEqual(this.initialFormValue, currentFormValue)) {
+        this.changesOccurred = true;
+        this.store.dispatch(openModalChangesMade());
       }
     });
   }
 
   close() {
     this.modalComponent?.closeModal();
+  }
+
+  // Method to compare if two form values are equal
+  private areFormsEqual(formValue1: any, formValue2: any): boolean {
+    return JSON.stringify(formValue1) === JSON.stringify(formValue2);
   }
 
   // TODO: Check if current variable has changes (using ngRx selector), if changes, show "Are you Sure", else,

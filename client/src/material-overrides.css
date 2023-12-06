@@ -1,0 +1,15 @@
+  :root {
+    .mat-mdc-table {
+      @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+    }
+    .mat-mdc-cell {
+      @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+    }
+    .mat-mdc-header-cell {
+      @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+    }
+    --mdc-checkbox-unselected-icon-color:#fffbff;
+    --mdc-checkbox-selected-icon-color: orange;
+    --mdc-checkbox-selected-hover-icon-color: red;
+    --mdc-checkbox-unselected-hover-icon-color: red;
+  }

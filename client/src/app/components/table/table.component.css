@@ -10,6 +10,18 @@
 .table-search {
   @apply py-1 px-2 bg-white border rounded-md;
 }
+.mat-mdc-table {
+  @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+}
+.mat-mdc-cell {
+  @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+}
+.mat-mdc-header-cell {
+  @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+}
+.mat-mdc-paginator {
+  @apply bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface;
+}
 .table {
   width: 100%;
 }

@@ -15,11 +15,13 @@ import {
   checkOpenGroup,
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
-import { variableAddToSelectGroup, variableRemoveFromSelectGroup, variableViewChart, variableViewDetail } from 'src/state/actions';
+import {  variableViewChart, variableViewDetail } from 'src/state/actions';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
+import { take } from 'rxjs';
+import { variableAddToSelectGroup, variableRemoveFromSelectGroup } from 'src/state/actions/group.actions';
 
 @Component({
   selector: 'app-table',
@@ -88,14 +90,19 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   removeFromGroup() {
+    this.selectedGroup$.pipe(take(1)).subscribe((group: any) => {
+      console.log(group)
+        this.store.dispatch(variableRemoveFromSelectGroup({ groupID: group, variableIDs: this.selection.selected }))
+    })
     // this.vars.filter
     // this.table?.renderRows()
     // this.vars._updateChangeSubscription()
-    this.selectedGroup$.subscribe((group) => {
-      if (group) {
-        this.store.dispatch(variableRemoveFromSelectGroup({ groupID: group, variableIDs: this.selection.selected }))
-      }
-    })
+    // this.selectedGroup$.subscribe((group) => {
+    //   if (group) {
+    //     // this.store.dispatch(variableRemoveFromSelectGroup({ groupID: group, variableIDs: this.selection.selected }))
+    //     console.log(group)
+    //   }
+    // })
   }
 
   getLabel(option: any) {

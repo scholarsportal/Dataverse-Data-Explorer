@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectGroups } from 'src/state/selectors';
 import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
@@ -8,18 +8,22 @@ import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
   templateUrl: './multiselect-dropdown.component.html',
   styleUrls: ['./multiselect-dropdown.component.css']
 })
-export class MultiselectDropdownComponent {
+export class MultiselectDropdownComponent implements OnInit {
   @ViewChild('groups') groupsElementRef?: ElementRef;
 
   hidden = true;
-  variableGroups$ = this.store.select(selectOpenVariableGroups);
   allGroups$ = this.store.select(selectGroups);
   variableGroups: any = {};
   allGroups: any = {};
 
-  constructor(private store: Store) {
-    store.select(selectOpenVariableGroups).subscribe((groups) => {
-      this.variableGroups = groups
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.store.select(selectOpenVariableGroups).subscribe((groups) => {
+      if(groups){
+        this.variableGroups = groups
+        console.log(this.variableGroups)
+      }
     })
   }
 

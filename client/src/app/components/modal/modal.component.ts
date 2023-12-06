@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { openVariableChangeMode, openVariableSwitchToNext, openVariableSwitchToPrev } from 'src/state/actions';
+import { openVariableChangeMode, openVariableSwitchToNext, openVariableSwitchToPrev } from 'src/state/actions/modal.actions';
 import { selectCheckModalOpen, selectCheckModalID, selectCheckModalLabel, selectCheckModalMode, selectCheckModalName, selectCheckModalState, selectCheckModalVariable } from 'src/state/selectors/modal.selectors';
 
 @Component({
@@ -11,8 +11,6 @@ import { selectCheckModalOpen, selectCheckModalID, selectCheckModalLabel, select
 export class ModalComponent {
   @ViewChild('modal') modalElementRef?: ElementRef;
   @Input() modalID: string | null = null;
-  @Input() customOpenFunction: Function | undefined;
-  @Input() customCloseFunction: Function | undefined;
 
   open$ = this.store.select(selectCheckModalOpen)
   mode$ = this.store.select(selectCheckModalMode)
@@ -23,6 +21,7 @@ export class ModalComponent {
   variable$ = this.store.select(selectCheckModalVariable)
 
   mode: any;
+  changes: boolean = false;
 
   constructor(private store: Store) {
     store.select(selectCheckModalMode).subscribe((data: any) => {
@@ -70,17 +69,21 @@ export class ModalComponent {
   }
 
   openModal(): void {
-    if (this.customOpenFunction) {
-      this.customOpenFunction();
-    }
     const modal = this.modalElementRef?.nativeElement as HTMLDialogElement;
     modal?.showModal();
   }
 
   closeModal(): void {
-    if (this.customCloseFunction) {
-      this.customCloseFunction();
-    }
+    // TODO: check if changes to form have been made so user doesn;t delete changes by accident
+    // this.store.select(selectCheckModalState).subscribe((data) => {
+    //   console.log(data)
+    //   if(data === 'changes') { this.changes = true; }
+    //   if(data === 'saved') {
+    //     this.changes = false;
+    //     const modal = this.modalElementRef?.nativeElement as HTMLDialogElement;
+    //     modal?.close();
+    //   }
+    // })
     const modal = this.modalElementRef?.nativeElement as HTMLDialogElement;
     modal?.close();
   }
