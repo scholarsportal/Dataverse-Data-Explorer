@@ -70,7 +70,7 @@ export function parseJSON(dataset: any) {
 
   // Create variables
   vars.forEach((item: any) => {
-    let notes: (string | { '#text': string; '@_subject': string; '@_level': string; '@_type': string })[];
+    let notes: string;
 
     // check if variable has notes (notes are second object in array)
     // if not we create the expected object anyway for consistency
@@ -87,12 +87,6 @@ export function parseJSON(dataset: any) {
 
   // Create variable groups
   varGrp.forEach((item: any) => {
-    // loop through the var, match the corresponding variable,
-    // and update the group object of the corresponding variable
-    item['@_var'].split(" ").forEach((id: string) => {
-      variables[id].groups[item['@_ID']] = item['labl']
-    });
-
     groups[item['@_ID']] = { ...item, '@_var': item['@_var'].split(' ') }
   });
 

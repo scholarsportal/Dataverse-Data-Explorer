@@ -15,10 +15,12 @@ download.get("/", async function(req: Request, res: Response) {
     if (req) {
         const fetchURL = `${siteURL}/api/access/datafile/${fileID}/metadata/ddi`;
         const request = await fetch(fetchURL)
-        const response = await request.text()
-        const json = new XMLParser(options).parse(response)
-        const parsedJSON = parseJSON(json)
-        res.json(parsedJSON)
+        if(request){
+            const response = await request.text()
+            const json = new XMLParser(options).parse(response)
+            const parsedJSON = parseJSON(json)
+            res.json(parsedJSON)
+        }
     }
 });
 
