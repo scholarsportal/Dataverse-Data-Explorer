@@ -24,7 +24,7 @@ export interface Citation {
   biblCit: string;
 }
 
-export interface VarGroups {
+export interface Groups {
   [id: string]: {
     '@_ID': string;
     'labl': string;
@@ -91,8 +91,8 @@ export interface State {
     citation: Citation;
     variables: Variables;
     variableGroups: VariableGroups;
-    groups: VarGroups;
-    varWeights: any;
+    groups: Groups;
+    weightedVariables: any;
   };
   changeGroup: string;
   recentlyChanged: string;
@@ -150,11 +150,6 @@ export interface SingleVariable {
       '@_type': string;
     };
     universe: string;
-    groups: {
-      [id: string]: {
-        label: string
-      }
-    },
     catgry?: Catgry;
     '@_wgt-var'?: string;
     '@_wgt'?: 'wgt';

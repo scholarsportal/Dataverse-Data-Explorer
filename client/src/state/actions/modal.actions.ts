@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { SingleVariable, Groups } from '../interface';
 
 // User changes modal modal
 export const openVariableChangeMode = createAction(
@@ -22,7 +23,7 @@ export const openModalChangesMade = createAction('[State] Changes Made')
 // User hits save button
 export const variableSave = createAction(
   '[Variable] Save Variable',
-  props<{ id: string, variable: any }>()
+  props<{ id: string, variable: any, groups: any }>()
 );
 
 // Variable is sanitized and updated

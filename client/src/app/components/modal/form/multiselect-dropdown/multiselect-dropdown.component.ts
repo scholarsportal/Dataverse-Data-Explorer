@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, Output, ViewChild, OnInit, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectGroups } from 'src/state/selectors';
 import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
@@ -10,6 +10,8 @@ import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
 })
 export class MultiselectDropdownComponent implements OnInit {
   @ViewChild('groups') groupsElementRef?: ElementRef;
+  @Input() groups: any = {};
+  @Output() groupChange: EventEmitter<any> = new EventEmitter<any>();
 
   hidden = true;
   allGroups$ = this.store.select(selectGroups);
@@ -19,10 +21,11 @@ export class MultiselectDropdownComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
+    console.log(this.groups)
     this.store.select(selectOpenVariableGroups).subscribe((groups) => {
       if(groups){
-        this.variableGroups = groups
-        console.log(this.variableGroups)
+        // Not cloning the objects, makes the modal non-configurable
+        this.variableGroups = { ...groups }
       }
     })
   }
@@ -56,6 +59,7 @@ export class MultiselectDropdownComponent implements OnInit {
   }
 
   changeGroup(group: any) {
+      console.log(group)
     if (this.checkSelected(group)) {
       delete this.variableGroups[group['@_ID']]
     } else {
@@ -64,5 +68,7 @@ export class MultiselectDropdownComponent implements OnInit {
         [group['@_ID']]: group['labl']
       }
     }
+
+    this.groupChange.emit(this.variableGroups)
   }
 }

@@ -26,16 +26,21 @@
     </label>
     <label class="form-label">
         Group(s)
-        <app-multiselect-dropdown class="p-2 w-full"></app-multiselect-dropdown>
+        <app-multiselect-dropdown
+            [groups]="groups$ | ngrxPush"
+            (groupChange)="onGroupChange($event)"
+            class="p-2 w-full">
+        </app-multiselect-dropdown>
     </label>
     Weight Variable
     <div class="flex flex-row justify-between h-16 p-2">
         <label class="form-label sr-only" for="weightVar">
             Weight Variable
         </label>
-        <select class="h-12 p-2 rounded" formControlName="weightVar" id="weightVar" name="weightVar">
-            <option *ngFor="let variable of getWeightsLabels()">
-                {{ variable }}
+        <select class="h-12 p-2 rounded" [(ngModel)]="weight" [ngModelOptions]="{standalone: true}">
+            <option value="" (click)="changeWeight('')">No Weight Assigned</option>
+            <option *ngFor="let variable of getWeights()" [value]="variable" (click)="changeWeight(variable)">
+                {{ getWeightsLabels( variable ) }}
             </option>
         </select>
         <label class="flex flex-row my-auto mx-auto">

@@ -44,13 +44,14 @@ export const selectCheckModalName = createSelector(selectFeature, (state) => {
 
 export const selectOpenModalDetail = createSelector(
     selectOpenVariable,
-    selectGroups,
+    selectOpenVariableGroups,
     selectVariableWeights,
     selectVariables,
     (openVariable, groups, varWeights, variables) => {
         let data: any = {};
         let total: number = 0;
         let sumStats: any = []
+        let weightedVariable: any = openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']] : ''
         if (openVariable && groups && varWeights) {
             sumStats = openVariable['sumStat']
 
@@ -79,9 +80,8 @@ export const selectOpenModalDetail = createSelector(
                 notes: openVariable.notes,
                 group: openVariable.groups,
                 isWeight: openVariable['@_wgt'] ? true : false,
-                weightVar: openVariable['@_wgt-var'] ? variables[openVariable['@_wgt-var']]['@_name'] : '',
             }
-            return { variable, groups, varWeights, data, total, sumStats }
+            return { variable, groups, allVariableWeights: varWeights, weightedVariable, data, total, sumStats }
         }
         return { variable: {}, groups: {}, data, sumStats };
     }

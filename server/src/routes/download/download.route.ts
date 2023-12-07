@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
 import { XMLParser } from "fast-xml-parser";
-import { parseJSON } from "./download.util";
 
 const download = Router();
 
@@ -18,8 +17,7 @@ download.get("/", async function(req: Request, res: Response) {
         if(request){
             const response = await request.text()
             const json = new XMLParser(options).parse(response)
-            const parsedJSON = parseJSON(json)
-            res.json(parsedJSON)
+            res.json(json)
         }
     }
 });

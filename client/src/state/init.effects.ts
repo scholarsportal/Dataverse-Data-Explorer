@@ -17,12 +17,25 @@ export class DataFetchEffect {
       ofType(fromActions.fetchDataset),
       switchMap((action) =>
         this.ddi.get(action.fileID, action.siteURL).pipe(
-          map(({ variables, groups, citation, varWeights }) => fromActions.datasetLoadSuccess({ variables, groups, citation, varWeights })),
+          map((data) => {
+            return fromActions.datasetLoadPending(data)
+          }),
           catchError((error) => of(fromActions.datasetLoadError(error)))
         )
       )
     )
   );
+
+  transformData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.datasetLoadPending),
+      map((data) => {
+
+        const parsedData = this.parseJSON(data)
+
+        return fromActions.datasetLoadSuccess(parsedData)
+      })
+    ))
 
   createVariableGroups = createEffect(() =>
     this.actions$.pipe(
@@ -43,23 +56,39 @@ export class DataFetchEffect {
       })
     ))
 
-  saveVariable$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ModalActions.variableSave),
-      map((action) => {
-
-        const { id, variable } = action;
-
-        return ModalActions.variableChangeDetail({ id, variable })
-      }
-      )
-    ))
-
   constructor(private actions$: Actions, private ddi: DdiService) {}
 
-  private trimVariable(variable: any, rawVariable: SingleVariable): SingleVariable {
+  private parseJSON(data: any): {variables: any, citation: any, groups: any, weightedVariables: any} {
+    // console.log(data)
+    const variables: any = {};
+    const citation: any = data.codeBook.stdyDscr.citation || {};
+    const groups: any = {};
+    const weightedVariables: any = {};
 
-    return rawVariable
+
+    data.codeBook.dataDscr.var.forEach((item: any) => {
+      let notes: string;
+
+      // check if variable has notes (notes are second object in array)
+      // if not we create the expected object anyway for consistency
+      Array.isArray(item.notes) ? (notes = item.notes.at(-1)) : (notes = '')
+
+      variables[item['@_ID']] = { ...item, notes }
+
+      // if the variable has a weight var, we add that variable to var weights
+      // in its correspoding weight
+      if(item['@_wgt-var']){
+        weightedVariables[item['@_wgt-var']] = true
+      }
+    });
+
+    // Create variable groups
+    data.codeBook.dataDscr.varGrp.forEach((item: any) => {
+      groups[item['@_ID']] = { ...item, '@_var': new Set(item['@_var'].split(' ')), selected: new Set() }
+    });
+
+    return { variables, citation, groups, weightedVariables }
+
   }
 
 }

@@ -22,7 +22,7 @@ const initialState: State = {
     variables: {},
     variableGroups: {},
     groups: {},
-    varWeights: {},
+    weightedVariables: {},
   },
   changeGroup: '',
   recentlyChanged: '',
@@ -53,9 +53,9 @@ export const reducer = createReducer(
     ...state,
     dataset: { ...state.dataset, status: 'pending' },
   })),
-  on(Actions.datasetLoadSuccess, (state, { variables, groups, citation, varWeights }) => ({
+  on(Actions.datasetLoadSuccess, (state, { variables, groups, citation, weightedVariables }) => ({
     ...state,
-    dataset: { ...state.dataset, status: 'success', variables, groups, citation, varWeights, error: null },
+    dataset: { ...state.dataset, status: 'success', variables, groups, citation, weightedVariables, error: null },
   })),
   on(Actions.datasetLoadError, (state, { error }) => ({
     ...state,
@@ -81,18 +81,31 @@ export const reducer = createReducer(
     ...state,
     modal: { groups: state.dataset.variableGroups[id].groups, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
-  on(ModalActions.variableChangeDetail, (state, {id, variable }) => ({
+  on(ModalActions.variableSave, (state, {id, variable, groups }) => ({
 
     ...state,
     modal: {
     ...state.modal,
+      variable: {
+        ...state.modal.variable,
+        ...variable
+      },
       changes: 'saved' as const
     },
     dataset: {
       ...state.dataset,
       variables: {
         ...state.dataset.variables,
-        [id]: variable
+        [id]: {
+          ...state.dataset.variables[id],
+          ...variable
+        }
+      },
+      variableGroups: {
+        ...state.dataset.variableGroups,
+        [id]: {
+          groups: groups
+        }
       }
     }
 

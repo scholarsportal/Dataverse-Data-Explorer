@@ -21,7 +21,7 @@ export const selectVariableGroups = createSelector(
 
 export const selectVariableWeights = createSelector(selectVariables, selectFeature, (variables, state) => {
   const variableWeights: any = []
-  Object.keys(state.dataset.varWeights).map((varID: string) => variableWeights.push(variables[varID]))
+  Object.keys(state.dataset.weightedVariables).map((varID: string) => variableWeights.push(variables[varID]))
   return variableWeights
 })
 
@@ -41,7 +41,7 @@ export const selectGroupVariables = createSelector(
         return Object.values(variables);
       } else {
       const groupVars = groups[openGroup]['@_var'] || [];
-      const computedVars = groupVars.map((item: any) => variables[item]);
+      const computedVars = [ ...groupVars ].map((item: any) => variables[item]);
       return computedVars.length ? computedVars : [];
     }
   }

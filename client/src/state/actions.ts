@@ -9,12 +9,12 @@ export const fetchDataset = createAction(
   props<{ fileID: string; siteURL: string }>()
 );
 // While loading components will listen for this to display the loading symbol
-export const datasetLoadPending = createAction('[Dataset] Load Pending');
+export const datasetLoadPending = createAction('[Dataset] Load Pending' , props<{ data: any }>());
 // If the API call is successful, the header component will change to display the file title and DOI, the table
 // component will be loaded with the data from the API
 export const datasetLoadSuccess = createAction(
   '[Dataset] Load Success',
-  props<{ variables: any, groups: any, citation: any, varWeights: any }>()
+  props<{ variables: any, groups: any, citation: any, weightedVariables: any }>()
 );
 // If the API call errors, the 404 component will be displayed, with the error.message displayed below.
 export const datasetLoadError = createAction(

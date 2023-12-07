@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from '../modal.component';
-import { SingleVariable, VarGroups } from 'src/state/interface';
-import { selectOpenModalDetail, selectOpenVariable } from 'src/state/selectors/modal.selectors';
-import { openModalChangesMade } from 'src/state/actions/modal.actions';
+import { SingleVariable, Groups } from 'src/state/interface';
+import { selectOpenModalDetail, selectOpenVariable, selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
+import { openModalChangesMade, variableSave } from 'src/state/actions/modal.actions';
 import { Observable, debounceTime, take } from 'rxjs';
 import { updateGroups } from './form.util';
 
@@ -16,6 +16,7 @@ import { updateGroups } from './form.util';
 export class FormComponent implements OnInit {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
   variable$: Observable<SingleVariable> = this.store.select(selectOpenVariable);
+  groups$: Observable<{[id: string]: string}> = this.store.select(selectOpenVariableGroups)
   variableForm = new FormGroup({
     id: new FormControl(''),
     name: new FormControl(''),
@@ -27,38 +28,36 @@ export class FormComponent implements OnInit {
     notes: new FormControl(''),
     group: new FormControl([]),
     isWeight: new FormControl(false),
-    weightVar: new FormControl(null),
   });
-  groups: VarGroups = {};
+  groups: Groups = {};
   varWeights: any = [];
   weight: any = '';
   weightName: any = '';
   group = '';
   private initialFormValue: any;
-  private changesOccurred: boolean = false
+  // private changesOccurred: boolean = false
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     const variableDetails = this.store.select(selectOpenModalDetail);
-    variableDetails.subscribe(({ variable, groups, varWeights }) => {
-      if (variable && groups && varWeights) {
-        console.log(groups)
-        this.groups = groups;
-        this.varWeights = varWeights;
-        this.weight = variable.weightVar
+    variableDetails.subscribe(({ variable, groups, weightedVariable, allVariableWeights }) => {
+      if (variable && groups && allVariableWeights) {
+        this.groups = groups
+        this.varWeights = allVariableWeights;
+        this.weight = weightedVariable
         this.variableForm.patchValue(variable);
       }
       this.initialFormValue = variable
     });
     // Listen for changes in the form and dispatch 'changesMade' action
-    this.variableForm.valueChanges.pipe(debounceTime(500)).subscribe(() => {
-      const currentFormValue = this.variableForm.value;
-      if (!this.changesOccurred && !this.areFormsEqual(this.initialFormValue, currentFormValue)) {
-        this.changesOccurred = true;
-        this.store.dispatch(openModalChangesMade());
-      }
-    });
+    // this.variableForm.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+    //   const currentFormValue = this.variableForm.value;
+    //   if (!this.changesOccurred && !this.areFormsEqual(this.initialFormValue, currentFormValue)) {
+    //     this.changesOccurred = true;
+    //     this.store.dispatch(openModalChangesMade());
+    //   }
+    // });
   }
 
   close() {
@@ -70,6 +69,27 @@ export class FormComponent implements OnInit {
     return JSON.stringify(formValue1) === JSON.stringify(formValue2);
   }
 
+  onGroupChange(groups: any){
+    console.log(groups)
+    this.groups = groups
+  }
+
+  // updateGroups = (groups: any) => updateGroups(groups)
+
+  getWeights() {
+    return Object.values(this.varWeights);
+  }
+
+  getWeightsLabels(value: any) {
+    return value['@_name']
+  }
+
+  changeWeight(variable: any) {
+    console.log(variable)
+    // return variable === this.weight
+    this.weight = variable === '' ? null : variable;
+  }
+
   // TODO: Check if current variable has changes (using ngRx selector), if changes, show "Are you Sure", else,
   // close dialogue
   handleCancel() {
@@ -79,11 +99,7 @@ export class FormComponent implements OnInit {
   handleSave() {
     this.variable$.pipe(take(1)).subscribe((variable: SingleVariable) => {
       if (variable) {
-        const groupsFromForm = this.variableForm.controls.group.value || [];
-        const updatedGroups = Object.keys(groupsFromForm).reduce((acc: any, groupId: any) => {
-          acc[groupId] = groupsFromForm[groupId];
-          return acc;
-        }, {});
+        console.log(this.varWeights);
 
         const updatedVariable: SingleVariable = {
           ...variable, // Spread the properties of the original variable object
@@ -99,22 +115,12 @@ export class FormComponent implements OnInit {
           },
           universe: this.variableForm.controls.universe.value || variable.universe,
           notes: this.variableForm.controls.notes.value || variable.notes,
-          // TODO: Dont quite work
-          groups: {
-            ...variable.groups,
-            ...updatedGroups
-          },
+          '@_wgt': this.variableForm.controls.isWeight.value ? 'wgt' : undefined,
+          '@_wgt-var': this.weight ? this.weight['@_ID'] : undefined,
         };
-        console.log(groupsFromForm)
+
+        this.store.dispatch(variableSave({ id: variable['@_ID'], variable: updatedVariable, groups: this.groups}))
       }
     })
-  }
-
-  // updateGroups = (groups: any) => updateGroups(groups)
-
-  getWeightsLabels() {
-    const values: any = []
-    Object.values(this.varWeights).map((variable: any) => values.push(variable['@_name']));
-    return values
   }
 }
