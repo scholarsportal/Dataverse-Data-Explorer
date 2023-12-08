@@ -1,7 +1,7 @@
 <aside class="on-outline-text sidebar">
     <div class="fixed h-max inset-y-0 z-30 w-72 pt-44">
-        <button [ngClass]="{ 'selected' : (selectedGroup$ | async) === ''}" class="all-vars w-full py-5 px-4 text-lg text-left"
-            (click)="changeGroup('')">All Variables</button>
+        <button [ngClass]="{ 'selected' : (selectedGroup$ | async) === ''}"
+            class="all-vars w-full py-5 px-4 text-lg text-left" (click)="changeGroup('')">All Variables</button>
         <div
             class="flex flex-row justify-between my-auto py-4 px-4 text-xl text-center font-bold surface-variant on-surface-variant-text">
             <span class="my-auto">Groups</span>
@@ -21,12 +21,12 @@
         @if( addingNewGroup ){
         <li id="newGroupInput" class="focus-within:ring-2 z-30 flex flex-row rounded m-3 group-input">
             <input type="text" [(ngModel)]="newGroupName" placeholder="Enter group name"
-                class="w-full rounded-l p-2 focus:outline-none text-black"/>
+                class="w-full rounded-l p-2 focus:outline-none text-black" />
 
             <!-- CONFIRM BUTTON -->
             <button (click)="confirmGroup()" class="confirm-button">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="background"
-                    class="w-6 h-6 selected">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="background" class="w-6 h-6 selected">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -34,8 +34,8 @@
 
             <!-- CANCEL BUTTON -->
             <button (click)="cancelGroup()" class="cancel-button">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="background"
-                    class="w-6 h-6 selected">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="background" class="w-6 h-6 selected">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -44,16 +44,52 @@
         </li>
         }
         <li *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}"
-                class=" z-20 text-left"
-                [ngClass]="{ 'selected' : (selectedGroup$ | async) === getID(item.value), 'changed ': (recentlyChanged$ | async) === getID(item.value) }">
-            <button class="w-full py-4 pr-5 pl-6 flex flex-row justify-between"
-                (click)="changeGroup(item.value)">
+            class="z-20 button-hover flex flex-row justify-between"
+            [ngClass]="{ 'selected' : (selectedGroup$ | async) === getID(item.value), 'changed ': (recentlyChanged$ | async) === getID(item.value) }">
+            @if(groupToBeRenamedID !== getID(item.value)){
+            <button class="w-full text-left pl-6 py-3" (click)="changeGroup(item.value)">
                 {{ getLabel(item.value) }}
+            </button>
+
+            <!-- DELETE BUTTON -->
+            <button class="icon-bg-hover icon-hover rounded-md px-1 pt-1 pb-1 mx-2 my-2" (click)="deleteGroup(item.value)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+            </button>
+
+            <!-- RENAME BUTTON -->
+            <button class="icon-bg-hover icon-hover rounded-md px-1 pt-1 pb-1 mr-4 my-2"
+                (click)="startRename(item.value)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                     <path
                         d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
                 </svg>
             </button>
+            } @else {
+            <div class="flex flex-row ml-2 pr-4">
+                <input type="text" [(ngModel)]="renameInputValue" class="rounded-l p-2 focus:outline-none text-black"
+                    (keyup.enter)="renameGroup()" (keyup.escape)="cancelRename()" />
+                <div class="flex flex-row">
+                    <button (click)="renameGroup()" class="confirm-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="background" class="w-6 h-6 selected">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                    <button (click)="cancelRename()" class="cancel-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="background" class="w-6 h-6 selected">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            }
         </li>
     </ul>
 </aside>

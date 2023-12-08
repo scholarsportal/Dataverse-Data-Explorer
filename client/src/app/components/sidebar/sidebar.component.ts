@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { groupCreateNew, groupSelected } from 'src/state/actions/group.actions';
+import { groupChangeName, groupCreateNew, groupDelete, groupSelected } from 'src/state/actions/group.actions';
 import { checkOpenGroup, selectGroups, selectRecentlyChangedGroup } from 'src/state/selectors';
 
 @Component({
@@ -12,9 +12,10 @@ export class SidebarComponent {
   groups$ = this.store.select(selectGroups);
   selectedGroup$ = this.store.select(checkOpenGroup)
   recentlyChanged$ = this.store.select(selectRecentlyChangedGroup)
-  addingNew = false;
   addingNewGroup: boolean = false;
   newGroupName: string = '';
+  groupToBeRenamedID: any = null;
+  renameInputValue: string = '';
 
   constructor(private store: Store) {}
 
@@ -43,6 +44,31 @@ export class SidebarComponent {
     const id = `NVG${Math.floor(Math.random() * 1000000)}`
     const name = this.newGroupName
     this.store.dispatch(groupCreateNew({ groupID: id, label: name }))
+  }
+
+  deleteGroup(group: any) {
+    console.log(group)
+    this.store.dispatch( groupDelete({ groupID: group['@_ID'] }) )
+  }
+
+  startRename(item: any) {
+    this.groupToBeRenamedID = this.getID(item)
+    this.renameInputValue = this.getLabel(item)
+  }
+
+  cancelRename() {
+    this.groupToBeRenamedID = null;
+    this.renameInputValue = '';
+  }
+
+  renameGroup() {
+    const renamedValue = this.renameInputValue.trim();
+    if(renamedValue !== '') {
+      // console.log(renamedValue)
+      this.store.dispatch(groupChangeName({ groupID: this.groupToBeRenamedID, newName: renamedValue }))
+    }
+    this.groupToBeRenamedID = null;
+    this.renameInputValue = '';
   }
 
   toggleAddingNewGroup() {

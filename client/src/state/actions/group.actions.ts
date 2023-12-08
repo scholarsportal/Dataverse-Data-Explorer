@@ -13,7 +13,7 @@ export const variableRemoveFromSelectGroup = createAction(
 );
 // Remove a specified group from the list of groups
 export const groupDelete = createAction(
-  '[Group] Remove',
+  '[Group] Delete Group',
   props<{ groupID: string }>()
 );
 
@@ -43,5 +43,5 @@ export const groupAddSelectedGroup = createAction(
 // Change name property of specified group ID, to newName
 export const groupChangeName = createAction(
   '[Group] Change Name',
-  props<{ groupId: string; newName: string }>()
+  props<{ groupID: string; newName: string }>()
 );

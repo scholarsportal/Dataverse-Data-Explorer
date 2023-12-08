@@ -25,6 +25,18 @@
     @apply bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
 }
 
+.button-hover {
+    @apply transition transform duration-150 hover:bg-light-on-surface hover:text-light-surface dark:hover:text-dark-surface dark:hover:bg-dark-on-surface;
+}
+
+.icon-bg-hover {
+    @apply hover:bg-light-surface dark:hover:bg-dark-surface;
+}
+
+.icon-hover {
+    @apply hover:text-light-on-surface dark:hover:text-dark-on-surface;
+}
+
 .changed {
     @apply bg-pink-500;
 }

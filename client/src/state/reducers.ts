@@ -234,13 +234,57 @@ export const reducer = createReducer(
     recentlyChanged: groupID
   })),
   on(GroupActions.groupDelete, (state, { groupID }) => {
-    const groupVariables = state.dataset.groups[groupID]
-    console.log(groupVariables)
+    const updatedVariableGroups = JSON.parse(JSON.stringify( { ...state.dataset.variableGroups } ));
+    const variableList = state.dataset.groups[groupID]?.['@_var'] || new Set<string>();
+
+    variableList.forEach((item: string) => {
+      const groupInfo = updatedVariableGroups[item]?.groups;
+      if (groupInfo && groupInfo[groupID]) {
+        delete groupInfo[groupID];
+        updatedVariableGroups[item] = { ...updatedVariableGroups[item], groups: { ...groupInfo } };
+      }
+    });
+
+    const updatedGroups = { ...state.dataset.groups };
+    delete updatedGroups[groupID];
 
     return {
-      ...state
-    }
-  }),
+      ...state,
+      dataset: {
+        ...state.dataset,
+        groups: updatedGroups,
+        variableGroups: updatedVariableGroups
+      }
+    };  }),
+  on(GroupActions.groupChangeName, (state, { groupID, newName }) => {
+    const updatedVariableGroups = JSON.parse(JSON.stringify({ ...state.dataset.variableGroups }));
+    const variableList = state.dataset.groups[groupID]['@_var'] ?  state.dataset.groups[groupID]['@_var'] : new Set<string>();
+
+    console.log( state.dataset.groups[groupID])
+    console.log(groupID)
+    console.log(newName)
+    console.log(variableList)
+
+    variableList.forEach((item: string) => {
+      const group = updatedVariableGroups[item]?.groups;
+      if (group && group[groupID]) {
+        group[groupID] = newName;
+        updatedVariableGroups[item] = { ...updatedVariableGroups[item], groups: { ...group } };
+      }
+    });
+
+    const updatedGroups = ({ ...state.dataset.groups });
+    updatedGroups[groupID] = { ...updatedGroups[groupID], labl: newName };
+
+    return {
+      ...state,
+      dataset: {
+        ...state.dataset,
+        groups: updatedGroups,
+        variableGroups: updatedVariableGroups
+      }
+    };
+  })
 
 );
 
