@@ -99,7 +99,7 @@ export class FormComponent implements OnInit {
   handleSave() {
     this.variable$.pipe(take(1)).subscribe((variable: SingleVariable) => {
       if (variable) {
-        console.log(this.varWeights);
+        console.log(variable);
 
         const updatedVariable: SingleVariable = {
           ...variable, // Spread the properties of the original variable object

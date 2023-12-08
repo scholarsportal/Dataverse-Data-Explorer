@@ -13,6 +13,7 @@ import {
   selectVariables,
   selectGroups,
   checkOpenGroup,
+selectCheckVariableGroups
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
 import {  variableViewChart, variableViewDetail } from 'src/state/actions';
@@ -107,6 +108,16 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
 
   getLabel(option: any) {
     return option.labl || "<ERROR: NO LABEL>"
+  }
+
+  checkUnassigned(option: any): boolean {
+    this.store.select(selectCheckVariableGroups(option['@_ID'])).pipe(take(1)).subscribe((data: any) => {
+      if(data){
+        return Object.keys(data).length === 0
+      }
+      return false
+    })
+    return false
   }
 
   // FILTER

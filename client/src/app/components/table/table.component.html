@@ -15,7 +15,8 @@
         class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
         Remove From Variable Group</button>
     <!-- Paginator -->
-    <mat-paginator [pageSizeOptions]="[10, 30, 50, 100]" [color]="" class="" aria-label="Select variable page"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 30, 50, 100]" [color]="" class=""
+        aria-label="Select variable page"></mat-paginator>
 </div>
 <div class="surface table-container top-0 mt-20 ml-72">
     <table mat-table [dataSource]="vars" matSort class="surface ">
@@ -49,7 +50,22 @@
         <!-- ID Column -->
         <ng-container matColumnDef="ID">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
-            <td mat-cell *matCellDef="let row">{{ row['@_ID'] }}</td>
+            <td mat-cell *matCellDef="let row">
+                <div class="flex flex-row">
+                    {{ row['@_ID'] }}
+                    @if(checkUnassigned(row)){
+                        <div class="flex flex-row mx-1 rounded bg-dark-surface dark:bg-light-surface text-dark-on-surface dark:text-light-on-surface">
+                            <svg aria-describedby="unassigned" id="unassigned" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="m-0.5 w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            <span class="text-xs m-0.5">Unassigned</span>
+                        </div>
+                    }
+                </div>
+            </td>
         </ng-container>
 
         <!-- Name Column -->

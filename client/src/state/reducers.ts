@@ -81,7 +81,27 @@ export const reducer = createReducer(
     ...state,
     modal: { groups: state.dataset.variableGroups[id].groups, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
-  on(ModalActions.variableSave, (state, {id, variable, groups }) => ({
+  on(ModalActions.variableSave, (state, {id, variable, groups }) => {
+    //TODO: Remove reference from dataset.groups
+    console.log(groups)
+    // Loop through each group
+    Object.keys(state.dataset.groups).forEach((item: any) => {
+      // For each group id, check if the id is in our new group list
+      // If they are, we update the variable list to include group
+      // Otherwise, we remove the reference to the variable from the
+      // groups
+      Object.keys(groups).forEach((id: any) => {
+        if(Object.keys(groups).includes(item)){
+          console.log(item, 'FOUINFJK')
+          // Update this groups variable list
+        }
+        // Remove variable from group's list
+        // console.log(state.dataset.groups['@_var'].has(id))
+          //
+      });
+    });
+
+    return {
 
     ...state,
     modal: {
@@ -108,8 +128,8 @@ export const reducer = createReducer(
         }
       }
     }
-
-  })),
+  }
+  }),
   on(ModalActions.openModalChangesMade, (state) => ({
     ...state,
     modal: {
