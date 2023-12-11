@@ -28,7 +28,7 @@ export interface Groups {
   [id: string]: {
     '@_ID': string;
     'labl': string;
-    '@_var': string[];
+    '@_var': Set<string>;
   }
 }
 

@@ -64,20 +64,8 @@ export class FormComponent implements OnInit {
     this.modalComponent?.closeModal();
   }
 
-  // Method to compare if two form values are equal
-  private areFormsEqual(formValue1: any, formValue2: any): boolean {
-    return JSON.stringify(formValue1) === JSON.stringify(formValue2);
-  }
-
   onGroupChange(groups: any){
-    console.log(groups)
     this.groups = groups
-  }
-
-  // updateGroups = (groups: any) => updateGroups(groups)
-
-  getWeights() {
-    return Object.values(this.varWeights);
   }
 
   getWeightsLabels(value: any) {
@@ -99,7 +87,7 @@ export class FormComponent implements OnInit {
   handleSave() {
     this.variable$.pipe(take(1)).subscribe((variable: SingleVariable) => {
       if (variable) {
-        console.log(variable);
+        // console.log(variable);
 
         const updatedVariable: SingleVariable = {
           ...variable, // Spread the properties of the original variable object

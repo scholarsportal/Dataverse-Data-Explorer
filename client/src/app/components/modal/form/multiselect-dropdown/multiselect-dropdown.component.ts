@@ -21,7 +21,6 @@ export class MultiselectDropdownComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    console.log(this.groups)
     this.store.select(selectOpenVariableGroups).subscribe((groups) => {
       if(groups){
         // Not cloning the objects, makes the modal non-configurable
@@ -59,7 +58,6 @@ export class MultiselectDropdownComponent implements OnInit {
   }
 
   changeGroup(group: any) {
-      console.log(group)
     if (this.checkSelected(group)) {
       delete this.variableGroups[group['@_ID']]
     } else {

@@ -83,23 +83,30 @@ export const reducer = createReducer(
   })),
   on(ModalActions.variableSave, (state, {id, variable, groups }) => {
     //TODO: Remove reference from dataset.groups
-    console.log(groups)
     // Loop through each group
     Object.keys(state.dataset.groups).forEach((item: any) => {
       // For each group id, check if the id is in our new group list
       // If they are, we update the variable list to include group
       // Otherwise, we remove the reference to the variable from the
       // groups
-      Object.keys(groups).forEach((id: any) => {
-        if(Object.keys(groups).includes(item)){
-          console.log(item, 'FOUINFJK')
-          // Update this groups variable list
-        }
+      // Object.keys(groups).forEach((id: any) => {
+      //   if(Object.keys(groups).includes(item)){
+      //     console.log(item, 'FOUINFJK')
+      //     // Update this groups variable list
+      //   }
+      // });
         // Remove variable from group's list
-        // console.log(state.dataset.groups['@_var'].has(id))
-          //
-      });
+        // console.log(state.dataset.groups[item]['@_var'])
+      if(Object.keys( groups ).includes( state.dataset.groups[item]['@_ID'] )) {
+        console.log(state.dataset.groups[item])
+        state.dataset.groups[item]['@_var'].add(id)
+      } else {
+        state.dataset.groups[item]['@_var'].delete(id)
+      }
     });
+
+    console.log(state.dataset.groups)
+    console.log(state.dataset.variableGroups[id])
 
     return {
 
@@ -197,22 +204,22 @@ export const reducer = createReducer(
         [groupID]: {
           "@_ID": groupID,
           labl: label,
-          "@_var": []
+          "@_var": new Set<string>,
         }
       }
     },
     recentlyChanged: groupID
   })),
   on(GroupActions.variableAddToSelectGroup, (state, { variableIDs, groupID }) => {
-    const group = [variableIDs, state.dataset.groups[groupID]['@_var'] || []]
-    const merge = [...new Set(group.flat())]
-    console.log(merge)
-    // console.log(conc)
+    const existingVarSet = state.dataset.groups[groupID]['@_var'] || new Set<string>();
+
+    const updatedVarSet = new Set<string>([...existingVarSet, ...variableIDs]);
+
     const updatedGroups = {
       ...state.dataset.groups,
       [groupID]: {
         ...state.dataset.groups[groupID],
-        '@_var': merge
+        '@_var': updatedVarSet
       },
     };
 
@@ -229,14 +236,15 @@ export const reducer = createReducer(
     // select the corresponding group
     const groupToUpdate = state.dataset.groups[groupID];
     // create a new list, by filtering out the ids that are in the input
-    const updatedVarList = (groupToUpdate['@_var'] || []).filter((id: string) => !variableIDs.includes(id))
+    const updatedVarList = Array.from(groupToUpdate['@_var'] || []).filter((id: string) => !variableIDs.includes(id))
+    const updatedVarSet = new Set<string>(updatedVarList)
 
     // create new group state
     const updatedGroups = {
       ...state.dataset.groups,
       [groupID]: {
         ...groupToUpdate,
-        '@_var': updatedVarList
+        '@_var': updatedVarSet
       }
     }
 

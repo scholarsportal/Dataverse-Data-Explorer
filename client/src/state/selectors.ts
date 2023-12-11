@@ -23,14 +23,15 @@ export const selectCheckVariableGroups = (id: string) => createSelector(
   selectFeature,
   (state) =>
     {
-      return state.dataset.variableGroups[id]?.groups
+      return Object.keys(state.dataset.variableGroups[id]?.groups).length === 0
     }
 );
 
 export const selectVariableWeights = createSelector(selectVariables, selectFeature, (variables, state) => {
   const variableWeights: any = []
   Object.keys(state.dataset.weightedVariables).map((varID: string) => variableWeights.push(variables[varID]))
-  return variableWeights
+  console.log(Object.values( variableWeights ))
+  return Object.values( variableWeights ) ? Object.values( variableWeights ) : []
 })
 
 export const checkOpenGroup = createSelector(

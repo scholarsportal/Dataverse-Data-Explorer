@@ -39,7 +39,7 @@
         </label>
         <select class="h-12 p-2 rounded" [(ngModel)]="weight" [ngModelOptions]="{standalone: true}">
             <option value="" (click)="changeWeight('')">No Weight Assigned</option>
-            <option *ngFor="let variable of getWeights()" [value]="variable" (click)="changeWeight(variable)">
+            <option *ngFor="let variable of varWeights" [value]="variable" (click)="changeWeight(variable)">
                 {{ getWeightsLabels( variable ) }}
             </option>
         </select>

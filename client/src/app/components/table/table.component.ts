@@ -13,7 +13,8 @@ import {
   selectVariables,
   selectGroups,
   checkOpenGroup,
-selectCheckVariableGroups
+  selectCheckVariableGroups,
+  selectVariableWeights
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
 import {  variableViewChart, variableViewDetail } from 'src/state/actions';
@@ -39,6 +40,8 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   groups$ = this.store.select(selectGroups);
   selectedGroup$ = this.store.select(checkOpenGroup)
   vars$ = this.store.select(selectVariables)
+  variableWeights$ = this.store.select(selectVariableWeights)
+  checkUnassigned$ = (option: any) => this.store.select(selectCheckVariableGroups(option['@_ID']))
   vars: any = null;
   selected = false;
   selection: any = new SelectionModel<any>(true, [])
@@ -106,18 +109,17 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
     // })
   }
 
-  getLabel(option: any) {
-    return option.labl || "<ERROR: NO LABEL>"
+  bulkAddWeight(weight: any) {
+  console.log(weight)
+    // console.log(this.selection.selected)
+    // this.store.dispatch(variableAddToSelectGroup({ groupID: group['@_ID'], variableIDs: this.selection.selected }))
   }
 
-  checkUnassigned(option: any): boolean {
-    this.store.select(selectCheckVariableGroups(option['@_ID'])).pipe(take(1)).subscribe((data: any) => {
-      if(data){
-        return Object.keys(data).length === 0
-      }
-      return false
-    })
-    return false
+  getLabel(option: any) {
+    if(option['@_wgt'] && ( option['@_wgt'] === 'wgt' )){
+      return option['@_name']
+    }
+    return option.labl || "<ERROR: NO LABEL>"
   }
 
   // FILTER

@@ -4,22 +4,13 @@
         Search
     </label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="table-search icon m-2" #input />
-    <!-- Group Selection Dropdown -->
-    <select *ngIf="selection.selected.length" name="groups" id=""
-        class="bg-gray-100 border border-gray-300 rounded-md h-max p-1.5 my-auto">
-        <option value="">Add to Group</option>
-        <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}" (click)="addToGroup(item.value)">{{
-            getLabel(item.value) }}</option>
-    </select>
-    <button *ngIf="selection.selected.length && (selectedGroup$ | async)"
-        class="bg-gray-100 h-max rounded-md border border-gray-300 p-1.5 my-auto" (click)="removeFromGroup()">
-        Remove From Variable Group</button>
+
     <!-- Paginator -->
     <mat-paginator [pageSizeOptions]="[10, 30, 50, 100]" [color]="" class=""
         aria-label="Select variable page"></mat-paginator>
 </div>
 <div class="surface table-container top-0 mt-20 ml-72">
-    <table mat-table [dataSource]="vars" matSort class="surface ">
+    <table mat-table [dataSource]="vars" matSort class="surface min-h-[80%]">
         <tr mat-header-row *matHeaderRowDef="columnMat; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columnMat"></tr>
 
@@ -53,16 +44,17 @@
             <td mat-cell *matCellDef="let row">
                 <div class="flex flex-row">
                     {{ row['@_ID'] }}
-                    @if(checkUnassigned(row)){
-                        <div class="flex flex-row mx-1 rounded bg-dark-surface dark:bg-light-surface text-dark-on-surface dark:text-light-on-surface">
-                            <svg aria-describedby="unassigned" id="unassigned" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="m-0.5 w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            <span class="text-xs m-0.5">Unassigned</span>
-                        </div>
+                    @if(( checkUnassigned$(row) | async)){
+                    <div
+                        class="flex flex-row mx-1 rounded bg-dark-surface dark:bg-light-surface text-dark-on-surface dark:text-light-on-surface">
+                        <svg aria-describedby="unassigned" id="unassigned" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="m-0.5 w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        <span class="text-xs m-0.5">Unassigned</span>
+                    </div>
                     }
                 </div>
             </td>
@@ -90,7 +82,7 @@
 
         <!-- View Column -->
         <ng-container matColumnDef="View">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>View</th>
+            <th mat-header-cell *matHeaderCellDef>View</th>
             <td mat-cell *matCellDef="let row">
                 <button (click)="viewChart(row)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -103,7 +95,15 @@
 
         <!-- Edit Column -->
         <ng-container matColumnDef="Edit">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+            <th mat-header-cell *matHeaderCellDef class="">
+                @if(selection.selected.length){
+                    <button class="rounded outline-variant outline-variant drop-shadow-md px-1 transition transform duration-75 hover:scale-110">Edit</button>
+                } @else {
+                    <span class="px-1">
+                    Edit
+                    </span>
+                }
+            </th>
             <td mat-cell *matCellDef="let row">
                 <button (click)="editVar(row)" class="mx-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
@@ -114,6 +114,36 @@
             </td>
         </ng-container>
     </table>
+    <!-- Footer section -->
+    <div class="footer-section surface-variant on-surface-variant-text">
+    @if(selection.selected.length){
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" transform="rotate(180)" class="mt-5">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6 6m-6-6l6-6"/>
+        </svg>
+        <!-- Group Selection Dropdown -->
+        <select name="groups" id="group-dropdown"
+            class="footer-button rounded-md h-max px-1 py-1.5 mx-2 my-auto">
+            <option value="">Add to Group</option>
+            <option *ngFor="let item of groups$ | async | keyvalue" id="{{ item.key }}"
+                (click)="addToGroup(item.value)">{{ getLabel(item.value) }}</option>
+        </select>
+
+        <!-- Assign Weight Dropdown -->
+        <select name="weights" id="weights-dropdown"
+            class="footer-button rounded-md h-max px-1 py-1.5 mx-2 my-4">
+            <option value="">Bulk Assign Weighted Variable</option>
+            <option *ngFor="let item of variableWeights$ | async | keyvalue" id="{{ item.key }}"
+                (click)="bulkAddWeight(item.value)">{{ getLabel(item.value) }}</option>
+        </select>
+
+        @if(selection.selected.length && (selectedGroup$ | async)) {
+            <!-- Remove From Variable Group Button -->
+            <button class="footer-button rounded-md px-1 py-1 mx-2 my-4 my-auto" (click)="removeFromGroup()">
+                Remove From Variable Group
+            </button>
+        }
+    }
+    </div>
 </div>
 <app-modal class="w-max">
     <!-- <div class="modal-header flex flex-col">

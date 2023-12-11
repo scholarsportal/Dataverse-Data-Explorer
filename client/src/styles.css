@@ -237,33 +237,33 @@ body {
   }
   /* Shadow */
   .shadow {
-    @apply bg-shadow-light dark:bg-shadow-dark;
+    @apply bg-light-shadow dark:bg-dark-shadow;
   }
   .shadow-text {
-    @apply text-shadow-light dark:text-shadow-dark;
+    @apply text-light-shadow dark:text-dark-shadow;
   }
 
   /* Surface Tint */
   .surface-tint {
-    @apply bg-surface-tint-light dark:bg-surface-tint-dark;
+    @apply bg-light-surface-tint dark:bg-dark-surface-tint;
   }
   .surface-tint-text {
-    @apply text-surface-tint-light dark:text-surface-tint-dark;
+    @apply text-light-surface-tint dark:text-dark-surface-tint;
   }
 
   /* Outline Variant */
   .outline-variant {
-    @apply bg-outline-variant-light dark:bg-outline-variant-dark;
+    @apply bg-light-outline-variant dark:bg-dark-outline-variant;
   }
   .outline-variant-text {
-    @apply text-outline-variant-light dark:text-outline-variant-dark;
+    @apply text-light-outline-variant dark:text-dark-outline-variant;
   }
 
   /* Scrim */
   .scrim {
-    @apply bg-scrim-light dark:bg-scrim-dark;
+    @apply bg-light-scrim dark:bg-dark-scrim;
   }
   .scrim-text {
-    @apply text-scrim-light dark:text-scrim-dark;
+    @apply text-light-scrim dark:text-dark-scrim;
   }
 }
