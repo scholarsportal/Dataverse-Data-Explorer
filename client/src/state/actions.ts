@@ -39,14 +39,22 @@ export const variableViewDetail = createAction(
   '[Variable] View Detail',
   props<{ id: string }>()
 );
+
 // When the user presses the chart button for a variable
 export const variableViewChart = createAction(
   '[Variable] View Chart',
   props<{ id: string; }>()
 );
 
-// // Send new notification (capped at 5 in stack, see init.effect.ts for more)
-// export const sendNotification = createAction('[Notification] Sending New Notification', props<{ notificationType: string, message: string }>())
+// When the user selects multiple variables, they have an option to make the same changes to multiple variables.
+// Users can change lable, question(s), universe, notes, and mark multiple variables as weighted with this
+export const startVariableBulkEdit = createAction('[Variable] Start Bulk Edit', props<{ variableIDs: string[] }>())
+
+export const saveVariableBulkEdit = createAction('[Variable] Save Bulk Edit', props<{ variableIDs: string[], template: any }>())
+
+// When the user selects multiple variables, they have an option to make the same changes to multiple variables.
+// Users can change lable, question(s), universe, notes, and mark multiple variables as weighted with this
+export const variableBulkAssignWeight = createAction('[Variable] Bulk Assign Weight', props<{ variableIDs: string[], weight: any }>())
 
 // Notification successfully added to stack
 export const pushNotification = createAction('[Notification] Pushing New Notification', props<{ notificationType: string, message: string }>())
@@ -59,12 +67,6 @@ export const removeNotification = createAction('[Notification] Removing Notifica
 export const datasetCreateMetadata = createAction(
   '[Create Variables and Init Groups] Init groups and variables',
   props<{ data: any }>()
-);
-
-// The modal component will listen for this and launch a modal using the variable data
-export const variableChangeDetail = createAction(
-  '[Variable] Change Detail',
-  props<{ id: string, variable: any }>()
 );
 
 // The notification component will display download when this is dipatched

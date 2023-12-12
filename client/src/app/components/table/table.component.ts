@@ -17,7 +17,7 @@ import {
   selectVariableWeights
 } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
-import {  variableViewChart, variableViewDetail } from 'src/state/actions';
+import { startVariableBulkEdit, variableBulkAssignWeight, variableViewChart, variableViewDetail } from 'src/state/actions';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -110,9 +110,12 @@ export class TableComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   bulkAddWeight(weight: any) {
-  console.log(weight)
-    // console.log(this.selection.selected)
-    // this.store.dispatch(variableAddToSelectGroup({ groupID: group['@_ID'], variableIDs: this.selection.selected }))
+    this.store.dispatch(variableBulkAssignWeight({ variableIDs: this.selection.selected, weight }))
+  }
+
+  bulkEditVariables() {
+    this.store.dispatch(startVariableBulkEdit({ variableIDs: this.selection.selected }))
+    this.modalComponent?.openModal();
   }
 
   getLabel(option: any) {

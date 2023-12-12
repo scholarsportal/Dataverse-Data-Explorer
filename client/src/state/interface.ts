@@ -99,7 +99,7 @@ export interface State {
   modal: {
     open: boolean;
     mode: string;
-    id: string | null;
+    id: string | string[] | null;
     variable: any | null;
     groups: any | null;
     state: 'saved' | 'changes' | '';

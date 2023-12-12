@@ -69,14 +69,18 @@ export class DataFetchEffect {
     data.codeBook.dataDscr.var.forEach((item: any) => {
       let notes: string;
       let qstn: any;
+      let isWeight: any;
+      let weightVar: any;
 
       // check if variable has notes (notes are second object in array)
       // if not we create the expected object anyway for consistency
       Array.isArray(item.notes) ? (notes = item.notes.at(-1)) : (notes = '')
 
       item.qstn ? qstn = item.qstn : qstn = {}
+      item['@_wgt-var'] ? weightVar = item['@_wgt-var'] : weightVar = undefined
+      item['@_wgt'] ? isWeight = item['@_wgt'] : isWeight = undefined
 
-      variables[item['@_ID']] = { ...item, notes, qstn }
+      variables[item['@_ID']] = { ...item, '@_wgt-var': weightVar, '@_wgt': isWeight, notes, qstn }
 
       // if the variable has a weight var, we add that variable to var weights
       // in its correspoding weight

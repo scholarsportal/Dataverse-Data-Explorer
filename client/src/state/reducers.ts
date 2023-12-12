@@ -81,35 +81,57 @@ export const reducer = createReducer(
     ...state,
     modal: { groups: state.dataset.variableGroups[id].groups, id, open: true, mode: 'Edit', variable: state.dataset.variables[id], state: 'saved' as const },
   })),
+  on(Actions.startVariableBulkEdit, (state, { variableIDs }) => ({
+    ...state,
+    modal: {
+      open: true,
+      id: variableIDs,
+      mode: 'Bulk Edit',
+      variable: undefined,
+      groups: undefined,
+      state: 'saved' as const
+    }
+  })),
+  on(Actions.saveVariableBulkEdit, (state, { variableIDs, template }) => {
+    console.log(variableIDs)
+    console.log(template)
+
+    return {
+      ...state
+    }
+  }),
+  on(Actions.variableBulkAssignWeight, (state, { variableIDs, weight }) => {
+    const updatedVariables = { ...state.dataset.variables }
+
+    variableIDs.forEach((id: string) => {
+      if(updatedVariables[id] && ( updatedVariables[id]['@_wgt'] !== 'wgt' )) {
+        updatedVariables[id] = {
+          ...updatedVariables[id],
+          '@_wgt-var': weight['@_ID'],
+        };
+      }
+    })
+
+    return {
+      ...state,
+      dataset: {
+        ...state.dataset,
+        variables: updatedVariables
+      }
+    }
+  }),
   on(ModalActions.variableSave, (state, {id, variable, groups }) => {
-    //TODO: Remove reference from dataset.groups
+    // TODO: Change weighted variables
     // Loop through each group
     Object.keys(state.dataset.groups).forEach((item: any) => {
-      // For each group id, check if the id is in our new group list
-      // If they are, we update the variable list to include group
-      // Otherwise, we remove the reference to the variable from the
-      // groups
-      // Object.keys(groups).forEach((id: any) => {
-      //   if(Object.keys(groups).includes(item)){
-      //     console.log(item, 'FOUINFJK')
-      //     // Update this groups variable list
-      //   }
-      // });
-        // Remove variable from group's list
-        // console.log(state.dataset.groups[item]['@_var'])
       if(Object.keys( groups ).includes( state.dataset.groups[item]['@_ID'] )) {
-        console.log(state.dataset.groups[item])
         state.dataset.groups[item]['@_var'].add(id)
       } else {
         state.dataset.groups[item]['@_var'].delete(id)
       }
     });
 
-    console.log(state.dataset.groups)
-    console.log(state.dataset.variableGroups[id])
-
     return {
-
     ...state,
     modal: {
     ...state.modal,

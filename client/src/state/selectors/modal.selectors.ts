@@ -1,13 +1,13 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { State } from "../interface";
-import { selectGroups, selectVariableWeights, selectVariables, selectVariableGroups } from "../selectors";
+import { selectVariableWeights, selectVariables } from "../selectors";
 
 const selectFeature = createFeatureSelector<State>('globalState');
 
 export const selectOpenModal = createSelector(selectFeature, (state) => state.modal)
 
 export const selectOpenVariable = createSelector(selectFeature, (state) => {
-    return state.modal?.variable;
+    return state.modal?.variable ? state.modal?.variable : 'bulk';
 });
 
 export const selectOpenVariableGroups = createSelector(selectOpenModal, (modal) => {
@@ -82,6 +82,23 @@ export const selectOpenModalDetail = createSelector(
                 isWeight: openVariable['@_wgt'] ? true : false,
             }
             return { variable, groups, allVariableWeights: varWeights, weightedVariable, data, total, sumStats }
+        }
+        if(( openVariable === 'bulk' ) && varWeights){
+            return {
+                variable: {
+                    id: '',
+                    name: '',
+                    label: '',
+                    literalQuestion: '',
+                    interviewerQuestion: '',
+                    postQuestion: '',
+                    universe: '',
+                    notes: '',
+                    group: '',
+                    isWeight: false,
+                },
+                groups: {},
+            }
         }
         return { variable: {}, groups: {}, data, sumStats };
     }
