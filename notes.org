@@ -5,7 +5,7 @@
 * Project Overview
 
 ** Project Name: Odesi - Data Curation Tool
-** Client: Angular v16
+** Client: Angular v17
 ** Server: BunJS
 
 * Table of Contents
@@ -26,7 +26,6 @@
     - sidebar
     - table
     - modal
-
 ** Key Dependencies
   - ngRx
   - d3
@@ -34,7 +33,6 @@
 * Server
 ** Components
   - BunJS.
-
 ** Key Dependencies
   - BunJS.
   - fast-xml-parser.
@@ -42,7 +40,7 @@
 * Development Environment
   - This is here from the template and isn't necessary to understand the project. That being said, this project was developed
     on ArchLinux, using only DoomEmacs, the UI was largely viewed on Firefox 118.0.2, but also Chromium.
-    Endpoints were tested initially using Postman.
+    Endpoints were tested initially using Postman, and then Hopscotch
 
 * Configuration
     - Both the client and the server need .env files.
@@ -50,34 +48,17 @@
       - server uses it for dataverse api
 
 * Code Blocks
-
-** Angular Code
-
-*** Component: [Component Name]
-    :PROPERTIES:
-    :ID: angular-component-code
-    :END:
-
-    #+BEGIN_SRC javascript
-    // Angular component code goes here
-    #+END_SRC
-
-** Node.js Code
-
-*** Module: [Module Name]
-    :PROPERTIES:
-    :ID: nodejs-module-code
-    :END:
-
-    #+BEGIN_SRC javascript
-    // Node.js module code goes here
-    #+END_SRC
+See repo
 
 * Issues and Challenges
-  - Document any issues or challenges faced during development.
+  - Main change in the system is the introduction of NgRx. This massively improved how data is handled accross the app, but came with the
+    challenge of easily becoming needlessly complicated. Currently there is a variable and variableGroups, I don't remember why I separated them like that but now it takes a lot of work investigating just to change.
+  - I did a bad job of lumping all the data into one file. The reducers file is very bloated, and with proper design, could have been separated sensibly.
+  - Importing XMLs properly will involve validating that the XML is in a format we can understand. This might be challenging.
 
 * Future Work
-  - Describe any planned enhancements or features for the project.
+  - Implementing different packages, R to DDI.
+  - [[https://borsna.github.io/nectar-publisher/][Implementing Nectar Publisher]].
 
 * References
   - List any external resources or documentation referenced during the project.
@@ -86,134 +67,36 @@
   - Summarize the current state of the project.
 
 * TODO List
-  - [ ] Ability to add variable to groups
-  - [ ] Ability to create groups
-  - [ ] Import XML
+  - [-] View file variables
+    - [x] Show which variables are not assigned to groups
+    - [x] View variable chart
+    - [x] Edit variable data
+    - [-] Move forward and backward between viewed variable (NOTE: does not work within selected group)
+  - [-] View file groups
+    - [ ] Change group positions
+    - [x] Change group name
+    - [x] Remove group
+  - [-] Select multiple variables
+    - [x] Add to group
+    - [ ] Change multiple metadata fields (questions, notes, isWeight)
+    - [x] Assign weight
+  - [ ] Download
+    - [ ] Codebook (Partial DDI)
+    - [ ] XML (Full DDI)
+    - [ ] HTML
+  - [ ] Upload saved changes to Dataverse
+  - [ ] Track user changes with Matomo
+  - [ ] Change display language
+  - [ ] Import XML and do all of the above
 
 * Notes
   - Any additional notes or remarks can be added here.
 
+* Run Sequence
+See System Architecture
+
+* Potential Problems
+- Importing XMLs properly will involve validating that the XML is in a format we can understand. This might be challenging.
+- Converting the XML to JSON on the client could be time consuming, depending on how big the file size is.
+
 * End of Document
-
-
-* Run Sequence
-Entry Point: ```interface.component.ts```
-- The interface component uses the ```getBaseUrl()``` to get the baseURL
-- The interface component uses the ```getParameterByName(name)``` to get the siteURL, _id, metaId, and dvLocale
-- The dvLocale is used to set the language
-- If there is not siteURL or _id, the uri created uses a file in the assets folder
-- if there is a siteURL, there are more checks to create the uri
-- The Uri created is passed on ```getDDI()```
-
-* Potential Problems
-- Converting the XML to JSON on the client
-
-* State management
-The app is an entire state management for a dataset.
-** TODO Users should be able to change variable information. (excluding variable ID and name)
-** TODO Users should be able to create groups
-
-** ACTIONS
-*API CALLS*
-*** Fetch Dataset
-Fetch the dataset for the page using the given fileId and siteUrl
-*** Dataset Load Pending
-API has been called and request is in progress.
-*** Dataset Load Success
-API has responded with data
-*** Dataset Load Error
-API could not complete request
-*** Dataset Upload Request
-Call Dataverse API to upload local changes.
-*** Dataset Upload Pending
-API to upload changed dataset called and in progress.
-*** Dataset Upload Success
-API to upload changed dataset completed successfully.
-*** Dataset Upload Error
-API to upload changed dataset could not complete.
-*LOCAL CHANGES*
-*** Dataset Download
-Download XML to local machine.
-*** Dataset Local Save
-Save dataset changes into local storage
-*** Variable Change Detail
-Change Variable metadata
-*** Variable Add to SelectedGroup
-Add new variable to list of currently selected variables for bulk edit.
-*** Group Create New
-Create new empty variable group.
-*** Group Remove
-Remove a specified variable group.
-*** Group Change Name
-Change a specified variable group name.
-*** Group Add SelectedGroup
-Add the list of currently selected variables to a specified variable group.
-
-** REDUCERS
-*** Fetch Dataset
-Change dataset status to pending.
-*** Dataset Success
-Change dataset status to success and load dataset into state.
-*** Dataset Load Error
-Change dataset status to error.
-*** Dataset Upload Request
-Change upload status to pending.
-*** Dataset Success
-Change uploaded status to success.
-*** Dataset Load Error
-Change uploaded status to error.
-*** Variable Change Detail
-Return new object for specified variable, and change uploaded status to null.
-*** Variable Add to SelectedGroup
-Add variable to list of selected variables.
-*** Group Create New
-Add new empty variable group to state, and change uploaded status to null.
-*** Group Remove
-Remove a specified variable group from state, and change uploaded status to null.
-*** Group Change Name
-Change a specified variable's 'name' property, and change uploaded status to null.
-*** Group Add SelectedGroup
-Add the list of currently selected variables to a specified variable group.
-
-#+title: Data Curation Tool
-
-* Run Sequence
-Entry Point: ```interface.component.ts```
-- The interface component uses the ```getBaseUrl()``` to get the baseURL
-- The interface component uses the ```getParameterByName(name)``` to get the siteURL, _id, metaId, and dvLocale
-- The dvLocale is used to set the language
-- If there is not siteURL or _id, the uri created uses a file in the assets folder
-- if there is a siteURL, there are more checks to create the uri
-- The Uri created is passed on ```getDDI()```
-
-* Potential Problems
-- Converting the XML to JSON on the client
-* State management
-The app is an entire state management for a dataset.
-** TODO Users should be able to change variable information. (excluding variable ID and name)
-** TODO Users should be able to create groups
-
-** ACTIONS
-*** Dataset Load Pending
-API has been called and request is in progress.
-*** Dataset Load Success
-API has responded with data
-*** Dataset Load Error
-API could not complete request
-*** Dataset Download
-Download XML to local machine.
-*** Dataset Local Save
-Save dataset changes into local storage
-*** Dataset Upload Pending
-API to upload changed dataset called and in progress.
-*** Dataset Upload Success
-API to upload changed dataset completed successfully.
-*** Dataset Upload Error
-API to upload changed dataset could not complete.
-*** Variable Change Detail
-Change Variable metadata
-*** Variable Add to SelectedGroup
-*** Group Create New
-*** Group Remove
-*** Group Change Name
-*** Group Add SelectedGroup
