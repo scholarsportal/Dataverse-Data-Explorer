@@ -10,8 +10,8 @@ interface Catgry {
   labl: {
     '#text': string;
     '@_level': string;
-  }
-};
+  };
+}
 
 export interface Citation {
   titlStmt: {
@@ -27,9 +27,9 @@ export interface Citation {
 export interface Groups {
   [id: string]: {
     '@_ID': string;
-    'labl': string;
+    labl: string;
     '@_var': Set<string>;
-  }
+  };
 }
 
 export interface Variables {
@@ -49,7 +49,7 @@ export interface Variables {
       qstnLit: string;
       ivuInstr: string;
       postQTxt: string;
-    },
+    };
     sumStat: {
       '#text': number | string;
       '@_type': string;
@@ -60,9 +60,9 @@ export interface Variables {
     universe: string;
     groups: {
       [id: string]: {
-        label: string
-      }
-    },
+        label: string;
+      };
+    };
     catgry?: Catgry;
     '@_wgt-var'?: string;
     '@_wgt'?: 'wgt';
@@ -72,10 +72,10 @@ export interface Variables {
 export type VariableGroups = {
   [key: string]: {
     groups: {
-      [id: string]: string
-    }
-  }
-}
+      [id: string]: string;
+    };
+  };
+};
 
 export interface GraphObject {
   [id: string]: {
@@ -101,10 +101,10 @@ export interface State {
     mode: string;
     id: string | string[] | null;
     variable: any | null;
-    groups: any | null;
+    groups: { [id: string]: string } | null;
     state: 'saved' | 'changes' | '';
   };
-  notificationStack: { notificationType: string; message: string } | {}
+  notificationStack: { notificationType: string; message: string } | {};
   upload: {
     status: string;
     error: any;
@@ -112,45 +112,45 @@ export interface State {
 }
 
 export interface VariableForm {
-    id: string;
-    name: string;
-    label: string;
-    literalQuestion: string;
-    interviewerQuestion: string;
-    postQuestion: string;
-    universe: string;
-    notes: string;
-    group: string;
-    isWeight: boolean;
-    weightVar: string;
+  id: string;
+  name: string;
+  label: string;
+  literalQuestion: string;
+  interviewerQuestion: string;
+  postQuestion: string;
+  universe: string;
+  notes: string;
+  group: string;
+  isWeight: boolean;
+  weightVar: string;
 }
 
 export interface SingleVariable {
-    '@_ID': string;
-    '@_name': string;
-    '@_intrvl': string;
-    labl: {
-      '#text': string;
-      '@_level': string;
-    };
-    location: {
-      '@_fileid': string;
-    };
-    notes: string;
-    qstn: {
-      qstnLit: string;
-      ivuInstr: string;
-      postQTxt: string;
-    },
-    sumStat: {
-      '#text': number | string;
-      '@_type': string;
-    }[];
-    varFormat: {
-      '@_type': string;
-    };
-    universe: string;
-    catgry?: Catgry;
-    '@_wgt-var'?: string;
-    '@_wgt'?: 'wgt';
+  '@_ID': string;
+  '@_name': string;
+  '@_intrvl': string;
+  labl: {
+    '#text': string;
+    '@_level': string;
+  };
+  location: {
+    '@_fileid': string;
+  };
+  notes: string;
+  qstn: {
+    qstnLit: string;
+    ivuInstr: string;
+    postQTxt: string;
+  };
+  sumStat: {
+    '#text': number | string;
+    '@_type': string;
+  }[];
+  varFormat: {
+    '@_type': string;
+  };
+  universe: string;
+  catgry?: Catgry;
+  '@_wgt-var'?: string;
+  '@_wgt'?: 'wgt';
 }

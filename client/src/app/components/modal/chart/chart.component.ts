@@ -11,8 +11,11 @@ import { getSumStatData, getSumStatHeader, getVariableData } from './chart.util'
 })
 export class ChartComponent implements OnInit {
   data: any = {};
+  data$: any = {};
   total: any = 0;
+  total$: any = 0;
   sumStats: any = [];
+  sumStats$: any = [];
   variable: any = {}
   private svg: any;
 
@@ -27,7 +30,6 @@ export class ChartComponent implements OnInit {
         this.total = total
         this.sumStats = sumStats
         this.variable = variable
-        console.log(this.variable)
         this.createSVG(Object.values(data));
         this.drawBars(Object.values(data));
       }
@@ -38,7 +40,8 @@ export class ChartComponent implements OnInit {
 
   getSumStatHeader = (index: number) => getSumStatHeader(index)
 
-  getVariableData = (index: number) => getVariableData(index, this.variable)
+  // Not used
+  // getVariableData = (index: number) => getVariableData(index, this.variable)
 
   getCategories(value: any) {
     return value.category

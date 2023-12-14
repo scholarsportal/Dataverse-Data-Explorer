@@ -57,7 +57,7 @@ See repo
   - Importing XMLs properly will involve validating that the XML is in a format we can understand. This might be challenging.
 
 * Future Work
-  - Implementing different packages, R to DDI.
+  - Implementing R Any file to DDI.
   - [[https://borsna.github.io/nectar-publisher/][Implementing Nectar Publisher]].
 
 * References

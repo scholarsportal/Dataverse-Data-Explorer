@@ -1,7 +1,25 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { openVariableChangeMode, openVariableSwitchToNext, openVariableSwitchToPrev } from 'src/state/actions/modal.actions';
-import { selectCheckModalOpen, selectCheckModalID, selectCheckModalLabel, selectCheckModalMode, selectCheckModalName, selectCheckModalState, selectCheckModalVariable } from 'src/state/selectors/modal.selectors';
+import {
+  openVariableChangeMode,
+  openVariableSwitchToNext,
+  openVariableSwitchToPrev,
+} from 'src/state/actions/modal.actions';
+import {
+  selectVariableGroups,
+  selectVariableWeights,
+} from 'src/state/selectors';
+import {
+  selectCheckModalOpen,
+  selectCheckModalID,
+  selectCheckModalLabel,
+  selectCheckModalMode,
+  selectCheckModalName,
+  selectCheckModalState,
+  selectOpenModalVariable,
+  selectOpenVariableGroups,
+  selectOpenModalVariableWeight,
+} from 'src/state/selectors/modal.selectors';
 
 @Component({
   selector: 'app-modal',
@@ -10,15 +28,19 @@ import { selectCheckModalOpen, selectCheckModalID, selectCheckModalLabel, select
 })
 export class ModalComponent {
   @ViewChild('modal') modalElementRef?: ElementRef;
-  @Input() modalID: string | null = null;
 
-  open$ = this.store.select(selectCheckModalOpen)
-  mode$ = this.store.select(selectCheckModalMode)
-  state$ = this.store.select(selectCheckModalState)
-  label$ = this.store.select(selectCheckModalLabel)
-  name$ = this.store.select(selectCheckModalName)
-  id$ = this.store.select(selectCheckModalID)
-  variable$ = this.store.select(selectCheckModalVariable)
+  open$ = this.store.select(selectCheckModalOpen);
+  mode$ = this.store.select(selectCheckModalMode);
+  state$ = this.store.select(selectCheckModalState);
+  label$ = this.store.select(selectCheckModalLabel);
+  name$ = this.store.select(selectCheckModalName);
+  id$ = this.store.select(selectCheckModalID);
+
+  variable$ = this.store.select(selectOpenModalVariable);
+  variableGroups$ = this.store.select(selectOpenVariableGroups);
+  variableWeight$ = this.store.select(selectOpenModalVariableWeight);
+  // allGroups$ = this.store.select(selectVariableGroups)
+  allWeights$ = this.store.select(selectVariableWeights);
 
   mode: any;
   changes: boolean = false;
@@ -26,46 +48,46 @@ export class ModalComponent {
   constructor(private store: Store) {
     store.select(selectCheckModalMode).subscribe((data: any) => {
       this.mode = data;
-    })
+    });
   }
 
   getID(variable: any) {
     if (variable && variable['@_ID']) {
-      return variable['@_ID']
+      return variable['@_ID'];
     }
-    return ''
+    return '';
   }
 
   getLabel(variable: any) {
     if (variable?.labl['#text']) {
-      return variable.labl['#text']
+      return variable.labl['#text'];
     }
-    return ''
+    return '';
   }
 
   getName(variable: any) {
     if (variable && variable['@_name']) {
-      return variable['@_name']
+      return variable['@_name'];
     }
-    return ''
+    return '';
   }
 
   changeMode() {
-    if(this.mode && this.mode === 'View') {
-        return this.store.dispatch(openVariableChangeMode({ mode: 'Edit' }))
+    if (this.mode && this.mode === 'View') {
+      return this.store.dispatch(openVariableChangeMode({ mode: 'Edit' }));
     }
-    if(this.mode && this.mode === 'Edit') {
+    if (this.mode && this.mode === 'Edit') {
       // TODO: Check for changes in form
-      return this.store.dispatch(openVariableChangeMode({ mode: 'View' }))
+      return this.store.dispatch(openVariableChangeMode({ mode: 'View' }));
     }
   }
 
   previousVar() {
-    return this.store.dispatch(openVariableSwitchToPrev())
+    return this.store.dispatch(openVariableSwitchToPrev());
   }
 
   nextVar() {
-    return this.store.dispatch(openVariableSwitchToNext())
+    return this.store.dispatch(openVariableSwitchToNext());
   }
 
   openModal(): void {
