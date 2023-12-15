@@ -16,6 +16,39 @@ export const selectOpenModalVariable = createSelector(
   }
 );
 
+export const selectOpenModalVariableAsForm = createSelector(
+  selectOpenModalVariable,
+  (variable) => {
+    if(variable){
+      return {
+        id: variable['@_ID'],
+        name: variable['@_name'],
+        label: variable.labl['#text'],
+        literalQuestion: variable.qstn?.qstnLit,
+        interviewerQuestion: variable.qstn?.ivuInstr,
+        postQuestion: variable.qstn?.postQTxt,
+        universe: variable.universe,
+        notes: variable.notes,
+        group: variable.groups,
+        isWeight: variable['@_wgt'] ? true : false,
+      };
+    } else {
+      return {
+          id: '',
+          name: '',
+          label: '',
+          literalQuestion: '',
+          interviewerQuestion: '',
+          postQuestion: '',
+          universe: '',
+          notes: '',
+          group: '',
+          isWeight: false,
+      };
+    }
+  }
+);
+
 export const selectCheckModalLabel = createSelector(
   selectOpenModalVariable,
   (variable) => {

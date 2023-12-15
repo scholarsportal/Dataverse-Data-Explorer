@@ -18,7 +18,7 @@ import { selectVariableWeights } from 'src/state/selectors';
 })
 export class FormComponent implements OnChanges {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
-  @Input() variable$: SingleVariable | null = null ;
+  @Input() variable$: any | null = null ;
   @Input() modalState$: Observable<string> | null = null;
   @Input() variableWeight$: any | null = null;
 
@@ -40,11 +40,36 @@ export class FormComponent implements OnChanges {
   });
 
   constructor(private store: Store) {
-    console.log(this.variable$)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes)
+    if(changes['variable$'].currentValue !== changes['variable$'].previousValue) {
+      if(changes['variable$'].currentValue) {
+        this.patchForm(changes['variable$'].currentValue)
+      } else {
+        this.resetForm()
+      }
+    }
+    console.log(this.variable$)
+  }
+
+  private patchForm(variable: any) {
+    this.variableForm.patchValue(variable)
+  }
+
+  private resetForm(){
+    this.variableForm = new FormGroup({
+      id: new FormControl(''),
+      name: new FormControl(''),
+      label: new FormControl(''),
+      literalQuestion: new FormControl(''),
+      interviewerQuestion: new FormControl(''),
+      postQuestion: new FormControl(''),
+      universe: new FormControl(''),
+      notes: new FormControl(''),
+      group: new FormControl([]),
+      isWeight: new FormControl(false),
+    });
   }
 
   // Change the variableGroup$ param

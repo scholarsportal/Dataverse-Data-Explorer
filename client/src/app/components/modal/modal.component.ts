@@ -19,6 +19,7 @@ import {
   selectOpenModalVariable,
   selectOpenVariableGroups,
   selectOpenModalVariableWeight,
+  selectOpenModalVariableAsForm,
 } from 'src/state/selectors/modal.selectors';
 
 @Component({
@@ -36,7 +37,7 @@ export class ModalComponent {
   name$ = this.store.select(selectCheckModalName);
   id$ = this.store.select(selectCheckModalID);
 
-  variable$ = this.store.select(selectOpenModalVariable);
+  variable$ = this.store.select(selectOpenModalVariableAsForm);
   variableGroups$ = this.store.select(selectOpenVariableGroups);
   variableWeight$ = this.store.select(selectOpenModalVariableWeight);
 
