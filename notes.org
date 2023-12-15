@@ -57,6 +57,7 @@ See repo
   - Importing XMLs properly will involve validating that the XML is in a format we can understand. This might be challenging.
 
 * Future Work
+  - Merging the Data Curation and the Data Explorer Tool.
   - Implementing R Any file to DDI.
   - [[https://borsna.github.io/nectar-publisher/][Implementing Nectar Publisher]].
 
@@ -75,7 +76,7 @@ See repo
   - [-] View file groups
     - [ ] Change group positions
     - [x] Change group name
-    - [x] Remove group
+    - [x] Remove group (NOTE: Does not confirm with user first)
   - [-] Select multiple variables
     - [x] Add to group
     - [ ] Change multiple metadata fields (questions, notes, isWeight)

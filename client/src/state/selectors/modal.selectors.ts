@@ -41,7 +41,7 @@ export const selectOpenModalVariableWeight = createSelector(
   selectOpenModal,
   selectVariables,
   (modal, variables) => {
-    return modal.variable['@_wgt-var']
+    return ( modal.variable && modal.variable['@_wgt-var'] )
       ? variables[modal.variable['@_wgt-var']]
       : '';
   }

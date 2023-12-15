@@ -6,20 +6,21 @@ import {
   ViewChild,
   OnInit,
   EventEmitter,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
 import { selectGroups } from 'src/state/selectors';
-import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
 
 @Component({
   selector: 'app-multiselect-dropdown',
   templateUrl: './multiselect-dropdown.component.html',
   styleUrls: ['./multiselect-dropdown.component.css'],
 })
-export class MultiselectDropdownComponent implements OnInit {
+export class MultiselectDropdownComponent implements OnInit, OnChanges {
   @ViewChild('groups') groupsElementRef?: ElementRef;
   @Output() groupChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() variableGroups$: any = null;
 
   hidden = true;
   allGroups$ = this.store.select(selectGroups);
@@ -29,16 +30,18 @@ export class MultiselectDropdownComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store
-      .select(selectOpenVariableGroups)
-      .pipe(take(1))
-      .subscribe((groups) => {
-        if (groups) {
-          // Not cloning the objects, makes the modal non-configurable
-          this.variableGroups = { ...groups };
-          this.empty = this.variableGroups.length === 0 ? true : false;
-        }
-      });
+    if (this.variableGroups$) {
+      // Not cloning the objects, makes the modal non-configurable
+      this.variableGroups = { ...this.variableGroups$ };
+    }
+    this.empty = Object.keys( this.variableGroups ).length === 0 ? true : false;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['variableGroups$'].currentValue !== changes['variableGroups$'].previousValue) {
+      this.variableGroups = { ...changes['variableGroups$'].currentValue }
+    }
+    this.empty = Object.keys( this.variableGroups ).length === 0 ? true : false;
   }
 
   onClick() {
@@ -71,6 +74,7 @@ export class MultiselectDropdownComponent implements OnInit {
       };
     }
 
+    this.empty = (!Object.keys( this.variableGroups ).length) ? false : true
     this.groupChange.emit(this.variableGroups);
   }
 }

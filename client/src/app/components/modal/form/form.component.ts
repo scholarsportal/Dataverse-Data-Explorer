@@ -1,15 +1,9 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnChanges, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from '../modal.component';
 import { SingleVariable } from 'src/state/interface';
-import {
-  selectCheckModalMode,
-  selectOpenModalDetail,
-  selectOpenModalVariable,
-  selectOpenModalVariableWeight,
-  selectOpenVariableGroups,
-} from 'src/state/selectors/modal.selectors';
+import { selectOpenVariableGroups } from 'src/state/selectors/modal.selectors';
 import {
   openModalChangesMade,
   variableSave,
@@ -22,30 +16,16 @@ import { selectVariableWeights } from 'src/state/selectors';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnChanges {
   @ViewChild(ModalComponent) modalComponent?: ModalComponent;
-  @Input() variable: Observable<SingleVariable> = this.store.select(
-    selectOpenModalVariable
-  );
-  @Input() variableGroups$: Observable<any> = this.store.select(
-    selectOpenVariableGroups
-  );
-  @Input() variableWeight$: Observable<any> | any = '';
-  @Input() modalState: Observable<string> =
-    this.store.select(selectCheckModalMode);
-  @Input() allGroups$: Observable<string> =
-    this.store.select(selectCheckModalMode);
-  @Input() allWeights$: Observable<any> = this.store.select(
-    selectVariableWeights
-  );
+  @Input() variable$: SingleVariable | null = null ;
+  @Input() modalState$: Observable<string> | null = null;
+  @Input() variableWeight$: any | null = null;
 
-  variable$: Observable<SingleVariable> = this.store.select(
-    selectOpenModalVariable
-  );
-  groups$: Observable<{ [id: string]: string } | null> = this.store.select(
-    selectOpenVariableGroups
-  );
-  modalState$: Observable<string> = this.store.select(selectCheckModalMode);
+  @Input() variableGroups$: any = {};
+  formGroup: any = {};
+  allWeights$: Observable<any> = this.store.select(selectVariableWeights);
+
   variableForm = new FormGroup({
     id: new FormControl(''),
     name: new FormControl(''),
@@ -58,48 +38,34 @@ export class FormComponent implements OnInit {
     group: new FormControl([]),
     isWeight: new FormControl(false),
   });
-  groups: { [id: string]: string } | null = {};
-  weight: any = '';
-  weightName: any = '';
-  group = '';
 
   constructor(private store: Store) {
-    this.allWeights$.pipe(take(1)).subscribe((data: any) => {
-      console.log(data);
-    });
+    console.log(this.variable$)
   }
 
-  ngOnInit(): void {
-    this.store
-      .select(selectOpenModalDetail)
-      .subscribe(
-        ({ variable, groups, weightedVariable, allVariableWeights }) => {
-          if (variable && groups && allVariableWeights) {
-            console.log(variable);
-            this.groups = groups;
-            this.weight = weightedVariable;
-            this.variableForm.patchValue(variable);
-          }
-        }
-      );
+  ngOnChanges(changes: SimpleChanges): void {
+    // console.log(changes)
   }
 
-  close() {
-    this.modalComponent?.closeModal();
-  }
-
+  // Change the variableGroup$ param
   onGroupChange(groups: any) {
-    this.groups = groups;
+    // TODO
+    console.log(this.variableGroups$)
+    this.variableGroups$ = groups
   }
 
-  getWeightsLabels(value: any) {
-    return value['@_name'];
-  }
-
+  // Change the variableWeight$ param
   changeWeight(variable: any) {
-    console.log(variable);
-    // return variable === this.weight
-    this.variableWeight$ = variable === '' ? null : variable;
+    // TODO
+    if(variable){
+      this.variableWeight$ = variable
+    } else {
+      this.variableWeight$ = null;
+    }
+  }
+
+  handleSave() {
+    console.log(this.variableWeight$)
   }
 
   // TODO: Check if current variable has changes (using ngRx selector), if changes, show "Are you Sure", else,
@@ -108,50 +74,7 @@ export class FormComponent implements OnInit {
     console.log('');
   }
 
-  handleSave() {
-    this.variable$.pipe(take(1)).subscribe((variable: SingleVariable) => {
-      if (variable) {
-        // console.log(variable);
-
-        const updatedVariable: SingleVariable = {
-          ...variable, // Spread the properties of the original variable object
-          labl: {
-            ...variable.labl, // Spread the properties of labl
-            '#text':
-              this.variableForm.controls.label.value || variable.labl['#text'],
-          },
-          qstn: {
-            ...variable.qstn, // Spread the properties of qstn
-            qstnLit:
-              this.variableForm.controls.literalQuestion.value ||
-              variable.qstn.qstnLit,
-            ivuInstr:
-              this.variableForm.controls.interviewerQuestion.value ||
-              variable.qstn.ivuInstr,
-            postQTxt:
-              this.variableForm.controls.postQuestion.value ||
-              variable.qstn.postQTxt,
-          },
-          universe:
-            this.variableForm.controls.universe.value || variable.universe,
-          notes: this.variableForm.controls.notes.value || variable.notes,
-          '@_wgt': this.variableForm.controls.isWeight.value
-            ? 'wgt'
-            : undefined,
-          '@_wgt-var':
-            !this.variableForm.controls.isWeight.value && this.weight
-              ? this.weight['@_ID']
-              : undefined,
-        };
-
-        this.store.dispatch(
-          variableSave({
-            id: variable['@_ID'],
-            variable: updatedVariable,
-            groups: this.groups,
-          })
-        );
-      }
-    });
+  close() {
+    this.modalComponent?.closeModal();
   }
 }

@@ -100,8 +100,10 @@
     <app-chart></app-chart>
     } @else {
     <app-form
-      [allWeights$]="allWeights$"
-      [variableWeight$]="variableWeight$"
+      [variable$]="( variable$ | async )"
+      [variableGroups$]="variableGroups$ | ngrxPush"
+      [variableWeight$]="( variableWeight$ | async)"
+      [modalState$]="state$"
     ></app-form>
     }
   </div>

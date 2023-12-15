@@ -66,6 +66,7 @@
   <label class="form-label">
     Group(s)
     <app-multiselect-dropdown
+      [variableGroups$] = "variableGroups$ | ngrxPush"
       (groupChange)="onGroupChange($event)"
       class="p-2 w-full"
     >
@@ -77,7 +78,7 @@
     <label class="form-label sr-only" for="weightVar"> Weight Variable </label>
     <select
       class="h-12 p-2 rounded"
-      [ngModel]="variableWeight$ | async"
+      [ngModel]="variableWeight$"
       [ngModelOptions]="{ standalone: true }"
     >
       <option value="" (click)="changeWeight('')">No Weight Assigned</option>
@@ -86,7 +87,7 @@
         [value]="variable"
         (click)="changeWeight(variable)"
       >
-        {{ getWeightsLabels(variable) }}
+        {{ variable['@_name'] }}
       </option>
     </select>
     }

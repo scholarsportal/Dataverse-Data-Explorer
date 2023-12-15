@@ -39,8 +39,6 @@ export class ModalComponent {
   variable$ = this.store.select(selectOpenModalVariable);
   variableGroups$ = this.store.select(selectOpenVariableGroups);
   variableWeight$ = this.store.select(selectOpenModalVariableWeight);
-  // allGroups$ = this.store.select(selectVariableGroups)
-  allWeights$ = this.store.select(selectVariableWeights);
 
   mode: any;
   changes: boolean = false;
