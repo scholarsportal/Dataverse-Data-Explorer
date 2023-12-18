@@ -120,20 +120,16 @@ export interface VariableForm {
   postQuestion: string;
   universe: string;
   notes: string;
-  group: string;
   isWeight: boolean;
   weightVar: string;
 }
 
 export interface SingleVariable {
-  '@_ID': string;
-  '@_name': string;
-  '@_intrvl': string;
   labl: {
     '#text': string;
-    '@_level': string;
+    '@_level'?: string;
   };
-  location: {
+  location?: {
     '@_fileid': string;
   };
   notes: string;
@@ -142,15 +138,15 @@ export interface SingleVariable {
     ivuInstr: string;
     postQTxt: string;
   };
-  sumStat: {
+  sumStat?: {
     '#text': number | string;
     '@_type': string;
   }[];
-  varFormat: {
+  varFormat?: {
     '@_type': string;
   };
   universe: string;
   catgry?: Catgry;
   '@_wgt-var'?: string;
-  '@_wgt'?: 'wgt';
+  '@_wgt'?: 'wgt' | '';
 }

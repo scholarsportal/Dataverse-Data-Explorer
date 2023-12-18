@@ -29,8 +29,8 @@ export const selectOpenModalVariableAsForm = createSelector(
         postQuestion: variable.qstn?.postQTxt,
         universe: variable.universe,
         notes: variable.notes,
-        group: variable.groups,
         isWeight: variable['@_wgt'] ? true : false,
+        weightVar: variable['@_wgt-var'] ? variable['@_wgt-var'] : '',
       };
     } else {
       return {
@@ -42,8 +42,8 @@ export const selectOpenModalVariableAsForm = createSelector(
           postQuestion: '',
           universe: '',
           notes: '',
-          group: '',
           isWeight: false,
+          weightVar: ''
       };
     }
   }
@@ -152,23 +152,6 @@ export const selectOpenModalDetail = createSelector(
         data,
         total,
         sumStats,
-      };
-    }
-    if (openVariable === 'bulk' && varWeights) {
-      return {
-        variable: {
-          id: '',
-          name: '',
-          label: '',
-          literalQuestion: '',
-          interviewerQuestion: '',
-          postQuestion: '',
-          universe: '',
-          notes: '',
-          group: '',
-          isWeight: false,
-        },
-        groups: {},
       };
     }
     return { variable: {}, groups: {}, data, sumStats };

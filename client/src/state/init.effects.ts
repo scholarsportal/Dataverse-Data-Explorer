@@ -5,7 +5,7 @@ import { DdiService } from 'src/app/services/ddi.service';
 import * as fromActions from './actions';
 import * as ModalActions from './actions/modal.actions';
 import * as DatasetActions from './actions/dataset.actions';
-import { SingleVariable, VariableGroups } from './interface';
+import { VariableGroups } from './interface';
 
 @Injectable()
 export class DataFetchEffect {

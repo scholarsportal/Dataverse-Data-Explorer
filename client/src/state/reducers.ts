@@ -53,8 +53,7 @@ export const reducer = createReducer(
     ...state,
     dataset: { ...state.dataset, status: 'pending' },
   })),
-  on(
-    Actions.datasetLoadSuccess,
+  on(Actions.datasetLoadSuccess,
     (state, { variables, groups, citation, weightedVariables }) => ({
       ...state,
       dataset: {
@@ -73,8 +72,7 @@ export const reducer = createReducer(
     dataset: { ...state.dataset, status: 'error', data: null, error },
   })),
   // When the variable groups are calculated
-  on(
-    DatasetActions.datasetVariableGroupsLoaded,
+  on(DatasetActions.datasetVariableGroupsLoaded,
     (state, { variableGroups }) => ({
       ...state,
       dataset: {
@@ -121,11 +119,35 @@ export const reducer = createReducer(
     },
   })),
   on(Actions.saveVariableBulkEdit, (state, { variableIDs, template }) => {
-    console.log(variableIDs);
-    console.log(template);
+    const updatedVariables = { ...state.dataset.variables }
 
+    variableIDs.forEach((id: string) => {
+      if(updatedVariables[id]) {
+        updatedVariables[id] = {
+          ...updatedVariables[id],
+          labl: {
+            ...updatedVariables[id].labl,
+            '#text': template.labl['#text'] || updatedVariables[id].labl['#text']
+          },
+          qstn: {
+            ...updatedVariables[id].qstn,
+            qstnLit: template.qstn.qstnLit || updatedVariables[id].qstn.qstnLit,
+            ivuInstr: template.qstn.ivuInstr || updatedVariables[id].qstn.ivuInstr,
+            postQTxt: template.qstn.postQTxt || updatedVariables[id].qstn.postQTxt
+          },
+          universe: template.universe || updatedVariables[id].universe,
+          notes: template.notes || updatedVariables[id].notes,
+          '@_wgt-var': template['@_wgt-var'],
+          '@_wgt': template['@_wgt'],
+        }
+      }
+    })
     return {
       ...state,
+      dataset: {
+        ...state.dataset,
+        variables: updatedVariables
+      }
     };
   }),
   on(Actions.variableBulkAssignWeight, (state, { variableIDs, weight }) => {
@@ -267,8 +289,7 @@ export const reducer = createReducer(
     },
     recentlyChanged: groupID,
   })),
-  on(
-    GroupActions.variableAddToSelectGroup,
+  on(GroupActions.variableAddToSelectGroup,
     (state, { variableIDs, groupID }) => {
       const existingVarSet =
         state.dataset.groups[groupID]['@_var'] || new Set<string>();
@@ -296,8 +317,7 @@ export const reducer = createReducer(
       };
     }
   ),
-  on(
-    GroupActions.variableRemoveFromSelectGroup,
+  on(GroupActions.variableRemoveFromSelectGroup,
     (state, { variableIDs, groupID }) => {
       // select the corresponding group
       const groupToUpdate = state.dataset.groups[groupID];

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   openVariableChangeMode,
@@ -29,6 +29,7 @@ import {
 })
 export class ModalComponent {
   @ViewChild('modal') modalElementRef?: ElementRef;
+  @Input() selection: any = [];
 
   open$ = this.store.select(selectCheckModalOpen);
   mode$ = this.store.select(selectCheckModalMode);
