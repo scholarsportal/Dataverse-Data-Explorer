@@ -22,7 +22,7 @@ export const datasetLoadError = createAction(
   props<{ error: any }>()
 );
 // When the user is done and uploads their work, the API is called and uploads the current dataset.
-export const datasetUploadRequest = createAction('[Dataset] Upload Request');
+export const datasetUploadRequest = createAction('[Dataset] Upload Request', props<{ groups: any, variables: any, fileid: string }>());
 // While uploading components will listen for this to display the uploading symbol
 export const datasetUploadPending = createAction('[Dataset] Upload Pending');
 // If the API call is successful, the notification component displays with the success message.

@@ -28,7 +28,7 @@ export const selectOpenModalVariableAsForm = createSelector(
         interviewerQuestion: variable.qstn?.ivuInstr,
         postQuestion: variable.qstn?.postQTxt,
         universe: variable.universe,
-        notes: variable.notes,
+        notes: variable.notes[1],
         isWeight: variable['@_wgt'] ? true : false,
         weightVar: variable['@_wgt-var'] ? variable['@_wgt-var'] : '',
       };
@@ -131,21 +131,7 @@ export const selectOpenModalDetail = createSelector(
           };
         });
       }
-
-      const variable: any = {
-        id: openVariable['@_ID'],
-        name: openVariable['@_name'],
-        label: openVariable.labl['#text'],
-        literalQuestion: openVariable.qstn?.qstnLit,
-        interviewerQuestion: openVariable.qstn?.ivuInstr,
-        postQuestion: openVariable.qstn?.postQTxt,
-        universe: openVariable.universe,
-        notes: openVariable.notes,
-        group: openVariable.groups,
-        isWeight: openVariable['@_wgt'] ? true : false,
-      };
       return {
-        variable,
         groups,
         allVariableWeights: varWeights,
         weightedVariable,

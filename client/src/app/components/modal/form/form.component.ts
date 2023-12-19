@@ -47,6 +47,7 @@ export class FormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['variable$']?.currentValue !== changes['variable$']?.previousValue) {
       if(changes['variable$'].currentValue) {
+        console.log(changes['variable$'].currentValue)
         this.patchForm(changes['variable$'].currentValue)
       } else {
         this.resetForm()
@@ -104,6 +105,8 @@ export class FormComponent implements OnChanges {
         '@_wgt': this.variableForm.controls.isWeight.value ? 'wgt' : '',
         '@_wgt-var': ( !this.variableForm.controls.isWeight.value && this.variableWeight$) ? this.variableWeight$['@_ID'] : '',
       };
+      console.log(this.variableForm.controls.notes.value)
+      console.log(this.variable$.notes)
       this.selection.length ? this.handleBulkEditSave(updatedVariable) : this.handleSingleVariableSave(updatedVariable);
     }
   }

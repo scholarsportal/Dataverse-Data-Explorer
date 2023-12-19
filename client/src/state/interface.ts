@@ -44,7 +44,7 @@ export interface Variables {
     location: {
       '@_fileid': string;
     };
-    notes: string;
+    notes: [object, string];
     qstn: {
       qstnLit: string;
       ivuInstr: string;

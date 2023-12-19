@@ -4,6 +4,13 @@ import { State } from './interface';
 export const selectFeature =
   createFeatureSelector<State>('globalState'); // Replace with your feature name
 
+export const selectDataset = createSelector(
+  selectFeature,
+  (state) => {
+    const fileid = Object.values(state.dataset.variables)[0]['location']['@_fileid'] as string
+    return { ...state.dataset,  fileid: fileid.substring(1) } }
+);
+
 export const selectVariables = createSelector(
   selectFeature,
   (state) => state.dataset.variables

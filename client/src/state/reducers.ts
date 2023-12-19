@@ -123,6 +123,7 @@ export const reducer = createReducer(
 
     variableIDs.forEach((id: string) => {
       if(updatedVariables[id]) {
+        console.log()
         updatedVariables[id] = {
           ...updatedVariables[id],
           labl: {
@@ -136,7 +137,7 @@ export const reducer = createReducer(
             postQTxt: template.qstn.postQTxt || updatedVariables[id].qstn.postQTxt
           },
           universe: template.universe || updatedVariables[id].universe,
-          notes: template.notes || updatedVariables[id].notes,
+          notes: [ updatedVariables[id].notes[0], template.notes ],
           '@_wgt-var': template['@_wgt-var'],
           '@_wgt': template['@_wgt'],
         }
@@ -171,6 +172,7 @@ export const reducer = createReducer(
     };
   }),
   on(ModalActions.variableSave, (state, { id, variable, groups }) => {
+    console.log(state.modal.variable.labl)
     // TODO: Change weighted variables
     // Loop through each group
     Object.keys(state.dataset.groups).forEach((item: any) => {
@@ -186,8 +188,13 @@ export const reducer = createReducer(
       modal: {
         ...state.modal,
         variable: {
-          ...state.modal.variable,
+  ...state.modal.variable,
           ...variable,
+          labl: {
+            ...state.dataset.variables[id].labl,
+            ...variable.labl
+          },
+          notes: [state.dataset.variables[id].notes[0], variable.notes]
         },
         changes: 'saved' as const,
       },
@@ -198,6 +205,11 @@ export const reducer = createReducer(
           [id]: {
             ...state.dataset.variables[id],
             ...variable,
+            labl: {
+              ...state.dataset.variables[id].labl,
+              ...variable.labl
+            },
+            notes: [state.dataset.variables[id].notes[0], variable.notes]
           },
         },
         variableGroups: {

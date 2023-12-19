@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, take } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
 import * as fromActions from './actions';
 import * as ModalActions from './actions/modal.actions';
@@ -37,7 +37,7 @@ export class DataFetchEffect {
       })
     ))
 
-  createVariableGroups = createEffect(() =>
+  createVariableGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.datasetLoadSuccess),
       map((action) => {
@@ -56,6 +56,20 @@ export class DataFetchEffect {
       })
     ))
 
+  uploadDataset$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.datasetUploadRequest),
+      map(({ groups, variables, fileid }) => {
+        // console.log(variables)
+        // console.log(groups)
+        this.ddi.createXML(groups, variables, fileid).pipe(take(1)).subscribe((data: any) => {
+          console.log(data)
+        })
+
+        return fromActions.datasetUploadSuccess()
+      })
+    ))
+
   constructor(private actions$: Actions, private ddi: DdiService) {}
 
   private parseJSON(data: any): {variables: any, citation: any, groups: any, weightedVariables: any} {
@@ -67,14 +81,14 @@ export class DataFetchEffect {
 
 
     data.codeBook.dataDscr.var.forEach((item: any) => {
-      let notes: string;
+      let notes: any[];
       let qstn: any;
       let isWeight: any;
       let weightVar: any;
 
       // check if variable has notes (notes are second object in array)
       // if not we create the expected object anyway for consistency
-      Array.isArray(item.notes) ? (notes = item.notes.at(-1)) : (notes = '')
+      Array.isArray(item.notes) ? (notes = item.notes) : (notes = [ item.notes, '' ])
 
       item.qstn ? qstn = item.qstn : qstn = {}
       item['@_wgt-var'] ? weightVar = item['@_wgt-var'] : weightVar = undefined
