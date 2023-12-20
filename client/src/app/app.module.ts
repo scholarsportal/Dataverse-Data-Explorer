@@ -30,6 +30,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MultiselectDropdownComponent } from './components/modal/form/multiselect-dropdown/multiselect-dropdown.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { CdkColumnDef } from '@angular/cdk/table';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { CdkColumnDef } from '@angular/cdk/table';
     BrowserModule,
     // Add this line to activate http client
     HttpClientModule,
+    RouterModule.forRoot([]),
     StoreModule.forRoot({ globalState: appReducer }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
     // Add this to activate Forms

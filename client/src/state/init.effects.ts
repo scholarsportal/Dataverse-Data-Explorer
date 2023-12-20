@@ -62,6 +62,7 @@ export class DataFetchEffect {
       map(({ groups, variables, fileid }) => {
         // console.log(variables)
         // console.log(groups)
+          //
         this.ddi.createXML(groups, variables, fileid).pipe(take(1)).subscribe((data: any) => {
           console.log(data)
         })
@@ -104,7 +105,7 @@ export class DataFetchEffect {
     });
 
     // Create variable groups
-    data.codeBook.dataDscr.varGrp.forEach((item: any) => {
+    data.codeBook.dataDscr.varGrp?.forEach((item: any) => {
       groups[item['@_ID']] = { ...item, '@_var': new Set(item['@_var'].split(' ')), selected: new Set() }
     });
 

@@ -4,6 +4,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from 'src/state/reducers';
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(() =>

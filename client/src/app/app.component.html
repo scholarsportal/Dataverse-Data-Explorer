@@ -7,3 +7,27 @@
     [openGroup]="openGroup$ | ngrxPush"
   ></app-table>
 </div>
+
+@if(noParams){
+<div class="h-screen w-full grid grid-cols-1 gap-4 place-content-center place-items-center">
+  <h2 class="">Enter Dataset Details</h2>
+  <form [formGroup]="datasetForm" (ngSubmit)="manualDatasetFetch()">
+    <label for="fileID">File ID:</label>
+    <input type="text" id="fileID" name="fileID" formControlName="fileID" class="form-input">
+    @if(checkValid('fileID')){
+      <span>File ID is required</span>
+    }<br><br>
+
+    <label for="siteURL">Site URL:</label>
+    <input type="text" id="siteURL" name="siteURL" formControlName="siteURL" class="form-input">
+    @if(checkValid('siteURL')){
+      <span>Site URL is required</span>
+    }<br><br>
+
+    <label for="APIKEY">API Key (Optional):</label>
+    <input type="password" id="APIKEY" name="APIKEY" formControlName="APIKEY" class="form-input"><br><br>
+
+    <button type="submit" [disabled]="!datasetForm.valid" class="fetch-button-colour fetch-button-spacing rounded">Fetch Dataset</button>
+  </form>
+</div>
+}
