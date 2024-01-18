@@ -114,13 +114,13 @@ module.exports = {
         },
         light: {
           // primary
-          primary: '#4d44e3',
+          primary: '#4338ca',
           'on-primary': '#ffffff',
           'primary-container': '#e2dfff',
           'on-primary-container': '#0f0069',
 
           // secondary
-          secondary: '#b4136d',
+          secondary: '#EC4899',
           'on-secondary': '#ffffff',
           'secondary-container': '#ffd9e4',
           'on-secondary-container': '#3e0022',
@@ -142,7 +142,7 @@ module.exports = {
           'on-background': '#1b0261',
 
           // surface
-          surface: '#fffbff',
+          surface: '#e0dbdf',
           'surface-variant': '#e4e1ec',
           'on-surface': '#1b0261',
           'on-surface-variant': '#47464f',
@@ -186,11 +186,11 @@ module.exports = {
           'on-error-container': '#ffdad6',
 
           // background
-          background: '#1b0261',
+          background: '#1C1B1F',
           'on-background': '#e5deff',
 
           // surface
-          surface: '#1b0261',
+          surface: '#0d0c0f',
           'surface-variant': '#47464f',
           'on-surface': '#E6E1E5',
           'on-surface-variant': '#c8c5d0',
