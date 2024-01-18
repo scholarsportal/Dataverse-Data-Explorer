@@ -1,39 +1,26 @@
-<header class="flex flex-col z-20 px-5 py-2 font-sans">
-    <div class="">
-        <div class="flex flex-row justify-between text-xl mb-4">
-            <span>Data Curation Tool</span>
-            <select name="lang" id="lang" class="rounded p-1 text-base primary-container on-primary-container-text border">
-                <option value="eng" default>English</option>
-                <option value="fr">French</option>
-            </select>
-        </div>
-        <h1 class="text-3xl my-3">{{ title$ | async }}</h1>
-    </div>
-    @if((citation$ | async)) {
-    <div class="flex flex-row justify-between my-2">
-        <p class="w-1/2">{{ citation$ | async }}</p>
-        <div class="flex flex-row w-1/4 justify-between">
-            <button class="flex flex-row justify-center mx-3 w-full text-base rounded secondary on-secondary-text">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="my-auto w-6 h-6">
-                    <path fill-rule="evenodd"
-                        d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm5.845 17.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V12a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z"
-                        clip-rule="evenodd" />
-                    <path
-                        d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z" />
-                </svg>
-                <span class="my-auto mx-2 pt-0.5">DOWNLOAD</span>
-            </button>
-            <button class="flex flex-row justify-center mx-3 w-full rounded text-base primary on-primary-text" (click)="handleUpload()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="my-auto w-6 h-6">
-                    <path fill-rule="evenodd"
-                        d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm6.905 9.97a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72V18a.75.75 0 001.5 0v-4.19l1.72 1.72a.75.75 0 101.06-1.06l-3-3z"
-                        clip-rule="evenodd" />
-                    <path
-                        d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z" />
-                </svg>
-                <span class="my-auto mx-2 pt-0.5"> SAVE TO DATAVERSE</span>
-            </button>
-        </div>
-    </div>
-    }
+<header
+  class="p-2.5 h-1/5 surface on-surface-text flex flex-col justify-between"
+>
+  <div class="flex flex-row justify-between">
+    <span class="text-2xl">Data Curation</span>
+    <select class="rounded-sm surface on-surface-text">
+      <option>French</option>
+      <option>English</option>
+      <option>Portugese</option>
+    </select>
+  </div>
+  <h1>{{ title$ | async }}</h1>
+  <div class="flex flex-row justify-between">
+    <p class="w-2/3">
+      {{ citation$ | async }}
+    </p>
+    <span class="flex flex-row justify-end items-end">
+      <button class="mx-2.5 px-1.5 py-0.5 h-max secondary on-secondary-text">
+        DOWNLOAD
+      </button>
+      <button class="primary px-1.5 py-0.5 h-max on-primary-text">
+        SAVE TO BOREALIS
+      </button>
+    </span>
+  </div>
 </header>

@@ -31,6 +31,8 @@ import { MultiselectDropdownComponent } from './components/modal/form/multiselec
 import { NotificationComponent } from './components/notification/notification.component';
 import { CdkColumnDef } from '@angular/cdk/table';
 import { RouterModule } from '@angular/router';
+import { AppEffects } from './state/app.effects';
+import { reducers, metaReducers } from './state/reducers';
 
 @NgModule({
   declarations: [
@@ -49,13 +51,17 @@ import { RouterModule } from '@angular/router';
     // Add this line to activate http client
     HttpClientModule,
     RouterModule.forRoot([]),
-    StoreModule.forRoot({ globalState: appReducer }, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      connectInZone: true,
+    }),
     // Add this to activate Forms
     FormsModule,
     ReactiveFormsModule,
     // Add this line to 'activate effects for actions'
-    EffectsModule.forRoot([DataFetchEffect]),
+    EffectsModule.forRoot([AppEffects]),
     // Using ngIf with ngRx
     LetDirective,
     // Using @Input with ngRx

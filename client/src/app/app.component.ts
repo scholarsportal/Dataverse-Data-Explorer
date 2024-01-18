@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { fetchDataset } from 'src/state/actions';
 import { checkOpenGroup, getDataFetchStatus } from 'src/state/selectors';
+import { fetchDataset } from './state/actions/dataset.actions';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,11 @@ export class AppComponent implements OnInit {
   noParams = false;
   datasetForm: FormGroup;
 
-  constructor(private store: Store, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
+  ) {
     this.datasetForm = this.formBuilder.group({
       siteURL: ['', [Validators.required, Validators.pattern('^https://.*')]],
       fileID: ['', Validators.required],
@@ -27,24 +31,26 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      const siteURL = params['siteURL']
-      const fileID = params['fileID']
+      const siteURL = params['siteURL'] as string;
+      const fileID = params['fileID'] as number;
 
-      if(siteURL && fileID) {
+      if (siteURL && fileID) {
         this.store.dispatch(fetchDataset({ fileID: fileID, siteURL: siteURL }));
       } else {
-        this.noParams = true
-        // this.store.dispatch(fetchDataset({ fileID: '663968', siteURL: 'https://borealisdata.ca' }));
+        this.noParams = true;
+        this.store.dispatch(
+          fetchDataset({ fileID: 663968, siteURL: 'https://borealisdata.ca' })
+        );
       }
-    })
+    });
   }
 
-  checkValid(index: string){
-    const control = this.datasetForm.get(index)
-    return control ? control.valid : false
+  checkValid(index: string) {
+    const control = this.datasetForm.get(index);
+    return control ? control.valid : false;
   }
 
-  manualDatasetFetch(){
+  manualDatasetFetch() {
     if (this.datasetForm.valid) {
       const { fileID, siteURL, APIKEY } = this.datasetForm.value;
       this.store.dispatch(fetchDataset({ fileID, siteURL }));

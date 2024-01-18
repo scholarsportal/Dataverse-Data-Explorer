@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
+import {
+  selectDatasetCitation,
+  selectDatasetTitle,
+} from 'src/app/state/selectors/dataset.selectors';
 import { datasetUploadRequest } from 'src/state/actions';
-import { selectDataset, selectDatasetCitation, selectDatasetTitle } from 'src/state/selectors';
 
 @Component({
   selector: 'app-header',
@@ -16,9 +19,9 @@ export class HeaderComponent {
 
   constructor(private store: Store) {}
 
-  handleUpload(){
-    this.store.select(selectDataset).pipe(take(1)).subscribe((dataset: any) => {
-      this.store.dispatch(datasetUploadRequest(dataset))
-    })
+  handleUpload() {
+    // this.store.select(selectDataset).pipe(take(1)).subscribe((dataset: any) => {
+    //   this.store.dispatch(datasetUploadRequest(dataset))
+    // })
   }
 }

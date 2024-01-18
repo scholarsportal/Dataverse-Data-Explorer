@@ -1,7 +1,17 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { groupChangeName, groupCreateNew, groupDelete, groupSelected } from 'src/state/actions/group.actions';
-import { checkOpenGroup, selectGroups, selectRecentlyChangedGroup } from 'src/state/selectors';
+import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
+import {
+  groupChangeName,
+  groupCreateNew,
+  groupDelete,
+  groupSelected,
+} from 'src/state/actions/group.actions';
+import {
+  checkOpenGroup,
+  selectGroups,
+  selectRecentlyChangedGroup,
+} from 'src/state/selectors';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,9 +19,9 @@ import { checkOpenGroup, selectGroups, selectRecentlyChangedGroup } from 'src/st
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
-  groups$ = this.store.select(selectGroups);
-  selectedGroup$ = this.store.select(checkOpenGroup)
-  recentlyChanged$ = this.store.select(selectRecentlyChangedGroup)
+  groups$ = this.store.select(selectDatasetVariableGroups);
+  selectedGroup$ = this.store.select(checkOpenGroup);
+  recentlyChanged$ = this.store.select(selectRecentlyChangedGroup);
   addingNewGroup: boolean = false;
   newGroupName: string = '';
   groupToBeRenamedID: any = null;
@@ -28,7 +38,7 @@ export class SidebarComponent {
   }
 
   checkGroups(groups: any) {
-    return Object.keys(groups).length > 0
+    return Object.keys(groups).length > 0;
   }
 
   changeGroup(selection: any | string) {
@@ -41,19 +51,19 @@ export class SidebarComponent {
   }
 
   addGroup() {
-    const id = `NVG${Math.floor(Math.random() * 1000000)}`
-    const name = this.newGroupName
-    this.store.dispatch(groupCreateNew({ groupID: id, label: name }))
+    const id = `NVG${Math.floor(Math.random() * 1000000)}`;
+    const name = this.newGroupName;
+    this.store.dispatch(groupCreateNew({ groupID: id, label: name }));
   }
 
   deleteGroup(group: any) {
-    console.log(group)
-    this.store.dispatch( groupDelete({ groupID: group['@_ID'] }) )
+    console.log(group);
+    this.store.dispatch(groupDelete({ groupID: group['@_ID'] }));
   }
 
   startRename(item: any) {
-    this.groupToBeRenamedID = this.getID(item)
-    this.renameInputValue = this.getLabel(item)
+    this.groupToBeRenamedID = this.getID(item);
+    this.renameInputValue = this.getLabel(item);
   }
 
   cancelRename() {
@@ -63,9 +73,13 @@ export class SidebarComponent {
 
   renameGroup() {
     const renamedValue = this.renameInputValue.trim();
-    if(renamedValue !== '') {
-      // console.log(renamedValue)
-      this.store.dispatch(groupChangeName({ groupID: this.groupToBeRenamedID, newName: renamedValue }))
+    if (renamedValue !== '') {
+      this.store.dispatch(
+        groupChangeName({
+          groupID: this.groupToBeRenamedID,
+          newName: renamedValue,
+        })
+      );
     }
     this.groupToBeRenamedID = null;
     this.renameInputValue = '';
@@ -80,10 +94,7 @@ export class SidebarComponent {
 
   confirmGroup() {
     if (this.newGroupName.trim() !== '') {
-      // Perform actions with the entered group name (e.g., add it to a list)
-      // console.log('Group name:', this.newGroupName);
-      this.addGroup()
-      // Reset the UI
+      this.addGroup();
       this.resetUI();
     } else {
       alert('Please enter a valid group name.');
