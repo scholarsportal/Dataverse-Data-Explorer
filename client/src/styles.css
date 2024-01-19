@@ -14,6 +14,14 @@
   button {
     @apply rounded-sm;
   }
+
+  datatable-header {
+    @apply border-b border-light-outline dark:border-dark-outline-variant;
+  }
+
+  datatable-body-row {
+    @apply border-b border-light-outline dark:border-dark-outline-variant;
+  }
 }
 
 @layer components {
