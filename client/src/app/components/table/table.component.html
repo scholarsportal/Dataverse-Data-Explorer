@@ -4,14 +4,16 @@
 <div class="h-16">Search, Nav</div>
 <ngx-datatable
   #table
-  class="fullscreen"
+  class="material h-full"
   [rows]="vars$ | async"
   [columns]="columns"
   [limit]="6"
+  [offset]="1"
+  [scrollbarV]="true"
   [columnMode]="ColumnMode.force"
   [headerHeight]="50"
   [footerHeight]="50"
-  rowHeight="auto"
+  [rowHeight]="50"
   [sortType]="SortType.multi"
 >
   <ngx-datatable-column
