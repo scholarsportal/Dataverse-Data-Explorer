@@ -94,26 +94,26 @@
 <!-- cancel button -->
 <!-- DELETE BUTTON -->
 <!-- RENAME BUTTON -->
-<aside
-  class="flex flex-col justify-between h-4/5 w-72 surface-variant on-surface-variant-text"
->
-  <nav>
-    <button class="h-14 w-full text-start rounded-none sidebar-button">
+<aside class="flex flex-col">
+  <div class="flex flex-row h-16 items-center justify-between">
+    <span>Groups</span>
+    <button>ADD</button>
+  </div>
+  <nav class="min-h-full">
+    <button class="h-16 w-full text-start rounded-none sidebar-button">
       All Variables
     </button>
-    <div class="flex flex-row h-14 justify-between">
-      <span>Groups</span>
-      <button>ADD</button>
-    </div>
-    <div class="max-h-[580px] overflow-y-scroll">
+    <div class="h-[560px] overflow-y-scroll">
       @if ( groups$ | async ) {
       <ol>
         @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
-        <li class="h-14">{{ getLabel(varGroup.value) }}</li>
+        <li class="h-16 align-middle" (click)="changeGroup(varGroup.value)">
+          {{ getLabel(varGroup.value) }}
+        </li>
         }
       </ol>
       }
     </div>
-    <button class="h-fit">Options</button>
   </nav>
+  <button class="pt-2">Options</button>
 </aside>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { changeSelectedGroup } from 'src/app/state/actions/var-and-groups.actions';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import {
   groupChangeName,
@@ -42,11 +43,12 @@ export class SidebarComponent {
   }
 
   changeGroup(selection: any | string) {
+    console.log(selection);
     if (selection === '') {
-      this.store.dispatch(groupSelected({ groupID: '' }));
+      this.store.dispatch(changeSelectedGroup({ groupID: '' }));
     } else {
       const groupID = { groupID: selection['@_ID'] };
-      this.store.dispatch(groupSelected(groupID));
+      this.store.dispatch(changeSelectedGroup(groupID));
     }
   }
 

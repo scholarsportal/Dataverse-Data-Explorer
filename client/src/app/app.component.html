@@ -1,48 +1,9 @@
-<!-- <app-notification></app-notification> -->
-<!-- <app-header
-  class="surface-variant on-surface-variant-text fixed inset-x-0 top-0 left-0 w-full z-50"
-></app-header>
-<div
-  *ngIf="(loaded$ | async) === 'success'"
-  class="background on-background-text flex flex-row w-full h-screen mt-40"
->
-  <app-sidebar
-    class="surface-variant on-surface-variant-text sidebar overflow-auto"
-  ></app-sidebar>
-  <app-table
-    class="w-full fixed"
-    [openGroup]="openGroup$ | ngrxPush"
-  ></app-table>
-</div> -->
-
-<!-- @if(noParams){
-     <div class="h-screen w-full grid grid-cols-1 gap-4 place-content-center place-items-center">
-     <h2 class="">Enter Dataset Details</h2>
-     <form [formGroup]="datasetForm" (ngSubmit)="manualDatasetFetch()">
-     <label for="fileID">File ID:</label>
-     <input type="text" id="fileID" name="fileID" formControlName="fileID" class="form-input">
-     @if(checkValid('fileID')){
-     <span>File ID is required</span>
-     }<br><br>
-
-     <label for="siteURL">Site URL:</label>
-     <input type="text" id="siteURL" name="siteURL" formControlName="siteURL" class="form-input">
-     @if(checkValid('siteURL')){
-     <span>Site URL is required</span>
-     }<br><br>
-
-     <label for="APIKEY">API Key (Optional):</label>
-     <input type="password" id="APIKEY" name="APIKEY" formControlName="APIKEY" class="form-input"><br><br>
-
-     <button type="submit" [disabled]="!datasetForm.valid" class="fetch-button-colour fetch-button-spacing rounded">Fetch Dataset</button>
-     </form>
-
-     <span>Or</span>
-     <button class="fetch-button-spacing rounded">Import XML File</button>
-     </ -->
-<!-- div> -->
-<!-- } -->
 <main class="background h-screen">
   <app-header></app-header>
-  <app-sidebar></app-sidebar>
+  <div class="flex flex-row h-4/5">
+    <app-sidebar
+      class="sidebar surface-variant on-surface-variant-text"
+    ></app-sidebar>
+    <app-table class="h-full w-full flex flex-col justify-between"></app-table>
+  </div>
 </main>

@@ -1,11 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { JSONStructure } from '../interface';
-import { State } from '../reducers';
 import { DatasetState } from '../reducers/dataset.reducer';
 
-export const selectFeature = createFeatureSelector<DatasetState>('data');
+export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
 
-export const selectDataset = createSelector(selectFeature, (state) => state);
+export const selectDataset = createSelector(
+  selectDatasetFeature,
+  (state) => state
+);
 
 export const selectDatasetTitle = createSelector(selectDataset, (state) => {
   return state.dataset?.codeBook.stdyDscr.citation.titlStmt.titl;

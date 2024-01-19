@@ -1,12 +1,12 @@
 .sidebar {
-    @apply h-screen pt-40 transition-transform;
+  @apply border-r border-light-surface dark:border-dark-surface w-72 h-full transition-transform;
 }
 .fetch-button-colour {
-    @apply bg-[#80f8d1] text-[#002117] hover:bg-[#006b54] hover:text-[#ffffff] dark:bg-[#00513e] dark:text-[#80f8d1] dark:hover:bg-[#62dbb6] dark:hover:text-[#00382a];
+  @apply bg-[#80f8d1] text-[#002117] hover:bg-[#006b54] hover:text-[#ffffff] dark:bg-[#00513e] dark:text-[#80f8d1] dark:hover:bg-[#62dbb6] dark:hover:text-[#00382a];
 }
 .fetch-button-spacing {
-    @apply px-2 py-1 w-full;
+  @apply px-2 py-1 w-full;
 }
 .form-input {
-    @apply rounded border w-full;
+  @apply rounded border w-full;
 }

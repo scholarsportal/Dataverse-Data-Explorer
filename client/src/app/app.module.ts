@@ -33,6 +33,7 @@ import { CdkColumnDef } from '@angular/cdk/table';
 import { RouterModule } from '@angular/router';
 import { AppEffects } from './state/app.effects';
 import { reducers, metaReducers } from './state/reducers';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -66,13 +67,7 @@ import { reducers, metaReducers } from './state/reducers';
     LetDirective,
     // Using @Input with ngRx
     PushPipe,
-    MatPaginatorModule,
-    MatTableModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatCheckboxModule,
+    NgxDatatableModule,
     BrowserAnimationsModule,
   ],
   providers: [CdkColumnDef],
