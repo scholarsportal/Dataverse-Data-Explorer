@@ -16,11 +16,27 @@
   }
 
   datatable-header {
-    @apply border-b border-light-outline dark:border-dark-outline-variant;
+    @apply border-b border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
+  }
+
+  datatable-footer {
+    @apply dark:text-light-outline-variant;
   }
 
   datatable-body-row {
-    @apply border-b border-light-outline dark:border-dark-outline-variant;
+    @apply border-t w-full h-16 border-light-outline-variant dark:border-light-outline dark:text-light-outline-variant;
+  }
+
+  .ngx-datatable.bootstrap .datatable-body-row,
+  .ngx-datatable.material .datatable-body-row .datatable-row-group {
+    @apply items-center transition-colors duration-100;
+  }
+
+  .ngx-datatable.bootstrap:not(.cell-selection) .datatable-body-row:hover,
+  .ngx-datatable.material:not(.cell-selection)
+    .datatable-body-row:hover
+    .datatable-row-group {
+    @apply bg-light-outline-variant dark:bg-dark-outline-variant transition-colors duration-100;
   }
 }
 
