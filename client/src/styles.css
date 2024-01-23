@@ -16,7 +16,7 @@
   }
 
   datatable-header {
-    @apply border-b border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
+    @apply pt-5 border-b border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
   }
 
   datatable-footer {

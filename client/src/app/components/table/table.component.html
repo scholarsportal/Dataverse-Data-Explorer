@@ -5,17 +5,18 @@
   (pagePreviousClick)="onPagePreviousClick()"
   (pageNextClick)="onPageNextClick()"
 ></app-table-nav>
-<div class="table-container">
+<div class="table-container px-5">
   @if (vars$ | async) {
   <ngx-datatable
     #table
     class="material"
+    [loadingIndicator]="true"
     [rows]="vars$ | async"
     [columnMode]="'force'"
     [columns]="columns"
     [limit]="limit"
     [offset]="offset"
-    [headerHeight]="40"
+    [headerHeight]="64"
     [footerHeight]="50"
     [rowHeight]="'auto'"
     [sortType]="SortType.single"
@@ -97,4 +98,8 @@
   <span class="text-5xl font-bold">Loading Variables...</span>
   }
 </div>
-<div class="h-16 surface on-surface-text">Selected Menu</div>
+@if(selected.length) {
+<app-table-menu
+  class="h-16 fixed bottom-0 left-0 right-0 pl-80 surface on-surface-text transition-transform duration-100"
+></app-table-menu>
+}

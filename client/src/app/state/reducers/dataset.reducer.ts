@@ -4,7 +4,7 @@ import { JSONStructure } from '../interface';
 
 export interface DatasetState {
   dataset: JSONStructure | null;
-  status: 'idle' | 'pending' | 'converting' | 'error';
+  status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
   errorMessage?: string | unknown;
 }
 
@@ -44,7 +44,7 @@ export const datasetReducer = createReducer(
     (state, { dataset }): DatasetState => ({
       ...state,
       dataset,
-      status: 'idle' as const,
+      status: 'success' as const,
     })
   ),
   on(

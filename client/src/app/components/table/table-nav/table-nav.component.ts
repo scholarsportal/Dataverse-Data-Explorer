@@ -26,7 +26,6 @@ export class TableNavComponent {
 
   onItemsPerPageChange(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
-    console.log(event);
     this.limitChange.emit(selectedValue);
   }
 

@@ -8,6 +8,11 @@ export const selectDataset = createSelector(
   (state) => state
 );
 
+export const selectDatasetLoading = createSelector(
+  selectDatasetFeature,
+  (state) => state.status
+);
+
 export const selectDatasetTitle = createSelector(selectDataset, (state) => {
   return state.dataset?.codeBook.stdyDscr.citation.titlStmt.titl;
 });

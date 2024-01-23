@@ -4,6 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { checkOpenGroup, getDataFetchStatus } from 'src/state/selectors';
 import { fetchDataset } from './state/actions/dataset.actions';
+import {
+  selectDatasetLoading,
+  selectDatasetVariables,
+} from './state/selectors/dataset.selectors';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +17,7 @@ import { fetchDataset } from './state/actions/dataset.actions';
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
   openGroup$ = this.store.select(checkOpenGroup);
-  loaded$ = this.store.select(getDataFetchStatus);
+  loaded$ = this.store.select(selectDatasetLoading);
   noParams = false;
   datasetForm: FormGroup;
 

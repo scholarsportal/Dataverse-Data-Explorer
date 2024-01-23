@@ -1,11 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectVariables } from 'src/state/selectors';
 import { ModalComponent } from '../modal/modal.component';
-import { SelectionModel } from '@angular/cdk/collections';
-import { selectCurrentVarList } from 'src/app/state/selectors/var-groups.selectors';
+import {
+  selectCurrentVarList,
+  selectCurrentVariableSelected,
+} from 'src/app/state/selectors/var-groups.selectors';
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Variable } from 'src/app/state/interface';
+import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
 
 @Component({
   selector: 'app-table',
@@ -34,19 +36,19 @@ export class TableComponent implements OnInit {
   SortType = SortType;
   SelectionType = SelectionType;
 
-  constructor(private store: Store) {}
-
-  ngOnInit(): void {
-    this.vars$.subscribe((vars) => {
-      console.log(vars);
-    });
+  constructor(private store: Store) {
+    this.store
+      .select(selectCurrentVariableSelected)
+      .subscribe((variablesSelected) => {
+        this.selected = variablesSelected;
+      });
   }
 
-  onSelect({ selected }: any) {
-    console.log('Select Event', selected, this.selected);
+  ngOnInit(): void {}
 
-    this.selected.splice(0, this.selected.length);
-    this.selected.push(...selected);
+  onSelect({ selected }: any) {
+    const variableIDs = selected.map((variable: Variable) => variable['@_ID']);
+    this.store.dispatch(onSelectVariable({ variableIDs }));
   }
 
   onLimitChange(newLimit: number) {

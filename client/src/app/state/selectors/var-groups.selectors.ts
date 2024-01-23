@@ -38,3 +38,27 @@ export const selectCurrentVarList = createSelector(
     return datasetState.dataset?.codeBook.dataDscr.var || [];
   }
 );
+
+export const selectCurrentVariableSelected = createSelector(
+  selectCurrentGroup,
+  selectVarAndGroupsFeature,
+  selectDatasetFeature,
+  (currentGroup, varGroupsState, dataset) => {
+    if (currentGroup) {
+      return (
+        dataset.dataset?.codeBook.dataDscr.var.filter((value) =>
+          varGroupsState.variablesSelected[currentGroup]?.includes(
+            value['@_ID']
+          )
+        ) || []
+      );
+    }
+    return (
+      dataset.dataset?.codeBook.dataDscr.var.filter((value) =>
+        varGroupsState.variablesSelected['all-variables'].includes(
+          value['@_ID']
+        )
+      ) || []
+    );
+  }
+);

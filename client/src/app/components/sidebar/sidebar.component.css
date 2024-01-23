@@ -1,35 +1,28 @@
-.sidebar {
-  @apply w-72;
-}
-.group-button {
-  @apply flex flex-row justify-between h-max px-2 py-2 text-base border rounded-md;
-}
-
 .scroll-container {
   max-height: calc(100 - 74px);
   overflow-y: auto;
 }
-
+.sidebar-button {
+  @apply w-full px-5 hover:bg-light-outline-variant hover:text-light-on-surface;
+}
+.selected {
+  @apply bg-light-outline text-light-inverse-on-surface  dark:bg-light-on-surface;
+}
+.options-button {
+  @apply h-16 px-5 border-t border-gray-500 text-start hover:bg-light-surface-tint hover:text-light-scrim dark:hover:bg-dark-inverse-primary dark:hover:text-dark-on-primary-container;
+}
 .all-vars {
   @apply bg-light-inverse-surface text-light-surface dark:bg-dark-inverse-surface dark:text-dark-surface;
 }
-
 .confirm-button {
   @apply p-2 bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
 }
-
 .cancel-button {
   @apply p-2 rounded-r bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
 }
-
-.selected {
-  @apply bg-light-on-surface-variant text-light-surface dark:bg-dark-on-surface dark:text-dark-surface;
-}
-
 .button-hover {
   @apply transition transform duration-150 hover:bg-light-on-surface hover:text-light-surface dark:hover:text-dark-surface dark:hover:bg-dark-on-surface;
 }
-
 .icon-bg-hover {
   @apply hover:bg-light-surface dark:hover:bg-dark-surface;
 }
