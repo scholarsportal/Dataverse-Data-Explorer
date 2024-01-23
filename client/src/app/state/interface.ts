@@ -23,7 +23,7 @@ interface Category {
   catStat: SummaryStatistic[];
 }
 
-interface Variable {
+export interface Variable {
   location: Location;
   labl: Label;
   qstn: Question;
@@ -45,7 +45,7 @@ interface Variable {
   '@_wgt-var': string;
 }
 
-interface VariableGroup {
+export interface VariableGroup {
   labl: string;
   '@_ID': string;
   '@_var': string;

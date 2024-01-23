@@ -1,70 +1,100 @@
-<!-- <app-modal
-  [selection]='selection.selected'
-  class="w-max"> </app-modal> -->
-<div class="h-16">Search, Nav</div>
-<ngx-datatable
-  #table
-  class="h-full"
-  [rows]="vars$ | async"
-  [columns]="columns"
-  [limit]="6"
-  [offset]="1"
-  [scrollbarV]="true"
-  [columnMode]="ColumnMode.force"
-  [headerHeight]="50"
-  [footerHeight]="50"
-  [rowHeight]="50"
-  [sortType]="SortType.multi"
->
-  <ngx-datatable-column
-    [sortable]="false"
-    [canAutoResize]="false"
-    [draggable]="false"
-    [resizeable]="false"
-    [headerCheckboxable]="true"
-    [checkboxable]="true"
+<app-table-nav
+  class="px-5 h-16 flex flex-row justify-between"
+  [limit]="limit"
+  (limitChange)="onLimitChange($event)"
+  (pagePreviousClick)="onPagePreviousClick()"
+  (pageNextClick)="onPageNextClick()"
+></app-table-nav>
+<div class="table-container">
+  @if (vars$ | async) {
+  <ngx-datatable
+    #table
+    class="material"
+    [rows]="vars$ | async"
+    [columnMode]="'force'"
+    [columns]="columns"
+    [limit]="limit"
+    [offset]="offset"
+    [headerHeight]="40"
+    [footerHeight]="50"
+    [rowHeight]="'auto'"
+    [sortType]="SortType.single"
+    [selected]="selected"
+    [selectionType]="SelectionType.checkbox"
+    (activate)="onActivate($event)"
+    (select)="onSelect($event)"
   >
-  </ngx-datatable-column>
+    <ngx-datatable-column
+      [width]="60"
+      cellClass="flex items-center justify-around mx-5"
+      headerClass="mx-5"
+      [sortable]="false"
+      [canAutoResize]="false"
+      [draggable]="false"
+      [resizeable]="false"
+      [headerCheckboxable]="true"
+      [checkboxable]="true"
+    >
+    </ngx-datatable-column>
 
-  <ngx-datatable-column name="ID" headerClass="datatable-header" prop="@_ID">
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      {{ row['@_ID'] }}
-    </ng-template>
-  </ngx-datatable-column>
+    <ngx-datatable-column
+      name="ID"
+      headerClass="datatable-header"
+      prop="@_ID"
+      [maxWidth]="120"
+    >
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        {{ row['@_ID'] }}
+      </ng-template>
+    </ngx-datatable-column>
 
-  <ngx-datatable-column
-    name="Name"
-    headerClass="datatable-header"
-    [sortable]="true"
-    prop="@_name"
-  >
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      {{ row['@_name'] }}
-    </ng-template>
-  </ngx-datatable-column>
+    <ngx-datatable-column
+      name="Name"
+      headerClass="datatable-header"
+      [sortable]="true"
+      prop="@_name"
+      [maxWidth]="200"
+    >
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        {{ row['@_name'] }}
+      </ng-template>
+    </ngx-datatable-column>
 
-  <ngx-datatable-column name="Label" [sortable]="true" prop="labl.#text">
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      {{ row.labl ? row['labl']['#text'] : 'No Label' }}
-    </ng-template>
-  </ngx-datatable-column>
+    <ngx-datatable-column
+      name="Label"
+      [sortable]="true"
+      prop="labl.#text"
+      cellClass="pr-24"
+      [width]="500"
+    >
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        {{ row.labl ? row['labl']['#text'] : 'No Label' }}
+      </ng-template>
+    </ngx-datatable-column>
 
-  <ngx-datatable-column name="Weight" [sortable]="true">
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      {{ row['@_wgt-var'] ? row['@_wgt-var'] : 'No Weight' }}
-    </ng-template>
-  </ngx-datatable-column>
+    <ngx-datatable-column
+      name="Weight"
+      [sortable]="true"
+      cellClass="w-full flex flex-row pt-2 justify-between"
+    >
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        {{ row['@_wgt-var'] ? row['@_wgt-var'] : 'No Weight' }}
+      </ng-template>
+    </ngx-datatable-column>
 
-  <ngx-datatable-column name="View" [sortable]="false">
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      <button (click)="viewChart(row)">View Variable</button>
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ngx-datatable-column name="Edit" [sortable]="false">
-    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-      <button (click)="editVar(row)">Edit Variable</button>
-    </ng-template>
-  </ngx-datatable-column>
-</ngx-datatable>
+    <ngx-datatable-column
+      name=""
+      [width]="100"
+      [sortable]="true"
+      cellClass="w-full flex flex-row justify-between"
+    >
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        @if (hoveredVariable == row) { edit }
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+  } @else {
+  <span class="text-5xl font-bold">Loading Variables...</span>
+  }
+</div>
 <div class="h-16 surface on-surface-text">Selected Menu</div>

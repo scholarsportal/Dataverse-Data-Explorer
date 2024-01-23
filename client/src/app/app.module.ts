@@ -34,6 +34,8 @@ import { RouterModule } from '@angular/router';
 import { AppEffects } from './state/app.effects';
 import { reducers, metaReducers } from './state/reducers';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { TableNavComponent } from './components/table/table-nav/table-nav.component';
+import { TableMenuComponent } from './components/table/table-menu/table-menu.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     PushPipe,
     NgxDatatableModule,
     BrowserAnimationsModule,
+    // Standalone Components
+    TableNavComponent,
+    TableMenuComponent,
   ],
   providers: [CdkColumnDef],
   bootstrap: [AppComponent],
