@@ -1,6 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { VarAndGroupsState } from '../reducers/var-and-groups.reducer';
-import { selectDatasetFeature } from './dataset.selectors';
+import {
+  selectDatasetFeature,
+  selectDatasetVariables,
+} from './dataset.selectors';
+import { Variable } from '../interface';
 
 export const selectVarAndGroupsFeature =
   createFeatureSelector<VarAndGroupsState>('var-and-groups');
@@ -28,11 +32,13 @@ export const selectCurrentVarList = createSelector(
   selectCurrentGroup,
   selectCurrentGroupIDs,
   (datasetState, currentGroup, currentGroupIDs) => {
+    const varList = Object.values(
+      datasetState.dataset?.codeBook.dataDscr.var || {}
+    ) as Variable[];
     if (currentGroup) {
       return (
-        datasetState.dataset?.codeBook.dataDscr.var.filter((value) =>
-          currentGroupIDs?.includes(value['@_ID'])
-        ) || []
+        varList.filter((value) => currentGroupIDs?.includes(value['@_ID'])) ||
+        []
       );
     }
     return datasetState.dataset?.codeBook.dataDscr.var || [];
@@ -43,10 +49,13 @@ export const selectCurrentVariableSelected = createSelector(
   selectCurrentGroup,
   selectVarAndGroupsFeature,
   selectDatasetFeature,
-  (currentGroup, varGroupsState, dataset) => {
+  (currentGroup, varGroupsState, datasetState) => {
+    const varList = Object.values(
+      datasetState.dataset?.codeBook.dataDscr.var || {}
+    ) as Variable[];
     if (currentGroup) {
       return (
-        dataset.dataset?.codeBook.dataDscr.var.filter((value) =>
+        varList.filter((value) =>
           varGroupsState.variablesSelected[currentGroup]?.includes(
             value['@_ID']
           )
@@ -54,11 +63,32 @@ export const selectCurrentVariableSelected = createSelector(
       );
     }
     return (
-      dataset.dataset?.codeBook.dataDscr.var.filter((value) =>
+      varList.filter((value) =>
         varGroupsState.variablesSelected['all-variables'].includes(
           value['@_ID']
         )
       ) || []
     );
+  }
+);
+
+export const selectVariableWeights = createSelector(
+  selectDatasetFeature,
+  selectDatasetVariables,
+  (datasetState, datasetVariables) => {
+    const varList = Object.values(
+      datasetState.dataset?.codeBook.dataDscr.var || {}
+    ) as Variable[];
+    const weights: { [id: string]: string } = {};
+
+    if (datasetVariables) {
+      varList.map((variable: Variable) => {
+        console.log(variable['@_wgt-var']);
+        const wgtVar = variable['@_wgt-var'] as string;
+        weights[wgtVar] = datasetVariables?.[wgtVar].labl['#text'] || '';
+      });
+    }
+
+    return weights;
   }
 );

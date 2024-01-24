@@ -43,6 +43,7 @@ export interface Variable {
   '@_name': string;
   '@_intrvl': string;
   '@_wgt-var': string;
+  '@_wgt'?: string;
 }
 
 export interface VariableGroup {
@@ -87,7 +88,7 @@ interface FileDescription {
 
 interface DataDescription {
   varGrp: VariableGroup[];
-  var: Variable[];
+  var: { [key: string]: Variable };
 }
 
 interface CodeBook {

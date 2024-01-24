@@ -1,0 +1,46 @@
+.apply-button {
+  @apply mt-2.5
+  mb-2.5
+  mx-2
+    pt-3
+    pb-2.5
+    px-3 
+    rounded 
+    transition-colors
+    duration-100
+    bg-primary-30 
+    text-light-on-primary
+    dark:bg-primary-60
+    dark:text-primary-10
+    hover:bg-primary-60 
+    hover:text-primary-10
+    dark:hover:bg-primary-10 
+    dark:hover:text-primary-60;
+}
+
+.weight-dropdown {
+  @apply mx-2
+  mt-2.5
+  mb-2.5
+  px-3
+  rounded
+  border
+  border-gray-400
+  bg-light-surface-variant
+  text-gray-700
+  dark:bg-dark-surface-variant
+  dark:text-dark-on-surface-variant;
+}
+.group-dropdown {
+  @apply mx-2
+  mt-2.5
+  mb-2.5
+  px-3
+  rounded
+  border
+  border-gray-400
+  bg-light-surface-variant
+  text-gray-700
+  dark:bg-dark-surface-variant
+  dark:text-dark-on-surface-variant;
+}

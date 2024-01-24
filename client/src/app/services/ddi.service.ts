@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { merge } from 'lodash';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.development';
-import { JSONStructure } from '../state/interface';
+import { JSONStructure, Variable } from '../state/interface';
 @Injectable({
   providedIn: 'root',
 })
