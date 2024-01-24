@@ -36,6 +36,7 @@ import { reducers, metaReducers } from './state/reducers';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TableNavComponent } from './components/table/table-nav/table-nav.component';
 import { TableMenuComponent } from './components/table/table-menu/table-menu.component';
+import { VariableOptionsComponent } from './components/table/variable-options/variable-options.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { TableMenuComponent } from './components/table/table-menu/table-menu.com
     // Standalone Components
     TableNavComponent,
     TableMenuComponent,
+    VariableOptionsComponent,
   ],
   providers: [CdkColumnDef],
   bootstrap: [AppComponent],
