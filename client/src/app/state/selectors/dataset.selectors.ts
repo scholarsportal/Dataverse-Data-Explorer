@@ -29,5 +29,5 @@ export const selectDatasetVariableGroups = createSelector(
 
 export const selectDatasetVariables = createSelector(
   selectDataset,
-  (state) => state.dataset?.codeBook.dataDscr.var
+  (state) => state.dataset?.codeBook.dataDscr.processedVar
 );

@@ -1,9 +1,7 @@
-<header
-  class="p-2.5 h-1/5 surface on-surface-text flex flex-col justify-between"
->
+<header class="header-component">
   <div class="flex flex-row justify-between">
     <span class="text-2xl">Data Curation</span>
-    <select class="rounded-sm surface on-surface-text">
+    <select class="rounded-sm pt-1.5 px-2 surface on-surface-text">
       <option>French</option>
       <option>English</option>
       <option>Portugese</option>
@@ -11,7 +9,7 @@
   </div>
   <h1>{{ title$ | async }}</h1>
   <div class="flex flex-row justify-between">
-    <p class="w-2/3">
+    <p class="w-3/5">
       {{ citation$ | async }}
     </p>
     <span class="flex flex-row justify-end items-end">

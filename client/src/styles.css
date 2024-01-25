@@ -4,11 +4,11 @@
 
 @layer base {
   h1 {
-    @apply text-4xl lg:text-6xl font-light;
+    @apply text-3xl lg:text-4xl font-light;
   }
 
   h2 {
-    @apply text-2xl lg:text-4xl font-light;
+    @apply text-xl lg:text-2xl font-light;
   }
 
   button {

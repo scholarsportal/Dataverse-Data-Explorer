@@ -1,0 +1,6 @@
+.multiselect-button {
+  @apply h-full 
+  w-full 
+  px-3
+  text-left;
+}

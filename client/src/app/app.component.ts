@@ -4,10 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { checkOpenGroup, getDataFetchStatus } from 'src/state/selectors';
 import { fetchDataset } from './state/actions/dataset.actions';
-import {
-  selectDatasetLoading,
-  selectDatasetVariables,
-} from './state/selectors/dataset.selectors';
+import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 
 @Component({
   selector: 'app-root',

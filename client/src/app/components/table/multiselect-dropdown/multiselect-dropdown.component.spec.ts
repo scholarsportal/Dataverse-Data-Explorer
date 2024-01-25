@@ -6,10 +6,12 @@ describe('MultiselectDropdownComponent', () => {
   let component: MultiselectDropdownComponent;
   let fixture: ComponentFixture<MultiselectDropdownComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [MultiselectDropdownComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MultiselectDropdownComponent]
+    })
+    .compileComponents();
+    
     fixture = TestBed.createComponent(MultiselectDropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

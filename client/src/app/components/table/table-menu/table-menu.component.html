@@ -1,4 +1,4 @@
-<div class="flex flex-row px-10 h-full">
+<div class="flex flex-row px-10 h-[70px]">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -15,12 +15,17 @@
     />
   </svg>
 
-  <select name="add-to-group" id="add-to-group" class="group-dropdown">
-    <option value="test">ADD TO GROUP</option>
-  </select>
+  <!-- <button name="add-to-group" id="add-to-group" class="group-dropdown">
+    Add to Group
+  </button> -->
 
-  <select name="add-to-group" id="add-to-group" class="weight-dropdown">
-    <option value="test">ADD WEIGHT</option>
+  <app-multiselect-dropdown class="group-dropdown"></app-multiselect-dropdown>
+
+  <select name="assign-weight" id="assign-weight" class="weight-dropdown">
+    <option value="" disabled selected hidden>Assign Weight</option>
+    @for (weightValue of (( weights$ | async ) | keyvalue); track $index) {
+    <option value="weightValue.key">{{ weightValue.value }}</option>
+    }
   </select>
   <button class="apply-button">APPLY</button>
 </div>

@@ -20,7 +20,7 @@ export const datasetReducer = createReducer(
     (state, { dataset }): DatasetState => ({
       ...state,
       dataset,
-      status: 'idle' as const,
+      status: 'success' as const,
     })
   ),
   on(

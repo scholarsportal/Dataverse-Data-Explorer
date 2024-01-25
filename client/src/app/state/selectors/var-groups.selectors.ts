@@ -73,22 +73,46 @@ export const selectCurrentVariableSelected = createSelector(
 );
 
 export const selectVariableWeights = createSelector(
-  selectDatasetFeature,
   selectDatasetVariables,
-  (datasetState, datasetVariables) => {
-    const varList = Object.values(
-      datasetState.dataset?.codeBook.dataDscr.var || {}
-    ) as Variable[];
-    const weights: { [id: string]: string } = {};
+  (datasetVariables) => {
+    const weights: {
+      [id: string]: string;
+    } = {};
 
     if (datasetVariables) {
-      varList.map((variable: Variable) => {
-        console.log(variable['@_wgt-var']);
-        const wgtVar = variable['@_wgt-var'] as string;
-        weights[wgtVar] = datasetVariables?.[wgtVar].labl['#text'] || '';
+      Object.values(datasetVariables).map((variable: Variable) => {
+        const wgtVar = variable['@_wgt-var'] as string | undefined;
+        if (wgtVar) {
+          weights[wgtVar] = datasetVariables[wgtVar].labl['#text'];
+        }
       });
     }
 
     return weights;
+  }
+);
+
+export const selectVariablesWithGroupsReference = createSelector(
+  selectDatasetFeature,
+  selectDatasetVariables,
+  (datasetState, datasetVariables) => {
+    const groups = datasetState.dataset?.codeBook.dataDscr.varGrp;
+    const variablesGroupsReference: {
+      [variableID: string]: { groups: string[]; label: string };
+    } = {};
+    if (datasetVariables) {
+      groups?.map((variableGroup) => {
+        variableGroup['@_var'].split(' ').map((variableID) => {
+          variablesGroupsReference[variableID]
+            ? variablesGroupsReference[variableID].groups.push(variableID)
+            : (variablesGroupsReference[variableID] = {
+                label: datasetVariables[variableID].labl['#text'],
+                groups: [variableID],
+              });
+        });
+      });
+    }
+
+    return variablesGroupsReference;
   }
 );

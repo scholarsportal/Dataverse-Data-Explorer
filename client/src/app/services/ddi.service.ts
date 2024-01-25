@@ -20,30 +20,28 @@ export class DdiService {
 
   constructor(private http: HttpClient) {}
 
-  get(fileID: string, siteURL: string): Observable<any> {
-    const fetchURL: string = `${siteURL}/api/access/datafile/${fileID}/metadata/ddi`;
-    const parameters = {
-      siteURL: siteURL,
-      fileID: fileID,
-    };
-    const headers = new HttpHeaders({ 'Content-Type': 'text/xml' });
-    const options = {
-      headers: headers,
-      params: parameters,
-      withCredentials: true,
-    };
-
-    return this.http.get<any>(this.searchURL, options).pipe(
-      map((data: string) => {
-        return data;
-      })
-    );
-  }
-
   parseXML(data: any) {
     const parser = new XMLParser(this.parseOptions);
     const parsed = parser.parse(data);
     return parsed;
+  }
+
+  massageData(data: JSONStructure): JSONStructure {
+    const processedVar: { [variableID: string]: Variable } = {};
+    data.codeBook.dataDscr.var.map((variable) => {
+      processedVar[variable['@_ID']] = variable;
+    });
+    data = {
+      ...data,
+      codeBook: {
+        ...data.codeBook,
+        dataDscr: {
+          ...data.codeBook.dataDscr,
+          processedVar,
+        },
+      },
+    };
+    return data;
   }
 
   createXML(

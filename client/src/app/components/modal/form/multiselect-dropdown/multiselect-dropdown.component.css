@@ -1,4 +1,0 @@
-/* Custom CSS to match the width of the dialog with the button */
-.custom-dialog {
-  max-width: calc(100% - 1rem); /* Adjust the width to match the button width minus padding */
-}

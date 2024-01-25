@@ -25,21 +25,22 @@
   px-3
   rounded
   border
-  border-gray-400
-  bg-light-surface-variant
+  border-light-surface
+  bg-white
+  dark:border-dark-surface
   text-gray-700
   dark:bg-dark-surface-variant
   dark:text-dark-on-surface-variant;
 }
 .group-dropdown {
-  @apply mx-2
-  mt-2.5
-  mb-2.5
-  px-3
+  @apply w-72
+  py-2.5 
+  ml-2.5 
+  my-2.5
   rounded
   border
-  border-gray-400
-  bg-light-surface-variant
+  border-light-surface
+  bg-white
   text-gray-700
   dark:bg-dark-surface-variant
   dark:text-dark-on-surface-variant;

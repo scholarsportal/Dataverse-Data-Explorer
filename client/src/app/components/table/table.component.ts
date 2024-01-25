@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ModalComponent } from '../modal/modal.component';
 import {
   selectCurrentVarList,
   selectCurrentVariableSelected,
@@ -8,6 +7,8 @@ import {
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Variable } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
+import { VariableOptionsComponent } from './variable-options/variable-options.component';
+import { TableNavComponent } from './table-nav/table-nav.component';
 
 @Component({
   selector: 'app-table',
@@ -15,7 +16,6 @@ import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
-  @ViewChild(ModalComponent) modalComponent?: ModalComponent;
   @ViewChild('table') table: any;
 
   vars$ = this.store.select(selectCurrentVarList);
@@ -79,13 +79,5 @@ export class TableComponent implements OnInit {
       return 50;
     }
     return row.labl['#text'].length + 5;
-  }
-
-  viewChart(selection: any) {
-    console.log(selection);
-  }
-
-  editVar(selection: any) {
-    console.log(selection);
   }
 }

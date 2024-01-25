@@ -88,7 +88,8 @@ interface FileDescription {
 
 interface DataDescription {
   varGrp: VariableGroup[];
-  var: { [key: string]: Variable };
+  var: Variable[];
+  processedVar?: { [variableID: string]: Variable };
 }
 
 interface CodeBook {

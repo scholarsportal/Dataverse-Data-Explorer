@@ -1,16 +1,16 @@
-<div class="flex flex-row h-16 px-5 items-center justify-between">
-  <span>Groups</span>
-  <button>ADD</button>
-</div>
+<button
+  [ngClass]="{ selected: (selectedGroup$ | async) === null }"
+  (click)="changeGroup(null)"
+  class="all-vars"
+>
+  All Variables
+</button>
 <nav class="">
-  <button
-    [ngClass]="{ selected: (selectedGroup$ | async) === null }"
-    (click)="changeGroup(null)"
-    class="h-16 border-t border-b border-gray-400 w-full text-start rounded-none sidebar-button"
-  >
-    All Variables
-  </button>
-  <div class="h-[560px] overflow-y-scroll">
+  <div class="flex flex-row h-[70px] px-5 items-center justify-between">
+    <span>Groups</span>
+    <button>ADD</button>
+  </div>
+  <div class="h-[500px] overflow-y-scroll">
     @if ( groups$ | async ) {
     <ol>
       @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {

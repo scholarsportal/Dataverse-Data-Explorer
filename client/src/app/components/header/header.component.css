@@ -1,0 +1,8 @@
+.header-component {
+  @apply p-2.5 
+  h-1/5 
+  flex 
+  flex-col 
+  justify-between
+  bg-[#e8e9ea];
+}

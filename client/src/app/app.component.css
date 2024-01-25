@@ -1,5 +1,18 @@
 .sidebar {
-  @apply border-r border-light-surface dark:border-dark-surface w-72 lg:w-96 h-full transition-transform;
+  @apply w-72 
+  lg:w-96 
+  h-full 
+  bg-white
+  dark:bg-slate-500
+  border-r
+border-light-surface
+dark:border-dark-surface
+  transition-transform;
+}
+.main {
+  @apply h-screen 
+  bg-white
+dark:bg-dark-surface-variant;
 }
 .form-input {
   @apply rounded border w-full;
