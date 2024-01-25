@@ -17,6 +17,7 @@
   @apply h-[70px]
    px-5 
    border-t 
+   w-full
    text-start 
    border-light-surface 
    dark:border-dark-surface 

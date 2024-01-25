@@ -1,13 +1,14 @@
 .apply-button {
   @apply mt-2.5
   mb-2.5
-  mx-2
     pt-3
     pb-2.5
     px-3 
     rounded 
+    border
     transition-colors
     duration-100
+    border-primary-10
     bg-primary-30 
     text-light-on-primary
     dark:bg-primary-60
@@ -40,6 +41,7 @@
   rounded
   border
   border-light-surface
+  dark:border-dark-surface
   bg-white
   text-gray-700
   dark:bg-dark-surface-variant
