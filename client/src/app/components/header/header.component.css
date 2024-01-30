@@ -4,5 +4,7 @@
   flex 
   flex-col 
   justify-between
-  bg-[#e8e9ea];
+bg-gray-100
+dark:bg-gray-800
+dark:text-white;
 }

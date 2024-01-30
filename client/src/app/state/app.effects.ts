@@ -6,11 +6,9 @@ import {
   fetchDataset,
   fetchDatasetError,
   fetchDatasetSuccess,
-  setDataset,
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
-import { error } from 'console';
 
 @Injectable()
 export class AppEffects {
@@ -42,17 +40,6 @@ export class AppEffects {
     },
     { functional: true }
   );
-
-  massageData$ = createEffect((ddiService: DdiService = inject(DdiService)) => {
-    return this.actions$.pipe(
-      ofType(datasetConversionSuccess),
-      map(({ dataset }) => {
-        dataset = ddiService.massageData(dataset);
-        return setDataset({ dataset });
-      }),
-      catchError((error) => of(datasetConversionError({ error })))
-    );
-  });
 
   constructor(private actions$: Actions) {}
 }

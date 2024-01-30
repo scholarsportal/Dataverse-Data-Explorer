@@ -26,24 +26,6 @@ export class DdiService {
     return parsed;
   }
 
-  massageData(data: JSONStructure): JSONStructure {
-    const processedVar: { [variableID: string]: Variable } = {};
-    data.codeBook.dataDscr.var.map((variable) => {
-      processedVar[variable['@_ID']] = variable;
-    });
-    data = {
-      ...data,
-      codeBook: {
-        ...data.codeBook,
-        dataDscr: {
-          ...data.codeBook.dataDscr,
-          processedVar,
-        },
-      },
-    };
-    return data;
-  }
-
   createXML(
     groups: any,
     variables: any,

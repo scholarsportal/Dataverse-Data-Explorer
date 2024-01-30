@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { DatasetState } from '../reducers/dataset.reducer';
+import { Variable } from '../interface';
 
 export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
 
@@ -27,7 +28,10 @@ export const selectDatasetVariableGroups = createSelector(
   (state) => state.dataset?.codeBook.dataDscr.varGrp
 );
 
-export const selectDatasetVariables = createSelector(
-  selectDataset,
-  (state) => state.dataset?.codeBook.dataDscr.processedVar
-);
+export const selectDatasetVariables = createSelector(selectDataset, (state) => {
+  const processedVariables: { [variableID: string]: Variable } = {};
+  state.dataset?.codeBook.dataDscr.var.map((value) => {
+    processedVariables[value['@_ID']] = value;
+  });
+  return processedVariables;
+});

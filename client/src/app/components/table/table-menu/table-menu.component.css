@@ -35,6 +35,8 @@
 }
 .group-dropdown {
   @apply w-72
+  flex
+  flex-col
   py-2.5 
   ml-2.5 
   my-2.5
