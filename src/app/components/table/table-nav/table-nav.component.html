@@ -1,0 +1,59 @@
+<div class="flex flex-row">
+  <input
+    type="text"
+    class="rounded border my-auto pt-1 px-1.5"
+    placeholder="SEARCH"
+  />
+</div>
+<div class="flex flex-row dark:text-light-outline-variant">
+  <label for="items-per-page" class="mx-5 my-auto">
+    <span class="mx-1.5"> Items Per Page: </span>
+    <select
+      name="items-per-page"
+      id="items-per-page"
+      class="rounded border py-1.5 px-1.5 dark:text-dark-outline-variant"
+      (change)="onItemsPerPageChange($event)"
+    >
+      @for (option of pageLimitOptions; track $index) {
+      <option [value]="option.value" [selected]="option.value == limit">
+        {{ option.value }}
+      </option>
+      }
+    </select>
+  </label>
+  <div class="flex flex-row align-middle">
+    <span class="mx-1.5 my-auto"> 1-10 of 88 </span>
+    <button (click)="pagePrevious()" class="my-3 mx-2 table-nav-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="p-2 w-9 h-9"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 19.5 8.25 12l7.5-7.5"
+        />
+      </svg>
+    </button>
+    <button (click)="pageNext()" class="my-3 mx-2 table-nav-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-9 h-9 p-2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </button>
+  </div>
+</div>

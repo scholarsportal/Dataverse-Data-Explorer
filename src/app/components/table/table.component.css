@@ -1,0 +1,20 @@
+.table-container {
+  height: 620px;
+  overflow-y: auto;
+}
+.table-menu {
+  @apply h-[70px] 
+  z-10
+  fixed 
+  bottom-0 
+  left-0 
+  right-0 
+  pl-80 
+  border-t
+  bg-white
+ dark:bg-slate-500 
+  border-light-surface 
+  dark:border-dark-surface 
+  transition-transform 
+  duration-100;
+}
