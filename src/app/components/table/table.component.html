@@ -1,10 +1,10 @@
-<app-table-nav
-  class="px-5 h-[70px] flex flex-row justify-between"
+<dct-table-nav
+  class="table-nav px-5 flex flex-row justify-between"
   [limit]="limit"
   (limitChange)="onLimitChange($event)"
   (pagePreviousClick)="onPagePreviousClick()"
   (pageNextClick)="onPageNextClick()"
-></app-table-nav>
+></dct-table-nav>
 <div class="table-container px-5">
   @if (vars$ | async) {
   <ngx-datatable
@@ -86,10 +86,10 @@
     <ngx-datatable-column name="" [width]="100" [sortable]="true" cellClass="">
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         @if (hoveredVariable == row) {
-        <app-variable-options
-          class="flex flex-row w-1/2 justify-around pt-1.5 px-2"
+        <dct-variable-options
+          class="flex flex-row w-1/2 justify-around pt-1.5 px-2 transition-all duration-200"
           [variable]="row"
-        ></app-variable-options>
+        ></dct-variable-options>
         }
       </ng-template>
     </ngx-datatable-column>
@@ -98,6 +98,6 @@
   <div class="text-5xl font-bold">Loading Variables...</div>
   }
 </div>
-<app-table-menu class="table-menu"></app-table-menu>
+<dct-table-menu class="table-menu table-menu-grid"></dct-table-menu>
 <!-- @if(selected.length) {
 } -->

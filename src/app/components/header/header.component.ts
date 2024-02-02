@@ -8,7 +8,7 @@ import {
 import { datasetUploadRequest } from 'src/state/actions';
 
 @Component({
-  selector: 'app-header',
+  selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })

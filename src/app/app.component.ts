@@ -7,7 +7,7 @@ import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 
 @Component({
-  selector: 'app-root',
+  selector: 'dct-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

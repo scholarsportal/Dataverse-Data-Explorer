@@ -6,7 +6,7 @@ import { State } from 'src/state/interface';
 import { selectNotifications } from 'src/state/selectors';
 
 @Component({
-  selector: 'app-notification',
+  selector: 'dct-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.css']
 })

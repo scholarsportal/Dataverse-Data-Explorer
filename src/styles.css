@@ -36,7 +36,7 @@
   .ngx-datatable.material:not(.cell-selection)
     .datatable-body-row:hover
     .datatable-row-group {
-    @apply bg-light-outline-variant dark:bg-dark-outline-variant transition-colors duration-100;
+    @apply bg-light-surface-variant dark:bg-gray-800 transition-colors duration-100;
   }
 }
 

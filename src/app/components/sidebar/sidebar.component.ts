@@ -17,7 +17,7 @@ import {
 } from 'src/state/selectors';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'dct-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })

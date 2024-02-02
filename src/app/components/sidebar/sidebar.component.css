@@ -1,39 +1,43 @@
-.scroll-container {
-  max-height: calc(100 - 74px);
-  overflow-y: auto;
+.all-vars {
+  @apply h-[70px] 
+  rounded-none
+  border-b 
+  text-start
+  border-light-surface;
 }
-.sidebar-button {
-  @apply w-full 
-  px-5 
-  hover:bg-light-outline-variant 
-  hover:text-light-on-surface;
+.all-variables {
+  grid-area: 1 / 1 / 2 / 4;
 }
-.selected {
-  @apply bg-light-outline 
-  text-light-inverse-on-surface  
-  dark:bg-light-on-surface;
+.allSelected {
+  @apply bg-slate-900 dark:bg-slate-800;
 }
-.options-button {
-  @apply h-[70px]
-   px-5 
-   border-t 
-   w-full
-   text-start 
-   border-light-surface 
+.group-add {
+  grid-area: 2 / 1 / 3 / 4;
+}
+.all-groups {
+  grid-area: 3 / 1 / 9 / 4;
+  overflow-y: scroll;
+}
+.options {
+  grid-area: 9 / 1 / 10 / 4;
+  width: 100%;
+}
+.options-colours {
+  @apply border-light-surface 
    dark:border-dark-surface 
    hover:bg-light-outline 
    hover:text-light-inverse-on-surface 
    dark:hover:bg-dark-inverse-primary 
    dark:hover:text-dark-on-primary-container;
 }
-.all-vars {
-  @apply h-[70px] 
-  w-full 
-  px-5
-  text-start 
-  rounded-none
-  border-b 
-  border-light-surface;
+.options-button {
+  @apply flex
+   border-t;
+}
+.selected {
+  @apply bg-light-outline 
+  text-light-inverse-on-surface  
+  dark:bg-light-on-surface;
 }
 .confirm-button {
   @apply p-2 

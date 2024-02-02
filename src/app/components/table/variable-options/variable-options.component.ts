@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Variable } from 'src/app/state/interface';
 
 @Component({
-  selector: 'app-variable-options',
+  selector: 'dct-variable-options',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './variable-options.component.html',

@@ -1,13 +1,13 @@
-<main class="main">
-  @if (( loaded$ | async ) === 'success') {
-  <app-header></app-header>
-  <div class="flex flex-row h-4/5">
-    <app-sidebar
-      class="sidebar h-full flex flex-col justify-between z-20"
-    ></app-sidebar>
-    <app-table class="h-full w-full flex flex-col"></app-table>
+<main class="main bg-white dark:bg-dark-surface-variant">
+  <!-- @if (( loaded$ | async ) === 'success') { -->
+  <dct-header class="header"></dct-header>
+  <div class="body">
+    <dct-sidebar
+      class="sidebar bg-white dark:bg-slate-500 border-r border-light-surface dark:border-dark-surface z-20"
+    ></dct-sidebar>
+    <dct-table class="table"></dct-table>
   </div>
-  } @if ((loaded$ | async) === 'pending') {
+  <!-- } @if ((loaded$ | async) === 'pending') {
   <div class="h-screen flex flex-col items-center my-auto">
     <h1
       class="my-auto text-8xl font-mono font-bold animate-pulse dark:text-light-on-primary"
@@ -15,5 +15,5 @@
       Loading dataset ...
     </h1>
   </div>
-  }
+  } -->
 </main>

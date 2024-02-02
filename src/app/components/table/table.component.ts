@@ -11,7 +11,7 @@ import { VariableOptionsComponent } from './variable-options/variable-options.co
 import { TableNavComponent } from './table-nav/table-nav.component';
 
 @Component({
-  selector: 'app-table',
+  selector: 'dct-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })

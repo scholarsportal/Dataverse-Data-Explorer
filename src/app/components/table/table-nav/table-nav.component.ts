@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-table-nav',
+  selector: 'dct-table-nav',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './table-nav.component.html',

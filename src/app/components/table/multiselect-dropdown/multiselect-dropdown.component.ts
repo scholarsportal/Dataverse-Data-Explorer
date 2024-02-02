@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -10,15 +11,16 @@ import { CommonModule } from '@angular/common';
 import { VariableGroup } from 'src/app/state/interface';
 import { Store } from '@ngrx/store';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-multiselect-dropdown',
+  selector: 'dct-multiselect-dropdown',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './multiselect-dropdown.component.html',
   styleUrl: './multiselect-dropdown.component.css',
 })
-export class MultiselectDropdownComponent implements OnInit {
+export class MultiselectDropdownComponent implements OnInit, OnDestroy {
   @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
   @Input() selectedVariableGroups: VariableGroup[] = [];
   @Input() position: 'top' | 'bottom' = 'top';
@@ -26,12 +28,24 @@ export class MultiselectDropdownComponent implements OnInit {
   isDialogueOpen: boolean = false;
   element: any;
   allVariableGroups$: VariableGroup[] | undefined;
+  sub!: Subscription;
 
   constructor(private store: Store, private el: ElementRef) {
-    this.store
+    this.element = el.nativeElement;
+  }
+
+  ngOnInit(): void {
+    this.element.addEventListener('click', (el: any) => {
+      if (el.target.id === 'dropdown') {
+        this.closeDialog();
+      }
+    });
+    this.sub = this.store
       .select(selectDatasetVariableGroups)
       .subscribe((data) => (this.allVariableGroups$ = data));
-    this.element = el.nativeElement;
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
@@ -55,20 +69,11 @@ export class MultiselectDropdownComponent implements OnInit {
     return this.el?.nativeElement.contains(target as Node);
   }
 
-  ngOnInit(): void {
-    this.element.addEventListener('click', (el: any) => {
-      if (el.target.id === 'dropdown') {
-        this.closeDialog();
-      }
-    });
-  }
-
   getVariableLabel(variableGroup: any): string {
     return variableGroup.labl;
   }
 
   getVariableID(variableGroup: any): string {
-    console.log(variableGroup);
     return variableGroup['@_ID'];
   }
 

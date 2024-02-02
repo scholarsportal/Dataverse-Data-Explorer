@@ -23,7 +23,7 @@
   </svg>
 </button>
 
-<dialog #dropdown open class="dropdown" ngClass="{{ position }}">
+<dialog #dropdown class="dropdown" ngClass="{{ position }}">
   <fieldset class="flex flex-col h-52 overflow-y-auto">
     @for (variableGroup of (allVariableGroups$ | keyvalue); track $index) {
     <label for="{{ getVariableID(variableGroup.value) }}">

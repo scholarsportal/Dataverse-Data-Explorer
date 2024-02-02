@@ -5,7 +5,7 @@ import { selectVariableWeights } from 'src/app/state/selectors/var-groups.select
 import { MultiselectDropdownComponent } from '../multiselect-dropdown/multiselect-dropdown.component';
 
 @Component({
-  selector: 'app-table-menu',
+  selector: 'dct-table-menu',
   standalone: true,
   imports: [CommonModule, MultiselectDropdownComponent],
   templateUrl: './table-menu.component.html',

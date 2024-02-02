@@ -143,7 +143,7 @@ module.exports = {
 
           // surface
           surface: '#e0dbdf',
-          'surface-variant': '#E7E0EC',
+          'surface-variant': '#f3f4f6',
           'on-surface': '#1C1B1F',
           'on-surface-variant': '#E7E0EC',
           'surface-tint': '#D0BCFF',

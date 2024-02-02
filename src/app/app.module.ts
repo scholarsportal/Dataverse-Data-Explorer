@@ -25,6 +25,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TableNavComponent } from './components/table/table-nav/table-nav.component';
 import { TableMenuComponent } from './components/table/table-menu/table-menu.component';
 import { VariableOptionsComponent } from './components/table/variable-options/variable-options.component';
+import { OptionsComponent } from './components/modals/options/options.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { VariableOptionsComponent } from './components/table/variable-options/va
     VariableOptionsComponent,
     TableNavComponent,
     TableMenuComponent,
+    OptionsComponent,
   ],
   bootstrap: [AppComponent],
 })
