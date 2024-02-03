@@ -10,6 +10,7 @@
 }
 .body {
   height: 100%;
+  overflow: hidden;
   display: grid;
   grid-area: 4 / 1 / 13 / 13;
   grid-template-columns: repeat(12, 1fr);

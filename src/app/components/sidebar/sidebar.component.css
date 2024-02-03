@@ -1,5 +1,6 @@
 .all-vars {
   @apply h-[70px] 
+  px-5
   rounded-none
   border-b 
   text-start
@@ -9,7 +10,7 @@
   grid-area: 1 / 1 / 2 / 4;
 }
 .allSelected {
-  @apply bg-slate-900 dark:bg-slate-800;
+  @apply bg-slate-900 dark:bg-slate-800 text-white;
 }
 .group-add {
   grid-area: 2 / 1 / 3 / 4;
@@ -17,6 +18,9 @@
 .all-groups {
   grid-area: 3 / 1 / 9 / 4;
   overflow-y: scroll;
+}
+.sidebar-button {
+  @apply hover:text-light-inverse-on-surface hover:bg-light-outline hover:dark:bg-light-on-surface;
 }
 .options {
   grid-area: 9 / 1 / 10 / 4;
