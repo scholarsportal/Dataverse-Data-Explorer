@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "nana-dev" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "nana-dev" ]
 
 jobs:
   build:
