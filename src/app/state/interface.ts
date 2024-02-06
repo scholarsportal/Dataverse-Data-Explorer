@@ -9,6 +9,8 @@ interface Label {
 
 interface Question {
   qstnLit: string;
+  ivuInstr?: string;
+  postQTxt?: string;
 }
 
 interface SummaryStatistic {
@@ -45,6 +47,33 @@ export interface Variable {
   '@_wgt-var': string;
   '@_wgt'?: string;
 }
+
+export interface VariableForm {
+  id: string;
+  name: string;
+  label: string;
+  literalQuestion: string;
+  interviewQuestion: string;
+  postQuestion: string;
+  universe: string;
+  notes: string;
+  weight: string;
+  isWeight: boolean;
+}
+
+export const initVariableForm = {
+  id: '',
+  name: '',
+  label: '',
+  literalQuestion: '',
+  interviewQuestion: '',
+  postQuestion: '',
+  universe: '',
+  notes: '',
+  groups: [],
+  weight: '',
+  isWeight: false,
+};
 
 export interface VariableGroup {
   labl: string;

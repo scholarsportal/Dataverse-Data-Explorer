@@ -1,0 +1,13 @@
+<div class="">
+  <button (click)="handleClose()">close</button>
+  <h3>{{ modalMode$ | async | titlecase }} Variable</h3>
+  @if ((modalMode$ | async) === 'view') {
+  <button (click)="switchToEdit()">edit</button>
+  } @if ((modalMode$ | async) === 'edit') {
+  <button (click)="switchToView()">view</button>
+  }
+  <div>
+    <button>variable navigate left</button>
+    <button>variable navigate right</button>
+  </div>
+</div>

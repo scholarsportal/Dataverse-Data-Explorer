@@ -5,7 +5,7 @@ import {
   selectDatasetVariableGroups,
   selectDatasetVariables,
 } from './dataset.selectors';
-import { Variable } from '../interface';
+import { Variable, VariableGroup } from '../interface';
 import {
   selectOpenVariableData,
   selectOpenVariableID,
@@ -104,16 +104,16 @@ export const selectVariablesWithGroupsReference = createSelector(
   selectDatasetVariables,
   (groups, datasetVariables) => {
     const variablesGroupsReference: {
-      [variableID: string]: { groups: string[]; label: string };
+      [variableID: string]: { groups: VariableGroup[]; label: string };
     } = {};
     if (datasetVariables) {
       groups?.map((variableGroup) => {
         variableGroup['@_var'].split(' ').map((variableID) => {
           variablesGroupsReference[variableID]
-            ? variablesGroupsReference[variableID].groups.push(variableID)
+            ? variablesGroupsReference[variableID].groups.push(variableGroup)
             : (variablesGroupsReference[variableID] = {
                 label: datasetVariables[variableID].labl['#text'],
-                groups: [variableID],
+                groups: [variableGroup],
               });
         });
       });

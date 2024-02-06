@@ -8,8 +8,8 @@
   @apply flex
   flex-row
   justify-between
-  h-full 
   w-full 
+  h-full
   px-3
   text-left;
 }

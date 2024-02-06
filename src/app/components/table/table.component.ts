@@ -8,11 +8,11 @@ import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Variable } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
 import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import { ModalComponent } from './modal/modal.component';
 import {
   openVariableChartModal,
   openVariableEditModal,
 } from 'src/app/state/actions/ui.actions';
-
 @Component({
   selector: 'dct-table',
   templateUrl: './table.component.html',
@@ -20,7 +20,7 @@ import {
 })
 export class TableComponent implements OnInit {
   @ViewChild('table') table: any;
-  @ViewChild('variableModal') variableModal?: ElementRef;
+  @ViewChild(ModalComponent) ModalComponent?: ModalComponent;
 
   vars$ = this.store.select(selectCurrentVarList);
   modalMode$ = this.store.select(selectOpenVariableModalMode);
@@ -76,9 +76,7 @@ export class TableComponent implements OnInit {
 
   // Launch Modal
   launchModal(data: { type: 'view' | 'edit'; variable: Variable }) {
-    console.log(data);
-    const modal = this.variableModal?.nativeElement as HTMLDialogElement;
-    modal.showModal();
+    this.ModalComponent?.open();
     if (data.type === 'edit')
       return this.store.dispatch(
         openVariableEditModal({ variableID: data.variable['@_ID'] })

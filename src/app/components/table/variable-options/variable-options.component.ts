@@ -10,11 +10,12 @@ import { CommonModule } from '@angular/common';
 import { Variable } from 'src/app/state/interface';
 import { Store } from '@ngrx/store';
 import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'dct-variable-options',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './variable-options.component.html',
   styleUrl: './variable-options.component.css',
 })

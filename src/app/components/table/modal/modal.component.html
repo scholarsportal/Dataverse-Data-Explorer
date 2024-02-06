@@ -1,1 +1,21 @@
-<p>modal works!</p>
+<dialog
+  #variableModal
+  id="variableModal"
+  class="variableModal rounded bg-white dark:bg-dark-surface-variant"
+>
+  <dct-modal-header
+    class="modal-header"
+    (closeVariableModal)="close()"
+  ></dct-modal-header>
+  <div class="modal-body h-full">
+    @if ((modalMode | async) === 'edit') {
+    <dct-edit></dct-edit>
+    } @if ((modalMode | async) === 'view') {
+    <dct-chart></dct-chart>
+    }
+  </div>
+  <dct-modal-footer
+    class="flex flex-col w-full"
+    (closeVariableModal)="close()"
+  ></dct-modal-footer>
+</dialog>

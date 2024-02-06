@@ -8,7 +8,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TableComponent } from './components/table/table.component';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
-import { LetDirective, PushPipe } from '@ngrx/component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Material Design Components
@@ -52,8 +51,6 @@ import { ModalComponent } from './components/table/modal/modal.component';
     ReactiveFormsModule,
     // Add this line to 'activate effects for actions'
     EffectsModule.forRoot([AppEffects]),
-    // Using @Input with ngRx
-    PushPipe,
     NgxDatatableModule,
     BrowserAnimationsModule,
     // Standalone Components

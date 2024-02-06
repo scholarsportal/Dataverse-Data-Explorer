@@ -1,4 +1,4 @@
-<form [formGroup]="variableForm" class="mx-10">
+<form [formGroup]="variableForm" class="mx-10 flex flex-col">
   <label class="form-label">
     Label
     <input
@@ -61,20 +61,31 @@
     >
     </textarea>
   </label>
-  <label for="multiselect">Group(s)</label>
-  <dct-multiselect-dropdown id="multiselect"></dct-multiselect-dropdown>
-  <label class="form-label sr-only" for="weightVar"> Weight Variable </label>
-  <select
-    id="weightVar"
-    class="h-12 p-2 rounded"
-    [(ngModel)]="variableWeight"
-    [ngModelOptions]="{ standalone: true }"
-  >
-    <option [value]="" (click)="changeWeight('')">No Weight Assigned</option>
-    @for (weightValue of (( weights$ | async) | keyvalue); track $index) {
-    <option value="weightValue.value" (click)="changeWeight(weightValue.value)">
-      {{ getID(weightValue) }}
-    </option>
-    }
-  </select>
+  <label for="multiselect" class="form-label"
+    >Group(s)
+    <dct-multiselect-dropdown
+      id="multiselect"
+      class="dropdown"
+      [selectedVariableGroups]="groups"
+    ></dct-multiselect-dropdown>
+  </label>
+  <div class="flex flex-row justify-between">
+    <label class="form-label sr-only" for="weightVar">Weight Variable</label>
+    <select id="weightVar" class="h-12 p-2 rounded" formControlName="weight">
+      <option value="" (click)="changeWeight('')">No Weight Assigned</option>
+      @for (weightValue of ( weights | keyvalue); track $index) {
+      <option [value]="weightValue.key" (click)="changeWeight(weightValue.key)">
+        {{ weightValue.value }}
+      </option>
+      }
+    </select>
+    <label for="isWeight" class="flex flex-row dark:text-dark-inverse-surface">
+      <input
+        type="checkbox"
+        name="isWeight"
+        id="isWeight"
+        formControlName="isWeight"
+      />Is Weight
+    </label>
+  </div>
 </form>

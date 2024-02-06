@@ -1,7 +1,26 @@
-.dropdown {
-  @apply border-light-surface
-  dark:border-dark-surface
+.form-label {
+  @apply flex flex-col
+  dark:text-dark-inverse-surface;
+}
+.form-input {
+  @apply rounded border
+ border-light-surface
+  dark:border-dark-outline
   text-gray-700
   dark:bg-dark-surface-variant
-  dark:text-dark-on-surface-variant;
+  dark:text-dark-outline;
+}
+.dropdown {
+  @apply w-full
+  flex
+  flex-col
+  py-2.5 
+  rounded
+  border
+  border-light-surface
+  dark:border-dark-outline
+  bg-white
+  text-gray-700
+  dark:bg-dark-surface-variant
+  dark:text-dark-inverse-surface;
 }

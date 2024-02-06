@@ -4,6 +4,7 @@ import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multise
 import { Store } from '@ngrx/store';
 import {
   selectOpenVariableData,
+  selectOpenVariableDataAsForm,
   selectOpenVariableWeight,
 } from 'src/app/state/selectors/ui.selectors';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@angular/forms';
 import { selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 import { Subscription } from 'rxjs';
+import { Variable, VariableGroup } from 'src/app/state/interface';
 
 @Component({
   selector: 'dct-edit',
@@ -29,9 +31,9 @@ import { Subscription } from 'rxjs';
 })
 export class EditComponent implements OnInit, OnDestroy {
   sub$?: Subscription;
-  variable$ = this.store.select(selectOpenVariableData);
-  weights$ = this.store.select(selectVariableWeights);
   variableWeight: any;
+  weights: { [id: string]: string } | null = null;
+  groups: VariableGroup[] = [];
 
   variableForm = new FormGroup({
     id: new FormControl(''),
@@ -42,17 +44,22 @@ export class EditComponent implements OnInit, OnDestroy {
     postQuestion: new FormControl(''),
     universe: new FormControl(''),
     notes: new FormControl(''),
-    groups: new FormControl([]),
     isWeight: new FormControl(false),
+    weight: new FormControl(''),
   });
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.sub$ = this.store
-      .select(selectOpenVariableWeight)
+      .select(selectOpenVariableDataAsForm)
       .subscribe((value) => {
-        this.variableWeight = value;
+        if (value) {
+          this.groups = value.groups;
+          this.weights = value.variableWeights;
+          this.variableWeight = value.formData.weight;
+          this.variableForm.patchValue(value?.formData);
+        }
       });
   }
 

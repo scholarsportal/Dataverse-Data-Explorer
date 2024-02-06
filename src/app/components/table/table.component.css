@@ -18,6 +18,10 @@
   transition-transform 
   duration-100;
 }
+.modal-grid {
+  height: 100vh;
+  width: 50%;
+}
 .table-menu-grid {
   grid-area: 9 / 1 / 10 / 10;
 }
