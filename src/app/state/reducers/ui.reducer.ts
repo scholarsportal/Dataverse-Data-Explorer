@@ -1,26 +1,28 @@
 import { createReducer, on } from '@ngrx/store';
-import { JSONStructure, Variable } from '../interface';
-import { closeOptionsMenu, openOptionsMenu } from '../actions/ui.actions';
+import { Variable } from '../interface';
+import {
+  changeVariableModalMode,
+  closeOptionsMenu,
+  closeVariableModal,
+  openOptionsMenu,
+  openVariableChartModal,
+  openVariableEditModal,
+} from '../actions/ui.actions';
+import { state } from '@angular/animations';
 
 export interface UIState {
   modal: {
     open: boolean;
-    type: null | 'options' | 'view' | 'edit';
-    variable: {
-      id: string | null;
-      variable: Variable | null;
-    };
+    mode: null | 'options' | 'view' | 'edit';
+    variableID: string | null;
   };
 }
 
 export const initialState: UIState = {
   modal: {
     open: false,
-    type: null,
-    variable: {
-      id: null,
-      variable: null,
-    },
+    mode: null,
+    variableID: null,
   },
 };
 
@@ -32,11 +34,8 @@ export const uiReducer = createReducer(
       ...state,
       modal: {
         open: true,
-        type: 'options' as const,
-        variable: {
-          id: null,
-          variable: null,
-        },
+        mode: 'options' as const,
+        variableID: null,
       },
     })
   ),
@@ -46,12 +45,40 @@ export const uiReducer = createReducer(
       ...state,
       modal: {
         open: false,
-        type: null,
-        variable: {
-          id: null,
-          variable: null,
-        },
+        mode: null,
+        variableID: null,
       },
     })
-  )
+  ),
+  on(openVariableEditModal, (state, { variableID }) => ({
+    ...state,
+    modal: {
+      open: true,
+      mode: 'edit' as const,
+      variableID,
+    },
+  })),
+  on(openVariableChartModal, (state, { variableID }) => ({
+    ...state,
+    modal: {
+      open: true,
+      mode: 'view' as const,
+      variableID,
+    },
+  })),
+  on(closeVariableModal, (state) => ({
+    ...state,
+    modal: {
+      open: false,
+      mode: null,
+      variableID: null,
+    },
+  })),
+  on(changeVariableModalMode, (state, { modalMode }) => ({
+    ...state,
+    modal: {
+      ...state.modal,
+      mode: modalMode,
+    },
+  }))
 );

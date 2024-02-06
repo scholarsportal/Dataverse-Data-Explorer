@@ -1,0 +1,80 @@
+<form [formGroup]="variableForm" class="mx-10">
+  <label class="form-label">
+    Label
+    <input
+      type="text"
+      formControlName="label"
+      id="labl"
+      name="label"
+      class="form-input"
+    />
+  </label>
+  <label class="form-label">
+    Literal Question
+    <input
+      type="text"
+      formControlName="literalQuestion"
+      id="qstLit"
+      name="qstLit"
+      class="form-input"
+    />
+  </label>
+  <label class="form-label">
+    Interviewer Instructions
+    <input
+      type="text"
+      formControlName="interviewerQuestion"
+      id="ivuInstr"
+      name="ivuInstr"
+      class="form-input"
+    />
+  </label>
+  <label class="form-label">
+    Post Question
+    <input
+      type="text"
+      formControlName="postQuestion"
+      id="postQTxt"
+      name="postQTxt"
+      class="form-input"
+    />
+  </label>
+  <label class="form-label">
+    Universe
+    <input
+      type="text"
+      formControlName="universe"
+      id="universe"
+      name="universe"
+      class="form-input"
+    />
+  </label>
+  <label class="form-label">
+    Notes
+    <textarea
+      formControlName="notes"
+      id="notes"
+      name="notes"
+      rows="4"
+      cols="50"
+      class="form-input"
+    >
+    </textarea>
+  </label>
+  <label for="multiselect">Group(s)</label>
+  <dct-multiselect-dropdown id="multiselect"></dct-multiselect-dropdown>
+  <label class="form-label sr-only" for="weightVar"> Weight Variable </label>
+  <select
+    id="weightVar"
+    class="h-12 p-2 rounded"
+    [(ngModel)]="variableWeight"
+    [ngModelOptions]="{ standalone: true }"
+  >
+    <option [value]="" (click)="changeWeight('')">No Weight Assigned</option>
+    @for (weightValue of (( weights$ | async) | keyvalue); track $index) {
+    <option value="weightValue.value" (click)="changeWeight(weightValue.value)">
+      {{ getID(weightValue) }}
+    </option>
+    }
+  </select>
+</form>

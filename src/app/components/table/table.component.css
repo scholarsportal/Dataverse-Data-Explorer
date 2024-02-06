@@ -2,6 +2,10 @@
   grid-area: 1 / 1 / 2 / 10;
 }
 .table-container {
+  grid-area: 2/ 1 / 10 / 10;
+  overflow-y: scroll;
+}
+.table-container-selected {
   grid-area: 2/ 1 / 9 / 10;
   overflow-y: scroll;
 }

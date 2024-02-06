@@ -50,15 +50,6 @@ export class OptionsComponent implements OnDestroy {
     }
   }
 
-  private dialogContainsTarget(target: EventTarget | null): boolean {
-    return this.el?.nativeElement.contains(target as Node);
-  }
-
-  open() {
-    const options = this.optionsMenu?.nativeElement as HTMLDialogElement;
-    options?.show();
-  }
-
   openOptions(): void {
     const options = this.optionsMenu?.nativeElement as HTMLDialogElement;
     options?.showModal();

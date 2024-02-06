@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   selectCurrentVarList,
@@ -7,8 +7,11 @@ import {
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Variable } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
-import { VariableOptionsComponent } from './variable-options/variable-options.component';
-import { TableNavComponent } from './table-nav/table-nav.component';
+import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import {
+  openVariableChartModal,
+  openVariableEditModal,
+} from 'src/app/state/actions/ui.actions';
 
 @Component({
   selector: 'dct-table',
@@ -17,8 +20,10 @@ import { TableNavComponent } from './table-nav/table-nav.component';
 })
 export class TableComponent implements OnInit {
   @ViewChild('table') table: any;
+  @ViewChild('variableModal') variableModal?: ElementRef;
 
   vars$ = this.store.select(selectCurrentVarList);
+  modalMode$ = this.store.select(selectOpenVariableModalMode);
   selected: any[] = [];
   limit: number = 7;
   offset: number = 0;
@@ -52,7 +57,6 @@ export class TableComponent implements OnInit {
   }
 
   onLimitChange(newLimit: number) {
-    console.log(newLimit);
     this.limit = newLimit;
   }
 
@@ -70,14 +74,18 @@ export class TableComponent implements OnInit {
     this.hoveredVariable = event.row;
   }
 
-  // ngx-datatables to calculate height
-  getRowHeight(row: Variable) {
-    if (!row || !row.labl['#text']) {
-      return 50;
-    }
-    if (row.labl['#text'].length <= 45) {
-      return 50;
-    }
-    return row.labl['#text'].length + 5;
+  // Launch Modal
+  launchModal(data: { type: 'view' | 'edit'; variable: Variable }) {
+    console.log(data);
+    const modal = this.variableModal?.nativeElement as HTMLDialogElement;
+    modal.showModal();
+    if (data.type === 'edit')
+      return this.store.dispatch(
+        openVariableEditModal({ variableID: data.variable['@_ID'] })
+      );
+    if (data.type === 'view')
+      return this.store.dispatch(
+        openVariableChartModal({ variableID: data.variable['@_ID'] })
+      );
   }
 }

@@ -2,9 +2,16 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { VarAndGroupsState } from '../reducers/var-and-groups.reducer';
 import {
   selectDatasetFeature,
+  selectDatasetVariableGroups,
   selectDatasetVariables,
 } from './dataset.selectors';
 import { Variable } from '../interface';
+import {
+  selectOpenVariableData,
+  selectOpenVariableID,
+  selectOpenVariableModalMode,
+  selectUIFeature,
+} from './ui.selectors';
 
 export const selectVarAndGroupsFeature =
   createFeatureSelector<VarAndGroupsState>('var-and-groups');
@@ -74,7 +81,7 @@ export const selectCurrentVariableSelected = createSelector(
 
 export const selectVariableWeights = createSelector(
   selectDatasetVariables,
-  (datasetVariables) => {
+  (datasetVariables): { [id: string]: string } => {
     const weights: {
       [id: string]: string;
     } = {};
@@ -93,10 +100,9 @@ export const selectVariableWeights = createSelector(
 );
 
 export const selectVariablesWithGroupsReference = createSelector(
-  selectDatasetFeature,
+  selectDatasetVariableGroups,
   selectDatasetVariables,
-  (datasetState, datasetVariables) => {
-    const groups = datasetState.dataset?.codeBook.dataDscr.varGrp;
+  (groups, datasetVariables) => {
     const variablesGroupsReference: {
       [variableID: string]: { groups: string[]; label: string };
     } = {};

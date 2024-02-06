@@ -5,7 +5,12 @@
   (pagePreviousClick)="onPagePreviousClick()"
   (pageNextClick)="onPageNextClick()"
 ></dct-table-nav>
-<div class="table-container px-5">
+<div
+  class="px-5"
+  ngClass="{{
+    selected.length ? 'table-container-selected' : 'table-container '
+  }}"
+>
   @if (vars$ | async) {
   <ngx-datatable
     #table
@@ -89,6 +94,7 @@
         <dct-variable-options
           class="flex flex-row w-1/2 justify-around pt-1.5 px-2 transition-all duration-200"
           [variable]="row"
+          (launchModal)="launchModal($event)"
         ></dct-variable-options>
         }
       </ng-template>
@@ -98,6 +104,6 @@
   <div class="text-5xl font-bold">Loading Variables...</div>
   }
 </div>
+@if(selected.length){
 <dct-table-menu class="table-menu table-menu-grid"></dct-table-menu>
-<!-- @if(selected.length) {
-} -->
+}
