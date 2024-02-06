@@ -1,0 +1,19 @@
+.variable-navigate-button {
+  @apply rounded p-2 border dark:border-dark-inverse-surface;
+}
+.variable-navigate-label {
+  @apply sr-only;
+}
+.variable-mode-change-button {
+  @apply flex flex-row items-center rounded border px-2.5 dark:border-dark-inverse-surface;
+}
+.button {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.button:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.divider {
+  @apply h-px my-8 mx-10 bg-gray-200 border-0 dark:bg-dark-inverse-surface;
+}

@@ -34,6 +34,20 @@ export const selectOpenVariableData = createSelector(
   }
 );
 
+export const selectOpenVariableDataID = createSelector(
+  selectOpenVariableData,
+  (variable) => {
+    return variable?.['@_ID'];
+  }
+);
+
+export const selectOpenVariableDataName = createSelector(
+  selectOpenVariableData,
+  (variable) => {
+    return variable?.['@_name'];
+  }
+);
+
 export const selectOpenVariableSelectedGroups = createSelector(
   selectOpenVariableID,
   selectVariablesWithGroupsReference,

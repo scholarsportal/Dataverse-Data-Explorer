@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import {
+  selectOpenVariableDataID,
+  selectOpenVariableDataName,
+  selectOpenVariableModalMode,
+} from 'src/app/state/selectors/ui.selectors';
 import { changeVariableModalMode } from 'src/app/state/actions/ui.actions';
 
 @Component({
@@ -14,6 +18,8 @@ import { changeVariableModalMode } from 'src/app/state/actions/ui.actions';
 export class ModalHeaderComponent {
   @Output() closeVariableModal: EventEmitter<any> = new EventEmitter<any>();
   modalMode$ = this.store.select(selectOpenVariableModalMode);
+  id$ = this.store.select(selectOpenVariableDataID);
+  name$ = this.store.select(selectOpenVariableDataName);
 
   constructor(private store: Store) {}
 

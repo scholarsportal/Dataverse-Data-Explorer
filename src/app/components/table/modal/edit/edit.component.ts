@@ -1,21 +1,16 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
 import { Store } from '@ngrx/store';
-import {
-  selectOpenVariableData,
-  selectOpenVariableDataAsForm,
-  selectOpenVariableWeight,
-} from 'src/app/state/selectors/ui.selectors';
+import { selectOpenVariableDataAsForm } from 'src/app/state/selectors/ui.selectors';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 import { Subscription } from 'rxjs';
-import { Variable, VariableGroup } from 'src/app/state/interface';
+import { VariableGroup } from 'src/app/state/interface';
 
 @Component({
   selector: 'dct-edit',

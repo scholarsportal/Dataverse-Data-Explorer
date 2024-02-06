@@ -17,6 +17,6 @@ export const closeVariableModal = createAction(
   '[UI - Variable Modal] Close modal'
 );
 export const changeVariableModalMode = createAction(
-  '[UI - Variable Modal] Close modal',
+  '[UI - Variable Modal] Change modal mode',
   props<{ modalMode: 'view' | 'edit' }>()
 );

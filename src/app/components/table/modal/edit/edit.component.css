@@ -6,11 +6,9 @@
   @apply rounded border
  border-light-surface
   dark:border-dark-outline
-  text-gray-700
-  dark:bg-dark-surface-variant
-  dark:text-dark-outline;
+  dark:bg-dark-surface-variant;
 }
-.dropdown {
+.group-dropdown {
   @apply w-full
   flex
   flex-col
@@ -23,4 +21,19 @@
   text-gray-700
   dark:bg-dark-surface-variant
   dark:text-dark-inverse-surface;
+}
+.weight-dropdown {
+  @apply mx-2
+  mt-2.5
+  mb-2.5
+  px-3
+  py-2
+  rounded
+  border
+  border-light-surface
+  bg-white
+  dark:border-dark-outline
+  text-gray-700
+  dark:bg-dark-surface-variant
+  dark:text-dark-on-surface-variant;
 }

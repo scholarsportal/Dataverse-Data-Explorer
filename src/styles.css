@@ -252,12 +252,12 @@
     @apply text-light-inverse-primary dark:text-dark-inverse-primary;
   }
   /* Shadow */
-  .shadow {
+  /* .shadow {
     @apply bg-light-shadow dark:bg-dark-shadow;
   }
   .shadow-text {
     @apply text-light-shadow dark:text-dark-shadow;
-  }
+  } */
 
   /* Surface Tint */
   .surface-tint {

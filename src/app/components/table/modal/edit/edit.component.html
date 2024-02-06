@@ -65,13 +65,13 @@
     >Group(s)
     <dct-multiselect-dropdown
       id="multiselect"
-      class="dropdown"
+      class="group-dropdown"
       [selectedVariableGroups]="groups"
     ></dct-multiselect-dropdown>
   </label>
-  <div class="flex flex-row justify-between">
+  <div class="flex flex-row justify-between mt-5 pr-5">
     <label class="form-label sr-only" for="weightVar">Weight Variable</label>
-    <select id="weightVar" class="h-12 p-2 rounded" formControlName="weight">
+    <select id="weightVar" class="weight-dropdown" formControlName="weight">
       <option value="" (click)="changeWeight('')">No Weight Assigned</option>
       @for (weightValue of ( weights | keyvalue); track $index) {
       <option [value]="weightValue.key" (click)="changeWeight(weightValue.key)">
@@ -79,12 +79,16 @@
       </option>
       }
     </select>
-    <label for="isWeight" class="flex flex-row dark:text-dark-inverse-surface">
+    <label
+      for="isWeight"
+      class="flex flex-row items-center dark:text-dark-inverse-surface"
+    >
       <input
         type="checkbox"
         name="isWeight"
         id="isWeight"
         formControlName="isWeight"
+        class="mx-2"
       />Is Weight
     </label>
   </div>
