@@ -1,4 +1,5 @@
 <!-- CHART -->
+@if (chart) {
 <figure id="bar"></figure>
 <!-- CHART DATA -->
 <table>
@@ -13,16 +14,74 @@
     </tr>
   </thead>
   <tbody>
+    @for (item of ( chart | keyvalue ); track $index) {
     <tr>
       <td><input type="checkbox" name="mark-invalid" id="1" /></td>
-      <td>test</td>
-      <td>test</td>
-      <td>test</td>
-      <td>test</td>
-      <td>test</td>
+      <td>{{ item.key }}</td>
+      <td>{{ getCategory(item.value) }}</td>
+      <td>{{ getCount(item.value) }}</td>
+      <td>{{ getCountPercent(item.value) | number : '1.0-2' }}</td>
+      <td>{{ getCountWeighted(item.value) | number : '1.0-2' }}</td>
     </tr>
+    }
   </tbody>
 </table>
+}
 
 <h3 class="font-bold text-xl">Summary Statistics</h3>
+<table class="w-full mb-5">
+  @for (stat of (sumStat | keyvalue); track $index) {
+  <tr class="table-row my-4 border-b p-2">
+    <th class="text-left font-medium">{{ stat.key }}</th>
+    <th class="font-normal">{{ stat.value }}</th>
+  </tr>
+  }
+</table>
+
 <h3 class="font-bold text-xl">Variable Information</h3>
+<table class="mx-auto mb-5">
+  <tr class="table-row border-b">
+    <th class="text-left">Literal Question</th>
+    <td class="border-b p-2">{{ form.literalQuestion }}</td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Interviewer Instructions</th>
+    <td class="border-b p-2">
+      {{ form.interviewerQuestion }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Post Questions</th>
+    <td class="border-b p-2">
+      {{ form.postQuestion }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Universe</th>
+    <td class="border-b p-2">
+      {{ form.universe }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Notes</th>
+    <td class="border-b p-2">
+      {{ form.notes }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Groups</th>
+    <td class="border-b p-2">
+      {{ groups }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Weight Variable</th>
+    <td class="border-b p-2">
+      {{ weight }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left">Is Weight</th>
+    <td class="border-b p-2 capitalize">{{ form.isWeight }}</td>
+  </tr>
+</table>

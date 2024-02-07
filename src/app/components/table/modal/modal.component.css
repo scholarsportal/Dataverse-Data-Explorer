@@ -4,3 +4,6 @@
 .modal-header {
   @apply dark:text-dark-inverse-surface;
 }
+.modal-body {
+  @apply px-10;
+}

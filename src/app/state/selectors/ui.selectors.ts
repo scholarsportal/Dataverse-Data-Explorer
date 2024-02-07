@@ -131,41 +131,41 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
   selectOpenVariableData,
   (variable) => {
     const sumStats: {
-      mean?: string;
-      mode?: string;
-      median?: string | number;
-      totalValidCount?: string;
-      totalInvalidCount?: string;
-      minimum?: string;
-      maximum?: string;
-      standardDeviation?: string;
+      Mean?: string;
+      Mode?: string;
+      Median?: string | number;
+      'Total Valid Count'?: string;
+      'Total Invalid Count'?: string;
+      Minimum?: string;
+      Maximum?: string;
+      'Standard Deviation'?: string;
     } = {};
     if (variable?.sumStat) {
       variable.sumStat.map((value) => {
         switch (value['@_type']) {
           case 'mean':
-            sumStats.mean = value['#text'] as string;
+            sumStats.Mean = value['#text'] as string;
             break;
           case 'mode':
-            sumStats.mode = value['#text'] as string;
+            sumStats.Mode = value['#text'] as string;
             break;
           case 'medn':
-            sumStats.median = value['#text'] as string;
+            sumStats.Median = value['#text'] as string;
             break;
           case 'invd':
-            sumStats.totalInvalidCount = value['#text'] as string;
+            sumStats['Total Invalid Count'] = value['#text'] as string;
             break;
           case 'min':
-            sumStats.minimum = value['#text'] as string;
+            sumStats.Minimum = value['#text'] as string;
             break;
           case 'stdev':
-            sumStats.standardDeviation = value['#text'] as string;
+            sumStats['Standard Deviation'] = value['#text'] as string;
             break;
           case 'max':
-            sumStats.maximum = value['#text'] as string;
+            sumStats.Maximum = value['#text'] as string;
             break;
           case 'vald':
-            sumStats.totalValidCount = value['#text'] as string;
+            sumStats['Total Valid Count'] = value['#text'] as string;
             break;
         }
       });
