@@ -16,7 +16,7 @@
     </svg>
     <span class="sr-only">close</span>
   </button>
-  <h3 class="text-2xl">{{ modalMode$ | async | titlecase }} Variable</h3>
+  <h2 class="text-2xl">{{ modalMode$ | async | titlecase }} Variable</h2>
 </div>
 <div class="flex flex-row justify-between px-10">
   @if ((modalMode$ | async) === 'view') {

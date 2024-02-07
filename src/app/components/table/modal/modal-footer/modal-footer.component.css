@@ -1,0 +1,34 @@
+.button {
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-width: 1px;
+  padding-left: 0.625rem /* 10px */;
+  padding-right: 0.625rem /* 10px */;
+  padding-top: 0.5rem /* 8px */;
+  padding-bottom: 0.5rem /* 8px */;
+  margin-top: 0.625rem /* 10px */;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.button:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.button-label {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
+}
+.update-button {
+  @apply border-primary-10
+  bg-light-primary 
+  text-white
+  dark:bg-gray-900 
+  dark:text-primary-60
+  dark:hover:bg-primary-60
+  dark:hover:text-white;
+}
+.close-button {
+  @apply dark:text-white dark:hover:bg-dark-outline;
+}
