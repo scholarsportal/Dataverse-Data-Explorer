@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { Variable } from '../interface';
 import {
+  changeOpenVariable,
   changeVariableModalMode,
   closeOptionsMenu,
   closeVariableModal,
@@ -8,7 +8,6 @@ import {
   openVariableChartModal,
   openVariableEditModal,
 } from '../actions/ui.actions';
-import { state } from '@angular/animations';
 
 export interface UIState {
   modal: {
@@ -79,6 +78,14 @@ export const uiReducer = createReducer(
     modal: {
       ...state.modal,
       mode: modalMode,
+    },
+  })),
+  on(changeOpenVariable, (state, { variableID }) => ({
+    ...state,
+    modal: {
+      mode: state.modal.mode,
+      open: state.modal.open,
+      variableID,
     },
   }))
 );

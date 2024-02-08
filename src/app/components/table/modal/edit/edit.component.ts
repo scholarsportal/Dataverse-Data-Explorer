@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
 import {
@@ -22,7 +29,7 @@ import { VariableGroup } from 'src/app/state/interface';
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css',
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnChanges {
   sub$?: Subscription;
   @Input() variableData!: any;
   @Input() weights!: { [id: string]: string } | null;
@@ -43,6 +50,12 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.variableForm.patchValue(this.variableData);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      this.variableForm.patchValue(this.variableData);
+    }
   }
 
   changeWeight(variable: any) {

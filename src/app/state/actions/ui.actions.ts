@@ -20,3 +20,7 @@ export const changeVariableModalMode = createAction(
   '[UI - Variable Modal] Change modal mode',
   props<{ modalMode: 'view' | 'edit' }>()
 );
+export const changeOpenVariable = createAction(
+  '[UI - Variable Modal] Go to Next/Previous Variable',
+  props<{ variableID: string }>()
+);

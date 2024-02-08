@@ -7,6 +7,8 @@ import { closeVariableModal } from 'src/app/state/actions/ui.actions';
 import { ModalHeaderComponent } from './modal-header/modal-header.component';
 import { ModalFooterComponent } from './modal-footer/modal-footer.component';
 import {
+  selectGetNextVariableID,
+  selectGetPreviousVariableID,
   selectOpenVariableDataAsForm,
   selectOpenVariableDataAsSummaryStat,
   selectOpenVariableDataChart,
@@ -31,6 +33,9 @@ import { selectVariableWeights } from 'src/app/state/selectors/var-groups.select
 })
 export class ModalComponent {
   @ViewChild('variableModal') variableModal?: ElementRef;
+  // header
+  nextVar$ = this.store.select(selectGetNextVariableID);
+  previousVar$ = this.store.select(selectGetPreviousVariableID);
   // form data
   modalMode$ = this.store.select(selectOpenVariableModalMode);
   variableData$ = this.store.select(selectOpenVariableDataAsForm);

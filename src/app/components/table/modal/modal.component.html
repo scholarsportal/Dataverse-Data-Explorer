@@ -6,6 +6,8 @@
   <dct-modal-header
     class="modal-header"
     (closeVariableModal)="close()"
+    [nextVar]="nextVar$ | async"
+    [previousVar]="previousVar$ | async"
   ></dct-modal-header>
   <div class="modal-body h-full">
     @if ((modalMode$ | async) === 'edit') {

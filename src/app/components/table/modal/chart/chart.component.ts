@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { VariableForm, VariableGroup } from 'src/app/state/interface';
@@ -19,7 +25,7 @@ interface ChartData {
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.css',
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges {
   @Input() chart!: { y: string; x: number | null }[] | null;
   @Input() chartTable!: { [id: number]: ChartData } | null;
   @Input() form!: VariableForm | null | undefined;
@@ -32,6 +38,12 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.createChart();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      this.redrawChart();
+    }
   }
 
   getCategory(value: ChartData | null) {
@@ -92,9 +104,10 @@ export class ChartComponent implements OnInit {
         filteredData.push(item);
       }
     });
-
     // Update chart data and redraw
-    this.chartJS.data.datasets[0].data = filteredData;
-    this.chartJS.update();
+    if (this.chartJS) {
+      this.chartJS.data.datasets[0].data = filteredData;
+      this.chartJS.update();
+    }
   }
 }

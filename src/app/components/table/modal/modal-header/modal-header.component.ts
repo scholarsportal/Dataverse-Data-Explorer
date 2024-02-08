@@ -1,12 +1,17 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
-  selectOpenVariableDataID,
+  selectGetNextVariableID,
   selectOpenVariableDataName,
+  selectOpenVariableID,
   selectOpenVariableModalMode,
 } from 'src/app/state/selectors/ui.selectors';
-import { changeVariableModalMode } from 'src/app/state/actions/ui.actions';
+import {
+  changeOpenVariable,
+  changeVariableModalMode,
+} from 'src/app/state/actions/ui.actions';
+import { Variable } from 'src/app/state/interface';
 
 @Component({
   selector: 'dct-modal-header',
@@ -16,15 +21,23 @@ import { changeVariableModalMode } from 'src/app/state/actions/ui.actions';
   styleUrl: './modal-header.component.css',
 })
 export class ModalHeaderComponent {
+  @Input() nextVar!: string | null | undefined;
+  @Input() previousVar!: string | null | undefined;
   @Output() closeVariableModal: EventEmitter<any> = new EventEmitter<any>();
   modalMode$ = this.store.select(selectOpenVariableModalMode);
-  id$ = this.store.select(selectOpenVariableDataID);
+  id$ = this.store.select(selectOpenVariableID);
   name$ = this.store.select(selectOpenVariableDataName);
 
   constructor(private store: Store) {}
 
   handleClose() {
     this.closeVariableModal.emit();
+  }
+
+  navigateToNextVariable(id: string | null | undefined) {
+    if (id) {
+      this.store.dispatch(changeOpenVariable({ variableID: id }));
+    }
   }
 
   switchToEdit() {

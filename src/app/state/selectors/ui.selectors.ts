@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UIState } from '../reducers/ui.reducer';
 import { selectDatasetVariables } from './dataset.selectors';
 import {
+  selectCurrentVarList,
   selectVariableWeights,
   selectVariablesWithGroupsReference,
 } from './var-groups.selectors';
@@ -30,14 +31,14 @@ export const selectOpenVariableData = createSelector(
     if (datasetVariables && variableID) {
       return datasetVariables[variableID];
     }
-    return;
+    return null;
   }
 );
 
-export const selectOpenVariableDataID = createSelector(
+export const selectOpenVariableStats = createSelector(
   selectOpenVariableData,
   (variable) => {
-    return variable?.['@_ID'];
+    return variable?.catgry;
   }
 );
 
@@ -60,21 +61,19 @@ export const selectOpenVariableSelectedGroups = createSelector(
 );
 
 export const selectOpenVariableDataAsForm = createSelector(
-  selectOpenVariableID,
-  selectDatasetVariables,
-  (variableID, datasetVariables) => {
+  selectOpenVariableData,
+  (variable) => {
     const formData: VariableForm = initVariableForm;
-    if (datasetVariables && variableID) {
-      formData.id = datasetVariables[variableID]['@_ID'];
-      formData.label = datasetVariables[variableID].labl['#text'];
-      formData.literalQuestion = datasetVariables[variableID].qstn?.qstnLit;
-      formData.interviewQuestion =
-        datasetVariables[variableID].qstn?.ivuInstr || '';
-      formData.postQuestion = datasetVariables[variableID].qstn?.postQTxt || '';
-      formData.universe = datasetVariables[variableID].universe || '';
-      formData.notes = datasetVariables[variableID].notes['#text'] || '';
-      formData.weight = datasetVariables[variableID]['@_wgt-var'] || '';
-      formData.isWeight = datasetVariables[variableID]['@_wgt'] ? true : false;
+    if (variable) {
+      formData.id = variable['@_ID'];
+      formData.label = variable.labl['#text'];
+      formData.literalQuestion = variable.qstn?.qstnLit;
+      formData.interviewQuestion = variable.qstn?.ivuInstr || '';
+      formData.postQuestion = variable.qstn?.postQTxt || '';
+      formData.universe = variable.universe || '';
+      formData.notes = variable.notes['#text'] || '';
+      formData.weight = variable['@_wgt-var'] || '';
+      formData.isWeight = variable['@_wgt'] ? true : false;
       return formData;
     }
     return;
@@ -82,11 +81,10 @@ export const selectOpenVariableDataAsForm = createSelector(
 );
 
 export const selectOpenVariableWeight = createSelector(
-  selectOpenVariableID,
-  selectDatasetVariables,
-  (openVarID, datasetVariables) => {
-    if (openVarID && datasetVariables) {
-      return datasetVariables[datasetVariables[openVarID]['@_wgt-var']];
+  selectOpenVariableData,
+  (variable) => {
+    if (variable) {
+      return variable['@_wgt-var'];
     }
     return null;
   }
@@ -106,21 +104,30 @@ export const selectOpenVariableDataChartTable = createSelector(
       };
     } = {};
     let total = 0;
-    if (variable?.catgry) {
-      variable.catgry.map((variableCategory) => {
-        chart[variableCategory.catValu] = {
-          ...chart[variableCategory.catValu],
-          values: variableCategory.catValu,
-          categories: variableCategory.labl['#text'],
-          count: variableCategory.catStat[0]['#text'],
-          countWeighted: variableCategory.catStat[1]['#text'],
+    const categories = variable?.catgry;
+    if (categories) {
+      categories.forEach((variableCategory) => {
+        const catValu = variableCategory.catValu;
+        const labl = variableCategory.labl['#text'];
+        const count = variableCategory.catStat[0]['#text'];
+        const countWeighted = variableCategory.catStat[1]['#text'];
+
+        chart[catValu] = {
+          values: catValu,
+          categories: labl,
+          count,
+          countWeighted,
           valid: true,
+          countPercent: 0, // Initialize countPercent to 0
         };
-        total += variableCategory.catStat[0]['#text'] as number;
+        total += Number(count);
       });
-      variable.catgry.map((variableCategory) => {
-        chart[variableCategory.catValu].countPercent =
-          ((variableCategory.catStat[0]['#text'] as number) / total) * 100;
+
+      // Calculate countPercent for each category
+      categories.forEach((variableCategory) => {
+        const catValu = variableCategory.catValu;
+        chart[catValu].countPercent =
+          (Number(chart[catValu].count) / total) * 100;
       });
     }
     return chart;
@@ -131,12 +138,14 @@ export const selectOpenVariableDataChart = createSelector(
   selectOpenVariableDataChartTable,
   (state) => {
     const chartData: { y: string; x: number | null }[] = [];
-    Object.values(state).map((value) =>
-      chartData.push({
-        y: value.categories,
-        x: parseFloat(value.count as string) || 0,
-      })
-    );
+    if (state) {
+      Object.values(state).map((value) =>
+        chartData.push({
+          y: value.categories,
+          x: parseFloat(value.count as string) || 0,
+        })
+      );
+    }
     return chartData;
   }
 );
@@ -186,5 +195,35 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
       return sumStats;
     }
     return sumStats;
+  }
+);
+
+export const selectGetNextVariableID = createSelector(
+  selectOpenVariableData,
+  selectCurrentVarList,
+  (variable, currentVariableList) => {
+    if (variable && currentVariableList) {
+      const index = currentVariableList.indexOf(variable);
+      if (index >= currentVariableList.length - 1) {
+        return currentVariableList[0]['@_ID'];
+      }
+      return currentVariableList[index + 1]['@_ID'];
+    }
+    return;
+  }
+);
+
+export const selectGetPreviousVariableID = createSelector(
+  selectOpenVariableData,
+  selectCurrentVarList,
+  (variable, currentVariableList) => {
+    if (variable && currentVariableList) {
+      const index = currentVariableList.indexOf(variable);
+      if (index <= 0) {
+        return currentVariableList[currentVariableList.length - 1]['@_ID'];
+      }
+      return currentVariableList[index - 1]['@_ID'];
+    }
+    return;
   }
 );

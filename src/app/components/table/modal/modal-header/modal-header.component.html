@@ -54,7 +54,10 @@
   </button>
   }
   <div>
-    <button class="variable-navigate-button button mx-5">
+    <button
+      class="variable-navigate-button button mx-5"
+      (click)="navigateToNextVariable(previousVar)"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -71,7 +74,10 @@
       </svg>
       <span class="variable-navigate-label">variable navigate left</span>
     </button>
-    <button class="variable-navigate-button button">
+    <button
+      class="variable-navigate-button button"
+      (click)="navigateToNextVariable(nextVar)"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
