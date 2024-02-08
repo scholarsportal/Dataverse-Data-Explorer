@@ -1,8 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
-import { Store } from '@ngrx/store';
-import { selectOpenVariableDataAsForm } from 'src/app/state/selectors/ui.selectors';
 import {
   FormControl,
   FormGroup,
@@ -24,11 +22,11 @@ import { VariableGroup } from 'src/app/state/interface';
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css',
 })
-export class EditComponent implements OnInit, OnDestroy {
+export class EditComponent implements OnInit {
   sub$?: Subscription;
-  variableWeight: any;
-  weights: { [id: string]: string } | null = null;
-  groups: VariableGroup[] = [];
+  @Input() variableData!: any;
+  @Input() weights!: { [id: string]: string } | null;
+  @Input() groups!: VariableGroup[] | null;
 
   variableForm = new FormGroup({
     id: new FormControl(''),
@@ -43,23 +41,8 @@ export class EditComponent implements OnInit, OnDestroy {
     weight: new FormControl(''),
   });
 
-  constructor(private store: Store) {}
-
   ngOnInit(): void {
-    this.sub$ = this.store
-      .select(selectOpenVariableDataAsForm)
-      .subscribe((value) => {
-        if (value) {
-          this.groups = value.groups;
-          this.weights = value.variableWeights;
-          this.variableWeight = value.formData.weight;
-          this.variableForm.patchValue(value?.formData);
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.sub$?.unsubscribe();
+    this.variableForm.patchValue(this.variableData);
   }
 
   changeWeight(variable: any) {

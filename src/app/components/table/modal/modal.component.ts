@@ -6,7 +6,15 @@ import { Store } from '@ngrx/store';
 import { closeVariableModal } from 'src/app/state/actions/ui.actions';
 import { ModalHeaderComponent } from './modal-header/modal-header.component';
 import { ModalFooterComponent } from './modal-footer/modal-footer.component';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import {
+  selectOpenVariableDataAsForm,
+  selectOpenVariableDataAsSummaryStat,
+  selectOpenVariableDataChart,
+  selectOpenVariableDataChartTable,
+  selectOpenVariableModalMode,
+  selectOpenVariableSelectedGroups,
+} from 'src/app/state/selectors/ui.selectors';
+import { selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 
 @Component({
   selector: 'dct-modal',
@@ -23,7 +31,15 @@ import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selector
 })
 export class ModalComponent {
   @ViewChild('variableModal') variableModal?: ElementRef;
-  modalMode = this.store.select(selectOpenVariableModalMode);
+  // form data
+  modalMode$ = this.store.select(selectOpenVariableModalMode);
+  variableData$ = this.store.select(selectOpenVariableDataAsForm);
+  variableGroups$ = this.store.select(selectOpenVariableSelectedGroups);
+  allWeights$ = this.store.select(selectVariableWeights);
+  // chart data
+  chart$ = this.store.select(selectOpenVariableDataChart);
+  chartTable$ = this.store.select(selectOpenVariableDataChartTable);
+  sumStats$ = this.store.select(selectOpenVariableDataAsSummaryStat);
 
   constructor(private store: Store) {}
 

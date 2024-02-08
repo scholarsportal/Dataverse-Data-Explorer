@@ -1,6 +1,7 @@
 <!-- CHART -->
-@if (chart) {
-<figure id="bar"></figure>
+<div class="chart-container">
+  <canvas id="variableChart"> {{ chartJS }}</canvas>
+</div>
 <!-- CHART DATA -->
 <table>
   <thead>
@@ -14,9 +15,16 @@
     </tr>
   </thead>
   <tbody>
-    @for (item of ( chart | keyvalue ); track $index) {
+    @for (item of ( chartTable | keyvalue ); track $index) {
     <tr>
-      <td><input type="checkbox" name="mark-invalid" id="1" /></td>
+      <td>
+        <input
+          type="checkbox"
+          name="mark-invalid"
+          id="{{ $index }}"
+          (change)="toggleCheckbox(item.value)"
+        />
+      </td>
       <td>{{ item.key }}</td>
       <td>{{ getCategory(item.value) }}</td>
       <td>{{ getCount(item.value) }}</td>
@@ -26,11 +34,10 @@
     }
   </tbody>
 </table>
-}
 
 <h3 class="font-bold text-xl">Summary Statistics</h3>
 <table class="w-full mb-5">
-  @for (stat of (sumStat | keyvalue); track $index) {
+  @for (stat of sumStat; track $index) {
   <tr class="table-row my-4 border-b p-2">
     <th class="text-left font-medium">{{ stat.key }}</th>
     <th class="font-normal">{{ stat.value }}</th>
@@ -39,6 +46,7 @@
 </table>
 
 <h3 class="font-bold text-xl">Variable Information</h3>
+@if (form) {
 <table class="mx-auto mb-5">
   <tr class="table-row border-b">
     <th class="text-left">Literal Question</th>
@@ -47,7 +55,7 @@
   <tr class="table-row border-b">
     <th class="text-left">Interviewer Instructions</th>
     <td class="border-b p-2">
-      {{ form.interviewerQuestion }}
+      {{ form.interviewQuestion }}
     </td>
   </tr>
   <tr class="table-row border-b">
@@ -71,7 +79,9 @@
   <tr class="table-row border-b">
     <th class="text-left">Groups</th>
     <td class="border-b p-2">
-      {{ groups }}
+      @for (group of groups; track $index) {
+      <span> {{ group.labl }}, </span>
+      }
     </td>
   </tr>
   <tr class="table-row border-b">
@@ -85,3 +95,4 @@
     <td class="border-b p-2 capitalize">{{ form.isWeight }}</td>
   </tr>
 </table>
+}

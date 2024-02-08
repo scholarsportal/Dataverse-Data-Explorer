@@ -101,7 +101,6 @@ export interface State {
     mode: string;
     id: string | string[] | null;
     variable: any | null;
-    groups: { [id: string]: string } | null;
     state: 'saved' | 'changes' | '';
   };
   notificationStack: { notificationType: string; message: string } | {};

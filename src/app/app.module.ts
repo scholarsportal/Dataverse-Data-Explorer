@@ -23,8 +23,6 @@ import { TableNavComponent } from './components/table/table-nav/table-nav.compon
 import { TableMenuComponent } from './components/table/table-menu/table-menu.component';
 import { VariableOptionsComponent } from './components/table/variable-options/variable-options.component';
 import { OptionsComponent } from './components/sidebar/options/options.component';
-import { EditComponent } from './components/table/modal/edit/edit.component';
-import { ChartComponent } from './components/table/modal/chart/chart.component';
 import { ModalComponent } from './components/table/modal/modal.component';
 
 @NgModule({

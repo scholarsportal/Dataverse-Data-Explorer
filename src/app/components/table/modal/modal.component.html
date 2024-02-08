@@ -8,10 +8,21 @@
     (closeVariableModal)="close()"
   ></dct-modal-header>
   <div class="modal-body h-full">
-    @if ((modalMode | async) === 'edit') {
-    <dct-edit></dct-edit>
-    } @if ((modalMode | async) === 'view') {
-    <dct-chart class="dark:text-white"></dct-chart>
+    @if ((modalMode$ | async) === 'edit') {
+    <dct-edit
+      [groups]="variableGroups$ | async"
+      [variableData]="variableData$ | async"
+      [weights]="allWeights$ | async"
+    ></dct-edit>
+    } @if ((modalMode$ | async) === 'view') {
+    <dct-chart
+      class="dark:text-white"
+      [chart]="chart$ | async"
+      [chartTable]="chartTable$ | async"
+      [form]="variableData$ | async"
+      [groups]="variableGroups$ | async"
+      [sumStat]="sumStats$ | async"
+    ></dct-chart>
     }
   </div>
   <dct-modal-footer

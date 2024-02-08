@@ -1,17 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { selectChartData } from 'src/app/state/selectors/ui.selectors';
+import { VariableForm, VariableGroup } from 'src/app/state/interface';
+import { Chart } from 'chart.js/auto';
 
-interface Chart {
-  [id: number]: {
-    values: number;
-    categories: string;
-    count: string | number;
-    countPercent: number;
-    countWeighted?: string | number;
-  };
+interface ChartData {
+  values: number;
+  categories: string;
+  count: string | number;
+  countPercent: number;
+  valid: boolean;
+  countWeighted?: string | number | undefined;
 }
 @Component({
   selector: 'dct-chart',
@@ -20,51 +19,23 @@ interface Chart {
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.css',
 })
-export class ChartComponent implements OnInit, OnDestroy {
-  sub$!: Subscription;
-  chart!: Chart;
-  form!: any;
-  sumStat!: {
-    Mean?: string;
-    Mode?: string;
-    Median?: string | number;
-    'Total Valid Count'?: string;
-    'Total Invalid Count'?: string;
-    Minimum?: string;
-    Maximum?: string;
-    'Standard Deviation'?: string;
-  };
-  selectList: any[] = [];
-  groups: any[] = [];
-  weight: string = '';
+export class ChartComponent implements OnInit {
+  @Input() chart!: { y: string; x: number | null }[] | null;
+  @Input() chartTable!: { [id: number]: ChartData } | null;
+  @Input() form!: VariableForm | null | undefined;
+  @Input() sumStat!: { key: string; value: string }[] | null;
+  @Input() groups!: VariableGroup[] | null;
+  @Input() weight!: { [id: string]: string } | null;
 
-  constructor(private store: Store) {}
+  public chartJS: any;
+  selectList: any[] = [];
 
   ngOnInit(): void {
-    this.sub$ = this.store
-      .select(selectChartData)
-      .subscribe(({ form, chart, sumStat }) => {
-        this.form = form?.formData;
-        form?.groups.map((group) => {
-          this.groups.push(group.labl);
-        });
-        this.weight = JSON.stringify(form?.variableWeights);
-        this.chart = chart;
-        console.log(chart);
-        this.sumStat = sumStat;
-      });
+    this.createChart();
   }
 
-  ngOnDestroy(): void {
-    this.sub$.unsubscribe;
-  }
-
-  getStat(stat: any) {
-    console.log(stat);
-  }
-
-  getCategory(value: any) {
-    return value.categories;
+  getCategory(value: ChartData | null) {
+    return value?.categories;
   }
 
   getCount(value: any) {
@@ -77,5 +48,53 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   getCountWeighted(value: any) {
     return value.countWeighted;
+  }
+
+  toggleCheckbox(item: any) {
+    const index = this.selectList.indexOf(item.categories);
+    if (index !== -1) {
+      this.selectList.splice(index, 1);
+    } else {
+      this.selectList.push(item.categories);
+    }
+    this.redrawChart();
+    // redraw chart without items in select list
+  }
+
+  private truncateText(text: string): string {
+    const maxLength = 13;
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + '...';
+    }
+    return text;
+  }
+
+  private createChart() {
+    this.chartJS = new Chart('variableChart', {
+      type: 'bar',
+      data: {
+        datasets: [
+          {
+            data: this.chart,
+          },
+        ],
+      },
+      options: {
+        indexAxis: 'y',
+      },
+    });
+  }
+
+  private redrawChart() {
+    const filteredData: { y: string; x: number | null }[] = [];
+    this.chart?.map((item) => {
+      if (!this.selectList.includes(item.y)) {
+        filteredData.push(item);
+      }
+    });
+
+    // Update chart data and redraw
+    this.chartJS.data.datasets[0].data = filteredData;
+    this.chartJS.update();
   }
 }
