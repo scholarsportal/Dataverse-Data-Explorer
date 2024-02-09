@@ -14,11 +14,12 @@ import {
   closeOptionsMenu,
   openOptionsMenu,
 } from 'src/app/state/actions/ui.actions';
+import { ImportComponent } from './import/import.component';
 
 @Component({
   selector: 'dct-options',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ImportComponent],
   templateUrl: './options.component.html',
   styleUrl: './options.component.css',
 })

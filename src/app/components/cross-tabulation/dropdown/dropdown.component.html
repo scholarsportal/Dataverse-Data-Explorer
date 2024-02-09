@@ -1,0 +1,19 @@
+<div>
+  <label for="groupDropdown">Group:</label>
+  <select id="groupDropdown" (change)="filterVariables($event.target)">
+    <option value="">All Groups</option>
+    @for (group of groups; track $index) {
+    <option [value]="group['@_var']">{{ group.labl }}</option>
+    }
+  </select>
+</div>
+
+<div>
+  <label for="variableDropdown">Variable:</label>
+  <select id="variableDropdown" [(ngModel)]="selectedVariable">
+    <option value="">All Variables</option>
+    @for (variable of filteredVariables; track $index) {
+    <option [value]="variable">{{ variable.labl['#text'] }}</option>
+    }
+  </select>
+</div>

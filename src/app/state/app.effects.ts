@@ -9,6 +9,12 @@ import {
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
+import {
+  importNewFile,
+  metadataImportFailed,
+  metadataImportSuccess,
+} from './actions/var-and-groups.actions';
+import { error } from 'console';
 
 @Injectable()
 export class AppEffects {
@@ -39,6 +45,19 @@ export class AppEffects {
       );
     },
     { functional: true }
+  );
+
+  importNewMetadata$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(importNewFile),
+        map(({ file }) => {
+          const parsedXML = ddiService.XMLtoJSON(file);
+          return metadataImportSuccess({ data: parsedXML });
+        }),
+        catchError((error) => of(metadataImportFailed({ error })))
+      );
+    }
   );
 
   constructor(private actions$: Actions) {}

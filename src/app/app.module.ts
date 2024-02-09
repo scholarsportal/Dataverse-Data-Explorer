@@ -24,6 +24,7 @@ import { TableMenuComponent } from './components/table/table-menu/table-menu.com
 import { VariableOptionsComponent } from './components/table/variable-options/variable-options.component';
 import { OptionsComponent } from './components/sidebar/options/options.component';
 import { ModalComponent } from './components/table/modal/modal.component';
+import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ModalComponent } from './components/table/modal/modal.component';
     TableMenuComponent,
     OptionsComponent,
     ModalComponent,
+    CrossTabulationComponent,
   ],
   bootstrap: [AppComponent],
 })
