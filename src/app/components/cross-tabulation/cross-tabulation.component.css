@@ -1,0 +1,9 @@
+.addNew {
+  @apply rounded 
+  border
+  m-2
+  px-2
+  py-1.5
+border-light-surface
+dark:border-dark-surface-variant;
+}

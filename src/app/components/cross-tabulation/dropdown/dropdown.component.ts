@@ -1,8 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
-  OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -19,32 +20,47 @@ import { FormsModule } from '@angular/forms';
 export class DropdownComponent implements OnChanges {
   @Input() groups: VariableGroup[] | null | undefined = [];
   @Input() variables: { [id: string]: Variable } | null = {};
+  @Input() type!: 'row' | 'column';
+  @Input() index!: number;
+  @Output() selectedVariable: EventEmitter<{
+    type: 'row' | 'column';
+    index: number;
+    variable: Variable;
+  }> = new EventEmitter<{
+    type: 'row' | 'column';
+    index: number;
+    variable: Variable;
+  }>();
 
-  selectedVariable: any = '';
   filteredVariables: Variable[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       this.filteredVariables = Object.values(this.variables || {});
     }
-    console.log(this.filteredVariables);
   }
 
   filterVariables(group: any | null) {
-    console.log(group);
-    if (group.value === '') {
-      this.filteredVariables = Object.values(this.variables || {});
+    if (group?.value) {
+      const newGroup = group.value as string;
+      if (!newGroup) {
+        this.filteredVariables = Object.values(this.variables || {});
+      }
+      if (newGroup) {
+        const newVariableList: Variable[] = [];
+        newGroup.split(' ').map((variableID: string) => {
+          newVariableList.push(this.variables![variableID]);
+        });
+        this.filteredVariables = newVariableList;
+      }
     }
-    if (group.value) {
-      // this.filteredVariables = this.variables.filter(variable => variable)
-      const newVariableList: Variable[] = [];
-      console.log(group.value);
-      group.value['@_var']
-        .split(' ')
-        .map((variableID: string) =>
-          newVariableList.push(this.variables![variableID])
-        );
-      this.filteredVariables = newVariableList;
-    }
+  }
+
+  handleVariableSelect(variable: any) {
+    this.selectedVariable.emit({
+      type: this.type,
+      index: this.index,
+      variable: this.variables![variable.value],
+    });
   }
 }

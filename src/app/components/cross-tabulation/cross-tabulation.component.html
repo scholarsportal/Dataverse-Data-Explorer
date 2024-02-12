@@ -1,4 +1,25 @@
-<dct-dropdown
-  [groups]="groups$ | async"
-  [variables]="variables$ | async"
-></dct-dropdown>
+<div class="flex flex-col">
+  <dct-dropdown
+    [groups]="groups$ | async"
+    [variables]="variables$ | async"
+    type="row"
+    [index]="1"
+    (selectedVariable)="onVariableSelect($event)"
+  ></dct-dropdown>
+
+  <dct-dropdown
+    [groups]="groups$ | async"
+    [variables]="variables$ | async"
+    type="column"
+    [index]="2"
+    (selectedVariable)="onVariableSelect($event)"
+  ></dct-dropdown>
+  <div class="flex flex-row">
+    <button class="addNew surface on-surface-text">Add Row</button>
+    <button class="addNew on-surface-variant on-surface-text">
+      Add Column
+    </button>
+    <button class="addNew secondary on-secondary-text">View Graph</button>
+  </div>
+  <dct-cross-table></dct-cross-table>
+</div>

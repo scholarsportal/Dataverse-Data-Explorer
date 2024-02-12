@@ -27,8 +27,9 @@
     "@swimlane/ngx-datatable": "^20.1.0",
     "chart.js": "^4.4.1",
     "fast-xml-parser": "^4.3.3",
-    "jquery": "^3.6.0",
+    "jquery": "^3.7.1",
     "lodash.merge": "^4.6.2",
+    "pivottable": "^2.23.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

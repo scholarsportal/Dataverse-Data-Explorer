@@ -1,19 +1,34 @@
-<div>
-  <label for="groupDropdown">Group:</label>
-  <select id="groupDropdown" (change)="filterVariables($event.target)">
-    <option value="">All Groups</option>
-    @for (group of groups; track $index) {
-    <option [value]="group['@_var']">{{ group.labl }}</option>
+<div class="w-full flex flex-row">
+  <label for="rowColoumnSelect" class="sr-only">Choose row/column</label>
+  <select
+    name="rowColoumnSelect"
+    id="rowColoumnSelect"
+    class="dropdown"
+    [value]="type"
+  >
+    <option value="row">ROW</option>
+    <option value="column">COLUMN</option>
+  </select>
+  <label for="variableDropdown" class="sr-only">Variable:</label>
+  <select
+    id="variableDropdown"
+    class="dropdown"
+    (change)="handleVariableSelect($event.target)"
+  >
+    <option value="" disabled [defaultSelected]="true">Choose Variable</option>
+    @for (variable of filteredVariables; track $index) {
+    <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
     }
   </select>
-</div>
-
-<div>
-  <label for="variableDropdown">Variable:</label>
-  <select id="variableDropdown" [(ngModel)]="selectedVariable">
-    <option value="">All Variables</option>
-    @for (variable of filteredVariables; track $index) {
-    <option [value]="variable">{{ variable.labl['#text'] }}</option>
+  <label for="groupDropdown" class="sr-only">Group:</label>
+  <select
+    id="groupDropdown"
+    class="dropdown"
+    (change)="filterVariables($event.target)"
+  >
+    <option value="" disabled [defaultSelected]="true">Filter by Group</option>
+    @for (group of groups; track $index) {
+    <option [value]="group['@_var']">{{ group.labl }}</option>
     }
   </select>
 </div>
