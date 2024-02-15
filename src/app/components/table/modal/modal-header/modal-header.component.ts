@@ -6,7 +6,7 @@ import {
   selectOpenVariableDataName,
   selectOpenVariableID,
   selectOpenVariableModalMode,
-} from 'src/app/state/selectors/ui.selectors';
+} from 'src/app/state/selectors/open-variable.selectors';
 import {
   changeOpenVariable,
   changeVariableModalMode,

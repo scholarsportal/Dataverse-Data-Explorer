@@ -22,7 +22,7 @@ interface SummaryStatistic {
 export interface Category {
   catValu: number;
   labl: Label;
-  catStat: SummaryStatistic[];
+  catStat: SummaryStatistic[] | SummaryStatistic;
 }
 
 export interface Variable {

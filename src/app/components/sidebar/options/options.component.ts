@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { selectIsOptionsMenuOpen } from 'src/app/state/selectors/ui.selectors';
+import { selectIsOptionsMenuOpen } from 'src/app/state/selectors/open-variable.selectors';
 import { Subscription } from 'rxjs';
 import {
   closeOptionsMenu,

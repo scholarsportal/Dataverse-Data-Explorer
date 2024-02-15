@@ -1,27 +1,24 @@
 import { isDevMode } from '@angular/core';
-import {
-  ActionReducer,
-  ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
-  MetaReducer,
-} from '@ngrx/store';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { datasetReducer, DatasetState } from './dataset.reducer';
 import {
   varAndGroupsReducer,
   VarAndGroupsState,
 } from './var-and-groups.reducer';
-import { uiReducer, UIState } from './ui.reducer';
+import {
+  openVariableReducer,
+  OpenVariableState,
+} from './open-variable.reducer';
 
 export interface State {
   data: DatasetState;
-  ui: UIState;
+  'open-variable': OpenVariableState;
   'var-and-groups': VarAndGroupsState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   data: datasetReducer,
-  ui: uiReducer,
+  'open-variable': openVariableReducer,
   'var-and-groups': varAndGroupsReducer,
 };
 

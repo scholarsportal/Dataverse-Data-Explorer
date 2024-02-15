@@ -10,8 +10,8 @@ import {
   selectOpenVariableData,
   selectOpenVariableID,
   selectOpenVariableModalMode,
-  selectUIFeature,
-} from './ui.selectors';
+  selectOpenVariableFeature,
+} from './open-variable.selectors';
 
 export const selectVarAndGroupsFeature =
   createFeatureSelector<VarAndGroupsState>('var-and-groups');

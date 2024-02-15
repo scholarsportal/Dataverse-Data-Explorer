@@ -1,26 +1,26 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UIState } from '../reducers/ui.reducer';
+import { OpenVariableState } from '../reducers/open-variable.reducer';
 import { selectDatasetVariables } from './dataset.selectors';
 import {
   selectCurrentVarList,
-  selectVariableWeights,
   selectVariablesWithGroupsReference,
 } from './var-groups.selectors';
 import { VariableForm, initVariableForm } from '../interface';
-export const selectUIFeature = createFeatureSelector<UIState>('ui');
+export const selectOpenVariableFeature =
+  createFeatureSelector<OpenVariableState>('open-variable');
 
 export const selectIsOptionsMenuOpen = createSelector(
-  selectUIFeature,
+  selectOpenVariableFeature,
   (state) => state.modal.open && state.modal.mode === 'options'
 );
 
 export const selectOpenVariableModalMode = createSelector(
-  selectUIFeature,
+  selectOpenVariableFeature,
   (state) => state.modal.mode
 );
 
 export const selectOpenVariableID = createSelector(
-  selectUIFeature,
+  selectOpenVariableFeature,
   (state) => state.modal.variableID
 );
 
@@ -108,9 +108,15 @@ export const selectOpenVariableDataChartTable = createSelector(
     if (categories) {
       categories.forEach((variableCategory) => {
         const catValu = variableCategory.catValu;
-        const labl = variableCategory.labl['#text'];
-        const count = variableCategory.catStat[0]['#text'];
-        const countWeighted = variableCategory.catStat[1]['#text'];
+        const labl = variableCategory.labl
+          ? variableCategory.labl['#text']
+          : 'No Label on Category';
+        const count = Array.isArray(variableCategory.catStat)
+          ? variableCategory.catStat[0]['#text']
+          : variableCategory.catStat['#text'];
+        const countWeighted = Array.isArray(variableCategory.catStat)
+          ? variableCategory.catStat[1]['#text']
+          : 0;
 
         chart[catValu] = {
           values: catValu,

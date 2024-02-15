@@ -14,7 +14,6 @@ import {
   metadataImportFailed,
   metadataImportSuccess,
 } from './actions/var-and-groups.actions';
-import { error } from 'console';
 
 @Injectable()
 export class AppEffects {

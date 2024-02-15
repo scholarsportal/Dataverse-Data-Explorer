@@ -7,7 +7,7 @@ import {
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Variable } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import { selectOpenVariableModalMode } from 'src/app/state/selectors/open-variable.selectors';
 import { ModalComponent } from './modal/modal.component';
 import {
   openVariableChartModal,

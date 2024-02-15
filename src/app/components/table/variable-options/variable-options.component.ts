@@ -9,7 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Variable } from 'src/app/state/interface';
 import { Store } from '@ngrx/store';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import { selectOpenVariableModalMode } from 'src/app/state/selectors/open-variable.selectors';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({

@@ -21,5 +21,11 @@
     </button>
     <button class="addNew secondary on-secondary-text">View Graph</button>
   </div>
-  <dct-cross-table></dct-cross-table>
+  @if (tablePopulated()) {
+  <dct-cross-table
+    [cols]="colTitles"
+    [rows]="rowTitles"
+    [data]="table"
+  ></dct-cross-table>
+  }
 </div>

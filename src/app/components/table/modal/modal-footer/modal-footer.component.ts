@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/ui.selectors';
+import { selectOpenVariableModalMode } from 'src/app/state/selectors/open-variable.selectors';
 
 @Component({
   selector: 'dct-modal-footer',

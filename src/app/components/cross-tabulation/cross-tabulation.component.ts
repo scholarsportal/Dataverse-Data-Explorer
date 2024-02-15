@@ -23,12 +23,11 @@ export class CrossTabulationComponent {
   variables$ = this.store.select(selectDatasetVariables);
   rows: Variable | null = null;
   columns: Variable | null = null;
+  table: any[] = [];
+  rowTitles: string[] = [];
+  colTitles: string[] = [];
 
-  private el: ElementRef;
-
-  constructor(private store: Store, private element: ElementRef) {
-    this.el = element;
-  }
+  constructor(private store: Store) {}
 
   onVariableSelect(value: {
     type: 'row' | 'column';
@@ -41,28 +40,14 @@ export class CrossTabulationComponent {
     if (value.type === 'column') {
       this.columns = value.variable;
     }
-    if (this.columns && this.rows) {
-      this.renderTable();
+    if (this.columns?.catgry && this.rows?.catgry) {
+      this.renderTable(this.rows, this.columns);
     }
   }
 
-  renderTable() {
-    const table: any[] = [];
-    const rowTitle = this.rows?.['@_name'] + ' - ' + this.rows?.labl['#text'];
-    const colTitle =
-      this.columns?.['@_name'] + ' - ' + this.rows?.labl['#text'];
-    this.rows?.catgry?.map((value) =>
-      table.push({
-        [rowTitle]: value.labl['#text'],
-        count: value.catStat[0]['#text'],
-      })
-    );
-    this.columns?.catgry?.map((value) =>
-      table.push({
-        [colTitle]: value.labl['#text'],
-        count: value.catStat[0]['#text'],
-      })
-    );
-    console.log(table);
+  renderTable(rows: Variable, columns: Variable) {}
+
+  tablePopulated() {
+    return this.table.length && this.rowTitles.length && this.colTitles.length;
   }
 }

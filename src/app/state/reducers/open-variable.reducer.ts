@@ -9,7 +9,7 @@ import {
   openVariableEditModal,
 } from '../actions/ui.actions';
 
-export interface UIState {
+export interface OpenVariableState {
   modal: {
     open: boolean;
     mode: null | 'options' | 'view' | 'edit';
@@ -17,7 +17,7 @@ export interface UIState {
   };
 }
 
-export const initialState: UIState = {
+export const initialState: OpenVariableState = {
   modal: {
     open: false,
     mode: null,
@@ -25,11 +25,11 @@ export const initialState: UIState = {
   },
 };
 
-export const uiReducer = createReducer(
+export const openVariableReducer = createReducer(
   initialState,
   on(
     openOptionsMenu,
-    (state): UIState => ({
+    (state): OpenVariableState => ({
       ...state,
       modal: {
         open: true,
@@ -40,7 +40,7 @@ export const uiReducer = createReducer(
   ),
   on(
     closeOptionsMenu,
-    (state): UIState => ({
+    (state): OpenVariableState => ({
       ...state,
       modal: {
         open: false,

@@ -26,48 +26,6 @@ export class DdiService {
     return parsed;
   }
 
-  createXML(
-    groups: any,
-    variables: any,
-    fileid: string,
-    siteURL: string = 'https://borealisdata.ca'
-  ) {
-    let groupsConfigurable = { ...groups };
-    // Fetch data from URL (it is an XML)
-    const fetchurl = `https://borealisdata.ca/api/access/datafile/${fileid}/metadata/ddi`;
-
-    // Make an HTTP request to the fetch URL and parse the XML response
-    return this.http.get(fetchurl, { responseType: 'text' }).pipe(
-      map((data: string) => {
-        const parsed = this.parseXML(data);
-        const dataDscr = parsed.codeBook.dataDscr;
-        dataDscr.var.forEach((data: any) => {
-          data = merge(data, variables[data['@_ID']]);
-        });
-        // Change edited groups
-        dataDscr.varGrp.forEach((varGrp: any) => {
-          // TODO: Merge old and new groups
-          varGrp['@_var'] = [...groupsConfigurable[varGrp['@_ID']]['@_var']];
-          delete groupsConfigurable[varGrp['@_ID']];
-        });
-        // Add remaining groups
-        Object.keys(groupsConfigurable).forEach((id: string) => {
-          dataDscr.varGrp.push({
-            '@_ID': id,
-            labl: groupsConfigurable[id]['labl'],
-            '@_var': [...groupsConfigurable[id]['@_var']],
-          });
-        });
-        console.log(dataDscr.varGrp);
-        return parsed;
-      }),
-      map((resultingXML: any) => {
-        const builder = new XMLBuilder(this.parseOptions);
-        return builder.build(resultingXML);
-      })
-    );
-  }
-
   fetchDatasetFromDataverse(
     fileID: number,
     siteURL: string

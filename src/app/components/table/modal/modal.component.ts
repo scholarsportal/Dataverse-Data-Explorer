@@ -15,7 +15,7 @@ import {
   selectOpenVariableDataChartTable,
   selectOpenVariableModalMode,
   selectOpenVariableSelectedGroups,
-} from 'src/app/state/selectors/ui.selectors';
+} from 'src/app/state/selectors/open-variable.selectors';
 import { selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 
 @Component({

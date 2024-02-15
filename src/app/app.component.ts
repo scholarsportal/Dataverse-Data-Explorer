@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
       } else {
         this.noParams = true;
         this.store.dispatch(
-          fetchDataset({ fileID: 663968, siteURL: 'https://borealisdata.ca' })
+          fetchDataset({ fileID: 40226, siteURL: 'https://demo.borealisdata.ca' })
         );
       }
     });
