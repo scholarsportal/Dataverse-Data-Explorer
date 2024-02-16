@@ -8,6 +8,11 @@ import {
   selectDatasetVariables,
 } from 'src/app/state/selectors/dataset.selectors';
 import { CrossTableComponent } from './cross-table/cross-table.component';
+import {
+  selectAvailableVariables,
+  selectCurrentCrossTableData,
+} from 'src/app/state/selectors/cross-tabulation.selectors';
+import { addVariable } from 'src/app/state/actions/cross-tabulation.actions';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -20,34 +25,24 @@ export class CrossTabulationComponent {
   @ViewChild('pivotTable') pivotTableElement!: ElementRef;
 
   groups$ = this.store.select(selectDatasetVariableGroups);
-  variables$ = this.store.select(selectDatasetVariables);
-  rows: Variable | null = null;
-  columns: Variable | null = null;
-  table: any[] = [];
-  rowTitles: string[] = [];
-  colTitles: string[] = [];
+  variables$ = this.store.select(selectAvailableVariables);
+  table$ = this.store.select(selectCurrentCrossTableData);
 
   constructor(private store: Store) {}
 
   onVariableSelect(value: {
-    type: 'row' | 'column';
+    type: 'rows' | 'columns';
     index: number;
     variable: Variable;
   }) {
-    if (value.type === 'row') {
-      this.rows = value.variable;
+    if (value.type && value.variable) {
+      this.store.dispatch(
+        addVariable({
+          index: value.index,
+          variableID: value.variable['@_ID'],
+          variableType: value.type,
+        })
+      );
     }
-    if (value.type === 'column') {
-      this.columns = value.variable;
-    }
-    if (this.columns?.catgry && this.rows?.catgry) {
-      this.renderTable(this.rows, this.columns);
-    }
-  }
-
-  renderTable(rows: Variable, columns: Variable) {}
-
-  tablePopulated() {
-    return this.table.length && this.rowTitles.length && this.colTitles.length;
   }
 }

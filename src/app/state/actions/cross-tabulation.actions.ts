@@ -1,22 +1,28 @@
 import { createAction, props } from '@ngrx/store';
 import { Variable } from '../interface';
 
-export const addVariableRow = createAction(
-  '[Cross Tabulation] Row Added',
-  props<{ variableID: string }>()
+export const addVariable = createAction(
+  '[Cross Tabulation] Variable Added',
+  props<{
+    index: number;
+    variableID: string;
+    variableType: 'rows' | 'columns';
+  }>()
 );
 
-export const removeVariableRow = createAction(
-  '[Cross Tabulation] Row Removed',
-  props<{ variableID: string }>()
+export const removeVariable = createAction(
+  '[Cross Tabulation] Variable Removed',
+  props<{
+    index: number;
+    variableType: 'rows' | 'columns';
+  }>()
 );
 
-export const addVariableColumn = createAction(
-  '[Cross Tabulation] Column Added',
-  props<{ variableID: string }>()
-);
-
-export const removeVariableColumn = createAction(
-  '[Cross Tabulation] Column Removed',
-  props<{ variableID: string }>()
+export const changeMissingVariables = createAction(
+  '[Cross Tabulation] Missing Variables Changed',
+  props<{
+    index: string;
+    missingVariables: string[];
+    variableType: 'rows' | 'columns';
+  }>()
 );

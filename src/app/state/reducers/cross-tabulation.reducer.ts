@@ -3,12 +3,14 @@ import * as CrossTabActions from '../actions/cross-tabulation.actions';
 
 export interface CrossTabulationState {
   rows: {
-    [variableID: number]: {
+    [index: number]: {
+      variableID: string;
       missingCategories: string[];
     };
   };
   columns: {
-    [variableID: number]: {
+    [index: number]: {
+      variableID: string;
       missingCategories: string[];
     };
   };
@@ -21,28 +23,35 @@ export const initialState: CrossTabulationState = {
 
 export const crossTabulationReducer = createReducer(
   initialState,
-  on(CrossTabActions.addVariableColumn, (state, { variableID }) => ({
-    ...state,
-    columns: { ...state.columns, [variableID]: { missingCategories: [] } },
-  })),
-  on(CrossTabActions.addVariableRow, (state, { variableID }) => ({
-    ...state,
-    rows: { ...state.rows, [variableID]: { missingCategories: [] } },
-  })),
-  on(CrossTabActions.removeVariableColumn, (state, { variableID }) => {
-    const updatedColumns = { ...state.columns };
-    delete updatedColumns[variableID as any];
+  on(
+    CrossTabActions.addVariable,
+    (state, { index, variableID, variableType }) => ({
+      ...state,
+      [variableType]: {
+        ...state[variableType],
+        [index]: { variableID, missingCategories: [] },
+      },
+    })
+  ),
+  on(CrossTabActions.removeVariable, (state, { index, variableType }) => {
+    const updatedVariables = { ...state[variableType] };
+    delete updatedVariables[index as any];
     return {
       ...state,
-      columns: updatedColumns,
+      [variableType]: updatedVariables,
     };
   }),
-  on(CrossTabActions.removeVariableRow, (state, { variableID }) => {
-    const updatedRows = { ...state.rows };
-    delete updatedRows[variableID as any];
-    return {
+  on(
+    CrossTabActions.changeMissingVariables,
+    (state, { index, missingVariables, variableType }) => ({
       ...state,
-      rows: updatedRows,
-    };
-  })
+      [variableType]: {
+        ...state[variableType],
+        [index]: {
+          ...state[variableType][index as any],
+          missingVariables,
+        },
+      },
+    })
+  )
 );

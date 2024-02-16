@@ -20,14 +20,14 @@ import { FormsModule } from '@angular/forms';
 export class DropdownComponent implements OnChanges {
   @Input() groups: VariableGroup[] | null | undefined = [];
   @Input() variables: { [id: string]: Variable } | null = {};
-  @Input() type!: 'row' | 'column';
+  @Input() type!: 'rows' | 'columns';
   @Input() index!: number;
   @Output() selectedVariable: EventEmitter<{
-    type: 'row' | 'column';
+    type: 'rows' | 'columns';
     index: number;
     variable: Variable;
   }> = new EventEmitter<{
-    type: 'row' | 'column';
+    type: 'rows' | 'columns';
     index: number;
     variable: Variable;
   }>();

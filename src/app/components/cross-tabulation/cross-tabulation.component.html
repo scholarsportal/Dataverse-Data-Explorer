@@ -2,7 +2,7 @@
   <dct-dropdown
     [groups]="groups$ | async"
     [variables]="variables$ | async"
-    type="row"
+    type="rows"
     [index]="1"
     (selectedVariable)="onVariableSelect($event)"
   ></dct-dropdown>
@@ -10,7 +10,7 @@
   <dct-dropdown
     [groups]="groups$ | async"
     [variables]="variables$ | async"
-    type="column"
+    type="columns"
     [index]="2"
     (selectedVariable)="onVariableSelect($event)"
   ></dct-dropdown>
@@ -21,11 +21,7 @@
     </button>
     <button class="addNew secondary on-secondary-text">View Graph</button>
   </div>
-  @if (tablePopulated()) {
-  <dct-cross-table
-    [cols]="colTitles"
-    [rows]="rowTitles"
-    [data]="table"
-  ></dct-cross-table>
+  @if (table$ | async) {
+  <dct-cross-table [data]="table$ | async"></dct-cross-table>
   }
 </div>

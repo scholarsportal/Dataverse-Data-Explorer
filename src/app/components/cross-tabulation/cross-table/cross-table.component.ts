@@ -17,24 +17,25 @@ declare var $: any; // Declare jQuery
 })
 export class CrossTableComponent implements AfterViewInit {
   @ViewChild('output') outputElement?: ElementRef;
-  @Input() data: any[] = [];
+  @Input() data: any[] | null = [];
   @Input() rows: string[] = [];
   @Input() cols: string[] = [];
 
   ngAfterViewInit() {
-    var sum = $(this.outputElement?.nativeElement).pivotUtilities
-      .aggregatorTemplates.sum;
-    var numberFormat = $(this.outputElement?.nativeElement).pivotUtilities
-      .numberFormat;
-    var floatFormat = numberFormat({ digitsAfterDecimal: 0 });
-    var sumAggregator = sum(floatFormat)(['value']);
+    console.log(this.data);
+    // var sum = $(this.outputElement?.nativeElement).pivotUtilities
+    //   .aggregatorTemplates.sum;
+    // var numberFormat = $(this.outputElement?.nativeElement).pivotUtilities
+    //   .numberFormat;
+    // var floatFormat = numberFormat({ digitsAfterDecimal: 0 });
+    // var sumAggregator = sum(floatFormat)(['value']);
 
-    $(this.outputElement?.nativeElement).pivotUI(this.data, {
-      rows: this.rows,
-      cols: this.cols,
-      vals: ['value'],
-      aggregator: sumAggregator,
-      showUI: false,
-    });
+    // $(this.outputElement?.nativeElement).pivotUI(this.data, {
+    //   rows: this.rows,
+    //   cols: this.cols,
+    //   vals: ['value'],
+    //   aggregator: sumAggregator,
+    //   showUI: false,
+    // });
   }
 }
