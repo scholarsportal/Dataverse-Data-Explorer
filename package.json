@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --output-path docs --base-href /Dataverse-Data-Curation-Tool/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -16,6 +16,7 @@
     "@angular/compiler": "^17.0.4",
     "@angular/core": "^17.0.4",
     "@angular/forms": "^17.0.4",
+    "@angular/material": "^17.0.1",
     "@angular/platform-browser": "^17.0.4",
     "@angular/platform-browser-dynamic": "^17.0.4",
     "@angular/router": "^17.0.4",
