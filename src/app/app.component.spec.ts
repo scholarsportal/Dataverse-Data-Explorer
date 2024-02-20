@@ -1,17 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
-import { appReducer } from 'src/state/reducers';
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { reducers, metaReducers } from './state/reducers';
 
 describe('AppComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       // Add this line for "No Store Provided" error
-      imports: [StoreModule.forRoot({ dataset: appReducer }), HttpClientModule],
+      imports: [
+        StoreModule.forRoot(reducers, { metaReducers }),
+        HttpClientModule,
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
   );

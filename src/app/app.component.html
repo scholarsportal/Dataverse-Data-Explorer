@@ -2,14 +2,14 @@
   @if (( loaded$ | async ) === 'success') {
   <dct-header class="header"></dct-header>
   <div class="body">
-    <!-- <dct-sidebar
+    <dct-sidebar
       class="sidebar bg-white dark:bg-slate-500 border-r border-light-surface dark:border-dark-surface z-20"
     ></dct-sidebar>
-    <dct-table class="table"></dct-table> -->
-    <dct-cross-tabulation class="table"></dct-cross-tabulation>
+    <dct-table class="table"></dct-table>
+    <!-- <dct-cross-tabulation class="table"></dct-cross-tabulation> -->
   </div>
   } @if ((loaded$ | async) === 'pending') {
-  <div class="h-screen flex flex-col items-center my-auto">
+  <div class="h-screen w-screen flex flex-col items-center my-auto">
     <h1
       class="my-auto text-8xl font-mono font-bold animate-pulse dark:text-light-on-primary"
     >

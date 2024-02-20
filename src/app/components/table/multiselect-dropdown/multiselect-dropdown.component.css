@@ -34,11 +34,11 @@
 }
 
 .top {
-  @apply -translate-y-64 mb-1.5;
+  @apply -translate-y-36 mb-1.5;
 }
 
 .bottom {
-  @apply translate-y-0;
+  @apply border-none translate-y-3 mb-1.5;
 }
 
 .dropdown {

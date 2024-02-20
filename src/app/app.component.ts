@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { checkOpenGroup, getDataFetchStatus } from 'src/state/selectors';
 import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 
@@ -13,7 +12,6 @@ import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 })
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
-  openGroup$ = this.store.select(checkOpenGroup);
   loaded$ = this.store.select(selectDatasetLoading);
   noParams = false;
   datasetForm: FormGroup;
@@ -40,7 +38,10 @@ export class AppComponent implements OnInit {
       } else {
         this.noParams = true;
         this.store.dispatch(
-          fetchDataset({ fileID: 40226, siteURL: 'https://demo.borealisdata.ca' })
+          fetchDataset({
+            fileID: 40226,
+            siteURL: 'https://demo.borealisdata.ca',
+          })
         );
       }
     });

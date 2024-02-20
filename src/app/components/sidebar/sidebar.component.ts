@@ -1,20 +1,14 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { changeSelectedGroup } from 'src/app/state/actions/var-and-groups.actions';
-import { Variable, VariableGroup } from 'src/app/state/interface';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
-import { selectCurrentGroup } from 'src/app/state/selectors/var-groups.selectors';
 import {
+  changeSelectedGroup,
   groupChangeName,
   groupCreateNew,
   groupDelete,
-  groupSelected,
-} from 'src/state/actions/group.actions';
-import {
-  checkOpenGroup,
-  selectGroups,
-  selectRecentlyChangedGroup,
-} from 'src/state/selectors';
+} from 'src/app/state/actions/var-and-groups.actions';
+import { Variable, VariableGroup } from 'src/app/state/interface';
+import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
+import { selectCurrentGroup } from 'src/app/state/selectors/var-groups.selectors';
 
 @Component({
   selector: 'dct-sidebar',
@@ -24,7 +18,7 @@ import {
 export class SidebarComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);
   selectedGroup$ = this.store.select(selectCurrentGroup);
-  recentlyChanged$ = this.store.select(selectRecentlyChangedGroup);
+  // recentlyChanged$ = this.store.select(selectRecentlyChangedGroup);
   addingNewGroup: boolean = false;
   newGroupName: string = '';
   groupToBeRenamedID: any = null;

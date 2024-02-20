@@ -29,3 +29,7 @@ export const setDataset = createAction(
   '[Dataset] Set Dataset',
   props<{ dataset: JSONStructure }>()
 );
+
+export const datasetUploadRequest = createAction(
+  '[Dataset Upload] Dataset Upload Started'
+);

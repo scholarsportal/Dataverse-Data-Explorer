@@ -5,7 +5,6 @@ import {
   selectDatasetCitation,
   selectDatasetTitle,
 } from 'src/app/state/selectors/dataset.selectors';
-import { datasetUploadRequest } from 'src/state/actions';
 
 @Component({
   selector: 'dct-header',

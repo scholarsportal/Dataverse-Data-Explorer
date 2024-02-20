@@ -20,10 +20,7 @@
 </div>
 <div class="flex flex-row justify-between px-10">
   @if ((modalMode$ | async) === 'view') {
-  <button
-    (click)="switchToEdit()"
-    class="variable-mode-change-button button mx-2.5"
-  >
+  <button (click)="switchToEdit()" class="variable-mode-change-button button">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
