@@ -209,6 +209,26 @@ module.exports = {
           shadow: '#000000',
           scrim: '#000000',
         },
+        dct: {
+          light: {
+            background: '#ffffff',
+            'on-background': '#1c1b1f',
+            surface: '#F3F4F6',
+            'on-surface': '#1c1b1f',
+            outline: '#D6D3D1',
+            primary: '#4338CA',
+            secondary: '#DB2777',
+          },
+          dark: {
+            background: '#3F3F46',
+            'on-background': '#ffffff',
+            surface: '#323236',
+            'on-surface': '#ffffff',
+            outline: '#27272A',
+            primary: '#DBCCFF',
+            secondary: '#FFC7E0',
+          },
+        },
       },
       // fontFamily: {
       //   sans: ['Ubuntu'],

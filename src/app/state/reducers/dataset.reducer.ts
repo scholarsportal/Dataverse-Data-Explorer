@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as DatasetActions from '../actions/dataset.actions';
-import { JSONStructure } from '../interface';
+import * as VarAndGroups from '../actions/var-and-groups.actions';
+import { JSONStructure, VariableGroup } from '../interface';
 
 export interface DatasetState {
   dataset: JSONStructure | null;
@@ -59,7 +60,8 @@ export const datasetReducer = createReducer(
     const newState = JSON.parse(JSON.stringify(state));
     if (newState) {
       const variables = newState.dataset?.codeBook.dataDscr.var || [];
-      const varGroups = newState.dataset?.codeBook.dataDscr.varGrp || [];
+      const varGroups: VariableGroup[] =
+        newState.dataset?.codeBook.dataDscr.varGrp || [];
       for (let index = 0; index < variables.length; index++) {
         if (variables[index]['@_ID'] === variableID) {
           variables[index].labl['#text'] = variable.label;
@@ -73,29 +75,79 @@ export const datasetReducer = createReducer(
             ...variables[index].notes,
             '#text': variable.notes ?? '',
           };
-          variable.isWeight ?? (variables[index]['@_wgt'] = 'wgt');
-          variables[index]['@_wgt-var'] = variable.weight ?? '';
+          variable.isWeight
+            ? (variables[index]['@_wgt'] = 'wgt')
+            : (variables[index]['@_wgt'] = null);
+          variables[index]['@_wgt-var'] =
+            (variables[index]['@_wgt'] ? '' : variable.weight) ?? '';
           break;
         }
       }
       for (let index = 0; index < varGroups.length; index++) {
-        console.log(groups.includes(varGroups[index]));
+        const variablesInGroup = varGroups[index]['@_var'].split(' ');
+        const variableIndex = variablesInGroup.indexOf(variableID);
         // if current var group includes current id AND is not in the new group selected
         if (
-          varGroups[index]['@_var'].split(' ').includes(variableID) &&
-          !groups.includes(varGroups[index])
+          variableIndex !== -1 &&
+          variablesInGroup.includes(variableID) &&
+          !groups.includes(varGroups[index]['@_ID'])
         ) {
-          // console.log(varGroups[index]);
-          const varArray = varGroups[index]['@_var'].split(' ');
-          const variableIndex = varArray.indexOf(variableID);
-          if (variableIndex !== -1) {
-            console.log(varArray.join(' '));
-            // varArray.splice(variableIndex, 1);
-            // varGroups[index]['@_var'] = varArray.join(' ');
-          }
+          variablesInGroup.splice(variableIndex, 1);
         }
+        if (
+          !variablesInGroup.includes(variableID) &&
+          groups.includes(varGroups[index]['@_ID'])
+        ) {
+          variablesInGroup.push(variableID);
+        }
+        varGroups[index]['@_var'] = variablesInGroup.join(' ');
       }
     }
     return { ...newState };
+  }),
+  on(VarAndGroups.groupCreateNew, (state, { groupID, label }) => {
+    const newState: DatasetState = JSON.parse(JSON.stringify(state));
+    if (newState) {
+      newState.dataset?.codeBook?.dataDscr?.varGrp?.push({
+        '@_ID': groupID,
+        labl: label,
+        '@_var': '',
+      });
+    }
+    return {
+      ...newState,
+    };
+  }),
+  on(VarAndGroups.groupDelete, (state, { groupID }) => {
+    const newState: DatasetState = JSON.parse(JSON.stringify(state));
+    if (newState) {
+      const arr = newState.dataset?.codeBook.dataDscr.varGrp || [];
+      for (let index = 0; index < arr.length; index++) {
+        const element = arr[index];
+        if (element['@_ID'] === groupID) {
+          arr.splice(index, 1);
+          break;
+        }
+      }
+    }
+    return {
+      ...newState,
+    };
+  }),
+  on(VarAndGroups.groupChangeName, (state, { groupID, newName }) => {
+    const newState: DatasetState = JSON.parse(JSON.stringify(state));
+    if (newState) {
+      const arr = newState.dataset?.codeBook.dataDscr.varGrp || [];
+      for (let index = 0; index < arr.length; index++) {
+        const element = arr[index];
+        if (element['@_ID'] === groupID) {
+          element.labl = newName;
+        }
+      }
+      console.log(arr);
+    }
+    return {
+      ...newState,
+    };
   })
 );

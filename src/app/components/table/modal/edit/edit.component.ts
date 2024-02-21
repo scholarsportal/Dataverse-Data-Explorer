@@ -71,9 +71,8 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   handleSave() {
-    console.log(this.groups);
-    console.log(this.variableForm.value);
     if (this.variableForm.value?.id && this.groups) {
+      const newGroups: string[] = [];
       const variable: VariableForm = {
         id: this.variableForm.value.id,
         label: this.variableForm.value.label ?? '',
@@ -85,11 +84,14 @@ export class EditComponent implements OnInit, OnChanges {
         isWeight: this.variableForm.value.isWeight ?? false,
         weight: this.variableForm.value.weight ?? null,
       };
+      this.groups.map((value) => {
+        newGroups.push(value['@_ID']);
+      });
       this.store.dispatch(
         saveVariable({
           variableID: this.variableForm.value.id,
           variable,
-          groups: this.groups,
+          groups: newGroups,
         })
       );
     }

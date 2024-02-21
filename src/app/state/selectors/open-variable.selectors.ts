@@ -1,6 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { OpenVariableState } from '../reducers/open-variable.reducer';
-import { selectDatasetVariables } from './dataset.selectors';
+import {
+  selectDatasetProcessedVariables,
+  selectDatasetVariables,
+} from './dataset.selectors';
 import {
   selectCurrentVarList,
   selectVariablesWithGroupsReference,
@@ -26,7 +29,7 @@ export const selectOpenVariableID = createSelector(
 
 export const selectOpenVariableData = createSelector(
   selectOpenVariableID,
-  selectDatasetVariables,
+  selectDatasetProcessedVariables,
   (variableID, datasetVariables) => {
     if (datasetVariables && variableID) {
       return datasetVariables[variableID];
@@ -54,7 +57,7 @@ export const selectOpenVariableSelectedGroups = createSelector(
   selectVariablesWithGroupsReference,
   (openVariableID, variablesWithGroups) => {
     if (openVariableID && variablesWithGroups) {
-      return variablesWithGroups[openVariableID].groups;
+      return variablesWithGroups[openVariableID]?.groups;
     }
     return [];
   }

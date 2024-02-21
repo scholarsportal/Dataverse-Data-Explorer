@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { VarAndGroupsState } from '../reducers/var-and-groups.reducer';
 import {
   selectDatasetFeature,
+  selectDatasetProcessedVariables,
   selectDatasetVariableGroups,
   selectDatasetVariables,
 } from './dataset.selectors';
@@ -80,7 +81,7 @@ export const selectCurrentVariableSelected = createSelector(
 );
 
 export const selectVariableWeights = createSelector(
-  selectDatasetVariables,
+  selectDatasetProcessedVariables,
   (datasetVariables): { [id: string]: string } => {
     const weights: {
       [id: string]: string;
@@ -101,18 +102,19 @@ export const selectVariableWeights = createSelector(
 
 export const selectVariablesWithGroupsReference = createSelector(
   selectDatasetVariableGroups,
-  selectDatasetVariables,
+  selectDatasetProcessedVariables,
   (groups, datasetVariables) => {
     const variablesGroupsReference: {
       [variableID: string]: { groups: VariableGroup[]; label: string };
     } = {};
     if (datasetVariables) {
+      console.log(datasetVariables);
       groups?.map((variableGroup) => {
         variableGroup['@_var'].split(' ').map((variableID) => {
           variablesGroupsReference[variableID]
             ? variablesGroupsReference[variableID].groups.push(variableGroup)
             : (variablesGroupsReference[variableID] = {
-                label: datasetVariables[variableID].labl['#text'],
+                label: datasetVariables[variableID]?.labl['#text'],
                 groups: [variableGroup],
               });
         });

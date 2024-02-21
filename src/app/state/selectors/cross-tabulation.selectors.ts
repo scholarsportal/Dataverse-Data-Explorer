@@ -1,6 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
-import { selectDatasetVariables } from './dataset.selectors';
+import {
+  selectDatasetProcessedVariables,
+  selectDatasetVariables,
+} from './dataset.selectors';
 
 export const selectCrossTabulationFeature =
   createFeatureSelector<CrossTabulationState>('cross-tabulation');
@@ -16,7 +19,7 @@ export const selectColumns = createSelector(
 );
 
 export const selectAvailableVariables = createSelector(
-  selectDatasetVariables,
+  selectDatasetProcessedVariables,
   selectRows,
   selectColumns,
   (variables, rows, columns) => {
@@ -35,7 +38,7 @@ export const selectAvailableVariables = createSelector(
 export const selectCurrentCrossTableData = createSelector(
   selectRows,
   selectColumns,
-  selectDatasetVariables,
+  selectDatasetProcessedVariables,
   (rowVariables, columnVariables, dataset) => {
     const table: any[] = [];
     const rows: string[] = [];

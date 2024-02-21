@@ -40,7 +40,7 @@ export const saveVariable = createAction(
   props<{
     variableID: string;
     variable: VariableForm;
-    groups: VariableGroup[];
+    groups: string[];
   }>()
 );
 

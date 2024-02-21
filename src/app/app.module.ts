@@ -25,6 +25,10 @@ import { VariableOptionsComponent } from './components/table/variable-options/va
 import { OptionsComponent } from './components/sidebar/options/options.component';
 import { ModalComponent } from './components/table/modal/modal.component';
 import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
+import { NewGroupComponent } from './components/sidebar/new-group/new-group.component';
+import { DefaultSidebarButtonComponent } from './components/sidebar/default-sidebar-button/default-sidebar-button.component';
+import { DeletingSidebarButtonComponent } from './components/sidebar/deleting-sidebar-button/deleting-sidebar-button.component';
+import { RenamingSidebarButtonComponent } from './components/sidebar/renaming-sidebar-button/renaming-sidebar-button.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +63,10 @@ import { CrossTabulationComponent } from './components/cross-tabulation/cross-ta
     OptionsComponent,
     ModalComponent,
     CrossTabulationComponent,
+    NewGroupComponent,
+    DefaultSidebarButtonComponent,
+    DeletingSidebarButtonComponent,
+    RenamingSidebarButtonComponent,
   ],
   bootstrap: [AppComponent],
 })

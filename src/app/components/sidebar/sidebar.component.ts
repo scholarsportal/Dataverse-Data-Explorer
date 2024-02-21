@@ -6,7 +6,7 @@ import {
   groupCreateNew,
   groupDelete,
 } from 'src/app/state/actions/var-and-groups.actions';
-import { Variable, VariableGroup } from 'src/app/state/interface';
+import { VariableGroup } from 'src/app/state/interface';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import { selectCurrentGroup } from 'src/app/state/selectors/var-groups.selectors';
 
@@ -20,8 +20,9 @@ export class SidebarComponent {
   selectedGroup$ = this.store.select(selectCurrentGroup);
   // recentlyChanged$ = this.store.select(selectRecentlyChangedGroup);
   addingNewGroup: boolean = false;
-  newGroupName: string = '';
-  groupToBeRenamedID: any = null;
+  deletingGroup: boolean = false;
+  renamingGroup: boolean = false;
+  groupToBeChanged: string | null = null;
   renameInputValue: string = '';
 
   constructor(private store: Store) {}
@@ -34,10 +35,6 @@ export class SidebarComponent {
     return selection['@_ID'];
   }
 
-  checkGroups(groups: any) {
-    return Object.keys(groups).length > 0;
-  }
-
   changeGroup(selection: any | null) {
     if (!selection) {
       this.store.dispatch(changeSelectedGroup({ groupID: null }));
@@ -47,10 +44,15 @@ export class SidebarComponent {
     }
   }
 
-  addGroup() {
-    const id = `NVG${Math.floor(Math.random() * 1000000)}`;
-    const name = this.newGroupName;
-    this.store.dispatch(groupCreateNew({ groupID: id, label: name }));
+  startGroupDelete(groupID: any) {
+    this.groupToBeChanged = groupID;
+    this.deletingGroup = true;
+    this.renamingGroup = false;
+  }
+
+  cancelGroupDelete() {
+    this.groupToBeChanged = null;
+    this.deletingGroup = false;
   }
 
   deleteGroup(group: any) {
@@ -58,44 +60,42 @@ export class SidebarComponent {
     this.store.dispatch(groupDelete({ groupID: group['@_ID'] }));
   }
 
-  startRename(item: any) {
-    this.groupToBeRenamedID = this.getID(item);
-    this.renameInputValue = this.getLabel(item);
+  startGroupRename(id: string) {
+    this.groupToBeChanged = id;
+    this.renamingGroup = true;
+    this.deletingGroup = false;
   }
 
-  cancelRename() {
-    this.groupToBeRenamedID = null;
+  cancelGroupRename() {
+    this.groupToBeChanged = null;
     this.renameInputValue = '';
   }
 
-  renameGroup() {
-    const renamedValue = this.renameInputValue.trim();
-    if (renamedValue !== '') {
+  renameGroup(newName: string) {
+    if (newName !== '' && this.groupToBeChanged) {
       this.store.dispatch(
         groupChangeName({
-          groupID: this.groupToBeRenamedID,
-          newName: renamedValue,
+          groupID: this.groupToBeChanged,
+          newName,
         })
       );
     }
-    this.groupToBeRenamedID = null;
+    this.groupToBeChanged = null;
     this.renameInputValue = '';
   }
 
-  toggleAddingNewGroup() {
-    this.addingNewGroup = !this.addingNewGroup;
-    if (!this.addingNewGroup) {
-      this.newGroupName = ''; // Reset the input field when exiting edit mode
-    }
+  startAddingNewGroup() {
+    this.addingNewGroup = true;
   }
 
-  confirmGroup() {
-    if (this.newGroupName.trim() !== '') {
-      this.addGroup();
-      this.resetUI();
-    } else {
-      alert('Please enter a valid group name.');
-    }
+  addGroup(name: string) {
+    const id = `NVG${Math.floor(Math.random() * 1000000)}`;
+    this.store.dispatch(groupCreateNew({ groupID: id, label: name }));
+  }
+
+  confirmGroup(name: string) {
+    this.addGroup(name);
+    this.resetUI();
   }
 
   cancelGroup() {
@@ -104,6 +104,5 @@ export class SidebarComponent {
 
   resetUI() {
     this.addingNewGroup = false;
-    this.newGroupName = '';
   }
 }
