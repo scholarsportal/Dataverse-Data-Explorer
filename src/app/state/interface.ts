@@ -50,14 +50,13 @@ export interface Variable {
 
 export interface VariableForm {
   id: string;
-  name: string;
   label: string;
-  literalQuestion: string;
-  interviewQuestion: string;
-  postQuestion: string;
-  universe: string;
-  notes: string;
-  weight: string;
+  literalQuestion: string | null;
+  interviewQuestion: string | null;
+  postQuestion: string | null;
+  universe: string | null;
+  notes: string | null;
+  weight: string | null;
   isWeight: boolean;
 }
 

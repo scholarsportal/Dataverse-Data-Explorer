@@ -1,10 +1,12 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -24,6 +26,8 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
   @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
   @Input() selectedVariableGroups: VariableGroup[] = [];
   @Input() position: 'top' | 'bottom' = 'top';
+  @Output() emitSelectedGroups: EventEmitter<VariableGroup[]> =
+    new EventEmitter<VariableGroup[]>();
 
   isDialogueOpen: boolean = false;
   element: any;
@@ -82,7 +86,6 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
   }
 
   changeSelected(variableGroup: any) {
-    console.log(variableGroup);
     const indexOfVariableGroup =
       this.selectedVariableGroups.indexOf(variableGroup);
     if (indexOfVariableGroup > -1) {
@@ -94,6 +97,7 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
         variableGroup
       );
     }
+    this.emitSelectedGroups.emit(this.selectedVariableGroups);
   }
 
   toggleDialog() {

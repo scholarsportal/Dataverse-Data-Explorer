@@ -15,7 +15,9 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { VariableGroup } from 'src/app/state/interface';
+import { VariableForm, VariableGroup } from 'src/app/state/interface';
+import { Store } from '@ngrx/store';
+import { saveVariable } from 'src/app/state/actions/dataset.actions';
 
 @Component({
   selector: 'dct-edit',
@@ -37,16 +39,17 @@ export class EditComponent implements OnInit, OnChanges {
 
   variableForm = new FormGroup({
     id: new FormControl(''),
-    name: new FormControl(''),
     label: new FormControl(''),
     literalQuestion: new FormControl(''),
-    interviewerQuestion: new FormControl(''),
+    interviewQuestion: new FormControl(''),
     postQuestion: new FormControl(''),
     universe: new FormControl(''),
     notes: new FormControl(''),
     isWeight: new FormControl(false),
     weight: new FormControl(''),
   });
+
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.variableForm.patchValue(this.variableData);
@@ -58,19 +61,37 @@ export class EditComponent implements OnInit, OnChanges {
     }
   }
 
-  changeWeight(variable: any) {
-    console.log(variable);
-  }
-
   getID(variable: any) {
     console.log(variable);
   }
 
-  handleSave() {
-    console.log('save');
+  onGroupChange(groups: VariableGroup[]) {
+    // console.log(groups);
+    this.groups = groups;
   }
 
-  handleCancel() {
-    console.log('cancel');
+  handleSave() {
+    console.log(this.groups);
+    console.log(this.variableForm.value);
+    if (this.variableForm.value?.id && this.groups) {
+      const variable: VariableForm = {
+        id: this.variableForm.value.id,
+        label: this.variableForm.value.label ?? '',
+        literalQuestion: this.variableForm.value.literalQuestion ?? '',
+        interviewQuestion: this.variableForm.value.interviewQuestion ?? '',
+        postQuestion: this.variableForm.value.postQuestion ?? '',
+        notes: this.variableForm.value.notes ?? '',
+        universe: this.variableForm.value.universe ?? '',
+        isWeight: this.variableForm.value.isWeight ?? false,
+        weight: this.variableForm.value.weight ?? null,
+      };
+      this.store.dispatch(
+        saveVariable({
+          variableID: this.variableForm.value.id,
+          variable,
+          groups: this.groups,
+        })
+      );
+    }
   }
 }

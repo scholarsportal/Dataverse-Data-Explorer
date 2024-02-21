@@ -1,5 +1,5 @@
 <!-- CHART -->
-<div class="chart-container">
+<div class="flex w-full">
   <canvas id="variableChart"> {{ chartJS }}</canvas>
 </div>
 <!-- CHART DATA -->
@@ -36,7 +36,7 @@
 </table>
 
 <h3 class="font-bold text-xl">Summary Statistics</h3>
-<table class="w-full mb-5">
+<table class="mb-5">
   @for (stat of sumStat; track $index) {
   <tr class="table-row my-4 border-b p-2">
     <th class="text-left font-medium">{{ stat.key }}</th>

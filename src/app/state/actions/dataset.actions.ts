@@ -1,5 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { JSONStructure } from '../interface';
+import {
+  JSONStructure,
+  Variable,
+  VariableForm,
+  VariableGroup,
+} from '../interface';
 
 export const fetchDataset = createAction(
   '[Dataset] Fetch Dataset',
@@ -28,6 +33,20 @@ export const datasetConversionError = createAction(
 export const setDataset = createAction(
   '[Dataset] Set Dataset',
   props<{ dataset: JSONStructure }>()
+);
+
+export const saveVariable = createAction(
+  '[Dataset] Variable Changesd',
+  props<{
+    variableID: string;
+    variable: VariableForm;
+    groups: VariableGroup[];
+  }>()
+);
+
+export const saveBulkVariable = createAction(
+  '[Dataset] Multiple Variable Changed',
+  props<{ variableID: string[]; variable: VariableForm }>()
 );
 
 export const datasetUploadRequest = createAction(

@@ -43,6 +43,7 @@ export class ChartComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       this.redrawChart();
+      this.selectList = [];
     }
   }
 
