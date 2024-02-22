@@ -19,13 +19,24 @@
     Add to Group
   </button> -->
 
-  <dct-multiselect-dropdown class="group-dropdown"></dct-multiselect-dropdown>
+  <dct-multiselect-dropdown
+    class="group-dropdown"
+    (emitSelectedGroups)="onGroupChange($event)"
+  ></dct-multiselect-dropdown>
 
-  <select name="assign-weight" id="assign-weight" class="weight-dropdown">
+  <select
+    (change)="onSelectedWeightChange($event.target)"
+    name="assign-weight"
+    id="assign-weight"
+    class="weight-dropdown"
+  >
     <option value="" disabled selected hidden>Assign Weight</option>
+    <option value="">Remove Weight</option>
     @for (weightValue of (( weights$ | async ) | keyvalue); track $index) {
-    <option value="weightValue.key">{{ weightValue.value }}</option>
+    <option [value]="weightValue.key">
+      {{ weightValue.value }}
+    </option>
     }
   </select>
-  <button class="apply-button">APPLY</button>
+  <button class="apply-button">APPLY CHANGES</button>
 </div>

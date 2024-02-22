@@ -149,5 +149,19 @@ export const datasetReducer = createReducer(
     return {
       ...newState,
     };
+  }),
+  on(VarAndGroups.bulkEditVariables, (state, { variables }) => {
+    const newState: DatasetState = JSON.parse(JSON.stringify(state));
+    const arr = newState.dataset?.codeBook.dataDscr.var || [];
+    const variableIDs = Object.keys(variables);
+    for (let index = 0; index < arr.length; index++) {
+      const element = arr[index];
+      if (variableIDs.includes(element['@_ID'])) {
+        arr[index] = variables[element['@_ID']];
+      }
+    }
+    return {
+      ...newState,
+    };
   })
 );

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { JSONStructure } from '../interface';
+import { JSONStructure, Variable, VariableGroup } from '../interface';
 
 export const importNewFile = createAction(
   '[File] New File Conversion started',
@@ -38,4 +38,14 @@ export const groupDelete = createAction(
 export const groupChangeName = createAction(
   '[Groups] Group Renamed',
   props<{ groupID: string; newName: string }>()
+);
+
+export const bulkEditVariables = createAction(
+  '[Variables] Bulk Edit Selected Variables',
+  props<{ variables: { [id: string]: Variable } }>()
+);
+
+export const bulkChangeGroupsAndWeight = createAction(
+  '[Variable] Bulk Edit Groups and Weights',
+  props<{ groups: VariableGroup[]; weight: string }>()
 );

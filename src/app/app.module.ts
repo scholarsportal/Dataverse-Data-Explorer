@@ -29,6 +29,7 @@ import { NewGroupComponent } from './components/sidebar/new-group/new-group.comp
 import { DefaultSidebarButtonComponent } from './components/sidebar/default-sidebar-button/default-sidebar-button.component';
 import { DeletingSidebarButtonComponent } from './components/sidebar/deleting-sidebar-button/deleting-sidebar-button.component';
 import { RenamingSidebarButtonComponent } from './components/sidebar/renaming-sidebar-button/renaming-sidebar-button.component';
+import { BulkEditModalComponent } from './components/table/bulk-edit-modal/bulk-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { RenamingSidebarButtonComponent } from './components/sidebar/renaming-si
     DefaultSidebarButtonComponent,
     DeletingSidebarButtonComponent,
     RenamingSidebarButtonComponent,
+    BulkEditModalComponent,
   ],
   bootstrap: [AppComponent],
 })

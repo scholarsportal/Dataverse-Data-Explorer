@@ -88,7 +88,12 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column name="" [width]="100" [sortable]="true" cellClass="">
+    <ngx-datatable-column name="View/Edit" [width]="100" cellClass="">
+      <ng-template ngx-datatable-header-template>
+        @if (selected.length) {
+        <dct-bulk-edit-modal [selected]="selected"></dct-bulk-edit-modal>
+        }
+      </ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         @if (hoveredVariable == row) {
         <dct-variable-options
@@ -106,5 +111,8 @@
   }
 </div>
 @if(selected.length){
-<dct-table-menu class="table-menu table-menu-grid"></dct-table-menu>
+<dct-table-menu
+  class="table-menu table-menu-grid"
+  [selectedVariables]="selected"
+></dct-table-menu>
 }
