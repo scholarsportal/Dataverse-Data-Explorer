@@ -3,6 +3,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   datasetConversionError,
   datasetConversionSuccess,
+  datasetUploadFailed,
+  datasetUploadRequest,
+  datasetUploadStart,
+  datasetUploadSuccess,
   fetchDataset,
   fetchDatasetError,
   fetchDatasetSuccess,
@@ -21,29 +25,36 @@ export class AppEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(fetchDataset),
-        exhaustMap(({ fileID, siteURL }) =>
+        exhaustMap(({ fileID, siteURL, apiKey }) =>
           ddiService.fetchDatasetFromDataverse(fileID, siteURL).pipe(
-            map((data) => fetchDatasetSuccess({ data })),
-            catchError((error) => of(fetchDatasetError(error)))
-          )
-        )
+            map((data) =>
+              fetchDatasetSuccess({ data, fileID, siteURL, apiKey }),
+            ),
+            catchError((error) => of(fetchDatasetError(error))),
+          ),
+        ),
       );
     },
-    { functional: true }
+    { functional: true },
   );
 
   convertDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(fetchDatasetSuccess),
-        map(({ data }) => {
+        map(({ data, siteURL, fileID, apiKey }) => {
           const parsedXML = ddiService.XMLtoJSON(data);
-          return datasetConversionSuccess({ dataset: parsedXML });
+          return datasetConversionSuccess({
+            dataset: parsedXML,
+            siteURL,
+            fileID,
+            apiKey,
+          });
         }),
-        catchError((error) => of(datasetConversionError({ error })))
+        catchError((error) => of(datasetConversionError({ error }))),
       );
     },
-    { functional: true }
+    { functional: true },
   );
 
   importNewMetadata$ = createEffect(
@@ -54,9 +65,46 @@ export class AppEffects {
           const parsedXML = ddiService.XMLtoJSON(file);
           return metadataImportSuccess({ data: parsedXML });
         }),
-        catchError((error) => of(metadataImportFailed({ error })))
+        catchError((error) => of(metadataImportFailed({ error }))),
       );
-    }
+    },
+  );
+
+  requestDatasetUpload$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(datasetUploadRequest),
+        map(({ dataset, fileID, siteURL, apiKey }) => {
+          const parsedJSON = ddiService.JSONtoXML(dataset);
+          return datasetUploadStart({
+            xml: parsedJSON,
+            fileID,
+            siteURL,
+            apiKey,
+          });
+        }),
+        catchError((error) => of(datasetUploadFailed({ error }))),
+      );
+    },
+  );
+
+  uploadDataset$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(datasetUploadStart),
+        exhaustMap(({ xml, siteURL, fileID, apiKey }) =>
+          ddiService
+            .uploadDatasetToDataverse(siteURL, fileID, xml, apiKey)
+            .pipe(
+              map((data) => {
+                console.log(data);
+                return datasetUploadSuccess();
+              }),
+              catchError((error) => of(datasetUploadFailed({ error }))),
+            ),
+        ),
+      );
+    },
   );
 
   constructor(private actions$: Actions) {}

@@ -4,33 +4,63 @@ import { Variable } from '../interface';
 
 export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
 
+export const selectDatasetState = createSelector(
+  selectDatasetFeature,
+  (state) => state,
+);
+
 export const selectDataset = createSelector(
   selectDatasetFeature,
-  (state) => state
+  (state) => state.dataset,
+);
+
+export const selectDatasetForUpload = createSelector(
+  selectDatasetFeature,
+  (state) => {
+    return {
+      dataset: state.dataset,
+      fileID: state.fileID,
+      siteURL: state.siteURL,
+      apiKey: state.apiKey,
+    };
+  },
 );
 
 export const selectDatasetLoading = createSelector(
   selectDatasetFeature,
-  (state) => state.status
+  (state) => state.status,
 );
 
-export const selectDatasetTitle = createSelector(selectDataset, (state) => {
-  return state.dataset?.codeBook.stdyDscr.citation.titlStmt.titl;
-});
+export const selectDatasetUploadFailed = createSelector(
+  selectDatasetState,
+  (state) => state.uploadStatus?.error,
+);
+
+export const selectDatasetUploadSuccess = createSelector(
+  selectDatasetState,
+  (state) => state.uploadStatus?.success,
+);
+
+export const selectDatasetTitle = createSelector(
+  selectDatasetState,
+  (state) => {
+    return state.dataset?.codeBook.stdyDscr.citation.titlStmt.titl;
+  },
+);
 
 export const selectDatasetCitation = createSelector(
-  selectDataset,
-  (state) => state.dataset?.codeBook.stdyDscr.citation.biblCit
+  selectDatasetState,
+  (state) => state.dataset?.codeBook.stdyDscr.citation.biblCit,
 );
 
 export const selectDatasetVariableGroups = createSelector(
-  selectDataset,
-  (state) => state.dataset?.codeBook.dataDscr.varGrp
+  selectDatasetState,
+  (state) => state.dataset?.codeBook.dataDscr.varGrp,
 );
 
 export const selectDatasetVariables = createSelector(
-  selectDataset,
-  (state) => state.dataset?.codeBook.dataDscr.var
+  selectDatasetState,
+  (state) => state.dataset?.codeBook.dataDscr.var,
 );
 
 export const selectDatasetProcessedVariables = createSelector(
@@ -41,5 +71,5 @@ export const selectDatasetProcessedVariables = createSelector(
       processedVariables[value['@_ID']] = value;
     });
     return processedVariables;
-  }
+  },
 );

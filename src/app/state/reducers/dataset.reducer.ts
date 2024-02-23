@@ -6,12 +6,23 @@ import { JSONStructure, VariableGroup } from '../interface';
 export interface DatasetState {
   dataset: JSONStructure | null;
   status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+  fileID: null | number;
+  siteURL: string | null;
+  apiKey: string | undefined;
+  uploadStatus: null | {
+    error?: string;
+    success?: string;
+  };
   errorMessage?: string | unknown;
 }
 
 export const initialState: DatasetState = {
   dataset: null,
   status: 'idle',
+  fileID: null,
+  siteURL: null,
+  apiKey: undefined,
+  uploadStatus: null,
 };
 
 export const datasetReducer = createReducer(
@@ -42,9 +53,12 @@ export const datasetReducer = createReducer(
   ),
   on(
     DatasetActions.datasetConversionSuccess,
-    (state, { dataset }): DatasetState => ({
+    (state, { dataset, siteURL, fileID, apiKey }): DatasetState => ({
       ...state,
       dataset,
+      siteURL,
+      fileID,
+      apiKey,
       status: 'success' as const,
     }),
   ),
@@ -118,6 +132,26 @@ export const datasetReducer = createReducer(
       ...newState,
     };
   }),
+  on(
+    VarAndGroups.removeSelectedVariablesFromGroup,
+    (state, { variableIDs, groupID }) => {
+      const newState = JSON.parse(JSON.stringify(state));
+      const arr: VariableGroup[] =
+        newState.dataset?.codeBook.dataDscr.varGrp || [];
+      for (let index = 0; index < arr.length; index++) {
+        const group = arr[index];
+        if (group['@_ID'] === groupID) {
+          const variables = group['@_var'].split(' ');
+          variables.filter((variable) => variableIDs.includes(variable));
+          group['@_var'] = variables.join(' ');
+          break;
+        }
+      }
+      return {
+        ...newState,
+      };
+    },
+  ),
   on(VarAndGroups.groupDelete, (state, { groupID }) => {
     const newState: DatasetState = JSON.parse(JSON.stringify(state));
     if (newState) {
@@ -184,4 +218,16 @@ export const datasetReducer = createReducer(
       ...newState,
     };
   }),
+  on(DatasetActions.datasetUploadSuccess, (state) => ({
+    ...state,
+    uploadStatus: {
+      success: 'Upload success',
+    },
+  })),
+  on(DatasetActions.datasetUploadFailed, (state, { error }) => ({
+    ...state,
+    uploadStatus: {
+      error,
+    },
+  })),
 );
