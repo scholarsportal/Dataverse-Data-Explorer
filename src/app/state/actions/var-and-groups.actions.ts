@@ -47,5 +47,8 @@ export const bulkEditVariables = createAction(
 
 export const bulkChangeGroupsAndWeight = createAction(
   '[Variable] Bulk Edit Groups and Weights',
-  props<{ groups: VariableGroup[]; weight: string }>()
+  props<{
+    groups: { [id: string]: VariableGroup };
+    variables: { [id: string]: Variable };
+  }>()
 );

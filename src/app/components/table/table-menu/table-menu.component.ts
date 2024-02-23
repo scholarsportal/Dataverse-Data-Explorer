@@ -33,14 +33,38 @@ export class TableMenuComponent {
   }
 
   onApplyChanges() {
-    if (this.selectedGroups.length && this.selectedVariables.length) {
+    if (this.selectedVariables.length) {
       const groups: VariableGroup[] = JSON.parse(
         JSON.stringify(this.selectedGroups)
       );
+      const newGroups: { [id: string]: VariableGroup } = {};
+      const variables: Variable[] = JSON.parse(
+        JSON.stringify(this.selectedVariables)
+      );
+      const newVariables: { [id: string]: Variable } = {};
+      const variableIDs: string[] = [];
+      variables.map((variable) => {
+        if (!(variable['@_wgt'] === 'wgt')) {
+          variable['@_wgt-var'] = this.selectedWeight;
+          variableIDs.push(variable['@_ID']);
+        }
+        newVariables[variable['@_ID']] = variable;
+      });
+      groups.map((variableGroup) => {
+        const variablesInGroup: string[] = variableGroup['@_var'].split(' ');
+        variables.map((variable): void => {
+          if (!variablesInGroup.includes(variable['@_ID'])) {
+            variablesInGroup.push(variable['@_ID']);
+          }
+        });
+        variableGroup['@_var'] = variablesInGroup.join(' ');
+        newGroups[variableGroup['@_ID']] = variableGroup;
+      });
+      console.log(groups);
       this.store.dispatch(
         bulkChangeGroupsAndWeight({
-          groups: this.selectedGroups,
-          weight: this.selectedWeight,
+          groups: newGroups,
+          variables: newVariables,
         })
       );
     }

@@ -22,11 +22,11 @@ export const datasetReducer = createReducer(
       ...state,
       dataset,
       status: 'success' as const,
-    })
+    }),
   ),
   on(
     DatasetActions.fetchDataset,
-    (state): DatasetState => ({ ...state, status: 'pending' as const })
+    (state): DatasetState => ({ ...state, status: 'pending' as const }),
   ),
   on(
     DatasetActions.fetchDatasetError,
@@ -34,11 +34,11 @@ export const datasetReducer = createReducer(
       ...state,
       status: 'error' as const,
       errorMessage: error,
-    })
+    }),
   ),
   on(
     DatasetActions.datasetConversionPending,
-    (state): DatasetState => ({ ...state, status: 'converting' as const })
+    (state): DatasetState => ({ ...state, status: 'converting' as const }),
   ),
   on(
     DatasetActions.datasetConversionSuccess,
@@ -46,7 +46,7 @@ export const datasetReducer = createReducer(
       ...state,
       dataset,
       status: 'success' as const,
-    })
+    }),
   ),
   on(
     DatasetActions.datasetConversionError,
@@ -54,7 +54,7 @@ export const datasetReducer = createReducer(
       ...state,
       status: 'error' as const,
       errorMessage: error,
-    })
+    }),
   ),
   on(DatasetActions.saveVariable, (state, { variableID, variable, groups }) => {
     const newState = JSON.parse(JSON.stringify(state));
@@ -152,16 +152,36 @@ export const datasetReducer = createReducer(
   }),
   on(VarAndGroups.bulkEditVariables, (state, { variables }) => {
     const newState: DatasetState = JSON.parse(JSON.stringify(state));
-    const arr = newState.dataset?.codeBook.dataDscr.var || [];
+    const variableArray = newState.dataset?.codeBook.dataDscr.var || [];
     const variableIDs = Object.keys(variables);
-    for (let index = 0; index < arr.length; index++) {
-      const element = arr[index];
+    for (let index = 0; index < variableArray.length; index++) {
+      const element = variableArray[index];
       if (variableIDs.includes(element['@_ID'])) {
-        arr[index] = variables[element['@_ID']];
+        variableArray[index] = variables[element['@_ID']];
       }
     }
     return {
       ...newState,
     };
-  })
+  }),
+  on(VarAndGroups.bulkChangeGroupsAndWeight, (state, { groups, variables }) => {
+    const newState = JSON.parse(JSON.stringify(state));
+    const groupArray = newState.dataset?.codeBook.dataDscr.varGrp || [];
+    const variableArray = newState.dataset?.codeBook.dataDscr.var || [];
+    for (let index = 0; index < groupArray.length; index++) {
+      const element = groupArray[index];
+      if (Object.keys(groups).includes(element['@_ID'])) {
+        element['@_var'] = groups[element['@_ID']]['@_var'];
+      }
+    }
+    for (let index = 0; index < variableArray.length; index++) {
+      const element = variableArray[index];
+      if (Object.keys(variables).includes(element['@_ID'])) {
+        variableArray[index] = variables[element['@_ID']];
+      }
+    }
+    return {
+      ...newState,
+    };
+  }),
 );
