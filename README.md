@@ -17,19 +17,12 @@ In order to generate node_modules run `cd server && bun install && cd ../client/
 
 See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
 
-Run the tool by running two different processes
-
-Process One
 ``` sh
-cd server 
-bun run start
+cd client 
+npm install
+ng serve
 ```
 
-Process Two
-``` sh
-cd server 
-bun run start
-```
 ## Using the Data Curation Tool
 
 ### Main Interface
