@@ -142,9 +142,10 @@ export const datasetReducer = createReducer(
         const group = arr[index];
         if (group['@_ID'] === groupID) {
           const variables = group['@_var'].split(' ');
-          variables.filter((variable) => variableIDs.includes(variable));
-          group['@_var'] = variables.join(' ');
-          break;
+          group['@_var'] = variables
+            .filter((variable) => !variableIDs.includes(variable))
+            .join(' ');
+          console.log(group);
         }
       }
       return {
