@@ -1,39 +1,54 @@
-<div class="flex flex-row w-full">
-  <input class="w-4/5" type="text" name="name" id="name" [(ngModel)]="label" />
-  <div class="flex flex-row justify-between">
-    <button (click)="confirmRename()">
-      <span class="sr-only">confirm</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
+<form class="flex flex-row focus:ring rounded h-16 py-2.5 px-5 w-full">
+  <div class="relative">
+    <input
+      type="text"
+      name="name"
+      id="name"
+      [(ngModel)]="label"
+      class="py-3 px-4 pe-11 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+      placeholder="xxxx-xxxx-xxxx-xxxx"
+    />
+    <div class="absolute inset-y-0 end-0 flex items-center z-20 pe-4">
+      <button
+        (click)="confirmRename()"
+        class="dark:text-dark-on-surface-variant"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-    </button>
-    <button (click)="cancelRename()">
-      <span class="sr-only">cancel</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
+        <span class="sr-only">Confirm Rename</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="mx-1.5 w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </button>
+      <button
+        (click)="cancelRename()"
+        class="dark:text-dark-on-surface-variant"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-    </button>
+        <span class="sr-only">Cancel Rename</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
-</div>
+</form>
