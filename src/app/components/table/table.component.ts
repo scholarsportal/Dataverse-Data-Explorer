@@ -3,9 +3,10 @@ import { Store } from '@ngrx/store';
 import {
   selectCurrentVarList,
   selectCurrentVariableSelected,
+  selectVariablesWithGroupsReference,
 } from 'src/app/state/selectors/var-groups.selectors';
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
-import { Variable } from 'src/app/state/interface';
+import { Variable, VariableGroup } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
 import { selectOpenVariableModalMode } from 'src/app/state/selectors/open-variable.selectors';
 import { ModalComponent } from './modal/modal.component';
@@ -21,6 +22,9 @@ import {
 export class TableComponent implements OnInit {
   @ViewChild('table') table: any;
   @ViewChild(ModalComponent) ModalComponent?: ModalComponent;
+  @Input() variablesWithGroups!: {
+    [id: string]: { groups: VariableGroup[]; label: string };
+  } | null;
 
   vars$ = this.store.select(selectCurrentVarList);
   modalMode$ = this.store.select(selectOpenVariableModalMode);
@@ -51,6 +55,17 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  isVariableGroupsEmpty(variableID: string): boolean {
+    if (this.variablesWithGroups) {
+      if (this.variablesWithGroups[variableID]) {
+        return this.variablesWithGroups[variableID].groups.length === 0;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
   onSelect({ selected }: any) {
     const variableIDs = selected.map((variable: Variable) => variable['@_ID']);
     this.store.dispatch(onSelectVariable({ variableIDs }));
@@ -79,11 +94,11 @@ export class TableComponent implements OnInit {
     this.ModalComponent?.open();
     if (data.type === 'edit')
       return this.store.dispatch(
-        openVariableEditModal({ variableID: data.variable['@_ID'] })
+        openVariableEditModal({ variableID: data.variable['@_ID'] }),
       );
     if (data.type === 'view')
       return this.store.dispatch(
-        openVariableChartModal({ variableID: data.variable['@_ID'] })
+        openVariableChartModal({ variableID: data.variable['@_ID'] }),
       );
   }
 }
