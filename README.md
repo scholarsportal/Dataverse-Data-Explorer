@@ -8,7 +8,6 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 
 ## Installation
 ### Pre-Requisites
-- Bun (javascript runtime for server)
 - NodeJS (runtime for Angular and client)
 - Angular (client framework)
 
@@ -18,7 +17,6 @@ In order to generate node_modules run `cd server && bun install && cd ../client/
 See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
 
 ``` sh
-cd client 
 npm install
 ng serve
 ```
