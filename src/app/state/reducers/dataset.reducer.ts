@@ -145,7 +145,6 @@ export const datasetReducer = createReducer(
           group['@_var'] = variables
             .filter((variable) => !variableIDs.includes(variable))
             .join(' ');
-          console.log(group);
         }
       }
       return {
@@ -179,7 +178,6 @@ export const datasetReducer = createReducer(
           element.labl = newName;
         }
       }
-      console.log(arr);
     }
     return {
       ...newState,

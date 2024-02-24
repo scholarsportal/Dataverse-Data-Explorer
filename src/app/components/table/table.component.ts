@@ -80,7 +80,6 @@ export class TableComponent implements OnInit {
   }
 
   onPageNextClick() {
-    console.log(this.offset);
     this.offset += 1;
   }
 

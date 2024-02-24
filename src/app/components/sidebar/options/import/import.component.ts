@@ -14,7 +14,6 @@ export class ImportComponent {
 
   onFileSelected(file: File) {
     // Handle the selected file here
-    console.log(file);
     this.file = file;
   }
 }

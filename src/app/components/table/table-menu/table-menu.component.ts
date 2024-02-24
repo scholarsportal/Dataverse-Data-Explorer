@@ -42,7 +42,6 @@ export class TableMenuComponent {
     if (weight.value) {
       this.selectedWeight = weight.value;
     }
-    console.log(this.selectedWeight);
   }
 
   onGroupChange(groups: VariableGroup[]) {
@@ -77,7 +76,6 @@ export class TableMenuComponent {
         variableGroup['@_var'] = variablesInGroup.join(' ');
         newGroups[variableGroup['@_ID']] = variableGroup;
       });
-      console.log(groups);
       this.store.dispatch(
         bulkChangeGroupsAndWeight({
           groups: newGroups,

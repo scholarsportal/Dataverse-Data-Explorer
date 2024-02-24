@@ -25,7 +25,6 @@ export class HeaderComponent {
   constructor(private store: Store) {}
 
   handleUpload() {
-    console.log('Request Upload');
     this.sub$
       .pipe(take(1))
       .subscribe(({ dataset, fileID, siteURL, apiKey }) => {

@@ -10,12 +10,12 @@ export const selectCrossTabulationFeature =
 
 export const selectRows = createSelector(
   selectCrossTabulationFeature,
-  (state) => state.rows
+  (state) => state.rows,
 );
 
 export const selectColumns = createSelector(
   selectCrossTabulationFeature,
-  (state) => state.columns
+  (state) => state.columns,
 );
 
 export const selectAvailableVariables = createSelector(
@@ -32,7 +32,7 @@ export const selectAvailableVariables = createSelector(
       newData[variable.variableID] ?? delete newData[variable.variableID];
     });
     return newData;
-  }
+  },
 );
 
 export const selectCurrentCrossTableData = createSelector(
@@ -51,7 +51,7 @@ export const selectCurrentCrossTableData = createSelector(
         rows.push(
           dataset[variableID]['@_name'] +
             ' - ' +
-            dataset[variableID].labl['#text']
+            dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length > tableLength) {
@@ -65,7 +65,7 @@ export const selectCurrentCrossTableData = createSelector(
         columns.push(
           dataset[variableID]['@_name'] +
             ' - ' +
-            dataset[variableID].labl['#text']
+            dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length) {
@@ -124,7 +124,6 @@ export const selectCurrentCrossTableData = createSelector(
         });
       }
     });
-    console.log(table);
     return [];
-  }
+  },
 );

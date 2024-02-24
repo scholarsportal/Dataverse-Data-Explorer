@@ -45,7 +45,6 @@ export class BulkEditModalComponent {
   }
 
   handleSave() {
-    console.log(this.selected);
     if (this.selected && this.variableForm.value && this.variableForm.valid) {
       const selected = JSON.parse(JSON.stringify(this.selected));
       const value = this.variableForm.value;

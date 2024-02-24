@@ -97,7 +97,6 @@ export class AppEffects {
             .uploadDatasetToDataverse(siteURL, fileID, xml, apiKey)
             .pipe(
               map((data) => {
-                console.log(data);
                 return datasetUploadSuccess();
               }),
               catchError((error) => of(datasetUploadFailed({ error }))),

@@ -37,13 +37,14 @@ export class ChartComponent implements OnInit, OnChanges {
   selectList: any[] = [];
 
   ngOnInit(): void {
+    this.selectList = [];
     this.createChart();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
-      this.redrawChart();
       this.selectList = [];
+      this.redrawChart();
     }
   }
 
@@ -61,6 +62,10 @@ export class ChartComponent implements OnInit, OnChanges {
 
   getCountWeighted(value: any) {
     return value.countWeighted;
+  }
+
+  getChecked(value: any) {
+    return this.selectList.includes(value.categories);
   }
 
   toggleCheckbox(item: any) {

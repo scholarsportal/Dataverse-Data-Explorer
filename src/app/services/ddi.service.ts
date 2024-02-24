@@ -64,7 +64,6 @@ export class DdiService {
   JSONtoXML(json: JSONStructure): string {
     const parser = new XMLBuilder(this.parseOptions);
     const xml = parser.build(json);
-    console.log(xml);
     return xml;
   }
 }
