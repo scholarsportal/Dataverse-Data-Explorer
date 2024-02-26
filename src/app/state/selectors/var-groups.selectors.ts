@@ -7,12 +7,6 @@ import {
   selectDatasetVariables,
 } from './dataset.selectors';
 import { Variable, VariableGroup } from '../interface';
-import {
-  selectOpenVariableData,
-  selectOpenVariableID,
-  selectOpenVariableModalMode,
-  selectOpenVariableFeature,
-} from './open-variable.selectors';
 
 export const selectVarAndGroupsFeature =
   createFeatureSelector<VarAndGroupsState>('var-and-groups');
@@ -24,12 +18,12 @@ export const selectCurrentGroup = createSelector(
 
 export const selectCurrentGroupIDs = createSelector(
   selectCurrentGroup,
-  selectDatasetFeature,
-  (currentGroup, datasetState) => {
+  selectDatasetVariableGroups,
+  (currentGroup, datasetVariables) => {
     // find the group id that matches the current selected group
     return (
-      datasetState.dataset?.codeBook.dataDscr.varGrp
-        .find((group) => group['@_ID'] === currentGroup)
+      datasetVariables
+        ?.find((group) => group['@_ID'] === currentGroup)
         ?.['@_var'].split(' ') || []
     ); // if the group is found, return a comma separated list
   },
