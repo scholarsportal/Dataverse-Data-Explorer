@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
+import { datasetUploadRequest } from 'src/app/state/actions/dataset.actions';
 import {
   selectDatasetCitation,
+  selectDatasetForUpload,
   selectDatasetTitle,
+  selectDatasetUploadFailed,
+  selectDatasetUploadSuccess,
 } from 'src/app/state/selectors/dataset.selectors';
 
 @Component({
@@ -14,13 +18,21 @@ import {
 export class HeaderComponent {
   title$ = this.store.select(selectDatasetTitle);
   citation$ = this.store.select(selectDatasetCitation);
-  data: any;
+  uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
+  uploadFail$ = this.store.select(selectDatasetUploadFailed);
+  sub$ = this.store.select(selectDatasetForUpload);
 
   constructor(private store: Store) {}
 
   handleUpload() {
-    // this.store.select(selectDataset).pipe(take(1)).subscribe((dataset: any) => {
-    //   this.store.dispatch(datasetUploadRequest(dataset))
-    // })
+    this.sub$
+      .pipe(take(1))
+      .subscribe(({ dataset, fileID, siteURL, apiKey }) => {
+        if (dataset && fileID && siteURL) {
+          this.store.dispatch(
+            datasetUploadRequest({ dataset, siteURL, fileID, apiKey }),
+          );
+        }
+      });
   }
 }

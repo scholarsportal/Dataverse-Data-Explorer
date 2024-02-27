@@ -1,20 +1,24 @@
 <main class="main bg-white dark:bg-dark-surface-variant">
-  @if (( loaded$ | async ) === 'success') {
-  <dct-header class="header"></dct-header>
-  <div class="body">
-    <dct-sidebar
-      class="sidebar bg-white dark:bg-slate-500 border-r border-light-surface dark:border-dark-surface z-20"
-    ></dct-sidebar>
-    <dct-table class="table"></dct-table>
-    <!-- <dct-cross-tabulation class="table"></dct-cross-tabulation> -->
-  </div>
-  } @if ((loaded$ | async) === 'pending') {
-  <div class="h-screen w-screen flex flex-col items-center my-auto">
-    <h1
-      class="my-auto text-8xl font-mono font-bold animate-pulse dark:text-light-on-primary"
-    >
-      Loading dataset ...
-    </h1>
-  </div>
+  @if ((loaded$ | async) === 'success') {
+    <dct-header class="header"></dct-header>
+    <div class="body">
+      <dct-sidebar
+        class="sidebar bg-white dark:bg-slate-500 border-r border-light-surface dark:border-dark-surface z-20"
+      ></dct-sidebar>
+      <dct-table
+        class="table"
+        [variablesWithGroups]="variablesWithGroups$ | async"
+      ></dct-table>
+      <!-- <dct-cross-tabulation class="table"></dct-cross-tabulation> -->
+    </div>
+  }
+  @if ((loaded$ | async) === 'pending') {
+    <div class="h-screen w-screen flex flex-col items-center my-auto">
+      <h1
+        class="my-auto text-8xl font-mono font-bold animate-pulse dark:text-light-on-primary"
+      >
+        Loading dataset ...
+      </h1>
+    </div>
   }
 </main>

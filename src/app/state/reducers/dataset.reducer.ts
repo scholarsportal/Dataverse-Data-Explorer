@@ -6,12 +6,23 @@ import { JSONStructure, VariableGroup } from '../interface';
 export interface DatasetState {
   dataset: JSONStructure | null;
   status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+  fileID: null | number;
+  siteURL: string | null;
+  apiKey: string | undefined;
+  uploadStatus: null | {
+    error?: string;
+    success?: string;
+  };
   errorMessage?: string | unknown;
 }
 
 export const initialState: DatasetState = {
   dataset: null,
   status: 'idle',
+  fileID: null,
+  siteURL: null,
+  apiKey: undefined,
+  uploadStatus: null,
 };
 
 export const datasetReducer = createReducer(
@@ -22,11 +33,11 @@ export const datasetReducer = createReducer(
       ...state,
       dataset,
       status: 'success' as const,
-    })
+    }),
   ),
   on(
     DatasetActions.fetchDataset,
-    (state): DatasetState => ({ ...state, status: 'pending' as const })
+    (state): DatasetState => ({ ...state, status: 'pending' as const }),
   ),
   on(
     DatasetActions.fetchDatasetError,
@@ -34,19 +45,22 @@ export const datasetReducer = createReducer(
       ...state,
       status: 'error' as const,
       errorMessage: error,
-    })
+    }),
   ),
   on(
     DatasetActions.datasetConversionPending,
-    (state): DatasetState => ({ ...state, status: 'converting' as const })
+    (state): DatasetState => ({ ...state, status: 'converting' as const }),
   ),
   on(
     DatasetActions.datasetConversionSuccess,
-    (state, { dataset }): DatasetState => ({
+    (state, { dataset, siteURL, fileID, apiKey }): DatasetState => ({
       ...state,
       dataset,
+      siteURL,
+      fileID,
+      apiKey,
       status: 'success' as const,
-    })
+    }),
   ),
   on(
     DatasetActions.datasetConversionError,
@@ -54,7 +68,7 @@ export const datasetReducer = createReducer(
       ...state,
       status: 'error' as const,
       errorMessage: error,
-    })
+    }),
   ),
   on(DatasetActions.saveVariable, (state, { variableID, variable, groups }) => {
     const newState = JSON.parse(JSON.stringify(state));
@@ -118,6 +132,26 @@ export const datasetReducer = createReducer(
       ...newState,
     };
   }),
+  on(
+    VarAndGroups.removeSelectedVariablesFromGroup,
+    (state, { variableIDs, groupID }) => {
+      const newState = JSON.parse(JSON.stringify(state));
+      const arr: VariableGroup[] =
+        newState.dataset?.codeBook.dataDscr.varGrp || [];
+      for (let index = 0; index < arr.length; index++) {
+        const group = arr[index];
+        if (group['@_ID'] === groupID) {
+          const variables = group['@_var'].split(' ');
+          group['@_var'] = variables
+            .filter((variable) => !variableIDs.includes(variable))
+            .join(' ');
+        }
+      }
+      return {
+        ...newState,
+      };
+    },
+  ),
   on(VarAndGroups.groupDelete, (state, { groupID }) => {
     const newState: DatasetState = JSON.parse(JSON.stringify(state));
     if (newState) {
@@ -144,7 +178,6 @@ export const datasetReducer = createReducer(
           element.labl = newName;
         }
       }
-      console.log(arr);
     }
     return {
       ...newState,
@@ -152,16 +185,48 @@ export const datasetReducer = createReducer(
   }),
   on(VarAndGroups.bulkEditVariables, (state, { variables }) => {
     const newState: DatasetState = JSON.parse(JSON.stringify(state));
-    const arr = newState.dataset?.codeBook.dataDscr.var || [];
+    const variableArray = newState.dataset?.codeBook.dataDscr.var || [];
     const variableIDs = Object.keys(variables);
-    for (let index = 0; index < arr.length; index++) {
-      const element = arr[index];
+    for (let index = 0; index < variableArray.length; index++) {
+      const element = variableArray[index];
       if (variableIDs.includes(element['@_ID'])) {
-        arr[index] = variables[element['@_ID']];
+        variableArray[index] = variables[element['@_ID']];
       }
     }
     return {
       ...newState,
     };
-  })
+  }),
+  on(VarAndGroups.bulkChangeGroupsAndWeight, (state, { groups, variables }) => {
+    const newState = JSON.parse(JSON.stringify(state));
+    const groupArray = newState.dataset?.codeBook.dataDscr.varGrp || [];
+    const variableArray = newState.dataset?.codeBook.dataDscr.var || [];
+    for (let index = 0; index < groupArray.length; index++) {
+      const element = groupArray[index];
+      if (Object.keys(groups).includes(element['@_ID'])) {
+        element['@_var'] = groups[element['@_ID']]['@_var'];
+      }
+    }
+    for (let index = 0; index < variableArray.length; index++) {
+      const element = variableArray[index];
+      if (Object.keys(variables).includes(element['@_ID'])) {
+        variableArray[index] = variables[element['@_ID']];
+      }
+    }
+    return {
+      ...newState,
+    };
+  }),
+  on(DatasetActions.datasetUploadSuccess, (state) => ({
+    ...state,
+    uploadStatus: {
+      success: 'Upload success',
+    },
+  })),
+  on(DatasetActions.datasetUploadFailed, (state, { error }) => ({
+    ...state,
+    uploadStatus: {
+      error,
+    },
+  })),
 );

@@ -15,15 +15,16 @@
       (change)="onItemsPerPageChange($event)"
     >
       @for (option of pageLimitOptions; track $index) {
-      <option [value]="option.value" [selected]="option.value == limit">
-        {{ option.value }}
-      </option>
+        <option [value]="option.value" [selected]="option.value == limit">
+          {{ option.value }}
+        </option>
       }
     </select>
   </label>
   <div class="flex flex-row align-middle">
     <span class="mx-1.5 my-auto"> 1-10 of 88 </span>
     <button (click)="pagePrevious()" class="my-3 mx-2 table-nav-button">
+      <span class="sr-only">Go To Previous Variable Page</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -40,6 +41,7 @@
       </svg>
     </button>
     <button (click)="pageNext()" class="my-3 mx-2 table-nav-button">
+      <span class="sr-only">Go To Next Variable Page</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

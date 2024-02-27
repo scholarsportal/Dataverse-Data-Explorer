@@ -56,7 +56,6 @@ export class SidebarComponent {
   }
 
   deleteGroup(group: any) {
-    console.log(group);
     this.store.dispatch(groupDelete({ groupID: group['@_ID'] }));
   }
 
@@ -77,7 +76,7 @@ export class SidebarComponent {
         groupChangeName({
           groupID: this.groupToBeChanged,
           newName,
-        })
+        }),
       );
     }
     this.groupToBeChanged = null;

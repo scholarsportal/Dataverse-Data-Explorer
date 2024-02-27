@@ -1,7 +1,7 @@
 <dialog
   #variableModal
   id="variableModal"
-  class="variable-modal rounded bg-white dark:bg-dark-surface-variant"
+  class="variable-modal rounded w-2/5 bg-white dark:bg-dark-surface-variant"
 >
   <dct-modal-header
     class="modal-header"
@@ -11,20 +11,21 @@
   ></dct-modal-header>
   <div class="modal-body h-full">
     @if ((modalMode$ | async) === 'edit') {
-    <dct-edit
-      [groups]="variableGroups$ | async"
-      [variableData]="variableData$ | async"
-      [weights]="allWeights$ | async"
-    ></dct-edit>
-    } @if ((modalMode$ | async) === 'view') {
-    <dct-chart
-      class="dark:text-white"
-      [chart]="chart$ | async"
-      [chartTable]="chartTable$ | async"
-      [form]="variableData$ | async"
-      [groups]="variableGroups$ | async"
-      [sumStat]="sumStats$ | async"
-    ></dct-chart>
+      <dct-edit
+        [groups]="variableGroups$ | async"
+        [variableData]="variableData$ | async"
+        [weights]="allWeights$ | async"
+      ></dct-edit>
+    }
+    @if ((modalMode$ | async) === 'view') {
+      <dct-chart
+        class="dark:text-white"
+        [chart]="chart$ | async"
+        [chartTable]="chartTable$ | async"
+        [form]="variableData$ | async"
+        [groups]="variableGroups$ | async"
+        [sumStat]="sumStats$ | async"
+      ></dct-chart>
     }
   </div>
   <dct-modal-footer

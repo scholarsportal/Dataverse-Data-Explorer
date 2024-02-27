@@ -6,9 +6,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
 import { VariableForm, VariableGroup } from 'src/app/state/interface';
-import { Chart } from 'chart.js/auto';
+import { Chart, Colors } from 'chart.js/auto';
 
 interface ChartData {
   values: number;
@@ -37,13 +36,14 @@ export class ChartComponent implements OnInit, OnChanges {
   selectList: any[] = [];
 
   ngOnInit(): void {
+    this.selectList = [];
     this.createChart();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
-      this.redrawChart();
       this.selectList = [];
+      this.redrawChart();
     }
   }
 
@@ -61,6 +61,10 @@ export class ChartComponent implements OnInit, OnChanges {
 
   getCountWeighted(value: any) {
     return value.countWeighted;
+  }
+
+  getChecked(value: any) {
+    return this.selectList.includes(value.categories);
   }
 
   toggleCheckbox(item: any) {
@@ -89,6 +93,28 @@ export class ChartComponent implements OnInit, OnChanges {
         datasets: [
           {
             data: this.chart,
+            backgroundColor: [
+              '#3366CC',
+              '#DC3912',
+              '#FF9900',
+              '#109618',
+              '#990099',
+              '#3B3EAC',
+              '#0099C6',
+              '#DD4477',
+              '#66AA00',
+              '#B82E2E',
+              '#316395',
+              '#994499',
+              '#22AA99',
+              '#AAAA11',
+              '#6633CC',
+              '#E67300',
+              '#8B0707',
+              '#329262',
+              '#5574A6',
+              '#651067',
+            ],
           },
         ],
       },

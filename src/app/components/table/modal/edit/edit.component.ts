@@ -60,12 +60,7 @@ export class EditComponent implements OnInit, OnChanges {
     }
   }
 
-  getID(variable: any) {
-    console.log(variable);
-  }
-
   onGroupChange(groups: VariableGroup[]) {
-    // console.log(groups);
     this.groups = groups;
   }
 
@@ -91,7 +86,7 @@ export class EditComponent implements OnInit, OnChanges {
           variableID: this.variableForm.value.id,
           variable,
           groups: newGroups,
-        })
+        }),
       );
     }
   }

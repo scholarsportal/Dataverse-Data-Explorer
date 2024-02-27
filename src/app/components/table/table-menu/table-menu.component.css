@@ -49,3 +49,10 @@
   dark:bg-dark-surface-variant
   dark:text-dark-on-surface-variant;
 }
+.remove-button {
+  @apply flex flex-row items-center rounded border my-2.5 
+  dark:border-dark-surface
+  dark:bg-dct-dark-background
+  dark:text-dct-dark-on-background
+  mr-2.5;
+}

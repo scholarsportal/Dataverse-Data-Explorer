@@ -7,32 +7,26 @@ import {
   selectDatasetVariables,
 } from './dataset.selectors';
 import { Variable, VariableGroup } from '../interface';
-import {
-  selectOpenVariableData,
-  selectOpenVariableID,
-  selectOpenVariableModalMode,
-  selectOpenVariableFeature,
-} from './open-variable.selectors';
 
 export const selectVarAndGroupsFeature =
   createFeatureSelector<VarAndGroupsState>('var-and-groups');
 
 export const selectCurrentGroup = createSelector(
   selectVarAndGroupsFeature,
-  (state) => state.selectedGroup
+  (state) => state.selectedGroup,
 );
 
 export const selectCurrentGroupIDs = createSelector(
   selectCurrentGroup,
-  selectDatasetFeature,
-  (currentGroup, datasetState) => {
+  selectDatasetVariableGroups,
+  (currentGroup, datasetVariables) => {
     // find the group id that matches the current selected group
     return (
-      datasetState.dataset?.codeBook.dataDscr.varGrp
-        .find((group) => group['@_ID'] === currentGroup)
+      datasetVariables
+        ?.find((group) => group['@_ID'] === currentGroup)
         ?.['@_var'].split(' ') || []
     ); // if the group is found, return a comma separated list
-  }
+  },
 );
 
 export const selectCurrentVarList = createSelector(
@@ -41,7 +35,7 @@ export const selectCurrentVarList = createSelector(
   selectCurrentGroupIDs,
   (datasetState, currentGroup, currentGroupIDs) => {
     const varList = Object.values(
-      datasetState.dataset?.codeBook.dataDscr.var || {}
+      datasetState.dataset?.codeBook.dataDscr.var || {},
     ) as Variable[];
     if (currentGroup) {
       return (
@@ -50,7 +44,7 @@ export const selectCurrentVarList = createSelector(
       );
     }
     return datasetState.dataset?.codeBook.dataDscr.var || [];
-  }
+  },
 );
 
 export const selectCurrentVariableSelected = createSelector(
@@ -59,25 +53,25 @@ export const selectCurrentVariableSelected = createSelector(
   selectDatasetFeature,
   (currentGroup, varGroupsState, datasetState) => {
     const varList = Object.values(
-      datasetState.dataset?.codeBook.dataDscr.var || {}
+      datasetState.dataset?.codeBook.dataDscr.var || {},
     ) as Variable[];
     if (currentGroup) {
       return (
         varList.filter((value) =>
           varGroupsState.variablesSelected[currentGroup]?.includes(
-            value['@_ID']
-          )
+            value['@_ID'],
+          ),
         ) || []
       );
     }
     return (
       varList.filter((value) =>
         varGroupsState.variablesSelected['all-variables'].includes(
-          value['@_ID']
-        )
+          value['@_ID'],
+        ),
       ) || []
     );
-  }
+  },
 );
 
 export const selectVariableWeights = createSelector(
@@ -97,7 +91,7 @@ export const selectVariableWeights = createSelector(
     }
 
     return weights;
-  }
+  },
 );
 
 export const selectVariablesWithGroupsReference = createSelector(
@@ -108,7 +102,6 @@ export const selectVariablesWithGroupsReference = createSelector(
       [variableID: string]: { groups: VariableGroup[]; label: string };
     } = {};
     if (datasetVariables) {
-      console.log(datasetVariables);
       groups?.map((variableGroup) => {
         variableGroup['@_var'].split(' ').map((variableID) => {
           variablesGroupsReference[variableID]
@@ -122,5 +115,5 @@ export const selectVariablesWithGroupsReference = createSelector(
     }
 
     return variablesGroupsReference;
-  }
+  },
 );
