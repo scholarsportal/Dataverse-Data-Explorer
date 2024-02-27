@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TableNavComponent {
   @Input() limit: number = 10;
-  @Input() offset: number = 0;
+  @Input() total: number | undefined = undefined;
 
   @Output() limitChange = new EventEmitter<number>();
   @Output() pagePreviousClick = new EventEmitter<void>();

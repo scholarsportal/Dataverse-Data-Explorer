@@ -1,5 +1,6 @@
 <dct-table-nav
   class="table-nav px-5 flex flex-row justify-between"
+  [total]="(vars$ | async)?.length"
   [limit]="limit"
   (limitChange)="onLimitChange($event)"
   (pagePreviousClick)="onPagePreviousClick()"

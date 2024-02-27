@@ -22,7 +22,9 @@
     </select>
   </label>
   <div class="flex flex-row align-middle">
-    <span class="mx-1.5 my-auto"> 1-10 of 88 </span>
+    @if (total) {
+      <span class="mx-1.5 my-auto"> 1-{{ limit }} of {{ total }} </span>
+    }
     <button (click)="pagePrevious()" class="my-3 mx-2 table-nav-button">
       <span class="sr-only">Go To Previous Variable Page</span>
       <svg

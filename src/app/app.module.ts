@@ -30,6 +30,7 @@ import { DefaultSidebarButtonComponent } from './components/sidebar/default-side
 import { DeletingSidebarButtonComponent } from './components/sidebar/deleting-sidebar-button/deleting-sidebar-button.component';
 import { RenamingSidebarButtonComponent } from './components/sidebar/renaming-sidebar-button/renaming-sidebar-button.component';
 import { BulkEditModalComponent } from './components/table/bulk-edit-modal/bulk-edit-modal.component';
+import { ImportComponent } from './components/import/import.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { BulkEditModalComponent } from './components/table/bulk-edit-modal/bulk-
     DeletingSidebarButtonComponent,
     RenamingSidebarButtonComponent,
     BulkEditModalComponent,
+    ImportComponent,
   ],
   bootstrap: [AppComponent],
 })

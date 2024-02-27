@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
+import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
 
 @Component({
   selector: 'dct-root',
@@ -14,6 +15,7 @@ import { selectVariablesWithGroupsReference } from './state/selectors/var-groups
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
   loaded$ = this.store.select(selectDatasetLoading);
+  isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
   variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);
   noParams = false;
   datasetForm: FormGroup;

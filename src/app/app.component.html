@@ -5,11 +5,32 @@
       <dct-sidebar
         class="sidebar bg-white dark:bg-slate-500 border-r border-light-surface dark:border-dark-surface z-20"
       ></dct-sidebar>
-      <dct-table
-        class="table"
-        [variablesWithGroups]="variablesWithGroups$ | async"
-      ></dct-table>
+      @if (isOptionsMenuOpen$ | async) {
+        <dct-import class="table"></dct-import>
+      } @else {
+        <dct-table
+          class="table"
+          [variablesWithGroups]="variablesWithGroups$ | async"
+        ></dct-table>
+      }
       <!-- <dct-cross-tabulation class="table"></dct-cross-tabulation> -->
+    </div>
+  }
+  @if ((loaded$ | async) === 'idle') {
+    <div
+      class="beautiful h-screen w-screen flex flex-col justify-around items-center"
+    >
+      <h1 class="text-6xl text-white font-sans font-bold">
+        Welcome Data Curators
+      </h1>
+      <p class="font-thin my-10 w-2/3 text-2xl text-white">
+        The Data Explorer allows data owners and curators to view summary
+        statistics for variables and to create and edit variable-level metadata
+        for any tabular file in a dataset.
+      </p>
+      <button class="rounded border px-3 py-1.5 text-white">
+        Import Your Own XML File
+      </button>
     </div>
   }
   @if ((loaded$ | async) === 'pending') {

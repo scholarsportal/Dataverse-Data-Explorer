@@ -32,3 +32,21 @@
 .form-input {
   @apply rounded border w-full;
 }
+.beautiful {
+  background: linear-gradient(-45deg, #4338ca, #db2777, #8604f3, #a723f4);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
