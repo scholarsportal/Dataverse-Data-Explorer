@@ -1,0 +1,58 @@
+<h2 class="import-heading">Import XML</h2>
+<div class="import-options flex flex-col px-5">
+  <p class="w-full mb-5">Select DDI Sections and Texts to include:</p>
+  <label for="variable-groups">
+    <input type="checkbox" name="variable-groups" id="variable-groups" />
+    Variable Groups
+  </label>
+  <label for="labels">
+    <input type="checkbox" name="labels" id="labels" />
+    Labels
+  </label>
+  <label for="question-texts">
+    <input type="checkbox" name="question-texts" id="question-texts" />
+    Question Texts
+  </label>
+  <label for="literal-question">
+    <input type="checkbox" name="literal-question" id="literal-question" />
+    Literal Question
+  </label>
+  <label for="interviewer-question">
+    <input
+      type="checkbox"
+      name="interviewer-question"
+      id="interviewer-question"
+    />
+    Interviewer Question
+  </label>
+  <label for="postQText">
+    <input type="checkbox" name="postQText" id="postQText" />
+    Post Question
+  </label>
+  <label for="universe">
+    <input type="checkbox" name="universe" id="universe" />
+    Universe
+  </label>
+  <label for="variable-notes">
+    <input type="checkbox" name="variable-notes" id="variable-notes" />
+    Variable Notes
+  </label>
+  <label for="weights">
+    <input type="checkbox" name="weights" id="weights" />
+    Weights
+  </label>
+  @if (file) {
+    <span>{{ file.name }}</span>
+  } @else {
+    <dct-file-upload-button
+      class="mt-10"
+      (fileSelected)="onFileSelected($event)"
+    ></dct-file-upload-button>
+  }
+  <button
+    [disabled]="file"
+    class="w-max mt-5 rounded px-3 py-2 bg-dct-light-primary text-light-on-primary dark:bg-dct-dark-primary dark:text-dark-on-primary"
+  >
+    Import Metadata
+  </button>
+</div>
