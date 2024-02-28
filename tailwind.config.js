@@ -231,11 +231,11 @@ module.exports = {
           },
         },
       },
-      // fontFamily: {
-      //   sans: ['Ubuntu'],
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
       //   serif: ['Ubuntu'],
       //   mono: ['Ubuntu'],
-      // },
+      },
     },
   },
   plugins: [],
