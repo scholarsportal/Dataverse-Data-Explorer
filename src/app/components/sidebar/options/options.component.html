@@ -1,5 +1,10 @@
 <button
-  class="flex justify-between w-full h-[70px] px-5 items-center"
+  class="flex justify-between w-full h-full px-5 items-center"
+  [ngClass]="
+    isOpen
+      ? 'bg-dct-light-surface dark:bg-dct-dark-outline dark:text-dct-dark-on-surface'
+      : ''
+  "
   (click)="handleButton()"
 >
   Import Metadata

@@ -64,5 +64,7 @@ export class BulkEditModalComponent {
     }
   }
 
-  handleCancel() {}
+  handleCancel() {
+    this.closeModal();
+  }
 }

@@ -1,48 +1,83 @@
-<h2 class="import-heading">Import XML</h2>
+<h2 class="import-heading w-full px-5 pt-10">Import XML</h2>
 <div class="import-options flex flex-col px-5">
   <p class="w-full mb-5">Select DDI Sections and Texts to include:</p>
-  <label for="variable-groups">
-    <input type="checkbox" name="variable-groups" id="variable-groups" />
-    Variable Groups
-  </label>
-  <label for="labels">
-    <input type="checkbox" name="labels" id="labels" />
-    Labels
-  </label>
-  <label for="question-texts">
-    <input type="checkbox" name="question-texts" id="question-texts" />
-    Question Texts
-  </label>
-  <label for="literal-question">
-    <input type="checkbox" name="literal-question" id="literal-question" />
-    Literal Question
-  </label>
-  <label for="interviewer-question">
+  <label for="variable-groups" class="input-label">
     <input
       type="checkbox"
-      name="interviewer-question"
-      id="interviewer-question"
+      name="variable-groups"
+      id="variable-groups"
+      [(ngModel)]="variableGroups"
     />
-    Interviewer Question
+    Variable Groups
   </label>
-  <label for="postQText">
-    <input type="checkbox" name="postQText" id="postQText" />
-    Post Question
+  <label for="labels" class="input-label">
+    <input type="checkbox" name="labels" id="labels" [(ngModel)]="labels" />
+    Labels
   </label>
-  <label for="universe">
-    <input type="checkbox" name="universe" id="universe" />
+  <label for="question-texts" class="input-label">
+    <input
+      type="checkbox"
+      name="question-texts"
+      id="question-texts"
+      [indeterminate]="questionTextIndeterminate() && !questionTextSelection()"
+      (change)="onQuestionTextSelect()"
+      [ngModel]="questionTextSelection()"
+    />
+    Question Texts
+  </label>
+  <div class="flex flex-col px-5">
+    <label for="literal-question" class="input-label">
+      <input
+        type="checkbox"
+        name="literal-question"
+        id="literal-question"
+        [(ngModel)]="literalQuestion"
+      />
+      Literal Question
+    </label>
+    <label for="interviewer-question" class="input-label">
+      <input
+        type="checkbox"
+        name="interviewer-question"
+        id="interviewer-question"
+        [(ngModel)]="interviewerQuestion"
+      />
+      Interviewer Question
+    </label>
+    <label for="postQText" class="input-label">
+      <input
+        type="checkbox"
+        name="postQText"
+        id="postQText"
+        [(ngModel)]="postQuestion"
+      />
+      Post Question
+    </label>
+  </div>
+  <label for="universe" class="input-label">
+    <input
+      type="checkbox"
+      name="universe"
+      id="universe"
+      [(ngModel)]="universe"
+    />
     Universe
   </label>
-  <label for="variable-notes">
-    <input type="checkbox" name="variable-notes" id="variable-notes" />
+  <label for="variable-notes" class="input-label">
+    <input
+      type="checkbox"
+      name="variable-notes"
+      id="variable-notes"
+      [(ngModel)]="variableNotes"
+    />
     Variable Notes
   </label>
-  <label for="weights">
-    <input type="checkbox" name="weights" id="weights" />
+  <label for="weights" class="input-label">
+    <input type="checkbox" name="weights" id="weights" [(ngModel)]="weights" />
     Weights
   </label>
   @if (file) {
-    <span>{{ file.name }}</span>
+    <span class="text-2xl mt-10">{{ file.name }}</span>
   } @else {
     <dct-file-upload-button
       class="mt-10"
@@ -51,8 +86,8 @@
   }
   <button
     [disabled]="file"
-    class="w-max mt-5 rounded px-3 py-2 bg-dct-light-primary text-light-on-primary dark:bg-dct-dark-primary dark:text-dark-on-primary"
+    class="disabled:opacity-75 w-max mt-5 rounded px-3 py-2 bg-dct-light-primary text-light-on-primary dark:bg-dct-dark-primary dark:text-dark-on-primary"
   >
-    Import Metadata
+    Import
   </button>
 </div>

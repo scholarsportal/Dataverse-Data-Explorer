@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   datasetConversionError,
   datasetConversionSuccess,
+  datasetImportMetadataStart,
   datasetUploadFailed,
   datasetUploadRequest,
   datasetUploadStart,
@@ -13,11 +14,7 @@ import {
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
-import {
-  importNewFile,
-  metadataImportFailed,
-  metadataImportSuccess,
-} from './actions/var-and-groups.actions';
+import { importNewFile } from './actions/var-and-groups.actions';
 
 @Injectable()
 export class AppEffects {
@@ -57,18 +54,18 @@ export class AppEffects {
     { functional: true },
   );
 
-  importNewMetadata$ = createEffect(
-    (ddiService: DdiService = inject(DdiService)) => {
-      return this.actions$.pipe(
-        ofType(importNewFile),
-        map(({ file }) => {
-          const parsedXML = ddiService.XMLtoJSON(file);
-          return metadataImportSuccess({ data: parsedXML });
-        }),
-        catchError((error) => of(metadataImportFailed({ error }))),
-      );
-    },
-  );
+  // importNewMetadata$ = createEffect(
+  //   (ddiService: DdiService = inject(DdiService)) => {
+  //     return this.actions$.pipe(
+  //       ofType(datasetImportMetadataStart),
+  //       map(({ file }) => {
+  //         const parsedXML = ddiService.XMLtoJSON(file);
+  //         return metadataImportSuccess({ data: parsedXML });
+  //       }),
+  //       catchError((error) => of(metadataImportFailed({ error }))),
+  //     );
+  //   },
+  // );
 
   requestDatasetUpload$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
@@ -97,6 +94,9 @@ export class AppEffects {
             .uploadDatasetToDataverse(siteURL, fileID, xml, apiKey)
             .pipe(
               map((data) => {
+                if (data?.error) {
+                  return datasetUploadFailed({ error: data.error });
+                }
                 return datasetUploadSuccess();
               }),
               catchError((error) => of(datasetUploadFailed({ error }))),

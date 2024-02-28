@@ -82,3 +82,13 @@ export const datasetUploadFailed = createAction(
   '[Dataset] Dataset Upload Failed',
   props<{ error: string }>(),
 );
+
+export const datasetImportMetadataStart = createAction(
+  '[Dataset] Import New File Metadata',
+  props<{ file: File; variableTemplate: Variable }>(),
+);
+
+export const metadataImportConversionSuccess = createAction(
+  '[Metadata] Metadata Converted to JSON',
+  props<{ dataset: JSONStructure; variableTemplate: Variable }>(),
+);
