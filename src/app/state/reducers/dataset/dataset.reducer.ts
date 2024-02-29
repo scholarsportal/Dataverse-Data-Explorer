@@ -1,72 +1,115 @@
 import { createReducer, on } from '@ngrx/store';
-import * as DatasetActions from '../actions/dataset.actions';
-import * as VarAndGroups from '../actions/var-and-groups.actions';
-import { JSONStructure, VariableGroup } from '../interface';
+import * as DatasetActions from '../../actions/dataset.actions';
+import * as VarAndGroups from '../../actions/var-and-groups.actions';
+import { JSONStructure, Variable, VariableGroup } from '../../interface';
+import {
+  MatchGroups,
+  MatchVariables,
+  createNewVarGroups,
+  createNewVariables,
+  matchGroups,
+  matchVariableIDs,
+} from './dataset-reducer.utils';
 
 export interface DatasetState {
   dataset: JSONStructure | null;
-  status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
-  fileID: null | number;
-  siteURL: string | null;
-  apiKey: string | undefined;
-  uploadStatus: null | {
-    error?: string;
-    success?: string;
+  datasetInfo: {
+    fileID: null | number;
+    siteURL: string | null;
+    apiKey: string | undefined;
+  };
+  download: {
+    status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+  };
+  upload: {
+    status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+  };
+  import: {
+    status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
   };
   errorMessage?: string | unknown;
 }
 
 export const initialState: DatasetState = {
   dataset: null,
-  status: 'idle',
-  fileID: null,
-  siteURL: null,
-  apiKey: undefined,
-  uploadStatus: null,
+  datasetInfo: {
+    fileID: null,
+    siteURL: null,
+    apiKey: undefined,
+  },
+  download: {
+    status: 'idle',
+  },
+  upload: {
+    status: 'idle',
+  },
+  import: {
+    status: 'idle',
+  },
 };
 
 export const datasetReducer = createReducer(
   initialState,
   on(
+    DatasetActions.fetchDataset,
+    (state): DatasetState => ({
+      ...state,
+      download: {
+        status: 'pending' as const,
+      },
+    }),
+  ),
+  on(
     DatasetActions.setDataset,
     (state, { dataset }): DatasetState => ({
       ...state,
       dataset,
-      status: 'success' as const,
+      download: {
+        status: 'success' as const,
+      },
     }),
-  ),
-  on(
-    DatasetActions.fetchDataset,
-    (state): DatasetState => ({ ...state, status: 'pending' as const }),
   ),
   on(
     DatasetActions.fetchDatasetError,
     (state, { error }): DatasetState => ({
       ...state,
-      status: 'error' as const,
+      download: {
+        status: 'error' as const,
+      },
       errorMessage: error,
     }),
   ),
   on(
     DatasetActions.datasetConversionPending,
-    (state): DatasetState => ({ ...state, status: 'converting' as const }),
+    (state): DatasetState => ({
+      ...state,
+      download: {
+        status: 'converting' as const,
+      },
+    }),
   ),
   on(
     DatasetActions.datasetConversionSuccess,
     (state, { dataset, siteURL, fileID, apiKey }): DatasetState => ({
       ...state,
       dataset,
-      siteURL,
-      fileID,
-      apiKey,
-      status: 'success' as const,
+      datasetInfo: {
+        siteURL,
+        fileID,
+        apiKey,
+      },
+      download: {
+        status: 'success' as const,
+      },
     }),
   ),
   on(
     DatasetActions.datasetConversionError,
     (state, { error }): DatasetState => ({
       ...state,
-      status: 'error' as const,
+      download: {
+        status: 'error' as const,
+      },
       errorMessage: error,
     }),
   ),
@@ -229,4 +272,46 @@ export const datasetReducer = createReducer(
       error,
     },
   })),
+  on(DatasetActions.datasetImportMetadataStart, (state) => {
+    return {
+      ...state,
+      import: {
+        status: 'pending' as const,
+      },
+    };
+  }),
+  on(
+    DatasetActions.metadataImportConversionSuccess,
+    (state, { dataset, variableTemplate }) => {
+      const newState: DatasetState = JSON.parse(JSON.stringify(state));
+      const variables = newState.dataset?.codeBook.dataDscr.var || [];
+      const variableGroups = newState.dataset?.codeBook.dataDscr.varGrp || [];
+      if (newState.dataset && variables.length && variableGroups.length) {
+        const groupMatched: MatchGroups = matchGroups(
+          dataset.codeBook.dataDscr.varGrp,
+          variableGroups,
+        );
+        const variablesMatched: MatchVariables = matchVariableIDs(
+          dataset.codeBook.dataDscr.var,
+          variables,
+        );
+        const newGroups: VariableGroup[] = createNewVarGroups(
+          groupMatched,
+          variablesMatched,
+          variableGroups,
+        );
+        const newVariables: Variable[] = createNewVariables(
+          variablesMatched,
+          variables,
+          variableTemplate,
+        );
+        newState.dataset.codeBook.dataDscr.var = newVariables;
+        newState.dataset.codeBook.dataDscr.varGrp = newGroups;
+        newState.import.status = 'success';
+      }
+      return {
+        ...newState,
+      };
+    },
+  ),
 );

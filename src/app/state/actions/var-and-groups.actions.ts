@@ -16,9 +16,24 @@ export const onSelectVariable = createAction(
   props<{ variableIDs: string[] }>(),
 );
 
+export const addToMissingVariables = createAction(
+  '[Variable] Added missing value to variable',
+  props<{ [variableID: string]: { [missingValue: string]: string } }>(),
+);
+
+export const removeFromMissingVariables = createAction(
+  '[Variable] Removed missing value from variable',
+  props<{ [variableID: string]: { [missingValue: string]: string } }>(),
+);
+
 export const removeSelectedVariablesFromGroup = createAction(
   '[Variable] Variables removed from group',
   props<{ variableIDs: string[]; groupID: string }>(),
+);
+
+export const changeImportSettingsSelected = createAction(
+  '[Variable] Changed selected import settings',
+  props<{ settingName: string; change: boolean }>(),
 );
 
 export const groupCreateNew = createAction(

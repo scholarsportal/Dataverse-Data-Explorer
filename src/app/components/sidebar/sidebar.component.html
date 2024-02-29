@@ -9,51 +9,53 @@
   class="group-add flex flex-row h-[70px] items-center justify-between border-b"
 >
   @if (addingNewGroup) {
-  <dct-new-group
-    class="flex flex-row justify-between h-full w-full"
-    (emitCancel)="resetUI()"
-    (emitConfirm)="confirmGroup($event)"
-  ></dct-new-group>
+    <dct-new-group
+      class="flex flex-row justify-between h-full w-full"
+      (emitCancel)="resetUI()"
+      (emitConfirm)="confirmGroup($event)"
+    ></dct-new-group>
   } @else {
-  <span class="mx-5">Groups</span>
-  <button
-    class="rounded bg-primary-20 text-light-on-primary mx-5 px-2 py-1.5"
-    (click)="startAddingNewGroup()"
-  >
-    ADD
-  </button>
+    <span class="mx-5">Groups</span>
+    <button
+      class="rounded bg-primary-20 text-light-on-primary mx-5 px-2 py-1.5"
+      (click)="startAddingNewGroup()"
+    >
+      ADD
+    </button>
   }
 </div>
 <nav class="all-groups">
-  @if ( groups$ | async ) {
-  <ol>
-    @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
-    <li class="">
-      @if (deletingGroup && groupToBeChanged === getID(varGroup.value)) {
-      <dct-deleting-sidebar-button
-        (emitConfirm)="deleteGroup(varGroup.value)"
-        (emitCancel)="cancelGroupDelete()"
-      ></dct-deleting-sidebar-button>
-      } @else if (renamingGroup && groupToBeChanged === getID(varGroup.value)) {
-      <dct-renaming-sidebar-button
-        [label]="getLabel(varGroup.value)"
-        (emitCancel)="cancelGroupRename()"
-        (emitConfirm)="renameGroup($event)"
-      ></dct-renaming-sidebar-button>
-      } @else {
-      <dct-default-sidebar-button
-        class=""
-        (changeGroup)="changeGroup(varGroup.value)"
-        [groupID]="getID(varGroup.value)"
-        [label]="getLabel(varGroup.value)"
-        (startDelete)="startGroupDelete($event)"
-        (startRename)="startGroupRename($event)"
-      >
-      </dct-default-sidebar-button>
+  @if (groups$ | async) {
+    <ol>
+      @for (varGroup of groups$ | async | keyvalue; track $index) {
+        <li class="">
+          @if (deletingGroup && groupToBeChanged === getID(varGroup.value)) {
+            <dct-deleting-sidebar-button
+              (emitConfirm)="deleteGroup(varGroup.value)"
+              (emitCancel)="cancelGroupDelete()"
+            ></dct-deleting-sidebar-button>
+          } @else if (
+            renamingGroup && groupToBeChanged === getID(varGroup.value)
+          ) {
+            <dct-renaming-sidebar-button
+              [label]="getLabel(varGroup.value)"
+              (emitCancel)="cancelGroupRename()"
+              (emitConfirm)="renameGroup($event)"
+            ></dct-renaming-sidebar-button>
+          } @else {
+            <dct-default-sidebar-button
+              class=""
+              (changeGroup)="changeGroup(varGroup.value)"
+              [groupID]="getID(varGroup.value)"
+              [label]="getLabel(varGroup.value)"
+              (startDelete)="startGroupDelete($event)"
+              (startRename)="startGroupRename($event)"
+            >
+            </dct-default-sidebar-button>
+          }
+        </li>
       }
-    </li>
-    }
-  </ol>
+    </ol>
   }
 </nav>
 <dct-options class="options options-button options-colours"></dct-options>

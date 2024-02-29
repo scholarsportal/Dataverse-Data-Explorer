@@ -85,10 +85,15 @@ export const datasetUploadFailed = createAction(
 
 export const datasetImportMetadataStart = createAction(
   '[Dataset] Import New File Metadata',
-  props<{ file: File; variableTemplate: Variable }>(),
+  props<{ file: string; variableTemplate: VariableForm }>(),
 );
 
 export const metadataImportConversionSuccess = createAction(
   '[Metadata] Metadata Converted to JSON',
-  props<{ dataset: JSONStructure; variableTemplate: Variable }>(),
+  props<{ dataset: JSONStructure; variableTemplate: VariableForm }>(),
+);
+
+export const metadataImportConversionFailed = createAction(
+  '[Metadata] File error: could not convert to JSON',
+  props<{ error: string }>(),
 );

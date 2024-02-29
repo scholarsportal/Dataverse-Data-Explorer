@@ -11,10 +11,11 @@ import {
   fetchDataset,
   fetchDatasetError,
   fetchDatasetSuccess,
+  metadataImportConversionFailed,
+  metadataImportConversionSuccess,
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
-import { importNewFile } from './actions/var-and-groups.actions';
 
 @Injectable()
 export class AppEffects {
@@ -54,18 +55,21 @@ export class AppEffects {
     { functional: true },
   );
 
-  // importNewMetadata$ = createEffect(
-  //   (ddiService: DdiService = inject(DdiService)) => {
-  //     return this.actions$.pipe(
-  //       ofType(datasetImportMetadataStart),
-  //       map(({ file }) => {
-  //         const parsedXML = ddiService.XMLtoJSON(file);
-  //         return metadataImportSuccess({ data: parsedXML });
-  //       }),
-  //       catchError((error) => of(metadataImportFailed({ error }))),
-  //     );
-  //   },
-  // );
+  importNewMetadata$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(datasetImportMetadataStart),
+        map(({ file, variableTemplate }) => {
+          const parsedXML = ddiService.XMLtoJSON(file);
+          return metadataImportConversionSuccess({
+            dataset: parsedXML,
+            variableTemplate,
+          });
+        }),
+        catchError((error) => of(metadataImportConversionFailed({ error }))),
+      );
+    },
+  );
 
   requestDatasetUpload$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {

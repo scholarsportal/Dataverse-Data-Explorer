@@ -4,7 +4,6 @@ import {
   selectDatasetFeature,
   selectDatasetProcessedVariables,
   selectDatasetVariableGroups,
-  selectDatasetVariables,
 } from './dataset.selectors';
 import { Variable, VariableGroup } from '../interface';
 
