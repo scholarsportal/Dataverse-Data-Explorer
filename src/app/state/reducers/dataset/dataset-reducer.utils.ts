@@ -118,11 +118,13 @@ export function createNewVariables(
       }
       if (variableTemplate.notes) {
         if (
-          typeof matchedVariables[variable['@_ID']].variable.notes === 'string'
+          typeof matchedVariables[variable['@_ID']].variable?.notes === 'string'
         ) {
           variable.notes['#text'] =
             matchedVariables[variable['@_ID']].variable.notes;
-        } else {
+        } else if (
+          matchedVariables[variable['@_ID']].variable?.notes?.['#text']
+        ) {
           variable.notes['#text'] =
             matchedVariables[variable['@_ID']].variable.notes['#text'];
         }
