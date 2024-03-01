@@ -16,7 +16,7 @@
   }
 
   datatable-header {
-    @apply pt-5 border-b border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
+    @apply pt-5 font-bold border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
   }
 
   datatable-footer {
@@ -25,6 +25,10 @@
 
   datatable-body-row {
     @apply border-t w-full h-16 border-light-outline-variant dark:border-light-outline dark:text-light-outline-variant;
+  }
+
+  datatable-pager  a {
+    padding-left: 1rem;
   }
 
   .ngx-datatable.bootstrap .datatable-body-row,
@@ -46,11 +50,17 @@
 
 @layer components {
   .btn {
-    @apply rounded-md;
+    border-radius: 4px;
     border-color: transparent;
     font-size: 0.75rem;
     height: 2.5rem;
     min-height: 2.5rem;
+  }
+
+  .input, .select {
+    height: 2.5rem;
+    min-height: 2.5rem;
+    border-radius: 4px;
   }
   
   /* Primary */

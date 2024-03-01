@@ -29,3 +29,6 @@
 .ngx-datatable {
   min-height: 80vh;
 }
+.pages {
+  padding-left: 5px;
+}
