@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   datasetConversionError,
   datasetConversionSuccess,
+  datasetImportMetadataStart,
   datasetUploadFailed,
   datasetUploadRequest,
   datasetUploadStart,
@@ -10,14 +11,11 @@ import {
   fetchDataset,
   fetchDatasetError,
   fetchDatasetSuccess,
+  metadataImportConversionFailed,
+  metadataImportConversionSuccess,
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
-import {
-  importNewFile,
-  metadataImportFailed,
-  metadataImportSuccess,
-} from './actions/var-and-groups.actions';
 
 @Injectable()
 export class AppEffects {
@@ -60,12 +58,15 @@ export class AppEffects {
   importNewMetadata$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(importNewFile),
-        map(({ file }) => {
+        ofType(datasetImportMetadataStart),
+        map(({ file, variableTemplate }) => {
           const parsedXML = ddiService.XMLtoJSON(file);
-          return metadataImportSuccess({ data: parsedXML });
+          return metadataImportConversionSuccess({
+            dataset: parsedXML,
+            variableTemplate,
+          });
         }),
-        catchError((error) => of(metadataImportFailed({ error }))),
+        catchError((error) => of(metadataImportConversionFailed({ error }))),
       );
     },
   );
@@ -97,6 +98,9 @@ export class AppEffects {
             .uploadDatasetToDataverse(siteURL, fileID, xml, apiKey)
             .pipe(
               map((data) => {
+                if (data?.error) {
+                  return datasetUploadFailed({ error: data.error });
+                }
                 return datasetUploadSuccess();
               }),
               catchError((error) => of(datasetUploadFailed({ error }))),

@@ -1,5 +1,5 @@
 .import-heading {
-  grid-area: 1 / 1 / 2 / 1 0;
+  grid-area: 1 / 1 / 2 / 10;
 }
 .import-options {
   height: 100vh;
@@ -7,4 +7,7 @@
 }
 .import-button {
   grid-area: 9 / 1 / 10 / 10;
+}
+.input-label {
+  @apply my-2;
 }

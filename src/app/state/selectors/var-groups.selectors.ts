@@ -4,7 +4,6 @@ import {
   selectDatasetFeature,
   selectDatasetProcessedVariables,
   selectDatasetVariableGroups,
-  selectDatasetVariables,
 } from './dataset.selectors';
 import { Variable, VariableGroup } from '../interface';
 
@@ -85,7 +84,9 @@ export const selectVariableWeights = createSelector(
       Object.values(datasetVariables).map((variable: Variable) => {
         const wgtVar = variable['@_wgt-var'] as string | undefined;
         if (wgtVar) {
-          weights[wgtVar] = datasetVariables[wgtVar].labl['#text'];
+          weights[wgtVar] = datasetVariables[wgtVar]
+            ? datasetVariables[wgtVar].labl['#text']
+            : '';
         }
       });
     }
@@ -103,7 +104,7 @@ export const selectVariablesWithGroupsReference = createSelector(
     } = {};
     if (datasetVariables) {
       groups?.map((variableGroup) => {
-        variableGroup['@_var'].split(' ').map((variableID) => {
+        variableGroup['@_var']?.split(' ').map((variableID) => {
           variablesGroupsReference[variableID]
             ? variablesGroupsReference[variableID].groups.push(variableGroup)
             : (variablesGroupsReference[variableID] = {

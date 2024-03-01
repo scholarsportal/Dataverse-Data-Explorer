@@ -1,6 +1,6 @@
 import { isDevMode } from '@angular/core';
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { datasetReducer, DatasetState } from './dataset.reducer';
+import { datasetReducer, DatasetState } from './dataset/dataset.reducer';
 import {
   varAndGroupsReducer,
   VarAndGroupsState,

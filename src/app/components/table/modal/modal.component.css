@@ -6,5 +6,5 @@
   @apply dark:text-dark-inverse-surface;
 }
 .modal-body {
-  @apply px-10 w-fit;
+  @apply px-10 w-full;
 }

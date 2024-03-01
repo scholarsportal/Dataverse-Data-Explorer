@@ -30,14 +30,6 @@ h2 {
   grid-area: 9 / 1 / 10 / 4;
   width: 100%;
 }
-.options-colours {
-  @apply border-light-surface 
-   dark:border-dark-surface 
-   hover:bg-light-outline 
-   hover:text-light-inverse-on-surface 
-   dark:hover:bg-dark-inverse-primary 
-   dark:hover:text-dark-on-primary-container;
-}
 .options-button {
   @apply flex
    border-t;

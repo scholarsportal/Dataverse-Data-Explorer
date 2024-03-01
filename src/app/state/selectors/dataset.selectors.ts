@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { DatasetState } from '../reducers/dataset.reducer';
+import { DatasetState } from '../reducers/dataset/dataset.reducer';
 import { Variable } from '../interface';
 
 export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
@@ -14,31 +14,36 @@ export const selectDataset = createSelector(
   (state) => state.dataset,
 );
 
+export const selectDatasetHasAPIKey = createSelector(
+  selectDatasetFeature,
+  (state) => state.datasetInfo.apiKey !== undefined,
+);
+
 export const selectDatasetForUpload = createSelector(
   selectDatasetFeature,
   (state) => {
     return {
       dataset: state.dataset,
-      fileID: state.fileID,
-      siteURL: state.siteURL,
-      apiKey: state.apiKey,
+      fileID: state.datasetInfo.fileID,
+      siteURL: state.datasetInfo.siteURL,
+      apiKey: state.datasetInfo.apiKey,
     };
   },
 );
 
 export const selectDatasetLoading = createSelector(
   selectDatasetFeature,
-  (state) => state.status,
+  (state) => state.download.status,
 );
 
 export const selectDatasetUploadFailed = createSelector(
   selectDatasetState,
-  (state) => state.uploadStatus?.error,
+  (state) => state.upload.status === 'error',
 );
 
 export const selectDatasetUploadSuccess = createSelector(
   selectDatasetState,
-  (state) => state.uploadStatus?.success,
+  (state) => state.upload.status === 'success',
 );
 
 export const selectDatasetTitle = createSelector(
@@ -72,4 +77,19 @@ export const selectDatasetProcessedVariables = createSelector(
     });
     return processedVariables;
   },
+);
+
+export const selectDatasetImportInProgress = createSelector(
+  selectDatasetState,
+  (state) => state.import.status === 'pending',
+);
+
+export const selectDatasetImportNotStarted = createSelector(
+  selectDatasetState,
+  (state) => state.import.status === 'idle',
+);
+
+export const selectDatasetImportSuccess = createSelector(
+  selectDatasetState,
+  (state) => state.import.status === 'success',
 );
