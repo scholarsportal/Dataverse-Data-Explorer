@@ -3,6 +3,7 @@ import {
   JSONStructure,
   Variable,
   VariableForm,
+  VariableFormTemplate,
   VariableGroup,
 } from '../interface';
 
@@ -85,12 +86,12 @@ export const datasetUploadFailed = createAction(
 
 export const datasetImportMetadataStart = createAction(
   '[Dataset] Import New File Metadata',
-  props<{ file: string; variableTemplate: VariableForm }>(),
+  props<{ file: string; variableTemplate: VariableFormTemplate }>(),
 );
 
 export const metadataImportConversionSuccess = createAction(
-  '[Metadata] Metadata Converted to JSON',
-  props<{ dataset: JSONStructure; variableTemplate: VariableForm }>(),
+  '[Metadata] Metadata Imported Successfully',
+  props<{ dataset: JSONStructure; variableTemplate: VariableFormTemplate }>(),
 );
 
 export const metadataImportConversionFailed = createAction(

@@ -8,6 +8,7 @@ import {
   openVariableChartModal,
   openVariableEditModal,
 } from '../actions/ui.actions';
+import { changeSelectedGroup } from '../actions/var-and-groups.actions';
 
 export interface OpenVariableState {
   modal: {
@@ -36,7 +37,7 @@ export const openVariableReducer = createReducer(
         mode: 'options' as const,
         variableID: null,
       },
-    })
+    }),
   ),
   on(
     closeOptionsMenu,
@@ -47,7 +48,7 @@ export const openVariableReducer = createReducer(
         mode: null,
         variableID: null,
       },
-    })
+    }),
   ),
   on(openVariableEditModal, (state, { variableID }) => ({
     ...state,
@@ -87,5 +88,19 @@ export const openVariableReducer = createReducer(
       open: state.modal.open,
       variableID,
     },
-  }))
+  })),
+  on(changeSelectedGroup, (state) => {
+    if (state.modal.mode === 'options') {
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          open: false,
+        },
+      };
+    }
+    return {
+      ...state,
+    };
+  }),
 );

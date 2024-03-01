@@ -47,6 +47,28 @@ export interface Variable {
   '@_wgt-var': string;
   '@_wgt'?: string;
 }
+export interface NesstarVariable {
+  location: Location;
+  labl: string;
+  qstn: Question;
+  universe: string;
+  sumStat: SummaryStatistic[];
+  catgry: Category[];
+  varFormat: {
+    '@_type': string;
+  };
+  notes: {
+    '#text': string;
+    '@_subject': string;
+    '@_level': string;
+    '@_type': string;
+  };
+  '@_ID': string;
+  '@_name': string;
+  '@_intrvl': string;
+  '@_wgt-var': string;
+  '@_wgt'?: string;
+}
 
 export interface VariableForm {
   id: string;
@@ -58,6 +80,16 @@ export interface VariableForm {
   notes: string | null;
   weight: string | null;
   isWeight: boolean;
+}
+
+export interface VariableFormTemplate {
+  label: boolean;
+  literalQuestion: boolean;
+  interviewQuestion: boolean;
+  postQuestion: boolean;
+  universe: boolean;
+  notes: boolean;
+  weight: boolean;
 }
 
 export const initVariableForm = {

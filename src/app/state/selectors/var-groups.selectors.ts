@@ -102,7 +102,7 @@ export const selectVariablesWithGroupsReference = createSelector(
     } = {};
     if (datasetVariables) {
       groups?.map((variableGroup) => {
-        variableGroup['@_var'].split(' ').map((variableID) => {
+        variableGroup['@_var']?.split(' ').map((variableID) => {
           variablesGroupsReference[variableID]
             ? variablesGroupsReference[variableID].groups.push(variableGroup)
             : (variablesGroupsReference[variableID] = {

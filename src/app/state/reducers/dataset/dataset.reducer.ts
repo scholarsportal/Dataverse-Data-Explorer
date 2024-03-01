@@ -25,6 +25,8 @@ export interface DatasetState {
     status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
   };
   import: {
+    changed: number | null;
+    rejected: number | null;
     status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
   };
   errorMessage?: string | unknown;
@@ -45,6 +47,8 @@ export const initialState: DatasetState = {
   },
   import: {
     status: 'idle',
+    changed: null,
+    rejected: null,
   },
 };
 
@@ -276,6 +280,7 @@ export const datasetReducer = createReducer(
     return {
       ...state,
       import: {
+        ...state.import,
         status: 'pending' as const,
       },
     };
@@ -300,14 +305,13 @@ export const datasetReducer = createReducer(
           variablesMatched,
           variableGroups,
         );
-        const newVariables: Variable[] = createNewVariables(
-          variablesMatched,
-          variables,
-          variableTemplate,
-        );
-        newState.dataset.codeBook.dataDscr.var = newVariables;
+        const newVariables: { variables: Variable[]; count: number } =
+          createNewVariables(variablesMatched, variables, variableTemplate);
+        newState.dataset.codeBook.dataDscr.var = newVariables.variables;
         newState.dataset.codeBook.dataDscr.varGrp = newGroups;
         newState.import.status = 'success';
+        newState.import.changed = newVariables.count;
+        newState.import.rejected = variables.length - newVariables.count;
       }
       return {
         ...newState,

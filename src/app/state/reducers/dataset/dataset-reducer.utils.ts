@@ -1,7 +1,8 @@
 import {
-  JSONStructure,
+  NesstarVariable,
   Variable,
   VariableForm,
+  VariableFormTemplate,
   VariableGroup,
 } from '../../interface';
 
@@ -13,7 +14,10 @@ export interface MatchGroups {
 }
 
 export interface MatchVariables {
-  [importedVariableID: string]: { datasetID: string; variable: Variable };
+  [datasetID: string]: {
+    importedVariableID: string;
+    variable: Variable | NesstarVariable | any;
+  };
 }
 
 export function matchGroups(
@@ -35,15 +39,15 @@ export function matchGroups(
 }
 
 export function matchVariableIDs(
-  importVariables: Variable[],
+  importVariables: Variable[] | any[],
   datasetVariables: Variable[],
 ): MatchVariables {
   const variablesMatched: MatchVariables = {};
   importVariables.map((importVariable) => {
     datasetVariables.map((datasetVariables) => {
       if (importVariable['@_name'] === datasetVariables['@_name']) {
-        variablesMatched[importVariable['@_ID']] = {
-          datasetID: datasetVariables['@_ID'],
+        variablesMatched[datasetVariables['@_ID']] = {
+          importedVariableID: importVariable['@_ID'],
           variable: importVariable,
         };
       }
@@ -58,19 +62,27 @@ export function createNewVarGroups(
   datasetVariableGroups: VariableGroup[],
 ): VariableGroup[] {
   const newGroups: VariableGroup[] = [];
+  const newVariablesMatched: { [id: string]: string } = {};
+  Object.keys(variablesMatched).map((datasetID: string, index: number) => {
+    const importedVariableID: string =
+      Object.values(variablesMatched)[index].importedVariableID;
+    newVariablesMatched[importedVariableID] = datasetID;
+  });
   datasetVariableGroups.map((variableGroup) => {
     if (groupsMatched[variableGroup['@_ID']]) {
       // const variables = variableGroup['@_var'].split(' ')
       const importedVariables =
-        groupsMatched[variableGroup['@_ID']].varList.split(' ');
+        groupsMatched[variableGroup['@_ID']].varList?.split(' ') || [];
       const newVariables: string[] = [];
       importedVariables.map((variableID) => {
-        newVariables.push(variablesMatched[variableID].datasetID);
+        newVariables.push(newVariablesMatched[variableID]);
       });
-      variableGroup['@_var'] = [
-        ...variableGroup['@_var'].split(' '),
-        ...newVariables,
-      ].join(' ');
+      if (variableGroup['@_var']) {
+        variableGroup['@_var'] = [
+          ...variableGroup['@_var'].split(' '),
+          ...newVariables,
+        ].join(' ');
+      }
     }
     newGroups.push(variableGroup);
   });
@@ -80,23 +92,40 @@ export function createNewVarGroups(
 export function createNewVariables(
   matchedVariables: MatchVariables,
   datasetVariables: Variable[],
-  variableTemplate: VariableForm,
-): Variable[] {
+  variableTemplate: VariableFormTemplate,
+): { variables: Variable[]; count: number } {
   const newVariables: Variable[] = [];
+  var changed: number = 0;
   datasetVariables.map((variable) => {
     if (matchedVariables[variable['@_ID']]) {
-      console.log(matchedVariables[variable['@_ID']]);
-      if (variableTemplate.label !== 'null') {
-        variable.labl['#text'] =
-          matchedVariables[variable['@_ID']].variable.labl['#text'];
+      if (variableTemplate.label) {
+        var text: string = '';
+        if (
+          typeof matchedVariables[variable['@_ID']].variable.labl === 'string'
+        ) {
+          text = matchedVariables[variable['@_ID']].variable.labl;
+        } else {
+          text = matchedVariables[variable['@_ID']].variable.labl['#text'];
+        }
+        variable.labl = {
+          ...variable.labl,
+          '#text': text,
+        };
       }
       if (variableTemplate.universe) {
         variable.universe =
           matchedVariables[variable['@_ID']].variable.universe;
       }
       if (variableTemplate.notes) {
-        variable.notes['#text'] =
-          matchedVariables[variable['@_ID']].variable.notes['#text'];
+        if (
+          typeof matchedVariables[variable['@_ID']].variable.notes === 'string'
+        ) {
+          variable.notes['#text'] =
+            matchedVariables[variable['@_ID']].variable.notes;
+        } else {
+          variable.notes['#text'] =
+            matchedVariables[variable['@_ID']].variable.notes['#text'];
+        }
       }
       if (variableTemplate.weight) {
         variable['@_wgt-var'] =
@@ -129,8 +158,9 @@ export function createNewVariables(
             '',
         };
       }
+      changed += 1;
     }
     newVariables.push(variable);
   });
-  return newVariables;
+  return { variables: newVariables, count: changed };
 }

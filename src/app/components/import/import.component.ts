@@ -4,7 +4,7 @@ import { FileUploadButtonComponent } from './file-upload-button/file-upload-butt
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { datasetImportMetadataStart } from 'src/app/state/actions/dataset.actions';
-import { VariableForm } from 'src/app/state/interface';
+import { VariableForm, VariableFormTemplate } from 'src/app/state/interface';
 import {
   selectDatasetImportInProgress,
   selectDatasetImportNotStarted,
@@ -67,16 +67,14 @@ export class ImportComponent {
 
   async onImportButtonClick() {
     const fileText = await this.file?.text();
-    const variableTemplate: VariableForm = {
-      id: '',
-      label: this.labels ? '' : 'null',
-      interviewQuestion: this.interviewerQuestion ? '' : null,
-      literalQuestion: this.literalQuestion ? '' : null,
-      postQuestion: this.postQuestion ? '' : null,
-      notes: this.variableNotes ? '' : null,
-      weight: this.weights ? '' : null,
-      universe: this.universe ? '' : null,
-      isWeight: true,
+    const variableTemplate: VariableFormTemplate = {
+      label: this.labels,
+      interviewQuestion: this.interviewerQuestion,
+      literalQuestion: this.literalQuestion,
+      postQuestion: this.postQuestion,
+      notes: this.variableNotes,
+      weight: this.weights,
+      universe: this.universe,
     };
     if (fileText) {
       this.store.dispatch(
