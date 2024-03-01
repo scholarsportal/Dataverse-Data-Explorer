@@ -95,7 +95,13 @@ export function createNewVariables(
   variableTemplate: VariableFormTemplate,
 ): { variables: Variable[]; count: number } {
   const newVariables: Variable[] = [];
+  const newVariableReferences: { [oldVariableID: string]: string } = {};
   var changed: number = 0;
+  Object.keys(matchedVariables).map((value, index) => {
+    newVariableReferences[
+      Object.values(matchedVariables)[index].importedVariableID
+    ] = value;
+  });
   datasetVariables.map((variable) => {
     if (matchedVariables[variable['@_ID']]) {
       if (variableTemplate.label) {
@@ -130,8 +136,16 @@ export function createNewVariables(
         }
       }
       if (variableTemplate.weight) {
-        variable['@_wgt-var'] =
-          matchedVariables[variable['@_ID']].variable['@_wgt-var'];
+        if (
+          newVariableReferences[
+            matchedVariables[variable['@_ID']].variable['@_wgt-var']
+          ]
+        ) {
+          variable['@_wgt-var'] =
+            newVariableReferences[
+              matchedVariables[variable['@_ID']].variable['@_wgt-var']
+            ];
+        }
       }
       if (variableTemplate.literalQuestion) {
         variable.qstn = {

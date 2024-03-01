@@ -84,7 +84,9 @@ export const selectVariableWeights = createSelector(
       Object.values(datasetVariables).map((variable: Variable) => {
         const wgtVar = variable['@_wgt-var'] as string | undefined;
         if (wgtVar) {
-          weights[wgtVar] = datasetVariables[wgtVar].labl['#text'];
+          weights[wgtVar] = datasetVariables[wgtVar]
+            ? datasetVariables[wgtVar].labl['#text']
+            : '';
         }
       });
     }
