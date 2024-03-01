@@ -2,6 +2,7 @@
   grid-area: 1 / 1 / 2 / 1 0;
 }
 .import-options {
+  height: 100vh;
   grid-area: 2 / 1 / 10 / 10;
 }
 .import-button {

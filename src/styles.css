@@ -4,11 +4,11 @@
 
 @layer base {
   h1 {
-    @apply text-3xl lg:text-4xl font-thin;
+    @apply text-2xl lg:text-2xl font-light;
   }
 
   h2 {
-    @apply text-xl lg:text-2xl font-light;
+    @apply text-xl lg:text-xl font-light;
   }
 
   button {
@@ -38,9 +38,21 @@
     .datatable-row-group {
     @apply bg-light-surface-variant dark:bg-gray-800 transition-colors duration-100;
   }
+  .rounded-box {
+    @apply rounded-none;
+  }
+  
 }
 
 @layer components {
+  .btn {
+    @apply rounded-md;
+    border-color: transparent;
+    font-size: 0.75rem;
+    height: 2.5rem;
+    min-height: 2.5rem;
+  }
+  
   /* Primary */
   .primary {
     @apply bg-light-primary dark:bg-dark-primary;

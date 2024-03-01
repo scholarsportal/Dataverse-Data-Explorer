@@ -2,8 +2,9 @@
   grid-area: 1 / 1 / 2 / 10;
 }
 .table-container {
-  grid-area: 2/ 1 / 10 / 10;
-  overflow-y: scroll;
+
+  grid-area: 2 / 1 / 10 / 10;
+  overflow-y: auto;
 }
 .table-container-selected {
   grid-area: 2/ 1 / 9 / 10;
@@ -12,7 +13,7 @@
 .table-menu {
   @apply border-t
   bg-white
- dark:bg-slate-500 
+  dark:bg-slate-500 
   border-light-surface 
   dark:border-dark-surface 
   transition-transform 
@@ -20,8 +21,11 @@
 }
 .modal-grid {
   height: 100vh;
-  width: 50%;
+  width: 75%;
 }
 .table-menu-grid {
   grid-area: 9 / 1 / 10 / 10;
+}
+.ngx-datatable {
+  min-height: 80vh;
 }

@@ -1,13 +1,4 @@
-<button
-  [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"
-  (click)="changeGroup(null)"
-  class="all-variables all-vars"
->
-  All Variables
-</button>
-<div
-  class="group-add flex flex-row h-[70px] items-center justify-between border-b"
->
+<div class="group-add flex flex-row items-center relative">
   @if (addingNewGroup) {
   <dct-new-group
     class="flex flex-row justify-between h-full w-full"
@@ -15,18 +6,36 @@
     (emitConfirm)="confirmGroup($event)"
   ></dct-new-group>
   } @else {
-  <span class="mx-5">Groups</span>
-  <button
-    class="rounded bg-primary-20 text-light-on-primary mx-5 px-2 py-1.5"
-    (click)="startAddingNewGroup()"
-  >
-    ADD
-  </button>
+ 
+    <h2 class="mx-5">
+      Variable Groups
+    </h2>
+    <button
+      class="btn btn-primary mr-5 absolute right-0"
+      (click)="startAddingNewGroup()"
+    > 
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+      <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+    </svg>
+      ADD
+    </button>
+  
   }
 </div>
 <nav class="all-groups">
   @if ( groups$ | async ) {
   <ol>
+    <li>
+      <div class="flex flex-row justify-between w-full"><!--container-->
+        <button
+          [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"
+          (click)="changeGroup(null)"
+          class="h-16 px-5 w-full items-center text-start"
+        >
+        All Variables
+        </button>
+      </div>
+    </li>
     @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
     <li class="">
       @if (deletingGroup && groupToBeChanged === getID(varGroup.value)) {

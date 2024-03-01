@@ -45,6 +45,7 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.19",
     "autoprefixer": "^10.4.16",
+    "daisyui": "^4.7.2",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

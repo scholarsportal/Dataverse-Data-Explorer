@@ -3,7 +3,7 @@
   max-height: 100vh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  font-size: 0.85rem
 }
 .header {
   grid-area: 1 / 1 / 4 / 13;
@@ -19,13 +19,13 @@
 .sidebar {
   max-height: 100%;
   display: grid;
-  grid-area: 1 / 1 / 5 / 3;
+  grid-area: 1 / 1 / 5 / 4;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(9, 1fr);
 }
 .table {
   display: grid;
-  grid-area: 1 / 3 / 5 / 13;
+  grid-area: 1 / 4 / 5 / 13;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
 }
