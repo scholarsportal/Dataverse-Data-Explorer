@@ -20,9 +20,11 @@ export interface DatasetState {
   };
   download: {
     status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+    error?: any;
   };
   upload: {
     status: 'idle' | 'pending' | 'converting' | 'error' | 'success';
+    error?: any;
   };
   import: {
     changed: number | null;
@@ -264,15 +266,22 @@ export const datasetReducer = createReducer(
       ...newState,
     };
   }),
+  on(DatasetActions.datasetUploadRequest, (state) => ({
+    ...state,
+    upload: {
+      status: 'pending' as const,
+    },
+  })),
   on(DatasetActions.datasetUploadSuccess, (state) => ({
     ...state,
-    uploadStatus: {
-      success: 'Upload success',
+    upload: {
+      status: 'success' as const,
     },
   })),
   on(DatasetActions.datasetUploadFailed, (state, { error }) => ({
     ...state,
-    uploadStatus: {
+    upload: {
+      status: 'error' as const,
       error,
     },
   })),
@@ -296,6 +305,7 @@ export const datasetReducer = createReducer(
           dataset.codeBook.dataDscr.varGrp,
           variableGroups,
         );
+        console.log(dataset);
         const variablesMatched: MatchVariables = matchVariableIDs(
           dataset.codeBook.dataDscr.var,
           variables,

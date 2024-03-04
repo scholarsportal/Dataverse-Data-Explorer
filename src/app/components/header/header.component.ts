@@ -5,6 +5,7 @@ import { datasetUploadRequest } from 'src/app/state/actions/dataset.actions';
 import {
   selectDatasetCitation,
   selectDatasetForUpload,
+  selectDatasetHasAPIKey,
   selectDatasetTitle,
   selectDatasetUploadFailed,
   selectDatasetUploadSuccess,
@@ -20,6 +21,7 @@ export class HeaderComponent {
   citation$ = this.store.select(selectDatasetCitation);
   uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
   uploadFail$ = this.store.select(selectDatasetUploadFailed);
+  hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
   sub$ = this.store.select(selectDatasetForUpload);
 
   constructor(private store: Store) {}

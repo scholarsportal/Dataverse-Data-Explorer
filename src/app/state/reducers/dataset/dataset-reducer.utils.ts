@@ -43,7 +43,8 @@ export function matchVariableIDs(
   datasetVariables: Variable[],
 ): MatchVariables {
   const variablesMatched: MatchVariables = {};
-  importVariables.map((importVariable) => {
+  console.log(importVariables);
+  importVariables?.map((importVariable) => {
     datasetVariables.map((datasetVariables) => {
       if (importVariable['@_name'] === datasetVariables['@_name']) {
         variablesMatched[datasetVariables['@_ID']] = {
