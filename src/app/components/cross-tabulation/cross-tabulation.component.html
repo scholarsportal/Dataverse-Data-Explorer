@@ -6,7 +6,15 @@
     [index]="1"
     (selectedVariable)="onVariableSelect($event)"
   ></dct-dropdown>
-
+  @for(row of (rows$ | async); track row.variableID; let idx = $index){
+  <dct-dropdown
+    [groups]="groups$ | async"
+    [variables]="variables$ | async"
+    type="columns"
+    [index]="idx"
+    (selectedVariable)="onVariableSelect($event)"
+  ></dct-dropdown>
+  }
   <dct-dropdown
     [groups]="groups$ | async"
     [variables]="variables$ | async"
@@ -22,6 +30,6 @@
     <button class="addNew secondary on-secondary-text">View Graph</button>
   </div>
   @if (table$ | async) {
-  <dct-cross-table [data]="table$ | async"></dct-cross-table>
+    <dct-cross-table [data]="table$ | async"></dct-cross-table>
   }
 </div>

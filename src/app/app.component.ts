@@ -6,6 +6,7 @@ import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
 import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
+import { selectIsCrossTabOpen } from './state/selectors/cross-tabulation.selectors';
 
 @Component({
   selector: 'dct-root',
@@ -15,6 +16,7 @@ import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selecto
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
   loaded$ = this.store.select(selectDatasetLoading);
+  isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
   isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
   variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);
   noParams = false;

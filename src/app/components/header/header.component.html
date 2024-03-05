@@ -54,7 +54,12 @@
 
     <div class="flex flex-row justify-between">
       <div role="tablist" class="flex flew-row tabs-bordered">
-        <a role="tab" class="tab tab-active">
+        <a
+          role="tab"
+          class="tab"
+          ngClass="{{ (isCrossTabOpen$ | async) ? '' : 'tab-active' }}"
+          (click)="closeCrossTab()"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -71,7 +76,12 @@
           </svg>
           Variables
         </a>
-        <a role="tab" class="tab">
+        <a
+          role="tab"
+          class="tab"
+          ngClass="{{ (isCrossTabOpen$ | async) ? 'tab-active' : '' }}"
+          (click)="openCrossTab()"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
