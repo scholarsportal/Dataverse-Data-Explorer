@@ -15,5 +15,5 @@
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 .divider {
-  @apply h-px my-4 mx-10 bg-gray-200 border-0 dark:bg-dark-inverse-surface;
+  @apply h-px bg-gray-200 border-0 dark:bg-dark-inverse-surface;
 }

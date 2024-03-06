@@ -1,5 +1,5 @@
 .table-header {
-  @apply px-2 py-1;
+  @apply text-primary-0;
 }
 
 .table-row {

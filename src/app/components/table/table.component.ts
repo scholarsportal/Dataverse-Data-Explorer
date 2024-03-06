@@ -85,6 +85,12 @@ export class TableComponent implements OnInit {
 
   // on row hover
   onActivate(event: any) {
+    //if (event.type == 'click') {
+    //  this.ModalComponent?.open();
+    //  this.store.dispatch(
+    //    openVariableChartModal({ variableID: event.row['@_ID'] }),
+    //  );
+    //}
     this.hoveredVariable = event.row;
   }
 

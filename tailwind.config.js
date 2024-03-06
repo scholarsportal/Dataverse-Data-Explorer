@@ -242,7 +242,19 @@ module.exports = {
     require("daisyui"),
   ],
   daisyui: {
-    themes: ["light", "night", "cupcake"],
+    themes: [
+      {
+        dctTheme: {
+          "primary": "#4338CA",
+          "secondary": "#DB2777",
+          "accent": "#ffffff",
+          "neutral": "#ffffff",
+          "base-100": "#ffffff",
+        },
+      },
+      "light",
+      "night"
+    ],
     darkTheme: "night", // name of one of the included themes for dark mode
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components

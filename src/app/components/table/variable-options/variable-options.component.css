@@ -1,7 +1,3 @@
 .option-button {
-  @apply mx-2
-    rounded 
-    hover:invert 
-  hover:bg-dark-inverse-surface 
-  dark:hover:bg-light-inverse-on-surface;
+  
 }

@@ -1,8 +1,9 @@
 <dialog
   #variableModal
   id="variableModal"
-  class="variable-modal rounded w-2/5 bg-white dark:bg-dark-surface-variant"
+  class="modal modal-bottom sm:modal-middle "
 >
+<div class="modal-box">
   <dct-modal-header
     class="modal-header"
     (closeVariableModal)="close()"
@@ -32,4 +33,5 @@
     class="flex flex-col w-full px-10 mb-5"
     (closeVariableModal)="close()"
   ></dct-modal-footer>
+</div>
 </dialog>

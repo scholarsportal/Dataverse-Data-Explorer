@@ -15,7 +15,7 @@
   @if (vars$ | async) {
     <ngx-datatable
       #table
-      class="material"
+      class="material expandable"
       [loadingIndicator]="true"
       [rows]="vars$ | async"
       [columnMode]="'force'"
@@ -38,7 +38,7 @@
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
-        [resizeable]="false"
+        [resizeable]="true"
         [headerCheckboxable]="true"
         [checkboxable]="true"
       >
@@ -48,6 +48,7 @@
         name="ID"
         headerClass="datatable-header"
         prop="@_ID"
+        [resizeable]="true"
         [maxWidth]="120"
       >
         <ng-template
@@ -65,6 +66,7 @@
         [sortable]="true"
         prop="@_name"
         [maxWidth]="200"
+        [resizeable]="true"
       >
         <ng-template
           let-row="row"
@@ -101,6 +103,7 @@
         prop="labl.#text"
         cellClass="pr-24"
         [width]="500"
+        [resizeable]="true"
       >
         <ng-template
           let-row="row"
@@ -115,6 +118,7 @@
         name="Weight"
         [sortable]="true"
         cellClass="w-full flex flex-row pt-2 justify-between"
+        [resizeable]="true"
       >
         <ng-template
           let-row="row"
@@ -125,7 +129,12 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="View/Edit" [width]="100" cellClass="">
+      <ngx-datatable-column 
+        name="View/Edit" 
+        [width]="100" 
+        cellClass=""
+        [resizeable]="true"
+        >
         <ng-template ngx-datatable-header-template>
           @if (selected.length) {
             <dct-bulk-edit-modal [selected]="selected"></dct-bulk-edit-modal>
@@ -138,7 +147,7 @@
         >
           @if (hoveredVariable == row) {
             <dct-variable-options
-              class="flex flex-row w-1/2 justify-around pt-1.5 px-2"
+              class="flex flex-row w-1/2 justify-end pt-1.5 px-2 w-full"
               [variable]="row"
               (launchModal)="launchModal($event)"
             ></dct-variable-options>

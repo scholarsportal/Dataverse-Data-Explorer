@@ -1,7 +1,8 @@
 .selected {
   @apply transition-all
   duration-75
-   bg-dct-light-surface 
+  font-bold
+  bg-dct-light-surface 
   text-dct-light-on-surface  
   dark:text-dct-dark-on-surface
   dark:bg-dct-dark-surface

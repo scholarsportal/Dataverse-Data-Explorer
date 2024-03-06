@@ -55,14 +55,24 @@
     font-size: 0.75rem;
     height: 2.5rem;
     min-height: 2.5rem;
+   
+  }
+
+  .btn-secondary, .btn-primary {
+    color:#ffffff;
   }
 
   .input, .select {
     height: 2.5rem;
     min-height: 2.5rem;
     border-radius: 4px;
+    
   }
   
+  input, select {
+    color-scheme: initial;
+  }
+
   /* Primary */
   .primary {
     @apply bg-light-primary dark:bg-dark-primary;
@@ -211,9 +221,7 @@
   }
 
   /* Surface */
-  .surface {
-    @apply bg-light-surface dark:bg-dark-surface;
-  }
+  
   .surface-text {
     @apply text-light-surface dark:text-dark-surface;
   }

@@ -1,10 +1,10 @@
 <!-- CHART -->
-<div class="flex w-full">
+<div class="flex w-full mt-4">
   <canvas id="variableChart"> {{ chartJS }}</canvas>
 </div>
 <!-- CHART DATA -->
-<table class="table-fixed w-full">
-  <thead>
+<table class="table-fixed w-full mt-10">
+  <thead class="table-header">
     <tr class="border-b">
       <th>Mark Invalid</th>
       <th>Values</th>
@@ -37,49 +37,49 @@
   </tbody>
 </table>
 
-<h3 class="font-bold text-xl mt-5">Summary Statistics</h3>
+<h3 class="font-bold text-xl my-10">Summary Statistics</h3>
 <table class="mb-5 w-full">
   @for (stat of sumStat; track $index) {
     <tr class="table-row my-4 border-b p-2">
       <th class="text-left font-medium">{{ stat.key }}</th>
-      <th class="font-normal text-right">{{ stat.value }}</th>
+      <td class="font-normal text-right">{{ stat.value }}</td>
     </tr>
   }
 </table>
 
-<h3 class="font-bold text-xl mt-5">Variable Information</h3>
+<h3 class="font-bold text-xl my-10">Variable Information</h3>
 @if (form) {
   <table class="mx-auto mb-5 w-full">
     <tr class="table-row border-b">
-      <th class="text-left">Literal Question</th>
+      <th class="text-left font-medium">Literal Question</th>
       <td class="border-b p-2 text-right">{{ form.literalQuestion }}</td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Interviewer Instructions</th>
+      <th class="text-left font-medium">Interviewer Instructions</th>
       <td class="border-b p-2 text-right">
         {{ form.interviewQuestion }}
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Post Questions</th>
+      <th class="text-left font-medium">Post Questions</th>
       <td class="border-b p-2 text-right">
         {{ form.postQuestion }}
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Universe</th>
+      <th class="text-left font-medium">Universe</th>
       <td class="border-b p-2 text-right">
         {{ form.universe }}
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Notes</th>
+      <th class="text-left font-medium">Notes</th>
       <td class="border-b p-2 text-right">
         {{ form.notes }}
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Groups</th>
+      <th class="text-left font-medium">Groups</th>
       <td class="border-b p-2 text-right">
         @for (group of groups; track $index) {
           <span> {{ group.labl }}, </span>
@@ -87,13 +87,13 @@
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Weight Variable</th>
+      <th class="text-left font-medium">Weight Variable</th>
       <td class="border-b p-2 text-right">
         {{ weight }}
       </td>
     </tr>
     <tr class="table-row border-b">
-      <th class="text-left">Is Weight</th>
+      <th class="text-left font-medium">Is Weight</th>
       <td class="border-b p-2 capitalize text-right">{{ form.isWeight }}</td>
     </tr>
   </table>

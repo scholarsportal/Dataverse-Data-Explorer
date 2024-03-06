@@ -7,7 +7,7 @@
   overflow-y: auto;
 }
 .table-container-selected {
-  grid-area: 2/ 1 / 9 / 10;
+  grid-area: 2 / 1 / 9 / 10;
   overflow-y: scroll;
 }
 .table-menu {
