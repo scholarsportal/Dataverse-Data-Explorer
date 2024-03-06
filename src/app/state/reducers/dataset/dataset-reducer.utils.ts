@@ -26,11 +26,16 @@ export function matchGroups(
 ): MatchGroups {
   const groupMatched: MatchGroups = {};
   importVariableGroups.map((importVariableGroup) => {
-    datasetVariableGroups.map((datasetVariableGroup) => {
+    datasetVariableGroups.map((datasetVariableGroup): any => {
       if (importVariableGroup.labl === datasetVariableGroup.labl) {
         groupMatched[datasetVariableGroup['@_ID']] = {
           importedGroupID: importVariableGroup['@_ID'],
-          varList: importVariableGroup['@_var'],
+          varList: importVariableGroup['@_var'] || '',
+        };
+      } else {
+        groupMatched[importVariableGroup['@_ID']] = {
+          importedGroupID: importVariableGroup['@_ID'],
+          varList: importVariableGroup['@_var'] || '',
         };
       }
     });
@@ -43,7 +48,8 @@ export function matchVariableIDs(
   datasetVariables: Variable[],
 ): MatchVariables {
   const variablesMatched: MatchVariables = {};
-  importVariables.map((importVariable) => {
+  console.log(importVariables);
+  importVariables?.map((importVariable) => {
     datasetVariables.map((datasetVariables) => {
       if (importVariable['@_name'] === datasetVariables['@_name']) {
         variablesMatched[datasetVariables['@_ID']] = {

@@ -1,7 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as CrossTabActions from '../actions/cross-tabulation.actions';
+import * as DatasetActions from '../actions/dataset.actions';
 
 export interface CrossTabulationState {
+  open: boolean;
   rows: {
     [index: number]: {
       variableID: string;
@@ -17,12 +19,38 @@ export interface CrossTabulationState {
 }
 
 export const initialState: CrossTabulationState = {
+  open: false,
   rows: {},
   columns: {},
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
+  on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
+    ...state,
+    rows: {
+      ...state.rows,
+      0: {
+        variableID: dataset.codeBook.dataDscr.var[0]['@_ID'],
+        missingCategories: [],
+      }
+    },
+    columns: {
+      ...state.columns,
+      0: {
+        variableID: dataset.codeBook.dataDscr.var[1]['@_ID'],
+        missingCategories: []
+      }
+    }
+  })),
+  on(CrossTabActions.openCrossTabulationTab, (state) => ({
+    ...state,
+    open: true,
+  })),
+  on(CrossTabActions.closeCrossTabulationTab, (state) => ({
+    ...state,
+    open: false,
+  })),
   on(
     CrossTabActions.addVariable,
     (state, { index, variableID, variableType }) => ({
@@ -31,7 +59,7 @@ export const crossTabulationReducer = createReducer(
         ...state[variableType],
         [index]: { variableID, missingCategories: [] },
       },
-    })
+    }),
   ),
   on(CrossTabActions.removeVariable, (state, { index, variableType }) => {
     const updatedVariables = { ...state[variableType] };
@@ -52,6 +80,6 @@ export const crossTabulationReducer = createReducer(
           missingVariables,
         },
       },
-    })
-  )
+    }),
+  ),
 );

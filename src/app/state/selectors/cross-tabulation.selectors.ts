@@ -2,15 +2,25 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
 import {
   selectDatasetProcessedVariables,
-  selectDatasetVariables,
 } from './dataset.selectors';
+import { Variable } from '../interface';
 
 export const selectCrossTabulationFeature =
   createFeatureSelector<CrossTabulationState>('cross-tabulation');
 
+export const selectIsCrossTabOpen = createSelector(
+  selectCrossTabulationFeature,
+  (state) => state.open,
+);
+
 export const selectRows = createSelector(
   selectCrossTabulationFeature,
   (state) => state.rows,
+);
+
+export const selectRowsArray = createSelector(
+  selectCrossTabulationFeature,
+  (state) => Object.values(state.rows),
 );
 
 export const selectColumns = createSelector(
@@ -18,12 +28,17 @@ export const selectColumns = createSelector(
   (state) => state.columns,
 );
 
+export const selectColumnsArray = createSelector(
+  selectCrossTabulationFeature,
+  (state) => Object.values(state.columns),
+);
+
 export const selectAvailableVariables = createSelector(
   selectDatasetProcessedVariables,
   selectRows,
   selectColumns,
   (variables, rows, columns) => {
-    const newData = { ...variables };
+    const newData: {[id: string]: Variable} = { ...variables };
     const currentSelectedVariables = [
       ...Object.values(rows),
       ...Object.values(columns),
@@ -50,8 +65,8 @@ export const selectCurrentCrossTableData = createSelector(
       if (dataset[variableID]) {
         rows.push(
           dataset[variableID]['@_name'] +
-            ' - ' +
-            dataset[variableID].labl['#text'],
+          ' - ' +
+          dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length > tableLength) {
@@ -64,8 +79,8 @@ export const selectCurrentCrossTableData = createSelector(
       if (dataset[variableID]) {
         columns.push(
           dataset[variableID]['@_name'] +
-            ' - ' +
-            dataset[variableID].labl['#text'],
+          ' - ' +
+          dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length) {
