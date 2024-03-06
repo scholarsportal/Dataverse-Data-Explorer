@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as CrossTabActions from '../actions/cross-tabulation.actions';
+import * as DatasetActions from '../actions/dataset.actions';
 
 export interface CrossTabulationState {
   open: boolean;
@@ -25,6 +26,23 @@ export const initialState: CrossTabulationState = {
 
 export const crossTabulationReducer = createReducer(
   initialState,
+  on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
+    ...state,
+    rows: {
+      ...state.rows,
+      0: {
+        variableID: dataset.codeBook.dataDscr.var[0]['@_ID'],
+        missingCategories: [],
+      }
+    },
+    columns: {
+      ...state.columns,
+      0: {
+        variableID: dataset.codeBook.dataDscr.var[1]['@_ID'],
+        missingCategories: []
+      }
+    }
+  })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
     open: true,

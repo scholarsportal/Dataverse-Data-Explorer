@@ -13,8 +13,10 @@ import {
   CrossTabulationState,
   crossTabulationReducer,
 } from './cross-tabulation.reducer';
+import { RootState, rootReducer } from './root/root.reducer';
 
 export interface State {
+  root: RootState;
   data: DatasetState;
   'open-variable': OpenVariableState;
   'var-and-groups': VarAndGroupsState;
@@ -22,6 +24,7 @@ export interface State {
 }
 
 export const reducers: ActionReducerMap<State> = {
+  root: rootReducer,
   data: datasetReducer,
   'open-variable': openVariableReducer,
   'var-and-groups': varAndGroupsReducer,

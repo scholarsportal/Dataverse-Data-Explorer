@@ -1,27 +1,22 @@
 <div class="flex flex-col">
-  <dct-dropdown
-    [groups]="groups$ | async"
-    [variables]="variables$ | async"
-    type="rows"
-    [index]="1"
-    (selectedVariable)="onVariableSelect($event)"
-  ></dct-dropdown>
-  @for(row of (rows$ | async); track row.variableID; let idx = $index){
-  <dct-dropdown
-    [groups]="groups$ | async"
-    [variables]="variables$ | async"
-    type="columns"
-    [index]="idx"
-    (selectedVariable)="onVariableSelect($event)"
-  ></dct-dropdown>
+  @for (row of rows$ | async; track row.variableID; let idx = $index) {
+    <dct-dropdown
+      [groups]="groups$ | async"
+      [variables]="variables$ | async"
+      type="rows"
+      [index]="idx"
+      (selectedVariable)="onVariableSelect($event)"
+    ></dct-dropdown>
   }
-  <dct-dropdown
-    [groups]="groups$ | async"
-    [variables]="variables$ | async"
-    type="columns"
-    [index]="2"
-    (selectedVariable)="onVariableSelect($event)"
-  ></dct-dropdown>
+  @for (column of columns$ | async; track column.variableID; let idx = $index) {
+    <dct-dropdown
+      [groups]="groups$ | async"
+      [variables]="variables$ | async"
+      type="columns"
+      [index]="idx"
+      (selectedVariable)="onVariableSelect($event)"
+    ></dct-dropdown>
+  }
   <div class="flex flex-row">
     <button class="addNew surface on-surface-text">Add Row</button>
     <button class="addNew on-surface-variant on-surface-text">

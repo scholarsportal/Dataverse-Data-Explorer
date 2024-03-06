@@ -3,6 +3,7 @@ import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
 import {
   selectDatasetProcessedVariables,
 } from './dataset.selectors';
+import { Variable } from '../interface';
 
 export const selectCrossTabulationFeature =
   createFeatureSelector<CrossTabulationState>('cross-tabulation');
@@ -37,7 +38,7 @@ export const selectAvailableVariables = createSelector(
   selectRows,
   selectColumns,
   (variables, rows, columns) => {
-    const newData = { ...variables };
+    const newData: {[id: string]: Variable} = { ...variables };
     const currentSelectedVariables = [
       ...Object.values(rows),
       ...Object.values(columns),

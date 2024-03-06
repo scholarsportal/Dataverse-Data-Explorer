@@ -12,6 +12,7 @@ import {
   selectRowsArray,
 } from 'src/app/state/selectors/cross-tabulation.selectors';
 import { addVariable } from 'src/app/state/actions/cross-tabulation.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -28,6 +29,7 @@ export class CrossTabulationComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);
   variables$ = this.store.select(selectAvailableVariables);
   table$ = this.store.select(selectCurrentCrossTableData);
+  sub$!: Subscription;
 
   constructor(private store: Store) {}
 

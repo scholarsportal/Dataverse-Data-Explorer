@@ -56,8 +56,7 @@ export const initialState: DatasetState = {
 
 export const datasetReducer = createReducer(
   initialState,
-  on(
-    DatasetActions.fetchDataset,
+  on(DatasetActions.fetchDataset,
     (state): DatasetState => ({
       ...state,
       download: {
@@ -65,8 +64,7 @@ export const datasetReducer = createReducer(
       },
     }),
   ),
-  on(
-    DatasetActions.setDataset,
+  on(DatasetActions.setDataset,
     (state, { dataset }): DatasetState => ({
       ...state,
       dataset,
@@ -75,8 +73,7 @@ export const datasetReducer = createReducer(
       },
     }),
   ),
-  on(
-    DatasetActions.fetchDatasetError,
+  on(DatasetActions.fetchDatasetError,
     (state, { error }): DatasetState => ({
       ...state,
       download: {
@@ -85,8 +82,7 @@ export const datasetReducer = createReducer(
       errorMessage: error,
     }),
   ),
-  on(
-    DatasetActions.datasetConversionPending,
+  on(DatasetActions.datasetConversionPending,
     (state): DatasetState => ({
       ...state,
       download: {
@@ -94,8 +90,7 @@ export const datasetReducer = createReducer(
       },
     }),
   ),
-  on(
-    DatasetActions.datasetConversionSuccess,
+  on(DatasetActions.datasetConversionSuccess,
     (state, { dataset, siteURL, fileID, apiKey }): DatasetState => ({
       ...state,
       dataset,
@@ -109,8 +104,7 @@ export const datasetReducer = createReducer(
       },
     }),
   ),
-  on(
-    DatasetActions.datasetConversionError,
+  on(DatasetActions.datasetConversionError,
     (state, { error }): DatasetState => ({
       ...state,
       download: {
@@ -181,8 +175,7 @@ export const datasetReducer = createReducer(
       ...newState,
     };
   }),
-  on(
-    VarAndGroups.removeSelectedVariablesFromGroup,
+  on(VarAndGroups.removeSelectedVariablesFromGroup,
     (state, { variableIDs, groupID }) => {
       const newState = JSON.parse(JSON.stringify(state));
       const arr: VariableGroup[] =
