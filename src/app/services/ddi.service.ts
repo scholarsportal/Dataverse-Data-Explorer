@@ -1,17 +1,13 @@
-declare var Buffer: any;
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+// instanbul ignore next
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { Observable, of } from 'rxjs';
-import { merge, take } from 'lodash';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.development';
-import { JSONStructure, Variable } from '../state/interface';
+import { JSONStructure } from '../state/interface';
 @Injectable({
   providedIn: 'root',
 })
 export class DdiService {
-  private searchURL = `${environment.domain}/download`;
   private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
     {
       ignoreAttributes: false,
@@ -19,12 +15,6 @@ export class DdiService {
     };
 
   constructor(private http: HttpClient) {}
-
-  parseXML(data: any) {
-    const parser = new XMLParser(this.parseOptions);
-    const parsed = parser.parse(data);
-    return parsed;
-  }
 
   fetchDatasetFromDataverse(
     fileID: number,
@@ -55,12 +45,26 @@ export class DdiService {
     }
   }
 
+  fetchCrossTabulationFromVariables(
+    siteURL: string,
+    fileID: number,
+    variables: string[],
+  ) {
+    const reformatVariables: string = variables.join(',');
+    return this.http.get(
+      `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${reformatVariables}`,
+      { responseType: 'text' },
+    );
+  }
+
+  // instanbul ignore next
   XMLtoJSON(xml: string): JSONStructure {
     const parser = new XMLParser(this.parseOptions);
     const parsed = parser.parse(xml);
     return parsed;
   }
 
+  // instanbul ignore next
   JSONtoXML(json: JSONStructure): string {
     const parser = new XMLBuilder(this.parseOptions);
     const xml = parser.build(json);

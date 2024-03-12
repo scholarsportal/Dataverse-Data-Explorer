@@ -16,6 +16,11 @@ import {
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
+import {
+  getVariablesCrossTabulation,
+  variableCrossTabulationDataRetrievalFailed,
+  variableCrossTabulationDataRetrievedSuccessfully,
+} from './actions/cross-tabulation.actions';
 
 @Injectable()
 export class AppEffects {
@@ -104,6 +109,28 @@ export class AppEffects {
                 return datasetUploadSuccess();
               }),
               catchError((error) => of(datasetUploadFailed({ error }))),
+            ),
+        ),
+      );
+    },
+  );
+
+  fetchCrossTabulationValues$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(getVariablesCrossTabulation),
+        exhaustMap(({ fileID, siteURL, variables }) =>
+          ddiService
+            .fetchCrossTabulationFromVariables(siteURL, fileID, variables)
+            .pipe(
+              map((data) =>
+                variableCrossTabulationDataRetrievedSuccessfully({
+                  data,
+                }),
+              ),
+              catchError((error) =>
+                of(variableCrossTabulationDataRetrievalFailed(error)),
+              ),
             ),
         ),
       );
