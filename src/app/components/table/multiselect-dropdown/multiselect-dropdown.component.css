@@ -11,46 +11,32 @@
   w-full 
   h-full
   px-3
+  h-10
   text-left;
 }
 
 .input-chip {
   @apply mr-2
   px-1.5
-  py-0.5
+  py-1.5
+  self-center
   max-w-fit
   min-w-max
-  h-8
+  h-7
   flex
   flex-row
   flex-grow
   rounded
-  border
-  border-primary-10
-  bg-primary-60 
+  bg-primary-50
   text-white
   dark:bg-gray-900 
   dark:text-primary-60;
 }
 
 .top {
-  @apply -translate-y-36 mb-1.5;
+  @apply -translate-y-[10rem];
 }
 
 .bottom {
   @apply border-none translate-y-3 mb-1.5;
-}
-
-.dropdown {
-  @apply relative
-   w-full 
-   p-1
-   bg-gray-100 
-   rounded 
-   border 
-  border-light-surface
-  dark:border-dark-surface
-  text-gray-700
-  dark:bg-dark-surface-variant
-  dark:text-dark-on-surface-variant;
 }

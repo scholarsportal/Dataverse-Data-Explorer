@@ -1,111 +1,139 @@
-<button (click)="openModal()" class="bulk-button">Bulk Edit</button>
+<button (click)="openModal()" class="btn btn-outline btn-sm">
+  BULK EDIT
+</button>
+<dialog #bulkEdit class="modal modal-bottom sm:modal-middle font-normal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="flex flex-row-reverse justify-between items-center">
+        <button (click)="closeModal()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-10 h-10"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+          <span class="sr-only">close</span>
+        </button>
+        <h2 class="text-2xl">Bulk Edit Variables</h2>
+      </div>
+      <hr class="divider" />
+    </div>
+    <div class="modal-body h-full">
+      <form class="flex flex-col" [formGroup]="variableForm">
+        <label for="label" class="form-label">
+          Label
+          <input
+            type="text"
+            name="label"
+            id="label"
+            class="form-input"
+            formControlName="label"
+          />
+        </label>
+        <label for="literalQuestion" class="form-label">
+          Literal Question
+          <input
+            type="text"
+            name="literalQuestion"
+            id="literalQuestion"
+            class="form-input"
+            formControlName="literalQuestion"
+          />
+        </label>
+        <label for="interviewQuestion" class="form-label">
+          Interviewer Question
+          <input
+            type="text"
+            name="interviewQuestion"
+            id="interviewQuestion"
+            class="form-input"
+            formControlName="interviewQuestion"
+          />
+        </label>
+        <label for="postQTxt" class="form-label">
+          Post Question
 
-<dialog #bulkEdit class="rounded">
-  <h2 class="mx-5 mt-5">Bulk Edit Variables</h2>
-  <div class="h-[1px] border mx-5 mt-2.5"></div>
-  <form class="flex flex-col px-5 pb-5 pt-2.5" [formGroup]="variableForm">
-    <label for="label" class="form-label">
-      Label
-      <input
-        type="text"
-        name="label"
-        id="label"
-        class="form-input"
-        formControlName="label"
-      />
-    </label>
-    <label for="literalQuestion" class="form-label">
-      Literal Question
-      <input
-        type="text"
-        name="literalQuestion"
-        id="literalQuestion"
-        class="form-input"
-        formControlName="literalQuestion"
-      />
-    </label>
-    <label for="interviewQuestion" class="form-label">
-      Interviewer Question
-      <input
-        type="text"
-        name="interviewQuestion"
-        id="interviewQuestion"
-        class="form-input"
-        formControlName="interviewQuestion"
-      />
-    </label>
-    <label for="postQTxt" class="form-label">
-      Post Question
-
-      <input
-        type="text"
-        formControlName="postQuestion"
-        name="postQTxt"
-        id="postQTxt"
-        class="form-input"
-      />
-    </label>
-    <label for="universe" class="form-label">
-      Universe
-      <input
-        formControlName="universe"
-        type="text"
-        name="universe"
-        id="universe"
-        class="form-input"
-      />
-    </label>
-    <label for="notes" class="form-label">
-      Notes
-      <textarea
-        type="text"
-        name="notes"
-        id="notes"
-        rows="4"
-        cols="50"
-        formControlName="notes"
-        class="form-input"
-      ></textarea>
-    </label>
-    <button
-      (click)="handleSave()"
-      class="flex items-center rounded border my-2.5 py-1.5"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="mx-1.5 w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-      <span class="mt-1">Update {{ selected.length }} Variables</span>
-    </button>
-    <button
-      (click)="handleCancel()"
-      class="flex items-center rounded border my-2.5 py-1.5"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="mx-1.5 w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-      <span class="mt-1">Close</span>
-    </button>
-  </form>
+          <input
+            type="text"
+            formControlName="postQuestion"
+            name="postQTxt"
+            id="postQTxt"
+            class="form-input"
+          />
+        </label>
+        <label for="universe" class="form-label">
+          Universe
+          <input
+            formControlName="universe"
+            type="text"
+            name="universe"
+            id="universe"
+            class="form-input"
+          />
+        </label>
+        <label for="notes" class="form-label">
+          Notes
+          <textarea
+            type="text"
+            name="notes"
+            id="notes"
+            rows="4"
+            cols="50"
+            formControlName="notes"
+            class="form-input"
+          ></textarea>
+        </label>
+        <button
+          (click)="handleSave()"
+          class="btn btn-primary justify-start"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="mx-1.5 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <span class="mt-1">UPDATE {{ selected.length }} VARIABLES</span>
+        </button>
+      </form>
+    </div>
+    <div class="flex flex-col w-full mt-16">
+      <button
+          (click)="handleCancel()"
+          class="btn btn-outline justify-start"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="mx-1.5 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <span class="mt-1">CLOSE</span>
+        </button>
+    </div>
+  </div>
 </dialog>

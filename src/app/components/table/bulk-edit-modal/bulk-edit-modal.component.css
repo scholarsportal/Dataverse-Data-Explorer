@@ -1,16 +1,20 @@
-.bulk-button {
-  @apply flex 
-  flex-row 
-  rounded 
-  border
-  px-3 
-  hover:shadow-lg;
-}
-
 .form-input {
   @apply rounded border;
 }
 
 .form-label {
   @apply flex flex-col my-1.5;
+}
+
+.sm\:modal-middle :where(.modal-box) { 
+  @apply rounded;
+  max-width: 50rem;
+}
+
+.modal {
+  grid-area: 1 / 3 / 6 / 6;
+}
+
+.divider {
+  @apply h-px bg-gray-200 border-0 dark:bg-dark-inverse-surface;
 }

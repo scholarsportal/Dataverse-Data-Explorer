@@ -32,13 +32,13 @@
       (select)="onSelect($event)"
     >
       <ngx-datatable-column
-        [width]="60"
+        [width]="40"
         cellClass="flex items-center justify-around mx-5"
         headerClass="mx-5"
         [sortable]="false"
         [canAutoResize]="false"
         [draggable]="false"
-        [resizeable]="true"
+        [resizeable]="false"
         [headerCheckboxable]="true"
         [checkboxable]="true"
       >
@@ -48,7 +48,7 @@
         name="ID"
         headerClass="datatable-header"
         prop="@_ID"
-        [resizeable]="true"
+        [resizeable]="false"
         [maxWidth]="120"
       >
         <ng-template
@@ -66,7 +66,7 @@
         [sortable]="true"
         prop="@_name"
         [maxWidth]="200"
-        [resizeable]="true"
+        [resizeable]="false"
       >
         <ng-template
           let-row="row"
@@ -103,7 +103,7 @@
         prop="labl.#text"
         cellClass="pr-24"
         [width]="500"
-        [resizeable]="true"
+        [resizeable]="false"
       >
         <ng-template
           let-row="row"
@@ -118,7 +118,7 @@
         name="Weight"
         [sortable]="true"
         cellClass="w-full flex flex-row pt-2 justify-between"
-        [resizeable]="true"
+        [resizeable]="false"
       >
         <ng-template
           let-row="row"
@@ -131,13 +131,13 @@
 
       <ngx-datatable-column 
         name="View/Edit" 
-        [width]="100" 
+        [width]="150" 
         cellClass=""
-        [resizeable]="true"
+        [resizeable]="false"
         >
         <ng-template ngx-datatable-header-template>
           @if (selected.length) {
-            <dct-bulk-edit-modal [selected]="selected"></dct-bulk-edit-modal>
+            <dct-bulk-edit-modal [selected]="selected" class="flex flex-row justify-end"></dct-bulk-edit-modal>
           }
         </ng-template>
         <ng-template
