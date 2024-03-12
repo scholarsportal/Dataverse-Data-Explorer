@@ -5,7 +5,8 @@
       [variables]="variables$ | async"
       type="rows"
       [index]="idx"
-      (selectedVariable)="onVariableSelect($event)"
+      [selectedVariable]="row"
+      (emitNewSelectedVariable)="onVariableSelect($event)"
     ></dct-dropdown>
   }
   @for (column of columns$ | async; track column.variableID; let idx = $index) {
@@ -14,7 +15,8 @@
       [variables]="variables$ | async"
       type="columns"
       [index]="idx"
-      (selectedVariable)="onVariableSelect($event)"
+      [selectedVariable]="column"
+      (emitNewSelectedVariable)="onVariableSelect($event)"
     ></dct-dropdown>
   }
   <div class="flex flex-row">
@@ -24,7 +26,7 @@
     </button>
     <button class="addNew secondary on-secondary-text">View Graph</button>
   </div>
-  @if (table$ | async) {
-    <dct-cross-table [data]="table$ | async"></dct-cross-table>
-  }
+  <dct-cross-table [data]="table$ | async"></dct-cross-table>
+  <!-- @if (table$ | async) {
+         } -->
 </div>

@@ -22,7 +22,11 @@ export class DropdownComponent implements OnChanges {
   @Input() variables: { [id: string]: Variable } | null = {};
   @Input() type!: 'rows' | 'columns';
   @Input() index!: number;
-  @Output() selectedVariable: EventEmitter<{
+  @Input() selectedVariable!: {
+    variableID: string;
+    missingCategories: string[];
+  };
+  @Output() emitNewSelectedVariable: EventEmitter<{
     type: 'rows' | 'columns';
     index: number;
     variable: Variable;
@@ -57,7 +61,7 @@ export class DropdownComponent implements OnChanges {
   }
 
   handleVariableSelect(variable: any) {
-    this.selectedVariable.emit({
+    this.emitNewSelectedVariable.emit({
       type: this.type,
       index: this.index,
       variable: this.variables![variable.value],

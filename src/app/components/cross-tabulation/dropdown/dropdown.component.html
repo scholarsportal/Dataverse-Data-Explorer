@@ -13,11 +13,12 @@
   <select
     id="variableDropdown"
     class="dropdown"
+    [(ngModel)]="selectedVariable.variableID"
     (change)="handleVariableSelect($event.target)"
   >
     <option value="" disabled [defaultSelected]="true">Choose Variable</option>
     @for (variable of filteredVariables; track $index) {
-    <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
+      <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
     }
   </select>
   <label for="groupDropdown" class="sr-only">Group:</label>
@@ -28,7 +29,7 @@
   >
     <option value="" disabled [defaultSelected]="true">Filter by Group</option>
     @for (group of groups; track $index) {
-    <option [value]="group['@_var']">{{ group.labl }}</option>
+      <option [value]="group['@_var']">{{ group.labl }}</option>
     }
   </select>
 </div>
