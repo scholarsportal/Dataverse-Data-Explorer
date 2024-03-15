@@ -7,3 +7,14 @@
 border-light-surface
 dark:border-dark-surface-variant;
 }
+.rows-column-section {
+  @apply flex flex-col justify-between rounded h-fit bg-dct-light-outline dark:bg-dct-dark-outline;
+}
+
+.rows-section {
+  @apply m-3;
+}
+
+.columns-section {
+  @apply m-3;
+}

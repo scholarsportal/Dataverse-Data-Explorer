@@ -13,7 +13,8 @@ export const addVariable = createAction(
   props<{
     index: number;
     variableID: string;
-    variableType: 'rows' | 'columns';
+    crossValues: string[];
+    crossTableOrientation: 'rows' | 'columns';
   }>(),
 );
 
@@ -54,12 +55,23 @@ export const changeVariableInGivenPosition = createAction(
 
 export const getVariablesCrossTabulation = createAction(
   '[Cross Tabulation] New Cross Tabulation Values Requested',
-  props<{ siteURL: string; fileID: number; variables: string[] }>(),
+  props<{
+    siteURL: string;
+    fileID: number;
+    variableID: string;
+    crossTableOrientation: 'rows' | 'columns';
+    index: number;
+  }>(),
 );
 
 export const variableCrossTabulationDataRetrievedSuccessfully = createAction(
   '[Cross Tabulation] Cross tabulated values retrieved',
-  props<{ data: string }>(),
+  props<{
+    data: string;
+    index: number;
+    crossTableOrientation: 'rows' | 'columns';
+    variableID: string;
+  }>(),
 );
 
 export const variableCrossTabulationDataRetrievalFailed = createAction(
