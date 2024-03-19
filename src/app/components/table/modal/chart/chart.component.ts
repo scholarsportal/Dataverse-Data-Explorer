@@ -91,9 +91,27 @@ export class ChartComponent implements OnInit, OnChanges {
         ],
       },
       options: {
-        indexAxis: 'y',
+        indexAxis: 'y'
       },
     });
+    
+    const light = 'black';
+    const dark = 'white';
+    const neutral = '#c8c5d0';
+    const theme = localStorage.getItem('theme');
+
+    if (theme === 'light') {
+      this.chartJS.options.scales.x.grid.color = neutral;
+      this.chartJS.options.scales.y.grid.color = neutral;
+      this.chartJS.options.scales.x.ticks.color = light;
+      this.chartJS.options.scales.y.ticks.color = light;
+    } else {
+      this.chartJS.options.scales.x.grid.color = dark;
+      this.chartJS.options.scales.y.grid.color = dark;
+      this.chartJS.options.scales.x.ticks.color = dark;
+      this.chartJS.options.scales.y.ticks.color = dark;
+      this.chartJS.options.plugins.legend.labels.color = dark;
+    }
   }
 
   private redrawChart() {

@@ -8,11 +8,11 @@
       placeholder="Enter new group name"
       maxlength="100"
       required
-      class="py-3 px-4 pe-11 block w-full border-gray-200 shadow-sm rounded text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+      class="py-3 px-4 pe-11 block w-full bg-base-100 rounded text-sm btn-outline"
       placeholder="Enter Group Name"
     />
     <div class="absolute inset-y-0 end-0 flex items-center z-20 pe-4">
-      <button (click)="confirmAdd()" class="dark:text-dark-on-surface-variant">
+      <button (click)="confirmAdd()" class="mr-1.5 text-success">
         <span class="sr-only">Confirm Add Group</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="mx-1.5 w-6 h-6"
+          class="w-6 h-6"
         >
           <path
             stroke-linecap="round"
@@ -29,7 +29,7 @@
           />
         </svg>
       </button>
-      <button (click)="cancelAdd()" class="dark:text-dark-on-surface-variant">
+      <button (click)="cancelAdd()" class="text-error">
         <span class="sr-only">Cancel Group Add</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"

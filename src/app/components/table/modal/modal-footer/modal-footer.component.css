@@ -32,15 +32,7 @@
   margin-right: 0.5rem;
   margin-top: 0.25rem;
 }
-.update-button {
-  @apply border-primary-10
-  bg-light-primary 
-  text-white
-  dark:bg-gray-900 
-  dark:text-primary-60
-  dark:hover:bg-primary-60
-  dark:hover:text-white;
-}
+
 .close-button {
   @apply dark:text-white dark:hover:bg-dark-outline;
 }

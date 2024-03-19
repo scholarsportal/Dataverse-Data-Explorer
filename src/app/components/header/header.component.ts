@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import {
@@ -21,7 +21,7 @@ import {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   title$ = this.store.select(selectDatasetTitle);
   citation$ = this.store.select(selectDatasetCitation);
   uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
@@ -29,8 +29,17 @@ export class HeaderComponent {
   hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
   isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
   sub$ = this.store.select(selectDatasetForUpload);
+  checked: boolean = true;
+  showToggle: boolean = false;
 
   constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    if (localStorage.getItem('theme') === 'dark') { 
+      this.checked = false;
+    };
+    this.showToggle = true;
+  }
 
   openCrossTab() {
     this.store.dispatch(openCrossTabulationTab());
@@ -39,6 +48,25 @@ export class HeaderComponent {
   closeCrossTab() {
     this.store.dispatch(closeCrossTabulationTab());
   }
+
+  toggleTheme(){
+    const theme = localStorage.getItem('theme');
+    if (theme === 'light') {
+      this.checked = false;
+      localStorage.setItem('theme','dark');
+      document.body.setAttribute(
+        'data-theme',
+        'dark'
+      );
+    } else {
+      this.checked = true;
+      localStorage.setItem('theme','light');
+      document.body.setAttribute(
+        'data-theme',
+        'light'
+      );
+    }
+ }
 
   handleUpload() {
     this.sub$

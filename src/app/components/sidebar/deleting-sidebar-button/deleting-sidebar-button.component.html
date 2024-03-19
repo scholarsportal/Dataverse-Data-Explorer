@@ -1,15 +1,15 @@
 <div class="flex flex-row justify-between px-5 h-16 items-center">
-  <span>Are You Sure?</span>
+  <span class="font-bold">Are You Sure?</span>
   <div class="flex flex-row">
-    <button (click)="confirmDelete()">
-      <span class="sr-only">confirm</span>
+    <button (click)="confirmDelete()" class="text-success mr-1.5">
+      <span class="sr-only">Confirm</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="mx-1.5 w-6 h-6"
+        class="w-6 h-6"
       >
         <path
           stroke-linecap="round"
@@ -18,8 +18,8 @@
         />
       </svg>
     </button>
-    <button (click)="cancelDelete()">
-      <span class="sr-only">cancel</span>
+    <button (click)="cancelDelete()" class="text-error">
+      <span class="sr-only">Cancel</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

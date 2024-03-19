@@ -1,12 +1,6 @@
 .form-label {
-  @apply flex flex-col
-  my-1
-  dark:text-dark-inverse-surface;
+  @apply flex flex-col my-1;
 }
 .form-input {
-  @apply rounded border
-  p-2
-  border-light-surface
-  dark:border-dark-outline
-  dark:bg-dark-surface-variant;
+  @apply rounded border p-2;
 }

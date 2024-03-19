@@ -24,8 +24,9 @@
   }
 
   datatable-body-row {
-    @apply border-t w-full h-16 border-light-outline-variant dark:border-light-outline dark:text-light-outline-variant;
+    @apply border-t w-full h-16 border-light-outline-variant hover:bg-base-200;
   }
+
 
   datatable-pager  a {
     padding-left: 1rem;
@@ -40,13 +41,15 @@
   .ngx-datatable.material:not(.cell-selection)
     .datatable-body-row:hover
     .datatable-row-group {
-    @apply bg-light-surface-variant dark:bg-gray-800 transition-colors duration-100;
+    @apply bg-base-200 transition-colors duration-100;
   }
   .rounded-box {
     @apply rounded-none;
   }
   
 }
+
+
 
 @layer components {
   .btn {
@@ -56,6 +59,7 @@
     height: 2.5rem;
     min-height: 2.5rem;
     font-weight: 500;
+    animation: none;
   }
 
   .btn-sm {
@@ -67,8 +71,8 @@
     font-weight: 500;
   }
 
-  .btn-secondary, .btn-primary {
-    color:#ffffff;
+  .btn-secondary, .btn-primary {  
+    @apply text-base-100
   }
 
   .btn-outline {
@@ -92,243 +96,8 @@
     color-scheme: initial;
   }
 
-  /* Primary */
-  .primary {
-    @apply bg-light-primary dark:bg-dark-primary;
-  }
-  .primary-text {
-    @apply text-light-primary dark:text-dark-primary;
+  .form-outline {
+    @apply border border-slate-300 bg-transparent;
   }
 
-  /* On Primary */
-  .on-primary {
-    @apply bg-light-on-primary dark:bg-dark-on-primary;
-  }
-  .on-primary-text {
-    @apply text-light-on-primary dark:text-dark-on-primary;
-  }
-
-  /* Primary Container */
-  .primary-container {
-    @apply bg-light-primary-container dark:bg-dark-primary-container;
-  }
-  .primary-container-text {
-    @apply text-light-primary-container dark:text-dark-primary-container;
-  }
-
-  /* On Primary Container */
-  .on-primary-container {
-    @apply bg-light-on-primary-container dark:bg-dark-on-primary-container;
-  }
-  .on-primary-container-text {
-    @apply text-light-on-primary-container dark:text-dark-on-primary-container;
-  }
-
-  /* Secondary */
-  .secondary {
-    @apply bg-light-secondary dark:bg-dark-secondary;
-  }
-  .secondary-text {
-    @apply text-light-secondary dark:text-dark-secondary;
-  }
-
-  /* On Secondary */
-  .on-secondary {
-    @apply bg-light-on-secondary dark:bg-dark-on-secondary;
-  }
-  .on-secondary-text {
-    @apply text-light-on-secondary dark:text-dark-on-secondary;
-  }
-
-  /* Secondary Container */
-  .secondary-container {
-    @apply bg-light-secondary-container dark:bg-dark-secondary-container;
-  }
-  .secondary-container-text {
-    @apply text-light-secondary-container dark:text-dark-secondary-container;
-  }
-
-  /* On Secondary Container */
-  .on-secondary-container {
-    @apply bg-light-on-secondary-container dark:bg-dark-on-secondary-container;
-  }
-  .on-secondary-container-text {
-    @apply text-light-on-secondary-container dark:text-dark-on-secondary-container;
-  }
-
-  /* Tertiary */
-  .tertiary {
-    @apply bg-light-tertiary dark:bg-dark-tertiary;
-  }
-  .tertiary-text {
-    @apply text-light-tertiary dark:text-dark-tertiary;
-  }
-
-  /* On Tertiary */
-  .on-tertiary {
-    @apply bg-on-tertiary-light dark:bg-dark-on-tertiary;
-  }
-  .on-tertiary-text {
-    @apply text-on-tertiary-light dark:text-dark-on-tertiary;
-  }
-
-  /* Tertiary Container */
-  .tertiary-container {
-    @apply bg-light-tertiary-container dark:bg-dark-tertiary-container;
-  }
-  .tertiary-container-text {
-    @apply text-light-tertiary-container dark:text-dark-tertiary-container;
-  }
-
-  /* On Tertiary Container */
-  .on-tertiary-container {
-    @apply bg-light-on-tertiary-container dark:bg-dark-on-tertiary-container;
-  }
-  .on-tertiary-container-text {
-    @apply text-light-on-tertiary-container dark:text-dark-on-tertiary-container;
-  }
-  .success {
-    @apply bg-[#80f8d1] text-[#002117] hover:bg-[#006b54] hover:text-[#ffffff] dark:bg-[#00513e] dark:text-[#80f8d1] dark:hover:bg-[#62dbb6] dark:hover:text-[#00382a];
-  }
-
-  /* Error */
-  .error {
-    @apply bg-light-error dark:bg-dark-error;
-  }
-  .error-text {
-    @apply text-light-error dark:text-dark-error;
-  }
-
-  /* Error Container */
-  .error-container {
-    @apply bg-light-error-container dark:bg-dark-error-container;
-  }
-  .error-container-text {
-    @apply text-light-error-container dark:text-dark-error-container;
-  }
-
-  /* On Error */
-  .on-error {
-    @apply bg-light-on-error dark:bg-dark-on-error;
-  }
-  .on-error-text {
-    @apply text-light-on-error dark:text-dark-on-error;
-  }
-
-  /* On Error Container */
-  .on-error-container {
-    @apply bg-light-on-error-container dark:bg-dark-on-error-container;
-  }
-  .on-error-container-text {
-    @apply text-light-on-error-container dark:text-dark-on-error-container;
-  }
-
-  /* Background */
-  .background {
-    @apply bg-light-background dark:bg-dark-background;
-  }
-  .background-text {
-    @apply text-light-background dark:text-dark-background;
-  }
-
-  /* On Background */
-  .on-background {
-    @apply bg-light-on-background dark:bg-dark-on-background;
-  }
-  .on-background-text {
-    @apply text-light-on-background dark:text-dark-on-background;
-  }
-
-  /* Surface */
-  
-  .surface-text {
-    @apply text-light-surface dark:text-dark-surface;
-  }
-
-  /* On Surface */
-  .on-surface {
-    @apply bg-light-on-surface dark:bg-dark-on-surface;
-  }
-  .on-surface-text {
-    @apply text-light-on-surface dark:text-dark-on-surface;
-  }
-
-  /* Surface Variant */
-  .surface-variant {
-    @apply bg-light-surface-variant dark:bg-dark-surface-variant;
-  }
-  .surface-variant-text {
-    @apply text-light-surface-variant dark:text-dark-surface-variant;
-  }
-
-  /* On Surface Variant */
-  .on-surface-variant {
-    @apply bg-light-on-surface-variant dark:bg-dark-on-surface-variant;
-  }
-  .on-surface-variant-text {
-    @apply text-light-on-surface-variant dark:text-dark-on-surface-variant;
-  }
-
-  /* on-Outline */
-  .outline {
-    @apply bg-light-outline dark:bg-dark-outline;
-  }
-  .outline-text {
-    @apply text-light-outline dark:text-dark-outline;
-  }
-
-  /* Inverse on Surface */
-  .inverse-on-surface {
-    @apply bg-light-inverse-on-surface dark:bg-dark-inverse-on-surface;
-  }
-  .inverse-on-surface-text {
-    @apply text-light-inverse-on-surface dark:text-dark-inverse-on-surface;
-  }
-
-  /* Inverse Surface */
-  .inverse-surface {
-    @apply bg-light-inverse-surface dark:bg-dark-inverse-surface;
-  }
-  .inverse-surface-text {
-    @apply text-light-inverse-surface dark:text-dark-inverse-surface;
-  }
-
-  /* Inverse Primary */
-  .inverse-primary {
-    @apply bg-light-inverse-primary dark:bg-dark-inverse-primary;
-  }
-  .inverse-primary-text {
-    @apply text-light-inverse-primary dark:text-dark-inverse-primary;
-  }
-  /* Shadow */
-  /* .shadow {
-    @apply bg-light-shadow dark:bg-dark-shadow;
-  }
-  .shadow-text {
-    @apply text-light-shadow dark:text-dark-shadow;
-  } */
-
-  /* Surface Tint */
-  .surface-tint {
-    @apply bg-light-surface-tint dark:bg-dark-surface-tint;
-  }
-  .surface-tint-text {
-    @apply text-light-surface-tint dark:text-dark-surface-tint;
-  }
-
-  /* Outline Variant */
-  .outline-variant {
-    @apply bg-light-outline-variant dark:bg-dark-outline-variant;
-  }
-  .outline-variant-text {
-    @apply text-light-outline-variant dark:text-dark-outline-variant;
-  }
-
-  /* Scrim */
-  .scrim {
-    @apply bg-light-scrim dark:bg-dark-scrim;
-  }
-  .scrim-text {
-    @apply text-light-scrim dark:text-dark-scrim;
-  }
 }

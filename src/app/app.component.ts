@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { State, Store } from '@ngrx/store';
 import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
@@ -53,7 +53,20 @@ export class AppComponent implements OnInit {
       //       apiKey: '11681fde-8e25-47c2-bfd3-44fe583172eb',
       //     }),
       //   );
-      // }
+      //
+      if (localStorage.getItem('theme')) {
+        let theme = localStorage.getItem('theme') as string;
+        document.body.setAttribute('data-theme',theme);
+      } else {
+        const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (darkThemeMq.matches) {
+          localStorage.setItem('theme','dark');
+          document.body.setAttribute('data-theme','dark');
+        } else {
+          document.body.setAttribute('data-theme','light');
+        }
+      } 
+      
     });
   }
 
@@ -62,3 +75,4 @@ export class AppComponent implements OnInit {
     return control ? control.valid : false;
   }
 }
+

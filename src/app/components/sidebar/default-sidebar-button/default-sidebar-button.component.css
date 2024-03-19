@@ -1,11 +1,3 @@
 .selected {
-  @apply transition-all
-  duration-75
-  font-bold
-  bg-dct-light-surface 
-  text-dct-light-on-surface  
-  dark:text-dct-dark-on-surface
-  dark:bg-dct-dark-surface
-  hover:bg-dct-light-outline
-  dark:hover:bg-dct-dark-outline;
+  @apply bg-base-200 font-bold
 }

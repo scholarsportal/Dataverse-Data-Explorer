@@ -1,13 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
 import * as DatasetActions from '../../actions/dataset.actions';
+import * as ThemeActions from '../../actions/ui.actions';
 
 export interface RootState {
-  theme: 'dark' | 'light' | 'system';
+  theme: 'dark' | 'light' | 'dctTheme';
   applicationMode: 'view' | 'edit';
 }
 
 export const initialState: RootState = {
-  theme: 'system',
+  theme: 'dctTheme',
   applicationMode: 'view',
 };
 

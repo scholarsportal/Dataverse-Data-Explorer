@@ -27,10 +27,9 @@
   flex-row
   flex-grow
   rounded
-  bg-primary-50
-  text-white
-  dark:bg-gray-900 
-  dark:text-primary-60;
+  bg-primary
+  text-white;
+  
 }
 
 .top {

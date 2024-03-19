@@ -1,15 +1,16 @@
 <div
   [ngClass]="{ selected: (selectedGroup$ | async) === groupID }"
-  class="flex flex-row justify-between w-full"
+  class="flex flex-row justify-between w-full hover:bg-base-200"
   (click)="handleClick()"
 >
-  <button class="h-16 px-5 w-full items-center text-start">
+  <button
+  class="h-16 px-5 w-full items-center text-start">
     {{ label }}
   </button>
   @if ((selectedGroup$ | async) === groupID) {
     <div class="flex flex-row px-5 py-5">
       <button
-        class="group rounded mx-2.5 transition-all duration-75 hover:bg-dct-light-background hover:text-dct-light-on-background"
+        class="group rounded mx-2.5 transition-all duration-75"
         (click)="rename()"
       >
         <span class="sr-only">rename</span>
@@ -29,7 +30,7 @@
         </svg>
       </button>
       <button
-        class="group rounded hover:bg-dct-light-background hover:text-dct-light-on-background"
+        class="group rounded"
         (click)="delete()"
       >
         <span class="sr-only">delete</span>
