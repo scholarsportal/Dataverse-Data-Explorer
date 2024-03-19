@@ -13,7 +13,8 @@ export const addVariable = createAction(
   props<{
     index: number;
     variableID: string;
-    variableType: 'rows' | 'columns';
+    crossValues: string[];
+    crossTableOrientation: 'rows' | 'columns';
   }>(),
 );
 
@@ -34,6 +35,46 @@ export const changeMissingVariables = createAction(
   }>(),
 );
 
-export const changeVariablePosition = createAction('[Cross Tabulation] Variable Position Changed', props<{ oldIndex: number, newIndex: number  , variableType: 'rows' | 'columns'}>())
+export const changeVariablePosition = createAction(
+  '[Cross Tabulation] Variable Position Changed',
+  props<{
+    oldIndex: number;
+    newIndex: number;
+    variableType: 'rows' | 'columns';
+  }>(),
+);
 
-export const changeVariableInGivenPosition = createAction('[Cross Tabulation] Variable At Index Changed', props<{ index: number, variableType: 'rows' | 'columns', variableID: string }>())
+export const changeVariableInGivenPosition = createAction(
+  '[Cross Tabulation] Variable At Index Changed',
+  props<{
+    index: number;
+    variableType: 'rows' | 'columns';
+    variableID: string;
+  }>(),
+);
+
+export const getVariablesCrossTabulation = createAction(
+  '[Cross Tabulation] New Cross Tabulation Values Requested',
+  props<{
+    siteURL: string;
+    fileID: number;
+    variableID: string;
+    crossTableOrientation: 'rows' | 'columns';
+    index: number;
+  }>(),
+);
+
+export const variableCrossTabulationDataRetrievedSuccessfully = createAction(
+  '[Cross Tabulation] Cross tabulated values retrieved',
+  props<{
+    data: string;
+    index: number;
+    crossTableOrientation: 'rows' | 'columns';
+    variableID: string;
+  }>(),
+);
+
+export const variableCrossTabulationDataRetrievalFailed = createAction(
+  '[Cross Tabulation] Cross tabulated values retrieved',
+  props<{ error: any }>(),
+);

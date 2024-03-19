@@ -16,6 +16,11 @@ import {
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
+import {
+  getVariablesCrossTabulation,
+  variableCrossTabulationDataRetrievalFailed,
+  variableCrossTabulationDataRetrievedSuccessfully,
+} from './actions/cross-tabulation.actions';
 
 @Injectable()
 export class AppEffects {
@@ -55,6 +60,22 @@ export class AppEffects {
     { functional: true },
   );
 
+  addInitialCrossTabRow$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(datasetConversionSuccess),
+      map(({ dataset, fileID, siteURL }) => {
+        const variableID: string = dataset.codeBook.dataDscr.var[0]['@_ID'];
+        return getVariablesCrossTabulation({
+          fileID,
+          siteURL,
+          variableID,
+          crossTableOrientation: 'rows',
+          index: 0,
+        });
+      }),
+    );
+  });
+
   importNewMetadata$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
@@ -89,7 +110,7 @@ export class AppEffects {
     },
   );
 
-  uploadDataset$ = createEffect(
+  completeDatasetUpload$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(datasetUploadStart),
@@ -105,6 +126,32 @@ export class AppEffects {
               }),
               catchError((error) => of(datasetUploadFailed({ error }))),
             ),
+        ),
+      );
+    },
+  );
+
+  fetchCrossTabulationValues$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(getVariablesCrossTabulation),
+        exhaustMap(
+          ({ fileID, siteURL, variableID, index, crossTableOrientation }) =>
+            ddiService
+              .fetchCrossTabulationFromDataverse(siteURL, fileID, variableID)
+              .pipe(
+                map((data) =>
+                  variableCrossTabulationDataRetrievedSuccessfully({
+                    data,
+                    index,
+                    crossTableOrientation,
+                    variableID,
+                  }),
+                ),
+                catchError((error) =>
+                  of(variableCrossTabulationDataRetrievalFailed(error)),
+                ),
+              ),
         ),
       );
     },

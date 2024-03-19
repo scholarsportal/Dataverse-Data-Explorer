@@ -6,42 +6,53 @@ export interface CrossTabulationState {
   open: boolean;
   rows: {
     [index: number]: {
-      variableID: string;
+      crossValues: string[] | null;
+      variableID: string | null;
       missingCategories: string[];
     };
   };
   columns: {
     [index: number]: {
-      variableID: string;
+      crossValues: string[] | null;
+      variableID: string | null;
       missingCategories: string[];
     };
   };
+  error?: any;
 }
 
 export const initialState: CrossTabulationState = {
-  open: false,
-  rows: {},
-  columns: {},
+  open: true,
+  rows: {
+    0: {
+      crossValues: null,
+      variableID: null,
+      missingCategories: [],
+    },
+    1: {
+      crossValues: null,
+      variableID: null,
+      missingCategories: [],
+    },
+  },
+  columns: {
+    0: {
+      crossValues: null,
+      variableID: null,
+      missingCategories: [],
+    },
+    1: {
+      crossValues: null,
+      variableID: null,
+      missingCategories: [],
+    },
+  },
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
   on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
     ...state,
-    rows: {
-      ...state.rows,
-      0: {
-        variableID: dataset.codeBook.dataDscr.var[0]['@_ID'],
-        missingCategories: [],
-      }
-    },
-    columns: {
-      ...state.columns,
-      0: {
-        variableID: dataset.codeBook.dataDscr.var[1]['@_ID'],
-        missingCategories: []
-      }
-    }
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
@@ -53,10 +64,10 @@ export const crossTabulationReducer = createReducer(
   })),
   on(
     CrossTabActions.addVariable,
-    (state, { index, variableID, variableType }) => ({
+    (state, { index, variableID, crossTableOrientation }) => ({
       ...state,
-      [variableType]: {
-        ...state[variableType],
+      [crossTableOrientation]: {
+        ...state[crossTableOrientation],
         [index]: { variableID, missingCategories: [] },
       },
     }),
@@ -81,5 +92,14 @@ export const crossTabulationReducer = createReducer(
         },
       },
     }),
+  ),
+  on(
+    CrossTabActions.variableCrossTabulationDataRetrievalFailed,
+    (state, { error }) => {
+      return {
+        ...state,
+        error,
+      };
+    },
   ),
 );
