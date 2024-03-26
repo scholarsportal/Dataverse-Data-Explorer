@@ -15,11 +15,16 @@ import {
   selectDatasetUploadFailed,
   selectDatasetUploadSuccess,
 } from 'src/app/state/selectors/dataset.selectors';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { VarCrosstabToggleComponent } from './var-crosstab-toggle/var-crosstab-toggle.component';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
+  standalone: true,
+  imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe],
 })
 export class HeaderComponent implements OnInit {
   title$ = this.store.select(selectDatasetTitle);
@@ -35,9 +40,9 @@ export class HeaderComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('theme') === 'dark') { 
+    if (localStorage.getItem('theme') === 'dark') {
       this.checked = false;
-    };
+    }
     this.showToggle = true;
   }
 
@@ -49,24 +54,18 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(closeCrossTabulationTab());
   }
 
-  toggleTheme(){
+  toggleTheme() {
     const theme = localStorage.getItem('theme');
     if (theme === 'light') {
       this.checked = false;
-      localStorage.setItem('theme','dark');
-      document.body.setAttribute(
-        'data-theme',
-        'dark'
-      );
+      localStorage.setItem('theme', 'dark');
+      document.body.setAttribute('data-theme', 'dark');
     } else {
       this.checked = true;
-      localStorage.setItem('theme','light');
-      document.body.setAttribute(
-        'data-theme',
-        'light'
-      );
+      localStorage.setItem('theme', 'light');
+      document.body.setAttribute('data-theme', 'light');
     }
- }
+  }
 
   handleUpload() {
     this.sub$

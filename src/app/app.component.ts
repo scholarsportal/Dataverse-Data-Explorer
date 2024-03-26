@@ -1,17 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { State, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { fetchDataset } from './state/actions/dataset.actions';
 import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
 import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
 import { selectIsCrossTabOpen } from './state/selectors/cross-tabulation.selectors';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { TableComponent } from './components/table/table.component';
+import { ImportComponent } from './components/import/import.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'dct-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    CrossTabulationComponent,
+    SidebarComponent,
+    ImportComponent,
+    TableComponent,
+    AsyncPipe,
+    CommonModule,
+  ],
 })
 export class AppComponent implements OnInit {
   title = 'Data Curation Tool';
@@ -56,17 +72,16 @@ export class AppComponent implements OnInit {
       //
       if (localStorage.getItem('theme')) {
         let theme = localStorage.getItem('theme') as string;
-        document.body.setAttribute('data-theme',theme);
+        document.body.setAttribute('data-theme', theme);
       } else {
-        const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+        const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');
         if (darkThemeMq.matches) {
-          localStorage.setItem('theme','dark');
-          document.body.setAttribute('data-theme','dark');
+          localStorage.setItem('theme', 'dark');
+          document.body.setAttribute('data-theme', 'dark');
         } else {
-          document.body.setAttribute('data-theme','light');
+          document.body.setAttribute('data-theme', 'light');
         }
-      } 
-      
+      }
     });
   }
 
@@ -75,4 +90,3 @@ export class AppComponent implements OnInit {
     return control ? control.valid : false;
   }
 }
-
