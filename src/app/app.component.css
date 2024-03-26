@@ -3,7 +3,6 @@
   max-height: 100vh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  /* grid-template-rows: repeat(10, 1fr); */
   font-size: 0.85rem;
 }
 .header {
@@ -11,7 +10,6 @@
 }
 .body {
   height: 100%;
-  min-height: 100%;
   overflow: hidden;
   display: grid;
   grid-area: 4 / 1 / 13 / 13;
@@ -31,10 +29,6 @@
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
 }
-.cross-tabulation {
-  grid-area: 1 / 1 / 5 / 13;
-  max-height: 100%;
-}
 .form-input {
   @apply rounded border w-full;
 }
@@ -43,13 +37,6 @@
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   height: 100vh;
-}
-.cross-table-tab {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(9, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }
 
 @keyframes gradient {

@@ -1,7 +1,26 @@
-<div class="w-full my-auto flex flex-row">
-  <span class="h-full">
-    <ng-content />
-  </span>
+<div class="w-full flex flex-row">
+  <label for="rowColoumnSelect" class="sr-only">Choose row/column</label>
+  <select
+    name="rowColoumnSelect"
+    id="rowColoumnSelect"
+    class="dropdown"
+    [value]="type"
+  >
+    <option value="rows">ROW</option>
+    <option value="columns">COLUMN</option>
+  </select>
+  <label for="variableDropdown" class="sr-only">Variable:</label>
+  <select
+    id="variableDropdown"
+    class="dropdown"
+    [(ngModel)]="selectedVariable.variableID"
+    (change)="handleVariableSelect($event.target)"
+  >
+    <option value="" disabled [defaultSelected]="true">Choose Variable</option>
+    @for (variable of filteredVariables; track $index) {
+      <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
+    }
+  </select>
   <label for="groupDropdown" class="sr-only">Group:</label>
   <select
     id="groupDropdown"
@@ -11,20 +30,6 @@
     <option value="" disabled [defaultSelected]="true">Filter by Group</option>
     @for (group of groups; track $index) {
       <option [value]="group['@_var']">{{ group.labl }}</option>
-    }
-  </select>
-  <label for="variableDropdown" class="sr-only">Variable:</label>
-  <select
-    id="variableDropdown"
-    class="dropdown"
-    [(ngModel)]="variableID"
-    (change)="handleVariableSelect($event.target)"
-  >
-    <option value="null" disabled [defaultSelected]="true">
-      Choose Variable
-    </option>
-    @for (variable of filteredVariables; track $index) {
-      <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
     }
   </select>
 </div>

@@ -60,22 +60,6 @@ export class AppEffects {
     { functional: true },
   );
 
-  addInitialCrossTabRow$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(datasetConversionSuccess),
-      map(({ dataset, fileID, siteURL }) => {
-        const variableID: string = dataset.codeBook.dataDscr.var[0]['@_ID'];
-        return getVariablesCrossTabulation({
-          fileID,
-          siteURL,
-          variableID,
-          crossTableOrientation: 'rows',
-          index: 0,
-        });
-      }),
-    );
-  });
-
   importNewMetadata$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
@@ -110,7 +94,7 @@ export class AppEffects {
     },
   );
 
-  completeDatasetUpload$ = createEffect(
+  uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(datasetUploadStart),
@@ -135,23 +119,19 @@ export class AppEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(getVariablesCrossTabulation),
-        exhaustMap(
-          ({ fileID, siteURL, variableID, index, crossTableOrientation }) =>
-            ddiService
-              .fetchCrossTabulationFromDataverse(siteURL, fileID, variableID)
-              .pipe(
-                map((data) =>
-                  variableCrossTabulationDataRetrievedSuccessfully({
-                    data,
-                    index,
-                    crossTableOrientation,
-                    variableID,
-                  }),
-                ),
-                catchError((error) =>
-                  of(variableCrossTabulationDataRetrievalFailed(error)),
-                ),
+        exhaustMap(({ fileID, siteURL, variables }) =>
+          ddiService
+            .fetchCrossTabulationFromVariables(siteURL, fileID, variables)
+            .pipe(
+              map((data) =>
+                variableCrossTabulationDataRetrievedSuccessfully({
+                  data,
+                }),
               ),
+              catchError((error) =>
+                of(variableCrossTabulationDataRetrievalFailed(error)),
+              ),
+            ),
         ),
       );
     },

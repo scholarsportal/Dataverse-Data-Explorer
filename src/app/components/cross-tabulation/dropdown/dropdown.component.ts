@@ -22,7 +22,10 @@ export class DropdownComponent implements OnChanges {
   @Input() variables: { [id: string]: Variable } | null = {};
   @Input() type!: 'rows' | 'columns';
   @Input() index!: number;
-  variableID: string | null = null;
+  @Input() selectedVariable!: {
+    variableID: string;
+    missingCategories: string[];
+  };
   @Output() emitNewSelectedVariable: EventEmitter<{
     type: 'rows' | 'columns';
     index: number;
