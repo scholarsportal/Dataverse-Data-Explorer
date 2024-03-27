@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { selectIsCrossTabOpen } from 'src/app/state/selectors/cross-tabulation.selectors';
+import { Component, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'dct-var-crosstab-toggle',
@@ -11,11 +9,16 @@ import { Store } from '@ngrx/store';
   styleUrl: './var-crosstab-toggle.component.css',
 })
 export class VarCrosstabToggleComponent {
-  // Good opportunity to use model()
-  store = inject(Store);
-  isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
+  // This is our own style guide. Dollar sign in front to denote signal,
+  // dollar sign behind to denote observable
+  $isCrossTabOpen = input.required();
+  toggleVarCrossTab = output<boolean>();
 
-  closeCrossTab() {}
+  closeCrossTab() {
+    this.toggleVarCrossTab.emit(false);
+  }
 
-  openCrossTab() {}
+  openCrossTab() {
+    this.toggleVarCrossTab.emit(true);
+  }
 }

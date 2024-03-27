@@ -5,10 +5,18 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Variable, VariableGroup } from 'src/app/state/interface';
 import { FormsModule } from '@angular/forms';
+import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
+import { Store } from '@ngrx/store';
+import { selectAvailableVariables } from 'src/app/state/selectors/cross-tabulation.selectors';
 
 @Component({
   selector: 'dct-dropdown',
@@ -17,54 +25,43 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.css',
 })
-export class DropdownComponent implements OnChanges {
-  @Input() groups: VariableGroup[] | null | undefined = [];
-  @Input() variables: { [id: string]: Variable } | null = {};
-  @Input() type!: 'rows' | 'columns';
-  @Input() index!: number;
-  @Input() selectedVariable!: {
-    variableID: string;
-    missingCategories: string[];
-  };
-  @Output() emitNewSelectedVariable: EventEmitter<{
-    type: 'rows' | 'columns';
-    index: number;
-    variable: Variable;
-  }> = new EventEmitter<{
-    type: 'rows' | 'columns';
-    index: number;
-    variable: Variable;
-  }>();
-
-  filteredVariables: Variable[] = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.filteredVariables = Object.values(this.variables || {});
-    }
-  }
-
-  filterVariables(group: any | null) {
-    if (group?.value) {
-      const newGroup = group.value as string;
-      if (!newGroup) {
-        this.filteredVariables = Object.values(this.variables || {});
-      }
-      if (newGroup) {
-        const newVariableList: Variable[] = [];
-        newGroup.split(' ').map((variableID: string) => {
-          newVariableList.push(this.variables![variableID]);
-        });
-        this.filteredVariables = newVariableList;
-      }
-    }
-  }
-
-  handleVariableSelect(variable: any) {
-    this.emitNewSelectedVariable.emit({
-      type: this.type,
-      index: this.index,
-      variable: this.variables![variable.value],
+export class DropdownComponent {
+  constructor() {
+    effect(() => {
+      const selected = this.$selectedGroupVariables();
     });
+  }
+  store = inject(Store);
+  type = input.required();
+  $groups = this.store.selectSignal(selectDatasetVariableGroups);
+  $variables = this.store.selectSignal(selectAvailableVariables);
+  $selectedGroupVariables = signal<string | null>(null);
+  $selectedVariable = signal<Variable | null>(null);
+
+  $filteredVariables = computed(() => {
+    if (this.$selectedGroupVariables()) {
+      console.log(this.$selectedGroupVariables());
+      const newVariables: Variable[] = [];
+      this.$selectedGroupVariables()
+        ?.split(' ')
+        .map((variableID: string) =>
+          newVariables.push(this.$variables()[variableID]),
+        );
+      return newVariables;
+    } else {
+      return Object.values(this.$variables());
+    }
+  });
+
+  onGroupChange(event: Event) {
+    const value: string | null =
+      (event?.target as HTMLSelectElement).value || null;
+    console.log(value);
+
+    if (value && value !== 'all') {
+      this.$selectedGroupVariables.set(value);
+    } else if (value === 'all') {
+      this.$selectedGroupVariables.set(null);
+    }
   }
 }

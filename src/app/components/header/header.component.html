@@ -58,9 +58,10 @@
     </div>
 
     <div class="flex flex-row justify-between">
-      <div role="tablist" class="flex flew-row tabs-bordered">
-        <dct-var-crosstab-toggle></dct-var-crosstab-toggle>
-      </div>
+      <dct-var-crosstab-toggle
+        [$isCrossTabOpen]="isCrossTabOpen$()"
+        (toggleVarCrossTab)="hangleToggle($event)"
+      ></dct-var-crosstab-toggle>
       @if (uploadSuccess$ | async) {
         <div class="toast toast-top toast-end">
           <div class="alert rounded alert-success">

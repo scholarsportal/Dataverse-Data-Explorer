@@ -6,7 +6,6 @@ import {
   groupCreateNew,
   groupDelete,
 } from 'src/app/state/actions/var-and-groups.actions';
-import { VariableGroup } from 'src/app/state/interface';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import { selectCurrentGroup } from 'src/app/state/selectors/var-groups.selectors';
 import { OptionsComponent } from './options/options.component';
@@ -15,22 +14,43 @@ import { RenamingSidebarButtonComponent } from './renaming-sidebar-button/renami
 import { DeletingSidebarButtonComponent } from './deleting-sidebar-button/deleting-sidebar-button.component';
 import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { NewGroupComponent } from './new-group/new-group.component';
+import {animate, query, stagger, style, transition, trigger} from "@angular/animations";
 
 @Component({
-    selector: 'dct-sidebar',
-    templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.css'],
-    standalone: true,
-    imports: [
-        NewGroupComponent,
-        NgClass,
-        DeletingSidebarButtonComponent,
-        RenamingSidebarButtonComponent,
-        DefaultSidebarButtonComponent,
-        OptionsComponent,
-        AsyncPipe,
-        KeyValuePipe,
-    ],
+  selector: 'dct-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css'],
+  standalone: true,
+  imports: [
+    NewGroupComponent,
+    NgClass,
+    DeletingSidebarButtonComponent,
+    RenamingSidebarButtonComponent,
+    DefaultSidebarButtonComponent,
+    OptionsComponent,
+    AsyncPipe,
+    KeyValuePipe,
+  ],
+  animations: [
+    trigger('groupAnimation', [
+      transition(':enter', [
+        query('.all-groups > ol', [
+          style({ opacity: 0, transform: 'translateX(-100%)' }),
+          stagger(100, [
+            animate('300ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
+          ])
+        ])
+      ]),
+      transition(':leave', [
+        query('.all-groups > ol', [
+          style({ opacity: 1, transform: 'translateX(0)' }),
+          stagger(-100, [
+            animate('300ms ease-out', style({ opacity: 0, transform: 'translateX(-100%)' }))
+          ])
+        ])
+      ])
+    ])
+  ]
 })
 export class SidebarComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);

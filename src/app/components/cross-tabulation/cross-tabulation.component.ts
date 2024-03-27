@@ -1,18 +1,17 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Variable } from 'src/app/state/interface';
-import { DropdownComponent } from './dropdown/dropdown.component';
-import { Store } from '@ngrx/store';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
-import { CrossTableComponent } from './cross-table/cross-table.component';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Variable} from 'src/app/state/interface';
+import {DropdownComponent} from './dropdown/dropdown.component';
+import {Store} from '@ngrx/store';
+import {selectDatasetVariableGroups} from 'src/app/state/selectors/dataset.selectors';
+import {CrossTableComponent} from './cross-table/cross-table.component';
 import {
   selectAvailableVariables,
   selectColumnsArray,
   selectCurrentCrossTableData,
   selectRowsArray,
 } from 'src/app/state/selectors/cross-tabulation.selectors';
-import { addVariable } from 'src/app/state/actions/cross-tabulation.actions';
-import { Subscription } from 'rxjs';
+import {addVariable} from 'src/app/state/actions/cross-tabulation.actions';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -29,9 +28,9 @@ export class CrossTabulationComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);
   variables$ = this.store.select(selectAvailableVariables);
   table$ = this.store.select(selectCurrentCrossTableData);
-  sub$!: Subscription;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   onVariableSelect(value: {
     type: 'rows' | 'columns';

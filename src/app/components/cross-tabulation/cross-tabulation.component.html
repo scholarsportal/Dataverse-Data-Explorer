@@ -1,32 +1,17 @@
-<div class="flex flex-col">
-  @for (row of rows$ | async; track row.variableID; let idx = $index) {
-    <dct-dropdown
-      [groups]="groups$ | async"
-      [variables]="variables$ | async"
-      type="rows"
-      [index]="idx"
-      [selectedVariable]="row"
-      (emitNewSelectedVariable)="onVariableSelect($event)"
-    ></dct-dropdown>
-  }
-  @for (column of columns$ | async; track column.variableID; let idx = $index) {
-    <dct-dropdown
-      [groups]="groups$ | async"
-      [variables]="variables$ | async"
-      type="columns"
-      [index]="idx"
-      [selectedVariable]="column"
-      (emitNewSelectedVariable)="onVariableSelect($event)"
-    ></dct-dropdown>
-  }
-  <div class="flex flex-row">
-    <button class="addNew surface on-surface-text">Add Row</button>
-    <button class="addNew on-surface-variant on-surface-text">
-      Add Column
-    </button>
-    <button class="addNew secondary on-secondary-text">View Graph</button>
-  </div>
-  <dct-cross-table [data]="table$ | async"></dct-cross-table>
-  <!-- @if (table$ | async) {
-         } -->
+<div class="rows-and-columns mx-auto my-auto">
+  <span class="blur-0">
+    Nothing here yet. Start adding rows and columns to build your table.
+  </span>
+  <dct-dropdown type="rows"></dct-dropdown>
 </div>
+<div class="mx-auto my-auto controls-and-button">
+  <button class="add-new surface on-surface-text">Add Row</button>
+  <button class="add-new on-surface-variant on-surface-text">Add Column</button>
+  <button class="add-new secondary on-secondary-text">View Graph</button>
+</div>
+<dct-cross-table
+  class="mx-auto my-auto graph-area"
+  [data]="table$ | async"
+></dct-cross-table>
+<!-- @if (table$ | async) {
+         } -->

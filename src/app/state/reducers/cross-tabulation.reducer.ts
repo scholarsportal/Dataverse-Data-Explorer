@@ -19,29 +19,15 @@ export interface CrossTabulationState {
 }
 
 export const initialState: CrossTabulationState = {
-  open: false,
+  open: true,
   rows: {},
   columns: {},
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
-  on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
+  on(DatasetActions.datasetConversionSuccess, (state) => ({
     ...state,
-    rows: {
-      ...state.rows,
-      0: {
-        variableID: dataset.codeBook.dataDscr.var[0]['@_ID'],
-        missingCategories: [],
-      }
-    },
-    columns: {
-      ...state.columns,
-      0: {
-        variableID: dataset.codeBook.dataDscr.var[1]['@_ID'],
-        missingCategories: []
-      }
-    }
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
