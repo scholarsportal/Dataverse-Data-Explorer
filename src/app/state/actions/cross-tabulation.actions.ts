@@ -8,16 +8,15 @@ export const closeCrossTabulationTab = createAction(
   '[Cross Tabulation] Close Tab',
 );
 
-export const addVariable = createAction(
+export const addVariableToCrossTabulation = createAction(
   '[Cross Tabulation] Variable Added',
   props<{
-    index: number;
     variableID: string;
     variableType: 'rows' | 'columns';
   }>(),
 );
 
-export const removeVariable = createAction(
+export const removeVariableFromCrossTabulation = createAction(
   '[Cross Tabulation] Variable Removed',
   props<{
     index: number;
@@ -30,15 +29,6 @@ export const changeMissingVariables = createAction(
   props<{
     index: string;
     missingVariables: string[];
-    variableType: 'rows' | 'columns';
-  }>(),
-);
-
-export const changeVariablePosition = createAction(
-  '[Cross Tabulation] Variable Position Changed',
-  props<{
-    oldIndex: number;
-    newIndex: number;
     variableType: 'rows' | 'columns';
   }>(),
 );

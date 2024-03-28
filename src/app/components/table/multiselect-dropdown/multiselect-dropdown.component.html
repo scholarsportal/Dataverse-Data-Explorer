@@ -1,7 +1,11 @@
-
-  <div tabindex="0" role="button" class="btn btn-outline justify-start w-full pr-0 overflow-hidden" (click)="toggleDialog()">
-    <div class="flex flex-row">
-      <svg
+<div
+  tabindex="0"
+  role="button"
+  class="btn btn-outline justify-start w-full pr-0 overflow-hidden"
+  (click)="toggleDialog()"
+>
+  <div class="flex flex-row">
+    <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
@@ -13,36 +17,37 @@
         clip-rule="evenodd"
       />
     </svg>
-      @if( selectedVariableGroups.length ){
-        <ul class="flex flex-row overflow-y-hidden static overflow-x-auto self-center">
-          @for (variableGroup of ( selectedVariableGroups | keyvalue ); track $index)
-          {
-          <li id="getVariableID(variableGroup.key)" class="flex-none input-chip self-center">
-            {{ getVariableLabel(variableGroup.value) }}
+    @if ($currentSelection().length) {
+      <ul
+        class="flex flex-row overflow-y-hidden static overflow-x-auto self-center"
+      >
+        @for (value of $currentSelection(); track $index) {
+          <li id="$index" class="flex-none input-chip self-center">
+            {{ value }}
           </li>
-          }
-        </ul>
-        } @else { 
-        <span class="self-center button-label pr-5">ADD TO GROUP</span>
         }
-    </div>
+      </ul>
+    } @else {
+      <span class="self-center button-label pr-5">ADD TO GROUP</span>
+    }
   </div>
-  <ul tabindex="0"
-      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded w-full"
-  >
-  @for (variableGroup of (allVariableGroups$ | keyvalue); track $index) {
-      <li>
-        <label class="pb-3" for="{{ getVariableID(variableGroup.value) }}">
-          <input
-            type="checkbox"
-            id="{{ getVariableID(variableGroup.value) }}"
-            name="{{ getVariableID(variableGroup.value) }}"
-            [checked]="checkSelected(variableGroup.value)"
-            (change)="changeSelected(variableGroup.value)"
-          />
-          {{ getVariableLabel(variableGroup.value) }}
-        </label>
-      </li>
+</div>
+<ul
+  tabindex="0"
+  class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded w-full"
+>
+  @for (variableGroup of $allValuesInDropdown() | keyvalue; track $index) {
+    <li>
+      <label class="pb-3" for="{{ getVariableID(variableGroup.value) }}">
+        <input
+          type="checkbox"
+          id="{{ getVariableID(variableGroup.value) }}"
+          name="{{ getVariableID(variableGroup.value) }}"
+          [checked]="checkSelected(variableGroup.value)"
+          (change)="changeSelected(variableGroup.value)"
+        />
+        {{ getVariableLabel(variableGroup.value) }}
+      </label>
+    </li>
   }
-  </ul>
-
+</ul>

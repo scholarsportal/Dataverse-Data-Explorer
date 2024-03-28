@@ -39,7 +39,6 @@ export class ModalComponent {
   // form data
   modalMode$ = this.store.select(selectOpenVariableModalMode);
   variableData$ = this.store.select(selectOpenVariableDataAsForm);
-  variableGroups$ = this.store.select(selectOpenVariableSelectedGroups);
   allWeights$ = this.store.select(selectVariableWeights);
   // chart data
   chart$ = this.store.select(selectOpenVariableDataChart);

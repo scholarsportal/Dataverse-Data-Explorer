@@ -4,7 +4,7 @@
     name="rowColoumnSelect"
     id="rowColoumnSelect"
     class="dropdown"
-    [value]="type"
+    [value]="$type()"
   >
     <option value="rows">ROW</option>
     <option value="columns">COLUMN</option>
@@ -18,10 +18,28 @@
     }
   </select>
   <label for="variableDropdown" class="sr-only">Variable:</label>
-  <select id="variableDropdown" class="dropdown">
-    <option value="" disabled [defaultSelected]="true">Choose Variable</option>
+  <select
+    id="variableDropdown"
+    name="variableDropdown"
+    class="dropdown"
+    [value]="$selectedVariable()"
+    (change)="onVariableChange($event)"
+  >
+    <option value="" disabled>Choose Variable</option>
     @for (variable of $filteredVariables(); track $index) {
-      <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
+      <option
+        [value]="variable['@_ID']"
+        [disabled]="checkVariableSelected(variable['@_ID'])"
+      >
+        {{ variable.labl['#text'] }}
+      </option>
     }
   </select>
+  <label for="categoriesSelectedDropdown">
+    <dct-multiselect-dropdown
+      [$allValuesInDropdown]="$allCategoryValues()"
+      [$valuesSelectedFromInput]="$selectedCategoryValues()"
+      (changeSelectedValues)="onChangeCategoriesSelected($event)"
+    ></dct-multiselect-dropdown>
+  </label>
 </div>

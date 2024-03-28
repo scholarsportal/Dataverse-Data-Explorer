@@ -14,10 +14,10 @@
       d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3"
     />
   </svg>
-  <dct-multiselect-dropdown
+  <!-- <dct-multiselect-dropdown
     class="self-center ml-1 dropdown dropdown-top dropdown-start w-2/6"
     (emitSelectedGroups)="onGroupChange($event)"
-  ></dct-multiselect-dropdown>
+  ></dct-multiselect-dropdown> -->
   <select
     (change)="onSelectedWeightChange($event.target)"
     name="assign-weight"
@@ -32,11 +32,16 @@
       </option>
     }
   </select>
-  <button class="ml-1 btn btn-primary self-center" (click)="onApplyChanges()">APPLY</button>
+  <button class="ml-1 btn btn-primary self-center" (click)="onApplyChanges()">
+    APPLY
+  </button>
 
   @if (selectedVariableGroup$ | async; as selected) {
     <div class="border-l mx-4"></div>
-    <button (click)="onRemoveFromGroup(selected)" class="btn btn-outline justify-end self-center">
+    <button
+      (click)="onRemoveFromGroup(selected)"
+      class="btn btn-outline justify-end self-center"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -54,5 +59,4 @@
       <span>REMOVE FROM GROUP</span>
     </button>
   }
-
 </div>

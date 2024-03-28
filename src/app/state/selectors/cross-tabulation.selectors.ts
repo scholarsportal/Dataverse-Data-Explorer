@@ -1,8 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
-import {
-  selectDatasetProcessedVariables,
-} from './dataset.selectors';
+import { selectDatasetProcessedVariables } from './dataset.selectors';
 import { Variable } from '../interface';
 
 export const selectCrossTabulationFeature =
@@ -38,14 +36,7 @@ export const selectAvailableVariables = createSelector(
   selectRows,
   selectColumns,
   (variables, rows, columns) => {
-    const newData: {[id: string]: Variable} = { ...variables };
-    const currentSelectedVariables = [
-      ...Object.values(rows),
-      ...Object.values(columns),
-    ];
-    currentSelectedVariables.map((variable) => {
-      newData[variable.variableID] ?? delete newData[variable.variableID];
-    });
+    const newData: { [id: string]: Variable } = { ...variables };
     return newData;
   },
 );
@@ -65,8 +56,8 @@ export const selectCurrentCrossTableData = createSelector(
       if (dataset[variableID]) {
         rows.push(
           dataset[variableID]['@_name'] +
-          ' - ' +
-          dataset[variableID].labl['#text'],
+            ' - ' +
+            dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length > tableLength) {
@@ -79,8 +70,8 @@ export const selectCurrentCrossTableData = createSelector(
       if (dataset[variableID]) {
         columns.push(
           dataset[variableID]['@_name'] +
-          ' - ' +
-          dataset[variableID].labl['#text'],
+            ' - ' +
+            dataset[variableID].labl['#text'],
         );
       }
       if (dataset[variableID]?.catgry?.length) {
