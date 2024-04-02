@@ -1,11 +1,11 @@
-import {createAction, props} from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
 export const openCrossTabulationTab = createAction(
-  '[Cross Tabulation] Open Tab',
+  '[Cross Tabulation] Open Tab'
 );
 
 export const closeCrossTabulationTab = createAction(
-  '[Cross Tabulation] Close Tab',
+  '[Cross Tabulation] Close Tab'
 );
 
 export const addVariableToCrossTabulation = createAction(
@@ -13,7 +13,7 @@ export const addVariableToCrossTabulation = createAction(
   props<{
     variableID: string;
     variableType: 'rows' | 'columns';
-  }>(),
+  }>()
 );
 
 export const removeVariableFromCrossTabulation = createAction(
@@ -21,16 +21,16 @@ export const removeVariableFromCrossTabulation = createAction(
   props<{
     index: number;
     variableType: 'rows' | 'columns';
-  }>(),
+  }>()
 );
 
 export const changeMissingVariables = createAction(
   '[Cross Tabulation] Missing Variables Changed',
   props<{
     index: number;
-    missingVariables: string[];
+    missing: string[];
     variableType: 'rows' | 'columns';
-  }>(),
+  }>()
 );
 
 export const changeVariableInGivenPosition = createAction(
@@ -39,20 +39,20 @@ export const changeVariableInGivenPosition = createAction(
     index: number;
     variableType: 'rows' | 'columns';
     variableID: string;
-  }>(),
+  }>()
 );
 
 export const getVariablesCrossTabulation = createAction(
   '[Cross Tabulation] New Cross Tabulation Values Requested',
-  props<{ siteURL: string; fileID: number; variables: string[] }>(),
+  props<{ siteURL: string; fileID: number; variables: string[] }>()
 );
 
 export const variableCrossTabulationDataRetrievedSuccessfully = createAction(
   '[Cross Tabulation] Cross tabulated values retrieved',
-  props<{ data: string }>(),
+  props<{ data: string }>()
 );
 
 export const variableCrossTabulationDataRetrievalFailed = createAction(
   '[Cross Tabulation] Cross tabulated values retrieved',
-  props<{ error: any }>(),
+  props<{ error: any }>()
 );

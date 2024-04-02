@@ -42,7 +42,7 @@
       id="categoriesSelectedDropdown"
       [itemList]="$selectedVariableCategoryValues()"
       [selectedItems]="$selectedVariableSelectedCategoryValues()"
-      (changeSelectedItems)="onChangeCategoriesSelected($event)"
+      (changeSelectedItems)="changeMissingValues($event)"
     />
   </label>
 </div>

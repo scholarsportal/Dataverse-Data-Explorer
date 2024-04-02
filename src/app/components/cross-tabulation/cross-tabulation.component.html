@@ -9,6 +9,7 @@
       [$selectedVariable]="row.variableID"
       [$variablesAlreadySelected]="$rows()"
       (changeSelectedVariable)="changeVariable($event)"
+      (changeSelectedCategories)="changeSelectedCategories($event)"
     ></dct-dropdown>
   }
   @for (column of $columns(); track $index) {
@@ -21,6 +22,7 @@
       [$selectedVariable]="column.variableID"
       [$variablesAlreadySelected]="$columns()"
       (changeSelectedVariable)="changeVariable($event)"
+      (changeSelectedCategories)="changeSelectedCategories($event)"
     ></dct-dropdown>
   }
   @if (!$columns().length && !$rows().length) {

@@ -31,7 +31,12 @@ export class DropdownComponent {
   $categories = input.required<{ [p: string]: { categories: { [p: number]: string }, missing: string[] } }>();
   // Output
   changeSelectedVariable = output<{ variableID: string, index: number, variableType: 'rows' | 'columns' }>();
-  changeSelectedCategories = output<{ [variableID: string]: string[] }>();
+  changeSelectedCategories = output<{
+    index: number,
+    variableID: string,
+    variableType: 'rows' | 'columns',
+    missing: string[]
+  }>();
   // Component Values
   $selectedGroup = signal<string | null>(null);
 
@@ -80,13 +85,16 @@ export class DropdownComponent {
     return values;
   });
 
-  changeMissingValues(value: { index: number, variableID: string, type: 'rows' | 'columns', missing: string[] }) {
-    // const { index, variableID, type, missing } = value
-    console.log(value);
+  changeMissingValues(missing: string[]) {
+    const index = this.$index();
+    const variableID = this.$selectedVariable();
+    const variableType = this.$rowsOrColumns();
+    if (this.$selectedVariable()) {
+      this.changeSelectedCategories.emit({ index, missing, variableID, variableType });
+    }
   }
 
   onChangeCategoriesSelected(newCategoryList: string[]) {
-    console.log(newCategoryList);
   }
 
   checkVariableSelected(variableID: string): boolean {

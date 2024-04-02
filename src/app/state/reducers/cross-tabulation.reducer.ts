@@ -21,21 +21,21 @@ export interface CrossTabulationState {
 export const initialState: CrossTabulationState = {
   open: true,
   rows: {},
-  columns: {},
+  columns: {}
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
   on(DatasetActions.datasetConversionSuccess, (state) => ({
-    ...state,
+    ...state
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
-    open: true,
+    open: true
   })),
   on(CrossTabActions.closeCrossTabulationTab, (state) => ({
     ...state,
-    open: false,
+    open: false
   })),
   on(
     CrossTabActions.addVariableToCrossTabulation,
@@ -45,10 +45,10 @@ export const crossTabulationReducer = createReducer(
         ...state,
         [variableType]: {
           ...state[variableType],
-          [newVariableIndex]: { variableID, missingCategories: [] },
-        },
+          [newVariableIndex]: { variableID, missingCategories: [] }
+        }
       };
-    },
+    }
   ),
   on(
     CrossTabActions.removeVariableFromCrossTabulation,
@@ -57,22 +57,22 @@ export const crossTabulationReducer = createReducer(
       delete updatedVariables[index as any];
       return {
         ...state,
-        [variableType]: updatedVariables,
+        [variableType]: updatedVariables
       };
-    },
+    }
   ),
   on(
     CrossTabActions.changeMissingVariables,
-    (state, { index, missingVariables, variableType }) => ({
+    (state, { index, missing, variableType }) => ({
       ...state,
       [variableType]: {
         ...state[variableType],
         [index]: {
           ...state[variableType][index as any],
-          missingVariables,
-        },
-      },
-    }),
+          missingCategories: missing
+        }
+      }
+    })
   ),
   on(
     CrossTabActions.changeVariableInGivenPosition,
@@ -81,9 +81,9 @@ export const crossTabulationReducer = createReducer(
         ...state,
         [variableType]: {
           ...state[variableType],
-          [index]: { variableID, missingCategories: [] },
-        },
+          [index]: { variableID, missingCategories: [] }
+        }
       };
-    },
-  ),
+    }
+  )
 );

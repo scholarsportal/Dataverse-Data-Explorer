@@ -1,6 +1,5 @@
-import { Component, computed, ElementRef, inject, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'dct-multiselect-dropdown',
@@ -10,9 +9,8 @@ import { Store } from '@ngrx/store';
   styleUrl: './multiselect-dropdown.component.css'
 })
 export class MultiselectDropdownComponent {
-  @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
-  private store = inject(Store);
-  private el = inject(ElementRef);
+  // @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
+  multiselectDropdownElement = viewChild<ElementRef>('dropdown');
 
   emptyPlaceholderText = input('No items selected');
   itemList = input.required<{ [id: string]: string }>({});
@@ -60,14 +58,14 @@ export class MultiselectDropdownComponent {
   openDialog() {
     this.isDialogueOpen.set(true);
     const modal = this.multiselectDropdownElement
-      ?.nativeElement as HTMLDialogElement;
+    ()?.nativeElement as HTMLDialogElement;
     modal?.show();
   }
 
   closeDialog() {
     this.isDialogueOpen.set(false);
     const modal = this.multiselectDropdownElement
-      ?.nativeElement as HTMLDialogElement;
+    ()?.nativeElement as HTMLDialogElement;
     console.log('Should be closed');
     modal?.close();
   }
