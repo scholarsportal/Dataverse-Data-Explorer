@@ -1,18 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  OnInit,
-  signal,
-} from '@angular/core';
-import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
-import {
-  closeCrossTabulationTab,
-  openCrossTabulationTab,
-} from 'src/app/state/actions/cross-tabulation.actions';
-import { datasetUploadRequest } from 'src/app/state/actions/dataset.actions';
-import { selectIsCrossTabOpen } from 'src/app/state/selectors/cross-tabulation.selectors';
+import {ChangeDetectionStrategy, Component, OnInit,} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {take} from 'rxjs';
+import {closeCrossTabulationTab, openCrossTabulationTab,} from 'src/app/state/actions/cross-tabulation.actions';
+import {datasetUploadRequest} from 'src/app/state/actions/dataset.actions';
+import {selectIsCrossTabOpen} from 'src/app/state/selectors/cross-tabulation.selectors';
 import {
   selectDatasetCitation,
   selectDatasetForUpload,
@@ -21,16 +12,16 @@ import {
   selectDatasetUploadFailed,
   selectDatasetUploadSuccess,
 } from 'src/app/state/selectors/dataset.selectors';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { VarCrosstabToggleComponent } from './var-crosstab-toggle/var-crosstab-toggle.component';
+import {AsyncPipe, NgClass, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {VarCrosstabToggleComponent} from './var-crosstab-toggle/var-crosstab-toggle.component';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe],
+  imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
@@ -44,7 +35,8 @@ export class HeaderComponent implements OnInit {
   checked: boolean = true;
   showToggle: boolean = false;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {
@@ -85,10 +77,10 @@ export class HeaderComponent implements OnInit {
   handleUpload() {
     this.sub$
       .pipe(take(1))
-      .subscribe(({ dataset, fileID, siteURL, apiKey }) => {
+      .subscribe(({dataset, fileID, siteURL, apiKey}) => {
         if (dataset && fileID && siteURL) {
           this.store.dispatch(
-            datasetUploadRequest({ dataset, siteURL, fileID, apiKey }),
+            datasetUploadRequest({dataset, siteURL, fileID, apiKey}),
           );
         }
       });

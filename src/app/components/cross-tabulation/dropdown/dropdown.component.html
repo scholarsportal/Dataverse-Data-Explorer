@@ -1,10 +1,10 @@
 <div class="w-full flex flex-row">
-  <label for="rowColoumnSelect" class="sr-only">Choose row/column</label>
+  <label for="rowColumnSelect" class="sr-only">Choose row/column</label>
   <select
-    name="rowColoumnSelect"
-    id="rowColoumnSelect"
+    name="rowColumnSelect"
+    id="rowColumnSelect"
     class="dropdown"
-    [value]="$type()"
+    [value]="$rowsOrColumns()"
   >
     <option value="rows">ROW</option>
     <option value="columns">COLUMN</option>
@@ -35,11 +35,14 @@
       </option>
     }
   </select>
-  <label for="categoriesSelectedDropdown">
+  <label
+    class="m-2 w-44"
+    for="categoriesSelectedDropdown">
     <dct-multiselect-dropdown
-      [$allValuesInDropdown]="$allCategoryValues()"
-      [$valuesSelectedFromInput]="$selectedCategoryValues()"
-      (changeSelectedValues)="onChangeCategoriesSelected($event)"
-    ></dct-multiselect-dropdown>
+      id="categoriesSelectedDropdown"
+      [itemList]="$selectedVariableCategoryValues()"
+      [selectedItems]="$selectedVariableSelectedCategoryValues()"
+      (changeSelectedItems)="onChangeCategoriesSelected($event)"
+    />
   </label>
 </div>

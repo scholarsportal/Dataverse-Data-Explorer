@@ -1,6 +1,6 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { DatasetState } from '../reducers/dataset/dataset.reducer';
-import { Variable } from '../interface';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {DatasetState} from '../reducers/dataset/dataset.reducer';
+import {Variable} from '../interface';
 
 export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
 
@@ -60,7 +60,7 @@ export const selectDatasetCitation = createSelector(
 
 export const selectDatasetVariableGroups = createSelector(
   selectDatasetState,
-  (state) => state.dataset?.codeBook.dataDscr.varGrp,
+  (state) => state.dataset?.codeBook?.dataDscr.varGrp ?? [],
 );
 
 export const selectDatasetVariables = createSelector(

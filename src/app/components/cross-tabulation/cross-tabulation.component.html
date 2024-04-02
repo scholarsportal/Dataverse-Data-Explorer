@@ -1,18 +1,26 @@
 <div class="rows-and-columns mx-auto my-auto">
   @for (row of $rows(); track $index) {
     <dct-dropdown
-      [$allSelectedVariables]="$rows()"
       [$index]="$index"
+      [$groups]="$groups()"
+      [$variables]="$variables()"
+      [$categories]="$rowCategories()"
+      [$rowsOrColumns]="'rows'"
       [$selectedVariable]="row.variableID"
-      [$type]="'rows'"
+      [$variablesAlreadySelected]="$rows()"
+      (changeSelectedVariable)="changeVariable($event)"
     ></dct-dropdown>
   }
   @for (column of $columns(); track $index) {
     <dct-dropdown
-      [$allSelectedVariables]="$columns()"
       [$index]="$index"
+      [$groups]="$groups()"
+      [$variables]="$variables()"
+      [$categories]="$columnCategories()"
+      [$rowsOrColumns]="'columns'"
       [$selectedVariable]="column.variableID"
-      [$type]="'columns'"
+      [$variablesAlreadySelected]="$columns()"
+      (changeSelectedVariable)="changeVariable($event)"
     ></dct-dropdown>
   }
   @if (!$columns().length && !$rows().length) {

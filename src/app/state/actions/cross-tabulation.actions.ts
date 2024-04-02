@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+import {createAction, props} from '@ngrx/store';
 
 export const openCrossTabulationTab = createAction(
   '[Cross Tabulation] Open Tab',
@@ -27,7 +27,7 @@ export const removeVariableFromCrossTabulation = createAction(
 export const changeMissingVariables = createAction(
   '[Cross Tabulation] Missing Variables Changed',
   props<{
-    index: string;
+    index: number;
     missingVariables: string[];
     variableType: 'rows' | 'columns';
   }>(),

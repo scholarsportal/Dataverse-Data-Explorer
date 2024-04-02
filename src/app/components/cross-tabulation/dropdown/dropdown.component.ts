@@ -1,65 +1,62 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  computed,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Variable, VariableGroup } from 'src/app/state/interface';
 import { FormsModule } from '@angular/forms';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import { Store } from '@ngrx/store';
-import { selectAvailableVariables } from 'src/app/state/selectors/cross-tabulation.selectors';
-import { changeVariableInGivenPosition } from 'src/app/state/actions/cross-tabulation.actions';
 import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/multiselect-dropdown.component';
 
+/**
+ * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
+ * categoryList, filteredCategories) should be inputs, and should emit changes via output. The parent smart component
+ * should be charge of transforming the data, and dispatching the action. This means this component (which can appear,
+ * and disappear at any point in the DOM), will not make multiple state checks for values that won't change (groups,
+ * variables)*/
 @Component({
   selector: 'dct-dropdown',
   standalone: true,
   imports: [CommonModule, FormsModule, MultiselectDropdownComponent],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css',
+  styleUrl: './dropdown.component.css'
 })
 export class DropdownComponent {
   store = inject(Store);
-  $type = input.required<'rows' | 'columns'>();
-  $selectedVariable = input.required<string>();
-  $allSelectedVariables =
-    input.required<{ variableID: string; missingCategories: string[] }[]>();
+  // Inputs
   $index = input.required<number>();
-  $groups = this.store.selectSignal(selectDatasetVariableGroups);
-  $variables = this.store.selectSignal(selectAvailableVariables);
-  $selectedGroupVariables = signal<string | null>(null);
+  $groups = input.required<VariableGroup[]>();
+  $variables = input.required<{ [id: string]: Variable }>();
+  $rowsOrColumns = input.required<'rows' | 'columns'>();
+  $selectedVariable = input.required<string>();
+  $variablesAlreadySelected =
+    input.required<{ variableID: string; missingCategories: string[] }[]>();
+  $categories = input.required<{ [p: string]: { categories: { [p: number]: string }, missing: string[] } }>();
+  // Output
+  changeSelectedVariable = output<{ variableID: string, index: number, variableType: 'rows' | 'columns' }>();
+  changeSelectedCategories = output<{ [variableID: string]: string[] }>();
+  // Component Values
+  $selectedGroup = signal<string | null>(null);
 
-  constructor() {
-    effect(() => {
-      // console.log(this.$selectedVariable());
-      // console.log(this.$type());
-    });
-  }
-
-  $variablesAlreadySelected = computed(() => {
+  // constructor() {
+  //   effect(() => {
+  //     console.log(this.$selectedVariable());
+  //     // console.log(this.$type());
+  //   });
+  // }
+  //
+  $computedVariablesAlreadySelected = computed(() => {
     const variableList: string[] = [];
-    this.$allSelectedVariables().map((variableData) => {
+    this.$variablesAlreadySelected().map((variableData) => {
       variableList.push(variableData.variableID);
     });
     return variableList;
   });
 
   $filteredVariables = computed(() => {
-    if (this.$selectedGroupVariables()) {
+    if (this.$selectedGroup()) {
       const newVariables: Variable[] = [];
-      this.$selectedGroupVariables()
+      this.$selectedGroup()
         ?.split(' ')
         .map((variableID: string) =>
-          newVariables.push(this.$variables()[variableID]),
+          newVariables.push(this.$variables()[variableID])
         );
       return newVariables;
     } else {
@@ -67,13 +64,26 @@ export class DropdownComponent {
     }
   });
 
-  $allCategoryValues = computed((): { [id: string | number]: string } => {
-    return {};
+  $selectedVariableCategoryValues = computed(() => {
+    const values: { [id: string]: string } = {};
+    if (this.$selectedVariable()) {
+      return this.$categories()[this.$selectedVariable()]?.categories;
+    }
+    return values;
   });
 
-  $selectedCategoryValues = computed((): string[] => {
-    return [];
+  $selectedVariableSelectedCategoryValues = computed(() => {
+    const values: string[] = [];
+    if (this.$selectedVariable()) {
+      return this.$categories()[this.$selectedVariable()]?.missing ?? [];
+    }
+    return values;
   });
+
+  changeMissingValues(value: { index: number, variableID: string, type: 'rows' | 'columns', missing: string[] }) {
+    // const { index, variableID, type, missing } = value
+    console.log(value);
+  }
 
   onChangeCategoriesSelected(newCategoryList: string[]) {
     console.log(newCategoryList);
@@ -81,7 +91,7 @@ export class DropdownComponent {
 
   checkVariableSelected(variableID: string): boolean {
     return (
-      this.$variablesAlreadySelected().includes(variableID) &&
+      this.$computedVariablesAlreadySelected().includes(variableID) &&
       this.$selectedVariable() !== variableID
     );
   }
@@ -90,9 +100,9 @@ export class DropdownComponent {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value && value !== 'all') {
-      this.$selectedGroupVariables.set(value);
+      this.$selectedGroup.set(value);
     } else if (value === 'all') {
-      this.$selectedGroupVariables.set(null);
+      this.$selectedGroup.set(null);
     }
   }
 
@@ -100,13 +110,11 @@ export class DropdownComponent {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value) {
-      this.store.dispatch(
-        changeVariableInGivenPosition({
-          index: this.$index(),
-          variableType: this.$type(),
-          variableID: value,
-        }),
-      );
+      this.changeSelectedVariable.emit({
+        index: this.$index(),
+        variableType: this.$rowsOrColumns(),
+        variableID: value
+      });
     }
   }
 }

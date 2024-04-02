@@ -5,9 +5,11 @@
   grid-template-columns: repeat(12, 1fr);
   font-size: 0.85rem;
 }
+
 .header {
   grid-area: 1 / 1 / 4 / 13;
 }
+
 .body {
   height: 100%;
   overflow: hidden;
@@ -16,6 +18,7 @@
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(4, 1fr);
 }
+
 .sidebar {
   max-height: 100%;
   display: grid;
@@ -23,15 +26,18 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(9, 1fr);
 }
+
 .table {
   display: grid;
   grid-area: 1 / 4 / 5 / 13;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
 }
+
 .form-input {
   @apply rounded border w-full;
 }
+
 .beautiful {
   background: linear-gradient(-45deg, #4338ca, #db2777, #8604f3, #a723f4);
   background-size: 400% 400%;
@@ -41,13 +47,13 @@
 
 @keyframes gradient {
   0% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
   50% {
     background-position: 100% 50%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
 }
 
