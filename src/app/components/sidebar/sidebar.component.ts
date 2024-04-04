@@ -8,12 +8,29 @@ import {
 } from 'src/app/state/actions/var-and-groups.actions';
 import { VariableGroup } from 'src/app/state/interface';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
-import { selectCurrentGroup, selectCurrentGroupIDs, selectCurrentGroupLabl } from 'src/app/state/selectors/var-groups.selectors';
+import { selectCurrentGroup, selectCurrentGroupLabl } from 'src/app/state/selectors/var-groups.selectors';
+import { OptionsComponent } from './options/options.component';
+import { DefaultSidebarButtonComponent } from './default-sidebar-button/default-sidebar-button.component';
+import { RenamingSidebarButtonComponent } from './renaming-sidebar-button/renaming-sidebar-button.component';
+import { DeletingSidebarButtonComponent } from './deleting-sidebar-button/deleting-sidebar-button.component';
+import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { NewGroupComponent } from './new-group/new-group.component';
 
 @Component({
   selector: 'dct-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'],
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.css'],
+    standalone: true,
+    imports: [
+        NewGroupComponent,
+        NgClass,
+        DeletingSidebarButtonComponent,
+        RenamingSidebarButtonComponent,
+        DefaultSidebarButtonComponent,
+        OptionsComponent,
+        AsyncPipe,
+        KeyValuePipe,
+    ],
 })
 export class SidebarComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);
