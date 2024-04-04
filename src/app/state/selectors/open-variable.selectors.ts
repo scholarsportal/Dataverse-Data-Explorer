@@ -14,17 +14,17 @@ export const selectOpenVariableFeature =
 
 export const selectIsOptionsMenuOpen = createSelector(
   selectOpenVariableFeature,
-  (state) => state.modal.open && state.modal.mode === 'options'
+  (state) => state.modal.open && state.modal.mode === 'options',
 );
 
 export const selectOpenVariableModalMode = createSelector(
   selectOpenVariableFeature,
-  (state) => state.modal.mode
+  (state) => state.modal.mode,
 );
 
 export const selectOpenVariableID = createSelector(
   selectOpenVariableFeature,
-  (state) => state.modal.variableID
+  (state) => state.modal.variableID,
 );
 
 export const selectOpenVariableData = createSelector(
@@ -35,32 +35,36 @@ export const selectOpenVariableData = createSelector(
       return datasetVariables[variableID];
     }
     return null;
-  }
+  },
 );
 
 export const selectOpenVariableStats = createSelector(
   selectOpenVariableData,
   (variable) => {
     return variable?.catgry;
-  }
+  },
 );
 
 export const selectOpenVariableDataName = createSelector(
   selectOpenVariableData,
   (variable) => {
     return variable?.['@_name'];
-  }
+  },
 );
 
 export const selectOpenVariableSelectedGroups = createSelector(
   selectOpenVariableID,
   selectVariablesWithGroupsReference,
   (openVariableID, variablesWithGroups) => {
+    const groupIDs: { [id: string]: string } = {};
     if (openVariableID && variablesWithGroups) {
-      return variablesWithGroups[openVariableID]?.groups;
+      console.log(variablesWithGroups[openVariableID]);
+      variablesWithGroups[openVariableID]?.groups.map((value) => {
+        groupIDs[value['@_ID']] = value.labl;
+      });
     }
-    return [];
-  }
+    return groupIDs;
+  },
 );
 
 export const selectOpenVariableDataAsForm = createSelector(
@@ -79,8 +83,8 @@ export const selectOpenVariableDataAsForm = createSelector(
       formData.isWeight = variable['@_wgt'] ? true : false;
       return formData;
     }
-    return;
-  }
+    return initVariableForm;
+  },
 );
 
 export const selectOpenVariableWeight = createSelector(
@@ -90,7 +94,7 @@ export const selectOpenVariableWeight = createSelector(
       return variable['@_wgt-var'];
     }
     return null;
-  }
+  },
 );
 
 export const selectOpenVariableDataChartTable = createSelector(
@@ -140,7 +144,7 @@ export const selectOpenVariableDataChartTable = createSelector(
       });
     }
     return chart;
-  }
+  },
 );
 
 export const selectOpenVariableDataChart = createSelector(
@@ -152,11 +156,11 @@ export const selectOpenVariableDataChart = createSelector(
         chartData.push({
           y: value.categories,
           x: parseFloat(value.count as string) || 0,
-        })
+        }),
       );
     }
     return chartData;
-  }
+  },
 );
 
 export const selectOpenVariableDataAsSummaryStat = createSelector(
@@ -204,7 +208,7 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
       return sumStats;
     }
     return sumStats;
-  }
+  },
 );
 
 export const selectGetNextVariableID = createSelector(
@@ -219,7 +223,7 @@ export const selectGetNextVariableID = createSelector(
       return currentVariableList[index + 1]['@_ID'];
     }
     return;
-  }
+  },
 );
 
 export const selectGetPreviousVariableID = createSelector(
@@ -234,5 +238,5 @@ export const selectGetPreviousVariableID = createSelector(
       return currentVariableList[index - 1]['@_ID'];
     }
     return;
-  }
+  },
 );

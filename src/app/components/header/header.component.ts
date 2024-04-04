@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import {
@@ -15,11 +21,17 @@ import {
   selectDatasetUploadFailed,
   selectDatasetUploadSuccess,
 } from 'src/app/state/selectors/dataset.selectors';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { VarCrosstabToggleComponent } from './var-crosstab-toggle/var-crosstab-toggle.component';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
+  standalone: true,
+  imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   title$ = this.store.select(selectDatasetTitle);
@@ -27,7 +39,7 @@ export class HeaderComponent implements OnInit {
   uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
   uploadFail$ = this.store.select(selectDatasetUploadFailed);
   hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
-  isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
+  protected isCrossTabOpen$ = this.store.selectSignal(selectIsCrossTabOpen);
   sub$ = this.store.select(selectDatasetForUpload);
   checked: boolean = true;
   showToggle: boolean = false;
@@ -35,10 +47,18 @@ export class HeaderComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('theme') === 'dark') { 
+    if (localStorage.getItem('theme') === 'dark') {
       this.checked = false;
-    };
+    }
     this.showToggle = true;
+  }
+
+  hangleToggle(open: boolean) {
+    if (open) {
+      this.openCrossTab();
+    } else {
+      this.closeCrossTab();
+    }
   }
 
   openCrossTab() {
@@ -49,24 +69,18 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(closeCrossTabulationTab());
   }
 
-  toggleTheme(){
+  toggleTheme() {
     const theme = localStorage.getItem('theme');
     if (theme === 'light') {
       this.checked = false;
-      localStorage.setItem('theme','dark');
-      document.body.setAttribute(
-        'data-theme',
-        'dark'
-      );
+      localStorage.setItem('theme', 'dark');
+      document.body.setAttribute('data-theme', 'dark');
     } else {
       this.checked = true;
-      localStorage.setItem('theme','light');
-      document.body.setAttribute(
-        'data-theme',
-        'light'
-      );
+      localStorage.setItem('theme', 'light');
+      document.body.setAttribute('data-theme', 'light');
     }
- }
+  }
 
   handleUpload() {
     this.sub$

@@ -3,9 +3,10 @@ import { Store } from '@ngrx/store';
 import { Subscription, take, timer } from 'rxjs';
 
 @Component({
-  selector: 'dct-notification',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css'],
+    selector: 'dct-notification',
+    templateUrl: './notification.component.html',
+    styleUrls: ['./notification.component.css'],
+    standalone: true,
 })
 export class NotificationComponent {
   notificationSubscription: Subscription | undefined;

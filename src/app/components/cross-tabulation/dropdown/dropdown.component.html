@@ -1,30 +1,45 @@
-<div class="w-full my-auto flex flex-row">
-  <span class="h-full">
-    <ng-content />
-  </span>
-  <label for="groupDropdown" class="sr-only">Group:</label>
+<div class="w-full flex flex-row">
+  <label for="rowColoumnSelect" class="sr-only">Choose row/column</label>
   <select
-    id="groupDropdown"
+    name="rowColoumnSelect"
+    id="rowColoumnSelect"
     class="dropdown"
-    (change)="filterVariables($event.target)"
+    [value]="$type()"
   >
+    <option value="rows">ROW</option>
+    <option value="columns">COLUMN</option>
+  </select>
+  <label for="groupDropdown" class="sr-only">Group:</label>
+  <select id="groupDropdown" class="dropdown" (change)="onGroupChange($event)">
     <option value="" disabled [defaultSelected]="true">Filter by Group</option>
-    @for (group of groups; track $index) {
+    <option value="all">Show All Variables</option>
+    @for (group of $groups(); track $index) {
       <option [value]="group['@_var']">{{ group.labl }}</option>
     }
   </select>
   <label for="variableDropdown" class="sr-only">Variable:</label>
   <select
     id="variableDropdown"
+    name="variableDropdown"
     class="dropdown"
-    [(ngModel)]="variableID"
-    (change)="handleVariableSelect($event.target)"
+    [value]="$selectedVariable()"
+    (change)="onVariableChange($event)"
   >
-    <option value="null" disabled [defaultSelected]="true">
-      Choose Variable
-    </option>
-    @for (variable of filteredVariables; track $index) {
-      <option [value]="variable['@_ID']">{{ variable.labl['#text'] }}</option>
+    <option value="" disabled>Choose Variable</option>
+    @for (variable of $filteredVariables(); track $index) {
+      <option
+        [value]="variable['@_ID']"
+        [disabled]="checkVariableSelected(variable['@_ID'])"
+      >
+        {{ variable.labl['#text'] }}
+      </option>
     }
   </select>
+  <label for="categoriesSelectedDropdown">
+    <dct-multiselect-dropdown
+      [$allValuesInDropdown]="$allCategoryValues()"
+      [$valuesSelectedFromInput]="$selectedCategoryValues()"
+      (changeSelectedValues)="onChangeCategoriesSelected($event)"
+    ></dct-multiselect-dropdown>
+  </label>
 </div>

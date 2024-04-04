@@ -45,13 +45,14 @@ export class DdiService {
     }
   }
 
-  fetchCrossTabulationFromDataverse(
+  fetchCrossTabulationFromVariables(
     siteURL: string,
     fileID: number,
-    variable: string,
+    variables: string[],
   ) {
+    const reformatVariables: string = variables.join(',');
     return this.http.get(
-      `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${variable}`,
+      `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${reformatVariables}`,
       { responseType: 'text' },
     );
   }

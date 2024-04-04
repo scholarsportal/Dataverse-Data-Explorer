@@ -81,8 +81,8 @@
     <tr class="table-row border-b">
       <th class="text-left font-medium">Groups</th>
       <td class="border-b p-2 text-right">
-        @for (group of groups; track $index) {
-          <span> {{ group.labl }}, </span>
+        @for (group of $groups() | keyvalue; track group.key) {
+          <span> {{ group.value }}, </span>
         }
       </td>
     </tr>

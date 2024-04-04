@@ -8,6 +8,9 @@ import {
   OnInit,
   Output,
   ViewChild,
+  input,
+  output,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariableGroup } from 'src/app/state/interface';
@@ -24,17 +27,21 @@ import { Subscription } from 'rxjs';
 })
 export class MultiselectDropdownComponent implements OnInit, OnDestroy {
   @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
-  @Input() selectedVariableGroups: VariableGroup[] = [];
-  @Input() position: 'top' | 'bottom' = 'top';
-  @Output() emitSelectedGroups: EventEmitter<VariableGroup[]> =
-    new EventEmitter<VariableGroup[]>();
+  $allValuesInDropdown = input.required<{ [id: string | number]: string }>();
+  $valuesSelectedFromInput = input.required<string[]>();
+
+  $currentSelection = signal(this.$valuesSelectedFromInput());
+  changeSelectedValues = output<string[]>();
 
   isDialogueOpen: boolean = false;
   element: any;
   allVariableGroups$: VariableGroup[] | undefined;
   sub!: Subscription;
 
-  constructor(private store: Store, private el: ElementRef) {
+  constructor(
+    private store: Store,
+    private el: ElementRef,
+  ) {
     this.element = el.nativeElement;
   }
 
@@ -53,7 +60,7 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
-    event: KeyboardEvent
+    event: KeyboardEvent,
   ) {
     if (event.key === 'Escape') {
       this.closeDialog();
@@ -81,23 +88,23 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
     return variableGroup['@_ID'];
   }
 
-  checkSelected(variableGroup: any): boolean {
-    return this.selectedVariableGroups.includes(variableGroup);
+  checkSelected(variableGroup: string): boolean {
+    return this.$currentSelection().includes(variableGroup);
   }
 
   changeSelected(variableGroup: any) {
     const indexOfVariableGroup =
-      this.selectedVariableGroups.indexOf(variableGroup);
+      this.$currentSelection().indexOf(variableGroup);
     if (indexOfVariableGroup > -1) {
-      this.selectedVariableGroups.splice(indexOfVariableGroup, 1);
+      this.$currentSelection.set(
+        this.$currentSelection().splice(indexOfVariableGroup, 1),
+      );
     } else {
-      this.selectedVariableGroups.splice(
-        indexOfVariableGroup,
-        0,
-        variableGroup
+      this.$currentSelection.set(
+        this.$currentSelection().splice(indexOfVariableGroup, 0, variableGroup),
       );
     }
-    this.emitSelectedGroups.emit(this.selectedVariableGroups);
+    this.changeSelectedValues.emit(this.$currentSelection());
   }
 
   toggleDialog() {

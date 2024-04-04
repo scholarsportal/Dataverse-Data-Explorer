@@ -6,52 +6,27 @@ export interface CrossTabulationState {
   open: boolean;
   rows: {
     [index: number]: {
-      crossValues: string[] | null;
-      variableID: string | null;
+      variableID: string;
       missingCategories: string[];
     };
   };
   columns: {
     [index: number]: {
-      crossValues: string[] | null;
-      variableID: string | null;
+      variableID: string;
       missingCategories: string[];
     };
   };
-  error?: any;
 }
 
 export const initialState: CrossTabulationState = {
   open: true,
-  rows: {
-    0: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-    1: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-  },
-  columns: {
-    0: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-    1: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-  },
+  rows: {},
+  columns: {},
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
-  on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
+  on(DatasetActions.datasetConversionSuccess, (state) => ({
     ...state,
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
@@ -63,23 +38,29 @@ export const crossTabulationReducer = createReducer(
     open: false,
   })),
   on(
-    CrossTabActions.addVariable,
-    (state, { index, variableID, crossTableOrientation }) => ({
-      ...state,
-      [crossTableOrientation]: {
-        ...state[crossTableOrientation],
-        [index]: { variableID, missingCategories: [] },
-      },
-    }),
+    CrossTabActions.addVariableToCrossTabulation,
+    (state, { variableID, variableType }) => {
+      const newVariableIndex = Object.values(state[variableType]).length;
+      return {
+        ...state,
+        [variableType]: {
+          ...state[variableType],
+          [newVariableIndex]: { variableID, missingCategories: [] },
+        },
+      };
+    },
   ),
-  on(CrossTabActions.removeVariable, (state, { index, variableType }) => {
-    const updatedVariables = { ...state[variableType] };
-    delete updatedVariables[index as any];
-    return {
-      ...state,
-      [variableType]: updatedVariables,
-    };
-  }),
+  on(
+    CrossTabActions.removeVariableFromCrossTabulation,
+    (state, { index, variableType }) => {
+      const updatedVariables = { ...state[variableType] };
+      delete updatedVariables[index as any];
+      return {
+        ...state,
+        [variableType]: updatedVariables,
+      };
+    },
+  ),
   on(
     CrossTabActions.changeMissingVariables,
     (state, { index, missingVariables, variableType }) => ({
@@ -94,11 +75,14 @@ export const crossTabulationReducer = createReducer(
     }),
   ),
   on(
-    CrossTabActions.variableCrossTabulationDataRetrievalFailed,
-    (state, { error }) => {
+    CrossTabActions.changeVariableInGivenPosition,
+    (state, { index, variableType, variableID }) => {
       return {
         ...state,
-        error,
+        [variableType]: {
+          ...state[variableType],
+          [index]: { variableID, missingCategories: [] },
+        },
       };
     },
   ),

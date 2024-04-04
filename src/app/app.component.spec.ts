@@ -9,14 +9,14 @@ import { reducers, metaReducers } from './state/reducers';
 describe('AppComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      // Add this line for "No Store Provided" error
-      imports: [
+    // Add this line for "No Store Provided" error
+    imports: [
         StoreModule.forRoot(reducers, { metaReducers }),
         HttpClientModule,
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
+        AppComponent,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
   );
 
   it('should create the app', () => {

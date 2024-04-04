@@ -31,27 +31,12 @@ export const selectColumnsArray = createSelector(
   (state) => Object.values(state.columns),
 );
 
-export const selectColumnsAndRowsArray = createSelector(
-  selectRowsArray,
-  selectColumnsArray,
-  (rows, columns) => ({ rows, columns }),
-);
-
 export const selectAvailableVariables = createSelector(
   selectDatasetProcessedVariables,
   selectRows,
   selectColumns,
   (variables, rows, columns) => {
     const newData: { [id: string]: Variable } = { ...variables };
-    const currentSelectedVariables = [
-      ...Object.values(rows),
-      ...Object.values(columns),
-    ];
-    currentSelectedVariables.map((variable) => {
-      if (variable.variableID) {
-        newData[variable.variableID] ?? delete newData[variable.variableID];
-      }
-    });
     return newData;
   },
 );

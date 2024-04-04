@@ -1,4 +1,4 @@
-.addNew {
+.add-new {
   @apply rounded 
   border
   m-2
@@ -7,14 +7,12 @@
 border-light-surface
 dark:border-dark-surface-variant;
 }
-.rows-column-section {
-  @apply flex flex-col justify-between rounded h-fit;
+.rows-and-columns {
+  grid-area: 1 / 1 / 2 / 13;
 }
-
-.rows-section {
-  @apply m-3;
+.controls-and-button {
+  grid-area: 2 / 1 / 3 / 13;
 }
-
-.columns-section {
-  @apply m-3;
+.graph-area {
+  grid-area: 3 / 1 / 5 / 13;
 }
