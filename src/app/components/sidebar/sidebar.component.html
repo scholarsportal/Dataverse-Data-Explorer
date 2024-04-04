@@ -1,68 +1,123 @@
-<div class="group-add flex flex-row items-center relative">
-  @if (addingNewGroup) {
-  <dct-new-group
-    class="flex flex-row justify-between h-full w-full"
-    (emitCancel)="resetUI()"
-    (emitConfirm)="confirmGroup($event)"
-  ></dct-new-group>
-  } @else {
- 
-    <h2 class="m-5">
-      Variable Groups
-    </h2>
-    <button
-      class="btn btn-primary mr-5 absolute right-0"
-      (click)="startAddingNewGroup()"
-    > 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-      <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-    </svg>
-      ADD
-    </button>
-  
+<div class="md:hidden">
+  @if ( groups$ | async ) {
+    
+  <div class="dropdown w-full px-5 pt-5">
+    <div tabindex="0" role="button" class="btn btn-outline w-full justify-between">
+      <div class="flex flex-row items-center">
+        @if ( (selectedGroupLabl$ | async) === null ) {
+          All Variables
+        } @else {
+          {{ (selectedGroupLabl$ | async) }}
+        }
+      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        class="w-5 h-5"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
+    <ul
+      tabindex="0"
+      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 block rounded mr-5 w-11/12"
+    >
+      <li>
+        <button
+            [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"
+            (click)="changeGroup(null)"
+            class="items-center text-start"
+          >
+            All Variables
+          </button>
+      </li>
+    @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
+        <dct-default-sidebar-button
+          class=""
+          (changeGroup)="changeGroup(varGroup.value)"
+          [groupID]="getID(varGroup.value)"
+          [label]="getLabel(varGroup.value)"
+          (startDelete)="startGroupDelete($event)"
+          (startRename)="startGroupRename($event)"
+        >
+        </dct-default-sidebar-button>
+    }
+    </ul>
+  </div>
   }
 </div>
-<nav class="all-groups">
-  @if ( groups$ | async ) {
-  <ol>
-    <li>
-      <div class="flex flex-row justify-between w-full"><!--container-->
-        <button
-          [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"
-          (click)="changeGroup(null)"
-          class="h-16 px-5 w-full items-center text-start hover:bg-base-200"
-        >
-        All Variables
-        </button>
-      </div>
-    </li>
-    @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
-    <li class="">
-      @if (deletingGroup && groupToBeChanged === getID(varGroup.value)) {
-      <dct-deleting-sidebar-button
-        (emitConfirm)="deleteGroup(varGroup.value)"
-        (emitCancel)="cancelGroupDelete()"
-      ></dct-deleting-sidebar-button>
-      } @else if (renamingGroup && groupToBeChanged === getID(varGroup.value)) {
-      <dct-renaming-sidebar-button
-        [label]="getLabel(varGroup.value)"
-        (emitCancel)="cancelGroupRename()"
-        (emitConfirm)="renameGroup($event)"
-      ></dct-renaming-sidebar-button>
-      } @else {
-      <dct-default-sidebar-button
-        class=""
-        (changeGroup)="changeGroup(varGroup.value)"
-        [groupID]="getID(varGroup.value)"
-        [label]="getLabel(varGroup.value)"
-        (startDelete)="startGroupDelete($event)"
-        (startRename)="startGroupRename($event)"
-      >
-      </dct-default-sidebar-button>
-      }
-    </li>
+<div class="hidden md:contents">
+  <div class="group-add flex flex-row items-center relative">
+    @if (addingNewGroup) {
+    <dct-new-group
+      class="flex flex-row justify-between h-full w-full"
+      (emitCancel)="resetUI()"
+      (emitConfirm)="confirmGroup($event)"
+    ></dct-new-group>
+    } @else {
+  
+      <h2 class="m-5">
+        Variable Groups
+      </h2>
+      <button
+        class="btn btn-primary mr-5 absolute right-0"
+        (click)="startAddingNewGroup()"
+      > 
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+        <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+      </svg>
+        ADD
+      </button>
+
     }
-  </ol>
-  }
-</nav>
-<dct-options class="options options-button options-colours"></dct-options>
+  </div>
+  <nav class="all-groups">
+    @if ( groups$ | async ) {
+    <ol>
+      <li>
+        <div class="flex flex-row justify-between w-full"><!--container-->
+          <button
+            [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"
+            (click)="changeGroup(null)"
+            class="h-16 px-5 w-full items-center text-start hover:bg-base-200"
+          >
+          All Variables
+          </button>
+        </div>
+      </li>
+      @for (varGroup of ((groups$ | async ) | keyvalue); track $index) {
+      <li class="">
+        @if (deletingGroup && groupToBeChanged === getID(varGroup.value)) {
+        <dct-deleting-sidebar-button
+          (emitConfirm)="deleteGroup(varGroup.value)"
+          (emitCancel)="cancelGroupDelete()"
+        ></dct-deleting-sidebar-button>
+        } @else if (renamingGroup && groupToBeChanged === getID(varGroup.value)) {
+        <dct-renaming-sidebar-button
+          [label]="getLabel(varGroup.value)"
+          (emitCancel)="cancelGroupRename()"
+          (emitConfirm)="renameGroup($event)"
+        ></dct-renaming-sidebar-button>
+        } @else {
+        <dct-default-sidebar-button
+          class=""
+          (changeGroup)="changeGroup(varGroup.value)"
+          [groupID]="getID(varGroup.value)"
+          [label]="getLabel(varGroup.value)"
+          (startDelete)="startGroupDelete($event)"
+          (startRename)="startGroupRename($event)"
+        >
+        </dct-default-sidebar-button>
+        }
+      </li>
+      }
+    </ol>
+    }
+  </nav>
+  <dct-options class="options options-button options-colours"></dct-options>
+</div>

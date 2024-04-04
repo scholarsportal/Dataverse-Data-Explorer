@@ -8,7 +8,7 @@ import {
 } from 'src/app/state/actions/var-and-groups.actions';
 import { VariableGroup } from 'src/app/state/interface';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
-import { selectCurrentGroup } from 'src/app/state/selectors/var-groups.selectors';
+import { selectCurrentGroup, selectCurrentGroupIDs, selectCurrentGroupLabl } from 'src/app/state/selectors/var-groups.selectors';
 
 @Component({
   selector: 'dct-sidebar',
@@ -24,6 +24,7 @@ export class SidebarComponent {
   renamingGroup: boolean = false;
   groupToBeChanged: string | null = null;
   renameInputValue: string = '';
+  selectedGroupLabl$ = this.store.select(selectCurrentGroupLabl)
 
   constructor(private store: Store) {}
 
@@ -37,9 +38,14 @@ export class SidebarComponent {
 
   changeGroup(selection: any | null) {
     if (!selection) {
-      this.store.dispatch(changeSelectedGroup({ groupID: null }));
+      const elem = document.activeElement;
+      if (elem instanceof HTMLElement) {
+        elem?.blur();
+      }
+      this.store.dispatch(changeSelectedGroup({ groupID: null, groupLabl: null}));
     } else {
-      const groupID = { groupID: selection['@_ID'] };
+      const selectedGroupLabl = this.getLabel(selection);
+      const groupID = { groupID: selection['@_ID'], groupLabl: selectedGroupLabl };
       this.store.dispatch(changeSelectedGroup(groupID));
     }
   }

@@ -1,5 +1,5 @@
 <dct-table-nav
-  class="table-nav px-5 flex flex-row justify-between"
+  class="table-nav px-5 block md:flex md:flex-row md:justify-between"
   [total]="(vars$ | async)?.length"
   [limit]="limit"
   (limitChange)="onLimitChange($event)"

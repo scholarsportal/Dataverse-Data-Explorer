@@ -63,3 +63,26 @@
     background-position: 0% 50%;
   }
 }
+
+@media screen and (max-width: 800px) {
+  .body {
+    display: block;
+  }
+  .main {
+    display: contents;
+  }
+  .sidebar {
+    max-height: 100%;
+    display: block;
+    grid-area: initial;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+  }
+  .table {
+    display: block;
+    grid-area: initial;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+  }
+}
+
