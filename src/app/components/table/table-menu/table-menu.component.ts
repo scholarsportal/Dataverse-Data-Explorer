@@ -1,40 +1,48 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {
-  selectCurrentGroup,
-  selectVariableWeights,
-} from 'src/app/state/selectors/var-groups.selectors';
+import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 import { MultiselectDropdownComponent } from '../multiselect-dropdown/multiselect-dropdown.component';
 import { Variable, VariableGroup } from 'src/app/state/interface';
 import {
   bulkChangeGroupsAndWeight,
-  removeSelectedVariablesFromGroup,
+  removeSelectedVariablesFromGroup
 } from 'src/app/state/actions/var-and-groups.actions';
+import { selectDatasetVariableGroups } from '../../../state/selectors/dataset.selectors';
 
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
   imports: [CommonModule, MultiselectDropdownComponent],
   templateUrl: './table-menu.component.html',
-  styleUrl: './table-menu.component.css',
+  styleUrl: './table-menu.component.css'
 })
 export class TableMenuComponent {
   @Input() selectedVariables!: Variable[];
   weights$ = this.store.select(selectVariableWeights);
   selectedVariableGroup$ = this.store.select(selectCurrentGroup);
   selectedWeight: string = '';
-  selectedGroups: VariableGroup[] = [];
+  allGroups = this.store.selectSignal(selectDatasetVariableGroups);
 
-  constructor(private store: Store) {}
+  allGroupsComputed = computed(() => {
+    const values: { [id: string]: string } = {};
+    this.allGroups().map((variableGroup) => {
+      values[variableGroup['@_ID']] = variableGroup.labl;
+    });
+    return values;
+  });
+  selectedGroups = signal<string[]>([]);
+
+  constructor(private store: Store) {
+  }
 
   onRemoveFromGroup(groupID: string) {
     const variableIDs: string[] = [];
     this.selectedVariables.map((variable) =>
-      variableIDs.push(variable['@_ID']),
+      variableIDs.push(variable['@_ID'])
     );
     this.store.dispatch(
-      removeSelectedVariablesFromGroup({ variableIDs, groupID }),
+      removeSelectedVariablesFromGroup({ variableIDs, groupID })
     );
   }
 
@@ -44,18 +52,18 @@ export class TableMenuComponent {
     }
   }
 
-  onGroupChange(groups: VariableGroup[]) {
-    this.selectedGroups = groups;
+  onGroupChange(groups: string[]) {
+    this.selectedGroups.set(groups);
   }
 
   onApplyChanges() {
     if (this.selectedVariables.length) {
       const groups: VariableGroup[] = JSON.parse(
-        JSON.stringify(this.selectedGroups),
+        JSON.stringify(this.selectedGroups)
       );
       const newGroups: { [id: string]: VariableGroup } = {};
       const variables: Variable[] = JSON.parse(
-        JSON.stringify(this.selectedVariables),
+        JSON.stringify(this.selectedVariables)
       );
       const newVariables: { [id: string]: Variable } = {};
       const variableIDs: string[] = [];
@@ -79,8 +87,8 @@ export class TableMenuComponent {
       this.store.dispatch(
         bulkChangeGroupsAndWeight({
           groups: newGroups,
-          variables: newVariables,
-        }),
+          variables: newVariables
+        })
       );
     }
   }

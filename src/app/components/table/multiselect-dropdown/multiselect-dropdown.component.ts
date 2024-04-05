@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,20 +11,45 @@ import { CommonModule } from '@angular/common';
 export class MultiselectDropdownComponent {
   // @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
   multiselectDropdownElement = viewChild<ElementRef>('dropdown');
+  el = inject(ElementRef);
 
   emptyPlaceholderText = input('No items selected');
+  emptySetPlaceholderText = input('No values in set');
   itemList = input.required<{ [id: string]: string }>({});
-  selectedItems = input.required<string[]>();
+  selectedItems = input<string[]>([]);
+  position = input<'top' | 'bottom'>('top');
   changeSelectedItems = output<string[]>();
-
+  computedPosition = computed(() => {
+    if (this.position() === 'top') {
+      return 'bottom-9';
+    } else {
+      return 'top-9';
+    }
+  });
   isDialogueOpen = signal(false);
 
-  // constructor() {
-  //   effect(() => {
-  //     console.log(this.selectedItems());
-  //   });
-  // }
-  //
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.key === 'Escape') {
+      this.closeDialog();
+    }
+  }
+
+  @HostListener('document:click', ['$event']) onDocumentClick(event: Event) {
+    if (
+      this.isDialogueOpen() &&
+      event.target &&
+      !this.dialogContainsTarget(event.target)
+    ) {
+      this.closeDialog();
+    }
+  }
+
+  private dialogContainsTarget(target: EventTarget | null): boolean {
+    return this.el?.nativeElement.contains(target as Node);
+  }
+
   selectedItemsMatched = computed(() => {
     const selected: { [id: string]: string } = {};
     this.selectedItems().map((item) => {
@@ -66,7 +91,6 @@ export class MultiselectDropdownComponent {
     this.isDialogueOpen.set(false);
     const modal = this.multiselectDropdownElement
     ()?.nativeElement as HTMLDialogElement;
-    console.log('Should be closed');
     modal?.close();
   }
 }

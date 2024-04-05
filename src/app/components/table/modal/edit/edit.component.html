@@ -65,13 +65,12 @@
   >Group(s)
     <dct-multiselect-dropdown
       id="multiselect"
-      class="w-full"
       [itemList]="$allValuesInDropdown()"
       [selectedItems]="$selectedGroups()"
       (changeSelectedItems)="onGroupChange($event)"
     ></dct-multiselect-dropdown>
   </label>
-  <div class="flex flex-row mt-5 pr-5">
+  <div class="flex flex-row mt-3 pr-5">
     <label class="form-label sr-only" for="weightVar">Weight Variable</label>
     <select
       id="weightVar"

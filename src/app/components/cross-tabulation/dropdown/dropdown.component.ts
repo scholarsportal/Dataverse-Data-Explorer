@@ -21,108 +21,110 @@ import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/m
 export class DropdownComponent {
   store = inject(Store);
   // Inputs
-  $index = input.required<number>();
-  $groups = input.required<VariableGroup[]>();
-  $variables = input.required<{ [id: string]: Variable }>();
-  $rowsOrColumns = input.required<'rows' | 'columns'>();
-  $selectedVariable = input.required<string>();
-  $variablesAlreadySelected =
-    input.required<{ variableID: string; missingCategories: string[] }[]>();
-  $categories = input.required<{ [p: string]: { categories: { [p: number]: string }, missing: string[] } }>();
+  index = input.required<number>();
+  groups = input.required<VariableGroup[]>();
+  variables = input.required<{ [id: string]: Variable }>();
+  variableOrientation = input.required<'row' | 'column'>();
+  selectedVariableID = input.required<string>();
+  variablesAlreadySelected =
+    input.required<string[]>();
+  categories = input.required<{ [variableID: string]: { [categoryID: string]: string } }>();
+  missing = input.required<{ [variableID: string]: string[] }>();
   // Output
-  changeSelectedVariable = output<{ variableID: string, index: number, variableType: 'rows' | 'columns' }>();
-  changeSelectedCategories = output<{
+  emitChangeVariableOrientation = output<'row' | 'column'>();
+  emitChangeSelectedVariable = output<{ variableID: string, index: number, variableType: 'row' | 'column' }>();
+  emitChangeSelectedCategories = output<{
     index: number,
     variableID: string,
-    variableType: 'rows' | 'columns',
+    variableType: 'row' | 'column',
     missing: string[]
   }>();
+  emitRemoveVariable = output<{ index: number }>();
   // Component Values
-  $selectedGroup = signal<string | null>(null);
+  selectedGroup = signal<string | null>(null);
 
-  // constructor() {
-  //   effect(() => {
-  //     console.log(this.$selectedVariable());
-  //     // console.log(this.$type());
-  //   });
-  // }
-  //
-  $computedVariablesAlreadySelected = computed(() => {
-    const variableList: string[] = [];
-    this.$variablesAlreadySelected().map((variableData) => {
-      variableList.push(variableData.variableID);
-    });
-    return variableList;
-  });
-
-  $filteredVariables = computed(() => {
-    if (this.$selectedGroup()) {
+  filteredVariables = computed(() => {
+    if (this.selectedGroup()) {
       const newVariables: Variable[] = [];
-      this.$selectedGroup()
+      this.selectedGroup()
         ?.split(' ')
         .map((variableID: string) =>
-          newVariables.push(this.$variables()[variableID])
+          newVariables.push(this.variables()[variableID])
         );
       return newVariables;
     } else {
-      return Object.values(this.$variables());
+      return Object.values(this.variables());
     }
   });
 
-  $selectedVariableCategoryValues = computed(() => {
-    const values: { [id: string]: string } = {};
-    if (this.$selectedVariable()) {
-      return this.$categories()[this.$selectedVariable()]?.categories;
+  filteredCategories = computed(() => {
+    if (this.selectedVariableID() && this.categories()[this.selectedVariableID()]) {
+      return this.categories()[this.selectedVariableID()];
+    } else {
+      const emptySet: { [categoryID: string]: string } = {};
+      return emptySet;
     }
-    return values;
   });
 
-  $selectedVariableSelectedCategoryValues = computed(() => {
-    const values: string[] = [];
-    if (this.$selectedVariable()) {
-      return this.$categories()[this.$selectedVariable()]?.missing ?? [];
+  filteredMissing = computed(() => {
+    if (this.selectedVariableID() && this.missing()[this.selectedVariableID()]) {
+      return this.missing()[this.selectedVariableID()];
+    } else {
+      const emptySet: string[] = [];
+      return emptySet;
     }
-    return values;
   });
 
-  changeMissingValues(missing: string[]) {
-    const index = this.$index();
-    const variableID = this.$selectedVariable();
-    const variableType = this.$rowsOrColumns();
-    if (this.$selectedVariable()) {
-      this.changeSelectedCategories.emit({ index, missing, variableID, variableType });
+  onChangeVariableOrientation(event: Event) {
+    const value: any | null =
+      (event?.target as HTMLSelectElement).value || null;
+    if (value && value === 'row') {
+      this.emitChangeVariableOrientation.emit('row');
     }
-  }
-
-  onChangeCategoriesSelected(newCategoryList: string[]) {
-  }
-
-  checkVariableSelected(variableID: string): boolean {
-    return (
-      this.$computedVariablesAlreadySelected().includes(variableID) &&
-      this.$selectedVariable() !== variableID
-    );
+    if (value && value === 'column') {
+      this.emitChangeVariableOrientation.emit('column');
+    }
   }
 
   onGroupChange(event: Event) {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value && value !== 'all') {
-      this.$selectedGroup.set(value);
+      this.selectedGroup.set(value);
     } else if (value === 'all') {
-      this.$selectedGroup.set(null);
+      this.selectedGroup.set(null);
     }
+  }
+
+  checkVariableSelected(variableID: string): boolean {
+    return (
+      this.variablesAlreadySelected().includes(variableID) &&
+      this.selectedVariableID() !== variableID
+    );
   }
 
   onVariableChange(event: Event) {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value) {
-      this.changeSelectedVariable.emit({
-        index: this.$index(),
-        variableType: this.$rowsOrColumns(),
+      this.emitChangeSelectedVariable.emit({
+        index: this.index(),
+        variableType: this.variableOrientation(),
         variableID: value
       });
     }
+  }
+
+  changeMissingValues(missing: string[]) {
+    const index = this.index();
+    const variableID = this.selectedVariableID();
+    const variableType = this.variableOrientation();
+    if (this.selectedVariableID()) {
+      this.emitChangeSelectedCategories.emit({ index, missing, variableID, variableType });
+    }
+  }
+
+  removeVariable(index: number) {
+    this.emitRemoveVariable.emit({ index });
   }
 }

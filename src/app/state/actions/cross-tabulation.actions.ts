@@ -1,3 +1,10 @@
+/** The user can add values to the cross table calculator at any point.
+ * From the Variables Tab, they can hover over a row and add the corresponding
+ * value to (either a row or column in) the cross table calculator. From the
+ * Variable Tab, when the user selects a value to add to the calculator, the
+ * corresponding smart component checks the length of the current row/column
+ * list. They then pass that number + 1, along with the variable to an action
+ * dispatch: changeVariableInGivenIndex. */
 import { createAction, props } from '@ngrx/store';
 
 export const openCrossTabulationTab = createAction(
@@ -12,7 +19,7 @@ export const addVariableToCrossTabulation = createAction(
   '[Cross Tabulation] Variable Added',
   props<{
     variableID: string;
-    variableType: 'rows' | 'columns';
+    variableType: 'row' | 'column';
   }>()
 );
 
@@ -20,16 +27,15 @@ export const removeVariableFromCrossTabulation = createAction(
   '[Cross Tabulation] Variable Removed',
   props<{
     index: number;
-    variableType: 'rows' | 'columns';
   }>()
 );
 
-export const changeMissingVariables = createAction(
-  '[Cross Tabulation] Missing Variables Changed',
+export const fetchCrossTabValuesAndChangeVariableInGivenPosition = createAction(
+  '[Cross Tabulation] Variable At Index Changed',
   props<{
     index: number;
-    missing: string[];
-    variableType: 'rows' | 'columns';
+    variableType: 'row' | 'column';
+    variableID: string;
   }>()
 );
 
@@ -37,19 +43,35 @@ export const changeVariableInGivenPosition = createAction(
   '[Cross Tabulation] Variable At Index Changed',
   props<{
     index: number;
-    variableType: 'rows' | 'columns';
+    variableType: 'row' | 'column';
     variableID: string;
   }>()
 );
 
-export const getVariablesCrossTabulation = createAction(
-  '[Cross Tabulation] New Cross Tabulation Values Requested',
-  props<{ siteURL: string; fileID: number; variables: string[] }>()
+export const changeOrientionInGivenPosition = createAction
+('[Cross Tabulation] Change Orientation In Given Position', props<{
+  index: number,
+  newOrientation: 'row' | 'column'
+}>());
+
+export const changeMissingVariables = createAction(
+  '[Cross Tabulation] Missing Variables Changed',
+  props<{
+    variableID: string,
+    missing: string[];
+  }>()
+);
+
+export const getVariableCrossTabulation = createAction(
+  '[Cross Tabulation] Add new cross tab value',
+  props<{
+    variableID: string
+  }>()
 );
 
 export const variableCrossTabulationDataRetrievedSuccessfully = createAction(
   '[Cross Tabulation] Cross tabulated values retrieved',
-  props<{ data: string }>()
+  props<{ data: string, variableID: string }>()
 );
 
 export const variableCrossTabulationDataRetrievalFailed = createAction(

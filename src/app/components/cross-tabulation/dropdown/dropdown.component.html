@@ -4,16 +4,17 @@
     name="rowColumnSelect"
     id="rowColumnSelect"
     class="dropdown"
-    [value]="$rowsOrColumns()"
+    (change)="onChangeVariableOrientation($event)"
+    [value]="variableOrientation()"
   >
-    <option value="rows">ROW</option>
-    <option value="columns">COLUMN</option>
+    <option value="row">ROW</option>
+    <option value="column">COLUMN</option>
   </select>
   <label for="groupDropdown" class="sr-only">Group:</label>
   <select id="groupDropdown" class="dropdown" (change)="onGroupChange($event)">
     <option value="" disabled [defaultSelected]="true">Filter by Group</option>
     <option value="all">Show All Variables</option>
-    @for (group of $groups(); track $index) {
+    @for (group of groups(); track $index) {
       <option [value]="group['@_var']">{{ group.labl }}</option>
     }
   </select>
@@ -22,11 +23,11 @@
     id="variableDropdown"
     name="variableDropdown"
     class="dropdown"
-    [value]="$selectedVariable()"
+    [value]="selectedVariableID()"
     (change)="onVariableChange($event)"
   >
     <option value="" disabled>Choose Variable</option>
-    @for (variable of $filteredVariables(); track $index) {
+    @for (variable of filteredVariables(); track $index) {
       <option
         [value]="variable['@_ID']"
         [disabled]="checkVariableSelected(variable['@_ID'])"
@@ -36,12 +37,15 @@
     }
   </select>
   <label
-    class="m-2 w-44"
+    class="m-2 w-96"
     for="categoriesSelectedDropdown">
     <dct-multiselect-dropdown
       id="categoriesSelectedDropdown"
-      [itemList]="$selectedVariableCategoryValues()"
-      [selectedItems]="$selectedVariableSelectedCategoryValues()"
+      position="bottom"
+      emptyPlaceholderText="No Categories filtered"
+      emptySetPlaceholderText="Choose a variable with categories"
+      [itemList]="filteredCategories()"
+      [selectedItems]="filteredMissing()"
       (changeSelectedItems)="changeMissingValues($event)"
     />
   </label>

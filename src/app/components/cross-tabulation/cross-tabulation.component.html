@@ -1,36 +1,5 @@
-<div class="rows-and-columns mx-auto my-auto">
-  @for (row of $rows(); track $index) {
-    <dct-dropdown
-      [$index]="$index"
-      [$groups]="$groups()"
-      [$variables]="$variables()"
-      [$categories]="$rowCategories()"
-      [$rowsOrColumns]="'rows'"
-      [$selectedVariable]="row.variableID"
-      [$variablesAlreadySelected]="$rows()"
-      (changeSelectedVariable)="changeVariable($event)"
-      (changeSelectedCategories)="changeSelectedCategories($event)"
-    ></dct-dropdown>
-  }
-  @for (column of $columns(); track $index) {
-    <dct-dropdown
-      [$index]="$index"
-      [$groups]="$groups()"
-      [$variables]="$variables()"
-      [$categories]="$columnCategories()"
-      [$rowsOrColumns]="'columns'"
-      [$selectedVariable]="column.variableID"
-      [$variablesAlreadySelected]="$columns()"
-      (changeSelectedVariable)="changeVariable($event)"
-      (changeSelectedCategories)="changeSelectedCategories($event)"
-    ></dct-dropdown>
-  }
-  @if (!$columns().length && !$rows().length) {
-    <span class="blur-0">
-      Nothing here yet. Start adding rows and columns to build your table.
-    </span>
-  }
-</div>
+<dct-variable-selection />
+
 <div class="mx-auto my-auto controls-and-button">
   <button class="add-new surface on-surface-text" (click)="addNewEmptyRow()">
     Add Row

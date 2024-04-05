@@ -1,8 +1,8 @@
-<div class="relative w-full">
-  <dialog #dropdown class="w-full min-h-14 bottom-2 ">
-    <div class="w-full flex flex-col">
+<div class="relative w-full min-h-8 h-full">
+  <dialog #dropdown class="w-full" [ngClass]="computedPosition()">
+    <div class="w-full min-h-14 overflow-auto flex flex-col rounded border border-light-outline-variant">
       @for (item of itemList() | keyvalue; track item.key) {
-        <label class="pb-3" for="{{ item.key }}">
+        <label class="px-2" for="{{ item.key }}">
           <input
             type="checkbox"
             [id]="item.key"
@@ -13,11 +13,13 @@
           />
           {{ item.value }}
         </label>
+      } @empty {
+        <span class="mx-auto my-auto">{{ emptySetPlaceholderText() }}</span>
       }
     </div>
   </dialog>
   <button
-    class="rounded bg-gray-400 absolute justify-start min-h-8 w-full pr-0"
+    class="rounded border border-light-outline-variant absolute justify-start min-h-8 h-full w-full py-0.5 pr-0"
     (click)="toggleDialog()"
   >
     <div class="flex flex-row">
@@ -33,18 +35,20 @@
           clip-rule="evenodd"
         />
       </svg>
-      @if (selectedItems().length) {
+      @if (selectedItems()?.length) {
         <ul
-          class="flex flex-row overflow-y-hidden static overflow-x-auto self-center"
+          class="flex flex-row my-0.5 overflow-y-hidden static overflow-x-auto"
         >
           @for (item of (selectedItemsMatched() | keyvalue); track item.key) {
-            <li id="$index" class="flex-none input-chip self-center">
+            <li id="$index" class="input-chip">
               {{ item.value }}
             </li>
           }
         </ul>
-      } @else {
+      } @else if (!selectedItems().length && (itemList() | keyvalue).length) {
         <span class="self-center button-label pr-5">{{ emptyPlaceholderText() }}</span>
+      } @else if (!selectedItems()?.length && !(itemList() | keyvalue).length) {
+        <span class="self-center button-label pr-5">{{ emptySetPlaceholderText() }}</span>
       }
     </div>
   </button>

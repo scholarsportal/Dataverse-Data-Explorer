@@ -1,105 +1,61 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {CrossTabulationState} from '../reducers/cross-tabulation.reducer';
-import {selectDatasetProcessedVariables} from './dataset.selectors';
-import {Variable} from "../interface";
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
+import { selectDatasetProcessedVariables } from './dataset.selectors';
 
 export const selectCrossTabulationFeature =
   createFeatureSelector<CrossTabulationState>('cross-tabulation');
 
 export const selectIsCrossTabOpen = createSelector(
   selectCrossTabulationFeature,
-  (state) => state.open,
+  (state) => state.open
 );
 
-export const selectRows = createSelector(
-  selectCrossTabulationFeature,
-  (state) => state.rows,
-);
+export const selectedVariablesInCrossTab = createSelector(selectCrossTabulationFeature, (state) => {
+  return state.selectedVariables;
+});
 
-export const selectRowsArray = createSelector(
-  selectCrossTabulationFeature,
-  (state) => Object.values(state.rows),
-);
-
-export const selectColumns = createSelector(
-  selectCrossTabulationFeature,
-  (state) => state.columns,
-);
-
-export const selectColumnsArray = createSelector(
-  selectCrossTabulationFeature,
-  (state) => Object.values(state.columns),
-);
-
-function addCategoryValues(categories: {
-  [p: string]: { missing: string[]; categories: { [p: string]: string } }
-}, variables: { [p: string]: Variable }) {
-  const categoriesTemp = categories
-  Object.keys(categoriesTemp).map((key) => {
-    const catgry = variables[key]?.catgry
-    if (catgry) {
-      catgry.map(({catValu, labl}) => {
-        categoriesTemp[key] = {
-          ...categoriesTemp[key],
-          categories: {
-            ...categoriesTemp[key].categories,
-            [String(catValu)]: labl["#text"]
-          }
+export const selectCategoriesForSelectedVariables = createSelector(
+  selectDatasetProcessedVariables, selectedVariablesInCrossTab,
+  (processedVariablesInDataset, selectedVariables) => {
+    const categories: { [variableID: string]: { [categoryID: string]: string } } = {};
+    Object.values(processedVariablesInDataset).map((value) => {
+      if (value.catgry) {
+        if (Array.isArray(value.catgry)) {
+          value.catgry.map((category) => {
+            categories[value['@_ID']] = {
+              ...categories[value['@_ID']],
+              [String(category.catValu)]: category.labl['#text']
+            };
+          });
         }
-      })
-    }
-  })
-  return categoriesTemp;
-}
-
-function addEachCategoryMissingValues(categories: {
-  [variableID: string]: { missing: string[]; categories: { [categoryValue: string]: string; }; };
-}, columns: { variableID: string; missingCategories: string[]; }[]) {
-  const categoriesTemp = categories
-  Object.values(columns).map((value) => {
-    categoriesTemp[value.variableID] = {
-      categories: {},
-      missing: value.missingCategories
-    }
-  })
-  return categoriesTemp;
-}
-
-export const selectVariableRowsCategories = createSelector(
-  selectDatasetProcessedVariables, selectRows, (variables, rows) => {
-    const categories: {
-      [variableID: string]: { missing: string[], categories: { [categoryValue: string]: string } }
-    } = {}
-    // Add Missing Values
-    Object.values(rows).map((value) => {
-      categories[value.variableID] = {
-        categories: {},
-        missing: value.missingCategories
       }
-    })
-    const categoriesWithValues = addCategoryValues(categories, variables);
-    return categoriesWithValues
-  }
-)
+    });
+    return categories;
+  });
 
-export const selectVariableColumnsCategories = createSelector(
-  selectDatasetProcessedVariables, selectColumnsArray, (variables, columns) => {
-    const categories: {
-      [variableID: string]: { missing: string[], categories: { [categoryValue: string]: string } }
-    } = {}
-    // Add Missing Values
-    const categoriesWithMissingValues = addEachCategoryMissingValues(categories, columns);
-    const categoriesWithValues = addCategoryValues(categories, variables);
-    return categoriesWithValues
+export const selectMissingCategoriesForSelectedVariables = createSelector(
+  selectCrossTabulationFeature, selectDatasetProcessedVariables, selectedVariablesInCrossTab, (state, processedVariables, selectedVariables) => {
+    const missing: { [id: string]: string[] } = {};
+    Object.values(processedVariables).map((value) => {
+      missing[value['@_ID']] = state.variablesMetadata[value['@_ID']]?.missing || [];
+    });
+    console.log(missing);
+    return missing;
   }
-)
+);
 
 export const selectCurrentCrossTableData = createSelector(
-  selectRows,
-  selectColumns,
+  selectedVariablesInCrossTab,
   selectDatasetProcessedVariables,
-  (rowVariables, columnVariables, dataset) => {
-    return []
-  },
+  (variablesInCrossTab, processedVariablesInDataset) => {
+    return [];
+  }
 );
 
+export const selectCurrentCrossTableVariables = createSelector(
+  selectCrossTabulationFeature,
+  (state) => {
+
+    return state.variablesMetadata;
+  }
+);

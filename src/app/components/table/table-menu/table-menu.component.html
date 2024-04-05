@@ -14,10 +14,14 @@
       d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3"
     />
   </svg>
-  <!-- <dct-multiselect-dropdown
-    class="self-center ml-1 dropdown dropdown-top dropdown-start w-2/6"
-    (emitSelectedGroups)="onGroupChange($event)"
-  ></dct-multiselect-dropdown> -->
+  <dct-multiselect-dropdown
+    class="items-center my-3.5 mx-1.5 p-0.5 w-2/6"
+    position="top"
+    emptyPlaceholderText="Add Selected To Group(s)"
+    [selectedItems]="selectedGroups()"
+    [itemList]="allGroupsComputed()"
+    (changeSelectedItems)="onGroupChange($event)"
+  ></dct-multiselect-dropdown>
   <select
     (change)="onSelectedWeightChange($event.target)"
     name="assign-weight"

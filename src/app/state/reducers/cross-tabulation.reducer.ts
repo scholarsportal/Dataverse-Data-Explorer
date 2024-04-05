@@ -4,24 +4,24 @@ import * as DatasetActions from '../actions/dataset.actions';
 
 export interface CrossTabulationState {
   open: boolean;
-  rows: {
+  variablesMetadata: {
+    [variableID: string]: {
+      missing: string[],
+      crossTabValues: string[] | null
+    }
+  },
+  selectedVariables: {
     [index: number]: {
+      variableType: 'row' | 'column'
       variableID: string;
-      missingCategories: string[];
     };
-  };
-  columns: {
-    [index: number]: {
-      variableID: string;
-      missingCategories: string[];
-    };
-  };
+  }
 }
 
 export const initialState: CrossTabulationState = {
   open: true,
-  rows: {},
-  columns: {}
+  variablesMetadata: {},
+  selectedVariables: {}
 };
 
 export const crossTabulationReducer = createReducer(
@@ -40,36 +40,38 @@ export const crossTabulationReducer = createReducer(
   on(
     CrossTabActions.addVariableToCrossTabulation,
     (state, { variableID, variableType }) => {
-      const newVariableIndex = Object.values(state[variableType]).length;
+      const lastIndexInCrossTab = Object.keys(state.selectedVariables).length;
       return {
         ...state,
-        [variableType]: {
-          ...state[variableType],
-          [newVariableIndex]: { variableID, missingCategories: [] }
+        selectedVariables: {
+          ...state.selectedVariables,
+          [lastIndexInCrossTab]: {
+            variableID,
+            variableType
+          }
         }
       };
     }
   ),
   on(
     CrossTabActions.removeVariableFromCrossTabulation,
-    (state, { index, variableType }) => {
-      const updatedVariables = { ...state[variableType] };
-      delete updatedVariables[index as any];
+    (state, { index }) => {
+      const stateCopy = structuredClone(state);
+      delete stateCopy.selectedVariables[index];
       return {
-        ...state,
-        [variableType]: updatedVariables
+        ...stateCopy
       };
     }
   ),
   on(
     CrossTabActions.changeMissingVariables,
-    (state, { index, missing, variableType }) => ({
+    (state, { variableID, missing }) => ({
       ...state,
-      [variableType]: {
-        ...state[variableType],
-        [index]: {
-          ...state[variableType][index as any],
-          missingCategories: missing
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          missing
         }
       }
     })
@@ -79,11 +81,32 @@ export const crossTabulationReducer = createReducer(
     (state, { index, variableType, variableID }) => {
       return {
         ...state,
-        [variableType]: {
-          ...state[variableType],
-          [index]: { variableID, missingCategories: [] }
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            variableID,
+            variableType
+          }
         }
       };
     }
-  )
+  ),
+  on(CrossTabActions.variableCrossTabulationDataRetrievedSuccessfully, (state, { variableID, data }) => {
+    // From: https://stackoverflow.com/a/52947649
+    function splitLines(t: string): string[] {
+      return t.split(/\r\n|\r|\n/);
+    }
+
+    const crossTabValues = splitLines(data);
+    return {
+      ...state,
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          crossTabValues
+        }
+      }
+    };
+  })
 );
