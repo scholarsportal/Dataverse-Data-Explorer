@@ -19,7 +19,7 @@ export const addVariableToCrossTabulation = createAction(
   '[Cross Tabulation] Variable Added',
   props<{
     variableID: string;
-    variableType: 'row' | 'column';
+    orientation: 'row' | 'column';
   }>()
 );
 
@@ -34,7 +34,7 @@ export const fetchCrossTabValuesAndChangeVariableInGivenPosition = createAction(
   '[Cross Tabulation] Variable At Index Changed',
   props<{
     index: number;
-    variableType: 'row' | 'column';
+    orientation: 'row' | 'column';
     variableID: string;
   }>()
 );
@@ -43,7 +43,7 @@ export const changeVariableInGivenPosition = createAction(
   '[Cross Tabulation] Variable At Index Changed',
   props<{
     index: number;
-    variableType: 'row' | 'column';
+    orientation: 'row' | 'column';
     variableID: string;
   }>()
 );

@@ -31,12 +31,12 @@ export class DropdownComponent {
   categories = input.required<{ [variableID: string]: { [categoryID: string]: string } }>();
   missing = input.required<{ [variableID: string]: string[] }>();
   // Output
-  emitChangeVariableOrientation = output<'row' | 'column'>();
-  emitChangeSelectedVariable = output<{ variableID: string, index: number, variableType: 'row' | 'column' }>();
+  emitChangeVariableOrientation = output<{ newOrientation: 'row' | 'column', index: number }>();
+  emitChangeSelectedVariable = output<{ variableID: string, index: number, orientation: 'row' | 'column' }>();
   emitChangeSelectedCategories = output<{
     index: number,
     variableID: string,
-    variableType: 'row' | 'column',
+    orientation: 'row' | 'column',
     missing: string[]
   }>();
   emitRemoveVariable = output<{ index: number }>();
@@ -79,10 +79,10 @@ export class DropdownComponent {
     const value: any | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value && value === 'row') {
-      this.emitChangeVariableOrientation.emit('row');
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'row' });
     }
     if (value && value === 'column') {
-      this.emitChangeVariableOrientation.emit('column');
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'column' });
     }
   }
 
@@ -109,7 +109,7 @@ export class DropdownComponent {
     if (value) {
       this.emitChangeSelectedVariable.emit({
         index: this.index(),
-        variableType: this.variableOrientation(),
+        orientation: this.variableOrientation(),
         variableID: value
       });
     }
@@ -118,9 +118,9 @@ export class DropdownComponent {
   changeMissingValues(missing: string[]) {
     const index = this.index();
     const variableID = this.selectedVariableID();
-    const variableType = this.variableOrientation();
+    const orientation = this.variableOrientation();
     if (this.selectedVariableID()) {
-      this.emitChangeSelectedCategories.emit({ index, missing, variableID, variableType });
+      this.emitChangeSelectedCategories.emit({ index, missing, variableID, orientation });
     }
   }
 

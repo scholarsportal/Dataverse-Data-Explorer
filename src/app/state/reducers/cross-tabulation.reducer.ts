@@ -12,7 +12,7 @@ export interface CrossTabulationState {
   },
   selectedVariables: {
     [index: number]: {
-      variableType: 'row' | 'column'
+      orientation: 'row' | 'column'
       variableID: string;
     };
   }
@@ -39,7 +39,7 @@ export const crossTabulationReducer = createReducer(
   })),
   on(
     CrossTabActions.addVariableToCrossTabulation,
-    (state, { variableID, variableType }) => {
+    (state, { variableID, orientation }) => {
       const lastIndexInCrossTab = Object.keys(state.selectedVariables).length;
       return {
         ...state,
@@ -47,7 +47,7 @@ export const crossTabulationReducer = createReducer(
           ...state.selectedVariables,
           [lastIndexInCrossTab]: {
             variableID,
-            variableType
+            orientation
           }
         }
       };
@@ -76,16 +76,29 @@ export const crossTabulationReducer = createReducer(
       }
     })
   ),
+  on(CrossTabActions.changeOrientionInGivenPosition,
+    (state, { index, newOrientation }) => {
+      return {
+        ...state,
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            ...state.selectedVariables[index],
+            orientation: newOrientation
+          }
+        }
+      };
+    }),
   on(
     CrossTabActions.changeVariableInGivenPosition,
-    (state, { index, variableType, variableID }) => {
+    (state, { index, orientation, variableID }) => {
       return {
         ...state,
         selectedVariables: {
           ...state.selectedVariables,
           [index]: {
             variableID,
-            variableType
+            orientation
           }
         }
       };

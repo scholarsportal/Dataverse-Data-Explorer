@@ -17,6 +17,7 @@ import {
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
 import {
+  fetchCrossTabValuesAndChangeVariableInGivenPosition,
   getVariableCrossTabulation,
   variableCrossTabulationDataRetrievalFailed,
   variableCrossTabulationDataRetrievedSuccessfully
@@ -115,10 +116,19 @@ export class AppEffects {
     }
   );
 
+  changeVariableInCrossTable$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(getVariableCrossTabulation),
+      map(({ variableID }) => {
+        return getVariableCrossTabulation({ variableID });
+      })
+    );
+  });
+
   fetchCrossTabulationValues$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(getVariableCrossTabulation),
+        ofType(fetchCrossTabValuesAndChangeVariableInGivenPosition),
         exhaustMap(({ variableID }) =>
           ddiService
             .fetchCrossTabulationFromVariables(variableID)

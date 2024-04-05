@@ -26,13 +26,13 @@ export class CrossTabulationComponent {
 
   addNewEmptyRow() {
     this.store.dispatch(
-      addVariableToCrossTabulation({ variableID: '', variableType: 'row' })
+      addVariableToCrossTabulation({ variableID: '', orientation: 'row' })
     );
   }
 
   addNewEmptyColumn() {
     this.store.dispatch(
-      addVariableToCrossTabulation({ variableID: '', variableType: 'column' })
+      addVariableToCrossTabulation({ variableID: '', orientation: 'column' })
     );
   }
 

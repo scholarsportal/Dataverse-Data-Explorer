@@ -99,6 +99,23 @@ export const selectDatasetProcessedVariables = createSelector(
   }
 );
 
+export const selectDatasetProcessedCategories = createSelector(
+  selectDatasetVariables, (variables) => {
+    const processedCategories: { [variableID: string]: { [categoryID: string]: string } } = {};
+    variables?.map((value) => {
+      if (value.catgry && Array.isArray(value.catgry)) {
+        const category: { [categoryID: string]: string } = {};
+        value.catgry.map((catItem) => {
+          category[catItem.catValu] = catItem.labl['#text'];
+        });
+        processedCategories[value['@_ID']] = category;
+      }
+    });
+    console.log(processedCategories);
+    return processedCategories;
+  }
+);
+
 export const selectDatasetImportInProgress = createSelector(
   selectDatasetState,
   (state) => state.import.status === 'pending'
