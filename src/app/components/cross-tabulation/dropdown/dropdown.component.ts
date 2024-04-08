@@ -1,112 +1,130 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  computed,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Variable, VariableGroup } from 'src/app/state/interface';
 import { FormsModule } from '@angular/forms';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import { Store } from '@ngrx/store';
-import { selectAvailableVariables } from 'src/app/state/selectors/cross-tabulation.selectors';
-import { changeVariableInGivenPosition } from 'src/app/state/actions/cross-tabulation.actions';
 import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/multiselect-dropdown.component';
 
+/**
+ * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
+ * categoryList, filteredCategories) should be inputs, and should emit changes via output. The parent smart component
+ * should be charge of transforming the data, and dispatching the action. This means this component (which can appear,
+ * and disappear at any point in the DOM), will not make multiple state checks for values that won't change (groups,
+ * variables)*/
 @Component({
   selector: 'dct-dropdown',
   standalone: true,
   imports: [CommonModule, FormsModule, MultiselectDropdownComponent],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css',
+  styleUrl: './dropdown.component.css'
 })
 export class DropdownComponent {
   store = inject(Store);
-  $type = input.required<'rows' | 'columns'>();
-  $selectedVariable = input.required<string>();
-  $allSelectedVariables =
-    input.required<{ variableID: string; missingCategories: string[] }[]>();
-  $index = input.required<number>();
-  $groups = this.store.selectSignal(selectDatasetVariableGroups);
-  $variables = this.store.selectSignal(selectAvailableVariables);
-  $selectedGroupVariables = signal<string | null>(null);
+  // Inputs
+  index = input.required<number>();
+  groups = input.required<VariableGroup[]>();
+  variables = input.required<{ [id: string]: Variable }>();
+  variableOrientation = input.required<'row' | 'column'>();
+  selectedVariableID = input.required<string>();
+  variablesAlreadySelected =
+    input.required<string[]>();
+  categories = input.required<{ [variableID: string]: { [categoryID: string]: string } }>();
+  missing = input.required<{ [variableID: string]: string[] }>();
+  // Output
+  emitChangeVariableOrientation = output<{ newOrientation: 'row' | 'column', index: number }>();
+  emitChangeSelectedVariable = output<{ variableID: string, index: number, orientation: 'row' | 'column' }>();
+  emitChangeSelectedCategories = output<{
+    index: number,
+    variableID: string,
+    orientation: 'row' | 'column',
+    missing: string[]
+  }>();
+  emitRemoveVariable = output<{ index: number }>();
+  // Component Values
+  selectedGroup = signal<string | null>(null);
 
-  constructor() {
-    effect(() => {
-      // console.log(this.$selectedVariable());
-      // console.log(this.$type());
-    });
-  }
-
-  $variablesAlreadySelected = computed(() => {
-    const variableList: string[] = [];
-    this.$allSelectedVariables().map((variableData) => {
-      variableList.push(variableData.variableID);
-    });
-    return variableList;
-  });
-
-  $filteredVariables = computed(() => {
-    if (this.$selectedGroupVariables()) {
+  filteredVariables = computed(() => {
+    if (this.selectedGroup()) {
       const newVariables: Variable[] = [];
-      this.$selectedGroupVariables()
+      this.selectedGroup()
         ?.split(' ')
         .map((variableID: string) =>
-          newVariables.push(this.$variables()[variableID]),
+          newVariables.push(this.variables()[variableID])
         );
       return newVariables;
     } else {
-      return Object.values(this.$variables());
+      return Object.values(this.variables());
     }
   });
 
-  $allCategoryValues = computed((): { [id: string | number]: string } => {
-    return {};
+  filteredCategories = computed(() => {
+    if (this.selectedVariableID() && this.categories()[this.selectedVariableID()]) {
+      return this.categories()[this.selectedVariableID()];
+    } else {
+      const emptySet: { [categoryID: string]: string } = {};
+      return emptySet;
+    }
   });
 
-  $selectedCategoryValues = computed((): string[] => {
-    return [];
+  filteredMissing = computed(() => {
+    if (this.selectedVariableID() && this.missing()[this.selectedVariableID()]) {
+      return this.missing()[this.selectedVariableID()];
+    } else {
+      const emptySet: string[] = [];
+      return emptySet;
+    }
   });
 
-  onChangeCategoriesSelected(newCategoryList: string[]) {
-    console.log(newCategoryList);
-  }
-
-  checkVariableSelected(variableID: string): boolean {
-    return (
-      this.$variablesAlreadySelected().includes(variableID) &&
-      this.$selectedVariable() !== variableID
-    );
+  onChangeVariableOrientation(event: Event) {
+    const value: any | null =
+      (event?.target as HTMLSelectElement).value || null;
+    if (value && value === 'row') {
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'row' });
+    }
+    if (value && value === 'column') {
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'column' });
+    }
   }
 
   onGroupChange(event: Event) {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value && value !== 'all') {
-      this.$selectedGroupVariables.set(value);
+      this.selectedGroup.set(value);
     } else if (value === 'all') {
-      this.$selectedGroupVariables.set(null);
+      this.selectedGroup.set(null);
     }
+  }
+
+  checkVariableSelected(variableID: string): boolean {
+    return (
+      this.variablesAlreadySelected().includes(variableID) &&
+      this.selectedVariableID() !== variableID
+    );
   }
 
   onVariableChange(event: Event) {
     const value: string | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value) {
-      this.store.dispatch(
-        changeVariableInGivenPosition({
-          index: this.$index(),
-          variableType: this.$type(),
-          variableID: value,
-        }),
-      );
+      this.emitChangeSelectedVariable.emit({
+        index: this.index(),
+        orientation: this.variableOrientation(),
+        variableID: value
+      });
     }
+  }
+
+  changeMissingValues(missing: string[]) {
+    const index = this.index();
+    const variableID = this.selectedVariableID();
+    const orientation = this.variableOrientation();
+    if (this.selectedVariableID()) {
+      this.emitChangeSelectedCategories.emit({ index, missing, variableID, orientation });
+    }
+  }
+
+  removeVariable(index: number) {
+    this.emitRemoveVariable.emit({ index });
   }
 }

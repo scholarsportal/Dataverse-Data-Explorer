@@ -4,86 +4,122 @@ import * as DatasetActions from '../actions/dataset.actions';
 
 export interface CrossTabulationState {
   open: boolean;
-  rows: {
+  variablesMetadata: {
+    [variableID: string]: {
+      missing: string[],
+      crossTabValues: string[] | null
+    }
+  },
+  selectedVariables: {
     [index: number]: {
+      orientation: 'row' | 'column'
       variableID: string;
-      missingCategories: string[];
     };
-  };
-  columns: {
-    [index: number]: {
-      variableID: string;
-      missingCategories: string[];
-    };
-  };
+  }
 }
 
 export const initialState: CrossTabulationState = {
   open: true,
-  rows: {},
-  columns: {},
+  variablesMetadata: {},
+  selectedVariables: {}
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
   on(DatasetActions.datasetConversionSuccess, (state) => ({
-    ...state,
+    ...state
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
-    open: true,
+    open: true
   })),
   on(CrossTabActions.closeCrossTabulationTab, (state) => ({
     ...state,
-    open: false,
+    open: false
   })),
   on(
     CrossTabActions.addVariableToCrossTabulation,
-    (state, { variableID, variableType }) => {
-      const newVariableIndex = Object.values(state[variableType]).length;
+    (state, { variableID, orientation }) => {
+      const lastIndexInCrossTab = Object.keys(state.selectedVariables).length;
       return {
         ...state,
-        [variableType]: {
-          ...state[variableType],
-          [newVariableIndex]: { variableID, missingCategories: [] },
-        },
+        selectedVariables: {
+          ...state.selectedVariables,
+          [lastIndexInCrossTab]: {
+            variableID,
+            orientation
+          }
+        }
       };
-    },
+    }
   ),
   on(
     CrossTabActions.removeVariableFromCrossTabulation,
-    (state, { index, variableType }) => {
-      const updatedVariables = { ...state[variableType] };
-      delete updatedVariables[index as any];
+    (state, { index }) => {
+      const stateCopy = structuredClone(state);
+      delete stateCopy.selectedVariables[index];
       return {
-        ...state,
-        [variableType]: updatedVariables,
+        ...stateCopy
       };
-    },
+    }
   ),
   on(
     CrossTabActions.changeMissingVariables,
-    (state, { index, missingVariables, variableType }) => ({
+    (state, { variableID, missing }) => ({
       ...state,
-      [variableType]: {
-        ...state[variableType],
-        [index]: {
-          ...state[variableType][index as any],
-          missingVariables,
-        },
-      },
-    }),
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          missing
+        }
+      }
+    })
   ),
-  on(
-    CrossTabActions.changeVariableInGivenPosition,
-    (state, { index, variableType, variableID }) => {
+  on(CrossTabActions.changeOrientionInGivenPosition,
+    (state, { index, newOrientation }) => {
       return {
         ...state,
-        [variableType]: {
-          ...state[variableType],
-          [index]: { variableID, missingCategories: [] },
-        },
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            ...state.selectedVariables[index],
+            orientation: newOrientation
+          }
+        }
       };
-    },
+    }),
+  on(
+    CrossTabActions.changeVariableInGivenPosition,
+    (state, { index, orientation, variableID }) => {
+      return {
+        ...state,
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            variableID,
+            orientation
+          }
+        }
+      };
+    }
   ),
+  on(CrossTabActions.variableCrossTabulationDataRetrievedSuccessfully, (state, { variableID, data }) => {
+    // From: https://stackoverflow.com/a/52947649
+    function splitLines(t: string): string[] {
+      return t.split(/\r\n|\r|\n/);
+    }
+
+    const crossTabValues = splitLines(data);
+    return {
+      ...state,
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          crossTabValues
+        }
+      }
+    };
+  })
 );

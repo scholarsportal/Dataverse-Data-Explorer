@@ -5,6 +5,7 @@ import { JSONStructure } from '../interface';
 
 export interface VarAndGroupsState {
   selectedGroup: string | null;
+  selectedGroupLabl: string | null;
   variablesSelected: {
     'all-variables': string[];
     [groupName: string]: string[];
@@ -32,6 +33,7 @@ export interface VarAndGroupsState {
 
 export const initialState: VarAndGroupsState = {
   selectedGroup: null,
+  selectedGroupLabl: null,
   variablesSelected: {
     'all-variables': [],
   },
@@ -56,9 +58,10 @@ export const varAndGroupsReducer = createReducer(
   initialState,
   on(
     VarAndGroupActions.changeSelectedGroup,
-    (state, { groupID }): VarAndGroupsState => ({
+    (state, { groupID, groupLabl }): VarAndGroupsState => ({
       ...state,
       selectedGroup: groupID,
+      selectedGroupLabl: groupLabl
     }),
   ),
   on(

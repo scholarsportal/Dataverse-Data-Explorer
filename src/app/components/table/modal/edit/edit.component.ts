@@ -1,33 +1,14 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  computed,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { VariableForm, VariableGroup } from 'src/app/state/interface';
-import { Store } from '@ngrx/store';
-import { saveVariable } from 'src/app/state/actions/dataset.actions';
+import {Component, computed, effect, inject, signal,} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MultiselectDropdownComponent} from '../../multiselect-dropdown/multiselect-dropdown.component';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule,} from '@angular/forms';
+import {Store} from '@ngrx/store';
 import {
   selectOpenVariableDataAsForm,
   selectOpenVariableSelectedGroups,
 } from 'src/app/state/selectors/open-variable.selectors';
-import { selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
+import {selectVariableWeights} from 'src/app/state/selectors/var-groups.selectors';
+import {selectDatasetVariableGroups} from 'src/app/state/selectors/dataset.selectors';
 
 @Component({
   selector: 'dct-edit',
@@ -54,7 +35,7 @@ export class EditComponent {
     });
     return groups;
   });
-  $selectedGroups = signal(Object.values(this.$groupsFromState()));
+  $selectedGroups = signal(Object.keys(this.$groupsFromState()));
 
   variableForm = new FormGroup({
     id: new FormControl(''),

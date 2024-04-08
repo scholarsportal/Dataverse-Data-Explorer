@@ -1,6 +1,13 @@
+<li [ngClass]="{ selected: (selectedGroup$ | async) === groupID }" class="md:hidden">
+  <button
+  (click)="handleClick()"
+  class="md:h-16 md:px-5 w-full items-center text-start">
+    {{ label }}
+  </button>
+</li>
 <div
   [ngClass]="{ selected: (selectedGroup$ | async) === groupID }"
-  class="flex flex-row justify-between w-full hover:bg-base-200"
+  class="hidden md:flex flex-row justify-between w-full hover:bg-base-200"
   (click)="handleClick()"
 >
   <button

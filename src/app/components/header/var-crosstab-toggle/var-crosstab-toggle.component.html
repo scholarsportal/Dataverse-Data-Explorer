@@ -1,7 +1,7 @@
 <div role="tablist" class="h-full flex flew-row tabs-bordered">
   <a
     role="tab"
-    class="tab"
+    class="tab w-1/2 md:w-auto"
     id="variables"
     ngClass="{{ $isCrossTabOpen() ? '' : 'tab-active' }}"
     (click)="closeCrossTab()"
@@ -24,7 +24,7 @@
   </a>
   <a
     role="tab"
-    class="tab"
+    class="tab  w-1/2 md:w-auto"
     ngClass="{{ $isCrossTabOpen() ? 'tab-active' : '' }}"
     id="crosstab"
     (click)="openCrossTab()"

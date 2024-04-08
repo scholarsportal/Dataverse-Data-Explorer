@@ -61,18 +61,16 @@
     >
     </textarea>
   </label>
-  <label for="multiselect" class="form-label"
-    >Group(s)
+  <label for="multiselect" class="form-label w-full"
+  >Group(s)
     <dct-multiselect-dropdown
       id="multiselect"
-      class="dropdown dropdown-top dropdown-start"
-      [$allValuesInDropdown]="$allValuesInDropdown()"
-      [$valuesSelectedFromInput]="$selectedGroups()"
-      (changeSelectedValues)="onGroupChange($event)"
-      position="bottom"
+      [itemList]="$allValuesInDropdown()"
+      [selectedItems]="$selectedGroups()"
+      (changeSelectedItems)="onGroupChange($event)"
     ></dct-multiselect-dropdown>
   </label>
-  <div class="flex flex-row mt-5 pr-5">
+  <div class="flex flex-row mt-3 pr-5">
     <label class="form-label sr-only" for="weightVar">Weight Variable</label>
     <select
       id="weightVar"

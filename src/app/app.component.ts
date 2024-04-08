@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { fetchDataset } from './state/actions/dataset.actions';
@@ -26,29 +25,17 @@ import { HeaderComponent } from './components/header/header.component';
     ImportComponent,
     TableComponent,
     AsyncPipe,
-    CommonModule,
-  ],
+    CommonModule
+  ]
 })
 export class AppComponent implements OnInit {
-  title = 'Data Curation Tool';
+  private store = inject(Store);
+  private route = inject(ActivatedRoute);
+
   loaded$ = this.store.select(selectDatasetLoading);
   isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
   isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
   variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);
-  noParams = false;
-  datasetForm: FormGroup;
-
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-  ) {
-    this.datasetForm = this.formBuilder.group({
-      siteURL: ['', [Validators.required, Validators.pattern('^https://.*')]],
-      fileID: ['', Validators.required],
-      APIKEY: [''], // Optional field
-    });
-  }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -57,19 +44,9 @@ export class AppComponent implements OnInit {
       const apiKey = params['key'] as string;
       if (siteURL && fileID) {
         return this.store.dispatch(
-          fetchDataset({ fileID: fileID, siteURL: siteURL, apiKey: apiKey }),
+          fetchDataset({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
         );
       }
-      // if (!siteURL && !fileID) {
-      //   this.noParams = true;
-      //   return this.store.dispatch(
-      //     fetchDataset({
-      //       fileID: 40226,
-      //       siteURL: 'https://demo.borealisdata.ca',
-      //       apiKey: '11681fde-8e25-47c2-bfd3-44fe583172eb',
-      //     }),
-      //   );
-      //
       if (localStorage.getItem('theme')) {
         let theme = localStorage.getItem('theme') as string;
         document.body.setAttribute('data-theme', theme);
@@ -83,10 +60,5 @@ export class AppComponent implements OnInit {
         }
       }
     });
-  }
-
-  checkValid(index: string) {
-    const control = this.datasetForm.get(index);
-    return control ? control.valid : false;
   }
 }
