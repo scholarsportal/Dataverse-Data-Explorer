@@ -12,9 +12,11 @@
   </button>
   <button class="add-new secondary on-secondary-text">View Graph</button>
 </div>
-<dct-cross-table
-  class="mx-auto my-auto graph-area"
-  [data]="table$ | async"
-></dct-cross-table>
-<!-- @if (table$ | async) {
-         } -->
+@if (allValuesLoaded()) {
+  <dct-cross-table
+    class="mx-auto my-auto graph-area"
+    [data]="$table()"
+    [rows]="computedRows()"
+    [cols]="computedColumns()"
+  ></dct-cross-table>
+}

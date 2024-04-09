@@ -106,12 +106,15 @@ export const selectDatasetProcessedCategories = createSelector(
       if (value.catgry && Array.isArray(value.catgry)) {
         const category: { [categoryID: string]: string } = {};
         value.catgry.map((catItem) => {
-          category[catItem.catValu] = catItem.labl['#text'];
+          if (catItem.labl) {
+            category[catItem.catValu] = catItem.labl['#text'];
+          } else {
+            category[catItem.catValu] = '';
+          }
         });
         processedCategories[value['@_ID']] = category;
       }
     });
-    console.log(processedCategories);
     return processedCategories;
   }
 );

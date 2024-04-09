@@ -4,9 +4,9 @@ import { KeyValuePipe } from '@angular/common';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import {
   selectCategoriesForSelectedVariables,
-  selectCurrentCrossTableVariables,
   selectedVariablesInCrossTab,
-  selectMissingCategoriesForSelectedVariables
+  selectMissingCategoriesForSelectedVariables,
+  selectVariablesMetadata
 } from '../../../state/selectors/cross-tabulation.selectors';
 import {
   changeMissingVariables,
@@ -48,7 +48,7 @@ export class VariableSelectionComponent {
   missing = this.store.selectSignal(selectMissingCategoriesForSelectedVariables);
   selectedVariables = this.store.selectSignal(selectedVariablesInCrossTab);
   // Current values in cross tab
-  variablesMetadata = this.store.selectSignal(selectCurrentCrossTableVariables);
+  variablesMetadata = this.store.selectSignal(selectVariablesMetadata);
 
   valuesAlreadyFetchedInCrossTab = computed(() => {
     const values: { [variableID: string]: boolean } = {};
@@ -59,7 +59,7 @@ export class VariableSelectionComponent {
     return values;
   });
 
-  computedSelectedVariables = computed(() => {
+  selectedVariablesArray = computed(() => {
     return Object.values(this.selectedVariables());
   });
 

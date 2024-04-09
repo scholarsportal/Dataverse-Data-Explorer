@@ -1,11 +1,11 @@
 .dropdown {
-  @apply px-3 
+  @apply px-3
   m-2
-  py-2 
-  rounded 
-  border 
-dark:border-dark-surface 
-text-gray-700 
-dark:bg-dark-surface-variant 
-dark:text-dark-on-surface-variant;
+  py-2
+  rounded
+  border
+  dark:border-dark-surface
+  text-gray-700
+  bg-none
+  dark:text-dark-on-surface-variant;
 }
