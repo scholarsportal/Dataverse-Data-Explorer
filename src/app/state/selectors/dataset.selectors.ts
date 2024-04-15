@@ -21,7 +21,7 @@ export const selectDatasetHasAPIKey = createSelector(
 
 export const selectDatasetInfo = createSelector(selectDatasetFeature, (dataset) => {
   const { fileID, siteURL, apiKey } = dataset.datasetInfo;
-  if (fileID && siteURL && apiKey) {
+  if (fileID && siteURL) {
     return { fileID, siteURL, apiKey };
   }
   return null;

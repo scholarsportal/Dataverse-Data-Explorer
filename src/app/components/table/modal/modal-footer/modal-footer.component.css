@@ -4,29 +4,34 @@
   flex-direction: row;
   align-items: center;
   border-width: 1px;
-  padding-left: 0.625rem /* 10px */;
-  padding-right: 0.625rem /* 10px */;
-  padding-top: 0.5rem /* 8px */;
-  padding-bottom: 0.5rem /* 8px */;
+  /* 10px */;
+  /* 10px */;
+  /* 8px */;
+  /* 8px */
+  padding: 0.5rem 0.625rem;;
   margin-top: 0.625rem /* 10px */;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
 @media (prefers-color-scheme: dark) {
   .button {
     box-shadow: 0 1px 3px rgba(122, 118, 118, 0.25),
-      0 1px 2px rgba(122, 118, 118, 0.22);
+    0 1px 2px rgba(122, 118, 118, 0.22);
   }
 }
+
 .button:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
+
 @media (prefers-color-scheme: dark) {
   .button:hover {
     box-shadow: 0 14px 28px rgba(122, 118, 118, 0.25),
-      0 10px 10px rgba(122, 118, 118, 0.22);
+    0 10px 10px rgba(122, 118, 118, 0.22);
   }
 }
+
 .button-label {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
