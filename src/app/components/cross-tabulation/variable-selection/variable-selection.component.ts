@@ -89,7 +89,8 @@ export class VariableSelectionComponent {
     this.store.dispatch(changeMissingVariables({ variableID, missing }));
   }
 
-  removeVariable(index: number) {
+  removeVariable(event: { index: number }) {
+    const { index } = event;
     this.store.dispatch(removeVariableFromCrossTabulation({ index }));
   }
 }

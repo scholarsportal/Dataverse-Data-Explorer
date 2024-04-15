@@ -20,7 +20,7 @@ export class CrossTableComponent {
 
   constructor() {
     effect(() => {
-      if (this.data() && (this.rows || this.cols)) {
+      if (this.data()) {
         this.createTable(this.data(), this.rows(), this.cols());
       }
     });
@@ -31,9 +31,9 @@ export class CrossTableComponent {
       console.log('Cannot build element');
       return;
     }
-    var container = this.element.nativeElement;
-    var inst = jQuery(container);
-    var targetElement = inst.find('#output');
+    const container = this.element.nativeElement;
+    const inst = jQuery(container);
+    const targetElement = inst.find('#output');
     if (!targetElement) {
       console.log('No element found');
       return;
@@ -41,17 +41,15 @@ export class CrossTableComponent {
     while (targetElement.firstChild) {
       targetElement.removeChild(targetElement.firstChild);
     }
-    var derivers = $.pivotUtilities.derivers;
 
     targetElement.pivotUI(
-      this.data(),
+      data,
       {
-        // rows: ['MARSTAT - État matrimonial du répondant'],
-        // cols: ['ED76to89 - Plus haut niveau de scolarité atteint']
-        rows: this.rows(),
-        cols: this.cols(),
-        showUI: false
-      }, true
+        rows: rows,
+        cols: cols,
+        aggregatorName: 'Count as Fraction of Total'
+      },
+      true
     );
   }
 }
