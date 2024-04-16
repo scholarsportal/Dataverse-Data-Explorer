@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
-import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { metaReducers, reducers } from './state/reducers';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(() =>
@@ -11,8 +12,11 @@ describe('AppComponent', () => {
       // Add this line for "No Store Provided" error
       imports: [
         StoreModule.forRoot(reducers, { metaReducers }),
-        HttpClientModule,
         AppComponent
+      ],
+      providers: [
+        provideHttpClient(),
+        provideRouter([])
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

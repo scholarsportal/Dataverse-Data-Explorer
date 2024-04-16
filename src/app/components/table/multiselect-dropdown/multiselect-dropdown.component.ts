@@ -15,7 +15,7 @@ export class MultiselectDropdownComponent {
 
   emptyPlaceholderText = input('No items selected');
   emptySetPlaceholderText = input('No values in set');
-  itemList = input.required<{ [id: string]: string }>({});
+  itemList = input.required<{ [id: string]: string }>();
   selectedItems = input<string[]>([]);
   position = input<'top' | 'bottom'>('top');
   changeSelectedItems = output<string[]>();
