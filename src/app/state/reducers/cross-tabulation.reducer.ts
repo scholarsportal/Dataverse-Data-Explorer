@@ -4,102 +4,122 @@ import * as DatasetActions from '../actions/dataset.actions';
 
 export interface CrossTabulationState {
   open: boolean;
-  rows: {
+  variablesMetadata: {
+    [variableID: string]: {
+      missing: string[],
+      crossTabValues: string[] | null
+    }
+  },
+  selectedVariables: {
     [index: number]: {
-      crossValues: string[] | null;
-      variableID: string | null;
-      missingCategories: string[];
+      orientation: 'row' | 'column'
+      variableID: string;
     };
-  };
-  columns: {
-    [index: number]: {
-      crossValues: string[] | null;
-      variableID: string | null;
-      missingCategories: string[];
-    };
-  };
-  error?: any;
+  }
 }
 
 export const initialState: CrossTabulationState = {
   open: true,
-  rows: {
-    0: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-    1: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-  },
-  columns: {
-    0: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-    1: {
-      crossValues: null,
-      variableID: null,
-      missingCategories: [],
-    },
-  },
+  variablesMetadata: {},
+  selectedVariables: {}
 };
 
 export const crossTabulationReducer = createReducer(
   initialState,
-  on(DatasetActions.datasetConversionSuccess, (state, { dataset }) => ({
-    ...state,
+  on(DatasetActions.datasetConversionSuccess, (state) => ({
+    ...state
   })),
   on(CrossTabActions.openCrossTabulationTab, (state) => ({
     ...state,
-    open: true,
+    open: true
   })),
   on(CrossTabActions.closeCrossTabulationTab, (state) => ({
     ...state,
-    open: false,
+    open: false
   })),
   on(
-    CrossTabActions.addVariable,
-    (state, { index, variableID, crossTableOrientation }) => ({
-      ...state,
-      [crossTableOrientation]: {
-        ...state[crossTableOrientation],
-        [index]: { variableID, missingCategories: [] },
-      },
-    }),
-  ),
-  on(CrossTabActions.removeVariable, (state, { index, variableType }) => {
-    const updatedVariables = { ...state[variableType] };
-    delete updatedVariables[index as any];
-    return {
-      ...state,
-      [variableType]: updatedVariables,
-    };
-  }),
-  on(
-    CrossTabActions.changeMissingVariables,
-    (state, { index, missingVariables, variableType }) => ({
-      ...state,
-      [variableType]: {
-        ...state[variableType],
-        [index]: {
-          ...state[variableType][index as any],
-          missingVariables,
-        },
-      },
-    }),
-  ),
-  on(
-    CrossTabActions.variableCrossTabulationDataRetrievalFailed,
-    (state, { error }) => {
+    CrossTabActions.addVariableToCrossTabulation,
+    (state, { variableID, orientation }) => {
+      const lastIndexInCrossTab = Object.keys(state.selectedVariables).length;
       return {
         ...state,
-        error,
+        selectedVariables: {
+          ...state.selectedVariables,
+          [lastIndexInCrossTab]: {
+            variableID,
+            orientation
+          }
+        }
       };
-    },
+    }
   ),
+  on(
+    CrossTabActions.removeVariableFromCrossTabulation,
+    (state, { index }) => {
+      const stateCopy = structuredClone(state);
+      delete stateCopy.selectedVariables[index];
+      return {
+        ...stateCopy
+      };
+    }
+  ),
+  on(
+    CrossTabActions.changeMissingVariables,
+    (state, { variableID, missing }) => ({
+      ...state,
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          missing
+        }
+      }
+    })
+  ),
+  on(CrossTabActions.changeOrientionInGivenPosition,
+    (state, { index, newOrientation }) => {
+      return {
+        ...state,
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            ...state.selectedVariables[index],
+            orientation: newOrientation
+          }
+        }
+      };
+    }),
+  on(
+    CrossTabActions.changeVariableInGivenPosition,
+    (state, { index, orientation, variableID }) => {
+      return {
+        ...state,
+        selectedVariables: {
+          ...state.selectedVariables,
+          [index]: {
+            variableID,
+            orientation
+          }
+        }
+      };
+    }
+  ),
+  on(CrossTabActions.variableCrossTabulationDataRetrievedSuccessfully, (state, { variableID, data }) => {
+    // From: https://stackoverflow.com/a/52947649
+    function splitLines(t: string): string[] {
+      return t.split(/\r\n|\r|\n/);
+    }
+
+    const crossTabValues = splitLines(data);
+    return {
+      ...state,
+      variablesMetadata: {
+        ...state.variablesMetadata,
+        [variableID]: {
+          ...state.variablesMetadata[variableID],
+          crossTabValues
+        }
+      }
+    };
+  })
 );

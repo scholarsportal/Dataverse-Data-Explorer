@@ -4,11 +4,14 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariableForm, VariableGroup } from 'src/app/state/interface';
 import { Chart, Colors } from 'chart.js/auto';
 import { backgroundColor, shuffleColours } from './chart.interface';
+import { Store } from '@ngrx/store';
+import { selectOpenVariableSelectedGroups } from 'src/app/state/selectors/open-variable.selectors';
 
 interface ChartData {
   values: number;
@@ -26,11 +29,12 @@ interface ChartData {
   styleUrl: './chart.component.css',
 })
 export class ChartComponent implements OnInit, OnChanges {
+  store = inject(Store);
+  $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
   @Input() chart!: { y: string; x: number | null }[] | null;
   @Input() chartTable!: { [id: number]: ChartData } | null;
   @Input() form!: VariableForm | null | undefined;
   @Input() sumStat!: { key: string; value: string }[] | null;
-  @Input() groups!: VariableGroup[] | null;
   @Input() weight!: { [id: string]: string } | null;
 
   public chartJS: any;
@@ -91,10 +95,10 @@ export class ChartComponent implements OnInit, OnChanges {
         ],
       },
       options: {
-        indexAxis: 'y'
+        indexAxis: 'y',
       },
     });
-    
+
     const light = 'black';
     const dark = 'white';
     const neutral = '#c8c5d0';

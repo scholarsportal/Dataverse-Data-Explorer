@@ -8,7 +8,7 @@
   @apply flex
   flex-row
   justify-between
-  w-full 
+  w-full
   h-full
   px-3
   h-10
@@ -18,18 +18,17 @@
 .input-chip {
   @apply mr-2
   px-1.5
-  py-1.5
-  self-center
   max-w-fit
   min-w-max
-  h-7
+  h-full
+  w-full
   flex
   flex-row
   flex-grow
   rounded
   bg-primary
   text-white;
-  
+
 }
 
 .top {

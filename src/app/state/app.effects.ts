@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   datasetConversionError,
@@ -12,14 +12,15 @@ import {
   fetchDatasetError,
   fetchDatasetSuccess,
   metadataImportConversionFailed,
-  metadataImportConversionSuccess,
+  metadataImportConversionSuccess
 } from 'src/app/state/actions/dataset.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { DdiService } from 'src/app/services/ddi.service';
 import {
-  getVariablesCrossTabulation,
+  fetchCrossTabValuesAndChangeVariableInGivenPosition,
+  getVariableCrossTabulation,
   variableCrossTabulationDataRetrievalFailed,
-  variableCrossTabulationDataRetrievedSuccessfully,
+  variableCrossTabulationDataRetrievedSuccessfully
 } from './actions/cross-tabulation.actions';
 
 @Injectable()
@@ -31,14 +32,14 @@ export class AppEffects {
         exhaustMap(({ fileID, siteURL, apiKey }) =>
           ddiService.fetchDatasetFromDataverse(fileID, siteURL).pipe(
             map((data) =>
-              fetchDatasetSuccess({ data, fileID, siteURL, apiKey }),
+              fetchDatasetSuccess({ data, fileID, siteURL, apiKey })
             ),
-            catchError((error) => of(fetchDatasetError(error))),
-          ),
-        ),
+            catchError((error) => of(fetchDatasetError(error)))
+          )
+        )
       );
     },
-    { functional: true },
+    { functional: true }
   );
 
   convertDataset$ = createEffect(
@@ -51,30 +52,14 @@ export class AppEffects {
             dataset: parsedXML,
             siteURL,
             fileID,
-            apiKey,
+            apiKey
           });
         }),
-        catchError((error) => of(datasetConversionError({ error }))),
+        catchError((error) => of(datasetConversionError({ error })))
       );
     },
-    { functional: true },
+    { functional: true }
   );
-
-  addInitialCrossTabRow$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(datasetConversionSuccess),
-      map(({ dataset, fileID, siteURL }) => {
-        const variableID: string = dataset.codeBook.dataDscr.var[0]['@_ID'];
-        return getVariablesCrossTabulation({
-          fileID,
-          siteURL,
-          variableID,
-          crossTableOrientation: 'rows',
-          index: 0,
-        });
-      }),
-    );
-  });
 
   importNewMetadata$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
@@ -84,12 +69,12 @@ export class AppEffects {
           const parsedXML = ddiService.XMLtoJSON(file);
           return metadataImportConversionSuccess({
             dataset: parsedXML,
-            variableTemplate,
+            variableTemplate
           });
         }),
-        catchError((error) => of(metadataImportConversionFailed({ error }))),
+        catchError((error) => of(metadataImportConversionFailed({ error })))
       );
-    },
+    }
   );
 
   requestDatasetUpload$ = createEffect(
@@ -102,15 +87,15 @@ export class AppEffects {
             xml: parsedJSON,
             fileID,
             siteURL,
-            apiKey,
+            apiKey
           });
         }),
-        catchError((error) => of(datasetUploadFailed({ error }))),
+        catchError((error) => of(datasetUploadFailed({ error })))
       );
-    },
+    }
   );
 
-  completeDatasetUpload$ = createEffect(
+  uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(datasetUploadStart),
@@ -124,38 +109,45 @@ export class AppEffects {
                 }
                 return datasetUploadSuccess();
               }),
-              catchError((error) => of(datasetUploadFailed({ error }))),
-            ),
-        ),
+              catchError((error) => of(datasetUploadFailed({ error })))
+            )
+        )
       );
-    },
+    }
   );
+
+  changeVariableInCrossTable$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(getVariableCrossTabulation),
+      map(({ variableID }) => {
+        return getVariableCrossTabulation({ variableID });
+      })
+    );
+  });
 
   fetchCrossTabulationValues$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(getVariablesCrossTabulation),
-        exhaustMap(
-          ({ fileID, siteURL, variableID, index, crossTableOrientation }) =>
-            ddiService
-              .fetchCrossTabulationFromDataverse(siteURL, fileID, variableID)
-              .pipe(
-                map((data) =>
-                  variableCrossTabulationDataRetrievedSuccessfully({
-                    data,
-                    index,
-                    crossTableOrientation,
-                    variableID,
-                  }),
-                ),
-                catchError((error) =>
-                  of(variableCrossTabulationDataRetrievalFailed(error)),
-                ),
+        ofType(fetchCrossTabValuesAndChangeVariableInGivenPosition),
+        exhaustMap(({ variableID }) =>
+          ddiService
+            .fetchCrossTabulationFromVariables(variableID)
+            .pipe(
+              map((data) =>
+                variableCrossTabulationDataRetrievedSuccessfully({
+                  data,
+                  variableID
+                })
               ),
-        ),
+              catchError((error) =>
+                of(variableCrossTabulationDataRetrievalFailed(error))
+              )
+            )
+        )
       );
-    },
+    }
   );
 
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions) {
+  }
 }

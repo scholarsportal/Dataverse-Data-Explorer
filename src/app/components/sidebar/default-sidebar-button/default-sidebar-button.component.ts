@@ -22,6 +22,10 @@ export class DefaultSidebarButtonComponent {
 
   handleClick() {
     this.changeGroup.emit(this.groupID);
+    const elem = document.activeElement;
+    if (elem instanceof HTMLElement) {
+      elem?.blur();
+    }
   }
 
   delete() {

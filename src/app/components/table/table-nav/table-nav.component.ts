@@ -17,11 +17,9 @@ export class TableNavComponent {
   @Output() pageNextClick = new EventEmitter<void>();
 
   pageLimitOptions = [
-    { value: 5 },
-    { value: 10 },
-    { value: 25 },
-    { value: 50 },
     { value: 100 },
+    { value: 250 },
+    { value: 500 },
   ];
 
   onItemsPerPageChange(event: any) {

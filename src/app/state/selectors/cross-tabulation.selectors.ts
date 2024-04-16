@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CrossTabulationState } from '../reducers/cross-tabulation.reducer';
-import { selectDatasetProcessedVariables } from './dataset.selectors';
+import { selectDatasetProcessedCategories, selectDatasetProcessedVariables } from './dataset.selectors';
 import { Variable } from '../interface';
 
 export const selectCrossTabulationFeature =
@@ -8,143 +8,140 @@ export const selectCrossTabulationFeature =
 
 export const selectIsCrossTabOpen = createSelector(
   selectCrossTabulationFeature,
-  (state) => state.open,
+  (state) => state.open
 );
 
-export const selectRows = createSelector(
+export const selectVariablesMetadata = createSelector(
   selectCrossTabulationFeature,
-  (state) => state.rows,
+  (state) => state.variablesMetadata
 );
 
-export const selectRowsArray = createSelector(
+export const selectedVariablesInCrossTab = createSelector(selectCrossTabulationFeature, (state) => {
+  return state.selectedVariables;
+});
+
+export const selectCategoriesForSelectedVariables = createSelector(
+  selectDatasetProcessedVariables, selectedVariablesInCrossTab,
+  (processedVariablesInDataset, selectedVariables) => {
+    const categories: { [variableID: string]: { [categoryID: string]: string } } = {};
+    Object.values(processedVariablesInDataset).map((value) => {
+      if (value.catgry) {
+        if (Array.isArray(value.catgry)) {
+          value.catgry.map((category) => {
+            let label = '';
+            if (category.labl?.['#text']) {
+              label = category.labl['#text'];
+            }
+            categories[value['@_ID']] = {
+              ...categories[value['@_ID']],
+              [String(category.catValu)]: label
+            };
+          });
+
+
+        }
+      }
+    });
+    return categories;
+  });
+
+export const selectMissingCategoriesForSelectedVariables = createSelector(
   selectCrossTabulationFeature,
-  (state) => Object.values(state.rows),
-);
-
-export const selectColumns = createSelector(
-  selectCrossTabulationFeature,
-  (state) => state.columns,
-);
-
-export const selectColumnsArray = createSelector(
-  selectCrossTabulationFeature,
-  (state) => Object.values(state.columns),
-);
-
-export const selectColumnsAndRowsArray = createSelector(
-  selectRowsArray,
-  selectColumnsArray,
-  (rows, columns) => ({ rows, columns }),
-);
-
-export const selectAvailableVariables = createSelector(
   selectDatasetProcessedVariables,
-  selectRows,
-  selectColumns,
-  (variables, rows, columns) => {
-    const newData: { [id: string]: Variable } = { ...variables };
-    const currentSelectedVariables = [
-      ...Object.values(rows),
-      ...Object.values(columns),
-    ];
-    currentSelectedVariables.map((variable) => {
-      if (variable.variableID) {
-        newData[variable.variableID] ?? delete newData[variable.variableID];
+  selectedVariablesInCrossTab,
+  selectVariablesMetadata, (state, processedVariables, selectedVariables, metadata) => {
+    const missing: { [id: string]: string[] } = {};
+    Object.values(processedVariables).map((value) => {
+      missing[value['@_ID']] = metadata[value['@_ID']]?.missing || [];
+    });
+    return missing;
+  }
+);
+
+export const selectMatchedCategories = createSelector(selectVariablesMetadata,
+  selectDatasetProcessedCategories,
+  (metadata, processedCategories) => {
+    const matched: { [variableID: string]: string[] } = {};
+    Object.keys(metadata).map((key) => {
+      const values: string[] = [];
+      if (processedCategories[key]) {
+        metadata[key].crossTabValues?.map((value) => {
+          const toPush = processedCategories[key][value] || '';
+          values.push(toPush);
+        });
+      }
+      matched[key] = values;
+    });
+    return matched;
+  });
+
+export const selectCurrentCrossTableData = createSelector(
+  selectedVariablesInCrossTab,
+  selectMatchedCategories,
+  selectDatasetProcessedVariables,
+  (variablesInCrossTab, processedCategoryInDataset, processedVariables) => {
+    const data: { [categoryLabel: string]: string }[] = [];
+    const rowsAndColumns: { row: string[], column: string[] } = separateRowsAndCategories(variablesInCrossTab);
+    const rowAndColumnLabels: {
+      [variableID: string]: string
+    } = createRowAndCategoryLabels(variablesInCrossTab, processedVariables);
+    // Loop through the current labels
+    Object.keys(processedCategoryInDataset).map((key: string) => {
+      const item = processedCategoryInDataset[key];
+      item.map((categoryLabel, index) => {
+        if (categoryLabel !== '') {
+          if (data[index]) {
+            data[index] = {
+              ...data[index],
+              [rowAndColumnLabels[key]]: categoryLabel
+            };
+          } else {
+            data[index] = { [rowAndColumnLabels[key]]: categoryLabel };
+          }
+        } else {
+          data[index] = {};
+        }
+      });
+    });
+    const newData: { [id: string]: string }[] = [];
+    data.map((item, index) => {
+      if (Object.keys(item).length) {
+        newData.push(item);
       }
     });
     return newData;
-  },
+  }
 );
 
-export const selectCurrentCrossTableData = createSelector(
-  selectRows,
-  selectColumns,
-  selectDatasetProcessedVariables,
-  (rowVariables, columnVariables, dataset) => {
-    const table: any[] = [];
-    const rows: string[] = [];
-    const columns: string[] = [];
-    var tableLength: number = 0;
-
-    // Create row labels and add to tableLength
-    Object.keys(rowVariables).map((variableID) => {
-      if (dataset[variableID]) {
-        rows.push(
-          dataset[variableID]['@_name'] +
-            ' - ' +
-            dataset[variableID].labl['#text'],
-        );
-      }
-      if (dataset[variableID]?.catgry?.length > tableLength) {
-        tableLength = dataset[variableID].catgry.length;
+export const selectRowsAndCategories = createSelector(
+  selectCrossTabulationFeature, selectDatasetProcessedVariables, selectVariablesMetadata, (state, processedVariables, variablesMetadata) => {
+    const rowsAndColumns: { row: string[], column: string[] } = { row: [], column: [] };
+    const rowAndColumnLabels = createRowAndCategoryLabels(state.selectedVariables, processedVariables);
+    Object.values(state.selectedVariables).map(value => {
+      if (rowAndColumnLabels[value.variableID] && rowAndColumnLabels[value.variableID] !== 'var-not-found') {
+        rowsAndColumns[value.orientation].push(rowAndColumnLabels[value.variableID]);
       }
     });
-
-    // Create columns labels and add to tableLength
-    Object.keys(columnVariables).map((variableID) => {
-      if (dataset[variableID]) {
-        columns.push(
-          dataset[variableID]['@_name'] +
-            ' - ' +
-            dataset[variableID].labl['#text'],
-        );
-      }
-      if (dataset[variableID]?.catgry?.length) {
-        tableLength += dataset[variableID].catgry.length;
-      }
-    });
-
-    // Create Table
-    // Rows
-    Object.keys(rowVariables).map((variableID) => {
-      if (dataset[variableID]?.catgry) {
-        dataset[variableID].catgry.map((category, index) => {
-          const newTableEntry: any = {};
-          const row = dataset[variableID];
-          const rowTitle = row['@_name'] + ' - ' + row.labl['#text'];
-          const catStat = category.catStat;
-          newTableEntry[rowTitle] = Array.isArray(catStat)
-            ? catStat[0]['#text']
-            : catStat['#text'];
-          if (dataset[Object.keys(columnVariables)[index]]?.catgry.length) {
-            const col = dataset[Object.keys(columnVariables)[index]];
-            const colTitle = col['@_name'] + ' - ' + col.labl['#text'];
-            col.catgry.map((category) => {
-              newTableEntry[colTitle] = Array.isArray(category.catStat)
-                ? category.catStat[0]['#text']
-                : category.catStat['#text'];
-            });
-          }
-          table.push(newTableEntry);
-        });
-      }
-    });
-
-    // Columns
-    Object.keys(columnVariables).map((variableID) => {
-      const variable = dataset[variableID];
-      if (variable?.catgry.length) {
-        variable.catgry.map((category, index) => {
-          const newTableEntry: any = {};
-          const colTitle = variable['@_name'] + ' - ' + variable.labl['#text'];
-          const catStat = category.catStat;
-          newTableEntry[colTitle] = Array.isArray(catStat)
-            ? catStat[0]['#text']
-            : catStat['#text'];
-
-          if (dataset[Object.keys(rowVariables)[index]]?.catgry.length) {
-            const row = dataset[Object.keys(rowVariables)[index]];
-            const rowTitle = row['@_name'] + ' - ' + row.labl['#text'];
-            row.catgry.map((category) => {
-              newTableEntry[rowTitle] = Array.isArray(category.catStat)
-                ? category.catStat[0]
-                : category.catStat['#text'];
-            });
-          }
-          table.push(newTableEntry);
-        });
-      }
-    });
-    return [];
-  },
+    return rowsAndColumns;
+  }
 );
+
+function separateRowsAndCategories(variables: { [p: number]: { orientation: 'row' | 'column'; variableID: string } }) {
+  const rowsAndCategories: { column: string[], row: string[] } = { column: [], row: [] };
+  Object.values(variables).map(item => {
+    rowsAndCategories[item.orientation].push(item.variableID);
+  });
+  return rowsAndCategories;
+}
+
+function createRowAndCategoryLabels(variablesInCrossTab: {
+  [p: number]: { orientation: 'row' | 'column'; variableID: string }
+}, processedVariables: { [p: string]: Variable }): { [variableID: string]: string } {
+  const labels: { [variableID: string]: string } = {};
+  Object.values(variablesInCrossTab).map((item) => {
+    const processed = processedVariables[item.variableID] || null;
+    const newLabel = processed ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}` : 'var-not-found';
+    labels[item.variableID] = newLabel;
+  });
+  return labels;
+}

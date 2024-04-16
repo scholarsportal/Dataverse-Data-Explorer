@@ -8,7 +8,10 @@ export const importNewFile = createAction(
 
 export const changeSelectedGroup = createAction(
   '[Groups] Change Selected Group',
-  props<{ groupID: string | null }>(),
+  props<{ 
+    groupID: string | null;
+    groupLabl: string | null; 
+  }>(),
 );
 
 export const onSelectVariable = createAction(

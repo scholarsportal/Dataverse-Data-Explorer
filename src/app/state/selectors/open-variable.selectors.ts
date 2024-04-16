@@ -1,14 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { OpenVariableState } from '../reducers/open-variable.reducer';
-import {
-  selectDatasetProcessedVariables,
-  selectDatasetVariables,
-} from './dataset.selectors';
-import {
-  selectCurrentVarList,
-  selectVariablesWithGroupsReference,
-} from './var-groups.selectors';
-import { VariableForm, initVariableForm } from '../interface';
+import { selectDatasetProcessedVariables } from './dataset.selectors';
+import { selectCurrentVarList, selectVariablesWithGroupsReference } from './var-groups.selectors';
+import { initVariableForm, VariableForm } from '../interface';
+
 export const selectOpenVariableFeature =
   createFeatureSelector<OpenVariableState>('open-variable');
 
@@ -56,10 +51,14 @@ export const selectOpenVariableSelectedGroups = createSelector(
   selectOpenVariableID,
   selectVariablesWithGroupsReference,
   (openVariableID, variablesWithGroups) => {
+    const groupIDs: { [id: string]: string } = {};
     if (openVariableID && variablesWithGroups) {
-      return variablesWithGroups[openVariableID]?.groups;
+      console.log(variablesWithGroups[openVariableID]);
+      variablesWithGroups[openVariableID]?.groups.map((value) => {
+        groupIDs[value['@_ID']] = value.labl;
+      });
     }
-    return [];
+    return groupIDs;
   }
 );
 
@@ -76,10 +75,11 @@ export const selectOpenVariableDataAsForm = createSelector(
       formData.universe = variable.universe || '';
       formData.notes = variable.notes['#text'] || '';
       formData.weight = variable['@_wgt-var'] || '';
-      formData.isWeight = variable['@_wgt'] ? true : false;
+      // formData.isWeight = variable['@_wgt'] ? true : false;
+      formData.isWeight = !!variable['@_wgt'];
       return formData;
     }
-    return;
+    return initVariableForm;
   }
 );
 
@@ -127,7 +127,7 @@ export const selectOpenVariableDataChartTable = createSelector(
           count,
           countWeighted,
           valid: true,
-          countPercent: 0, // Initialize countPercent to 0
+          countPercent: 0 // Initialize countPercent to 0
         };
         total += Number(count);
       });
@@ -151,7 +151,7 @@ export const selectOpenVariableDataChart = createSelector(
       Object.values(state).map((value) =>
         chartData.push({
           y: value.categories,
-          x: parseFloat(value.count as string) || 0,
+          x: parseFloat(value.count as string) || 0
         })
       );
     }
@@ -178,7 +178,7 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
           case 'invd':
             sumStats.push({
               key: 'Total Invalid Count',
-              value: value['#text'] as string,
+              value: value['#text'] as string
             });
             break;
           case 'min':
@@ -187,7 +187,7 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
           case 'stdev':
             sumStats.push({
               key: 'Standard Deviation',
-              value: value['#text'] as string,
+              value: value['#text'] as string
             });
             break;
           case 'max':
@@ -196,7 +196,7 @@ export const selectOpenVariableDataAsSummaryStat = createSelector(
           case 'vald':
             sumStats.push({
               key: 'Total Valid Count',
-              value: value['#text'] as string,
+              value: value['#text'] as string
             });
             break;
         }

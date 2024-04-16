@@ -1,28 +1,34 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-// instanbul ignore next
+import { inject, Injectable } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { Observable, of } from 'rxjs';
 import { JSONStructure } from '../state/interface';
+import { Store } from '@ngrx/store';
+import { selectFileID, selectSiteURL } from '../state/selectors/dataset.selectors';
+
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DdiService {
+  store = inject(Store);
+  http = inject(HttpClient);
+
+  siteURL = this.store.selectSignal(selectSiteURL);
+  fileID = this.store.selectSignal(selectFileID);
+
   private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
     {
       ignoreAttributes: false,
-      attributeNamePrefix: '@_',
+      attributeNamePrefix: '@_'
     };
-
-  constructor(private http: HttpClient) {}
 
   fetchDatasetFromDataverse(
     fileID: number,
-    siteURL: string,
+    siteURL: string
   ): Observable<string> {
     return this.http.get(
       `${siteURL}/api/access/datafile/${fileID}/metadata/ddi`,
-      { responseType: 'text' },
+      { responseType: 'text' }
     );
   }
 
@@ -30,14 +36,14 @@ export class DdiService {
     siteURL: string,
     fileID: number,
     xml: string,
-    apiKey: string | undefined,
+    apiKey: string | undefined
   ): Observable<any> {
     if (apiKey) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/xml',
-          'X-Dataverse-key': apiKey,
-        }),
+          'X-Dataverse-key': apiKey
+        })
       };
       return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
     } else {
@@ -45,25 +51,26 @@ export class DdiService {
     }
   }
 
-  fetchCrossTabulationFromDataverse(
-    siteURL: string,
-    fileID: number,
-    variable: string,
+  fetchCrossTabulationFromVariables(
+    variable: string
   ) {
-    return this.http.get(
-      `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${variable}`,
-      { responseType: 'text' },
-    );
+
+    if (this.siteURL() && this.fileID()) {
+      return this.http.get(
+        `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
+        { responseType: 'text' }
+      );
+    } else {
+      throw Error('No Site URL, File ID');
+    }
   }
 
-  // instanbul ignore next
   XMLtoJSON(xml: string): JSONStructure {
     const parser = new XMLParser(this.parseOptions);
     const parsed = parser.parse(xml);
     return parsed;
   }
 
-  // instanbul ignore next
   JSONtoXML(json: JSONStructure): string {
     const parser = new XMLBuilder(this.parseOptions);
     const xml = parser.build(json);

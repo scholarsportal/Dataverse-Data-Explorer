@@ -61,24 +61,27 @@
     >
     </textarea>
   </label>
-  <label for="multiselect" class="form-label"
-    >Group(s)
+  <label for="multiselect" class="form-label w-full"
+  >Group(s)
     <dct-multiselect-dropdown
       id="multiselect"
-      class="dropdown dropdown-top dropdown-start"
-      [selectedVariableGroups]="groups || []"
-      (emitSelectedGroups)="onGroupChange($event)"
-      position="bottom"
+      [itemList]="$allValuesInDropdown()"
+      [selectedItems]="$selectedGroups()"
+      (changeSelectedItems)="onGroupChange($event)"
     ></dct-multiselect-dropdown>
   </label>
-  <div class="flex flex-row mt-5 pr-5">
+  <div class="flex flex-row mt-3 pr-5">
     <label class="form-label sr-only" for="weightVar">Weight Variable</label>
-    <select id="weightVar" class="select select-bordered w-full max-w-xs" formControlName="weight">
+    <select
+      id="weightVar"
+      class="select select-bordered w-full max-w-xs"
+      formControlName="weight"
+    >
       <option value="">No Weight Assigned</option>
-      @for (weightValue of ( weights | keyvalue); track $index) {
-      <option [value]="weightValue.key">
-        {{ weightValue.value }}
-      </option>
+      @for (weightValue of $weights() | keyvalue; track $index) {
+        <option [value]="weightValue.key">
+          {{ weightValue.value }}
+        </option>
       }
     </select>
     <label
@@ -95,7 +98,7 @@
     </label>
   </div>
 </form>
-<button class="btn btn-primary justify-start w-full mt-5" (click)="handleSave()">
+<button class="btn btn-primary justify-start w-full mt-5">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"

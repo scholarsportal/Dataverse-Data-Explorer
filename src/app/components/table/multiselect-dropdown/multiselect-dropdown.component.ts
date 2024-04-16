@@ -1,56 +1,32 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VariableGroup } from 'src/app/state/interface';
-import { Store } from '@ngrx/store';
-import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'dct-multiselect-dropdown',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './multiselect-dropdown.component.html',
-  styleUrl: './multiselect-dropdown.component.css',
+  styleUrl: './multiselect-dropdown.component.css'
 })
-export class MultiselectDropdownComponent implements OnInit, OnDestroy {
-  @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
-  @Input() selectedVariableGroups: VariableGroup[] = [];
-  @Input() position: 'top' | 'bottom' = 'top';
-  @Output() emitSelectedGroups: EventEmitter<VariableGroup[]> =
-    new EventEmitter<VariableGroup[]>();
+export class MultiselectDropdownComponent {
+  // @ViewChild('dropdown') multiselectDropdownElement?: ElementRef;
+  multiselectDropdownElement = viewChild<ElementRef>('dropdown');
+  el = inject(ElementRef);
 
-  isDialogueOpen: boolean = false;
-  element: any;
-  allVariableGroups$: VariableGroup[] | undefined;
-  sub!: Subscription;
-
-  constructor(private store: Store, private el: ElementRef) {
-    this.element = el.nativeElement;
-  }
-
-  ngOnInit(): void {
-    this.element.addEventListener('click', (el: any) => {
-      if (el.target.id === 'dropdown') {
-        this.closeDialog();
-      }
-    });
-    this.sub = this.store
-      .select(selectDatasetVariableGroups)
-      .subscribe((data) => (this.allVariableGroups$ = data));
-  }
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
+  emptyPlaceholderText = input('No items selected');
+  emptySetPlaceholderText = input('No values in set');
+  itemList = input.required<{ [id: string]: string }>({});
+  selectedItems = input<string[]>([]);
+  position = input<'top' | 'bottom'>('top');
+  changeSelectedItems = output<string[]>();
+  computedPosition = computed(() => {
+    if (this.position() === 'top') {
+      return 'bottom-9';
+    } else {
+      return 'top-9';
+    }
+  });
+  isDialogueOpen = signal(false);
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
@@ -59,9 +35,10 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
       this.closeDialog();
     }
   }
+
   @HostListener('document:click', ['$event']) onDocumentClick(event: Event) {
     if (
-      this.isDialogueOpen &&
+      this.isDialogueOpen() &&
       event.target &&
       !this.dialogContainsTarget(event.target)
     ) {
@@ -73,48 +50,47 @@ export class MultiselectDropdownComponent implements OnInit, OnDestroy {
     return this.el?.nativeElement.contains(target as Node);
   }
 
-  getVariableLabel(variableGroup: any): string {
-    return variableGroup.labl;
+  selectedItemsMatched = computed(() => {
+    const selected: { [id: string]: string } = {};
+    this.selectedItems().map((item) => {
+      selected[item] = this.itemList()[item];
+    });
+    return selected;
+  });
+
+  checkSelected(variableGroup: string): boolean {
+    return this.selectedItems().includes(variableGroup);
   }
 
-  getVariableID(variableGroup: any): string {
-    return variableGroup['@_ID'];
-  }
-
-  checkSelected(variableGroup: any): boolean {
-    return this.selectedVariableGroups.includes(variableGroup);
-  }
-
-  changeSelected(variableGroup: any) {
-    const indexOfVariableGroup =
-      this.selectedVariableGroups.indexOf(variableGroup);
-    if (indexOfVariableGroup > -1) {
-      this.selectedVariableGroups.splice(indexOfVariableGroup, 1);
+  changeSelected(itemKey: string) {
+    if (this.checkSelected(itemKey)) {
+      const newSelectedItems = this.removeItemFromArray(itemKey, this.selectedItems());
+      this.changeSelectedItems.emit(newSelectedItems);
     } else {
-      this.selectedVariableGroups.splice(
-        indexOfVariableGroup,
-        0,
-        variableGroup
-      );
+      const newSelectedItems = [...this.selectedItems(), itemKey];
+      this.changeSelectedItems.emit(newSelectedItems);
     }
-    this.emitSelectedGroups.emit(this.selectedVariableGroups);
+  }
+
+  removeItemFromArray(itemKey: string, itemArray: string[]) {
+    return itemArray.filter(item => item !== itemKey);
   }
 
   toggleDialog() {
-    this.isDialogueOpen ? this.closeDialog() : this.openDialog();
+    this.isDialogueOpen() ? this.closeDialog() : this.openDialog();
   }
 
   openDialog() {
+    this.isDialogueOpen.set(true);
     const modal = this.multiselectDropdownElement
-      ?.nativeElement as HTMLDialogElement;
+    ()?.nativeElement as HTMLDialogElement;
     modal?.show();
-    this.isDialogueOpen = true;
   }
 
   closeDialog() {
+    this.isDialogueOpen.set(false);
     const modal = this.multiselectDropdownElement
-      ?.nativeElement as HTMLDialogElement;
+    ()?.nativeElement as HTMLDialogElement;
     modal?.close();
-    this.isDialogueOpen = false;
   }
 }

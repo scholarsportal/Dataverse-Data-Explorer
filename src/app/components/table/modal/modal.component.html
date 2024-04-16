@@ -1,37 +1,32 @@
 <dialog
   #variableModal
   id="variableModal"
-  class="modal modal-bottom sm:modal-middle "
+  class="modal modal-bottom sm:modal-middle"
 >
-<div class="modal-box">
-  <dct-modal-header
-    class="modal-header"
-    (closeVariableModal)="close()"
-    [nextVar]="nextVar$ | async"
-    [previousVar]="previousVar$ | async"
-  ></dct-modal-header>
-  <div class="modal-body h-full">
-    @if ((modalMode$ | async) === 'edit') {
-      <dct-edit
-        [groups]="variableGroups$ | async"
-        [variableData]="variableData$ | async"
-        [weights]="allWeights$ | async"
-      ></dct-edit>
-    }
-    @if ((modalMode$ | async) === 'view') {
-      <dct-chart
-        class="dark:text-white"
-        [chart]="chart$ | async"
-        [chartTable]="chartTable$ | async"
-        [form]="variableData$ | async"
-        [groups]="variableGroups$ | async"
-        [sumStat]="sumStats$ | async"
-      ></dct-chart>
-    }
+  <div class="modal-box">
+    <dct-modal-header
+      class="modal-header"
+      (closeVariableModal)="close()"
+      [nextVar]="nextVar$ | async"
+      [previousVar]="previousVar$ | async"
+    ></dct-modal-header>
+    <div class="modal-body h-full">
+      @if ((modalMode$ | async) === 'edit') {
+        <dct-edit></dct-edit>
+      }
+      @if ((modalMode$ | async) === 'view') {
+        <dct-chart
+          class="dark:text-white"
+          [chart]="chart$ | async"
+          [chartTable]="chartTable$ | async"
+          [form]="variableData$ | async"
+          [sumStat]="sumStats$ | async"
+        ></dct-chart>
+      }
+    </div>
+    <dct-modal-footer
+      class="flex flex-col w-full pt-10"
+      (closeVariableModal)="close()"
+    ></dct-modal-footer>
   </div>
-  <dct-modal-footer
-    class="flex flex-col w-full pt-10"
-    (closeVariableModal)="close()"
-  ></dct-modal-footer>
-</div>
 </dialog>

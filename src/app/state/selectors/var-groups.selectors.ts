@@ -15,6 +15,11 @@ export const selectCurrentGroup = createSelector(
   (state) => state.selectedGroup,
 );
 
+export const selectCurrentGroupLabl = createSelector(
+  selectVarAndGroupsFeature,
+  (state) => state.selectedGroupLabl,
+);
+
 export const selectCurrentGroupIDs = createSelector(
   selectCurrentGroup,
   selectDatasetVariableGroups,
