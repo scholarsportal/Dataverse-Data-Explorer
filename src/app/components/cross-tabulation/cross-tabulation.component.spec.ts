@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CrossTabulationComponent } from './cross-tabulation.component';
 
 describe('CrossTabulationComponent', () => {
@@ -8,10 +7,11 @@ describe('CrossTabulationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CrossTabulationComponent]
+      imports: [CrossTabulationComponent],
+      providers: []
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CrossTabulationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
