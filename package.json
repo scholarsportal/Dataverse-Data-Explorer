@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build --output-path docs --base-href /Dataverse-Data-Curation-Tool/",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +37,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.2",
+    "@angular-eslint/builder": "17.3.0",
+    "@angular-eslint/eslint-plugin": "17.3.0",
+    "@angular-eslint/eslint-plugin-template": "17.3.0",
+    "@angular-eslint/schematics": "17.3.0",
+    "@angular-eslint/template-parser": "17.3.0",
     "@angular/cli": "^17.3.2",
     "@angular/compiler-cli": "^17.3.1",
     "@types/datatables.net": "^1.10.21",
@@ -44,8 +50,8 @@
     "@types/karma": "^6.3.8",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.19",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "7.2.0",
+    "@typescript-eslint/parser": "7.2.0",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.7.2",
     "eslint": "^8.57.0",
