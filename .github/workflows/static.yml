@@ -3,7 +3,7 @@ name: Deploy Data Explorer to Pages
 
 on:
   # Runs on pushes targeting the default branch
-  pull_request:
+  push:
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
