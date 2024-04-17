@@ -4,7 +4,7 @@
 name: Lint/Test CI
 
 on:
-  pull_request:
+  push:
     branches: [ 'nana-dev', 'dev' ]
 
 jobs:
