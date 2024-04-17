@@ -2,9 +2,6 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: [ 'nana-dev' ]
   pull_request:
     branches: [ 'main', 'dev' ]
 
@@ -24,8 +21,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  # Build job to build Angular app
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: npm install
+      - name: Build Angular app
+        run: npm run build
+
+  # Test job to test Angular app
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test
+
+  # Deploy job to deploy Angular app to GitHub Pages
   deploy:
+    needs: [ build, test ]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
