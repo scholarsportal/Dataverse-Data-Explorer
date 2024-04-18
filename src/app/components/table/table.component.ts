@@ -1,49 +1,41 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  selectCurrentVarList,
-  selectCurrentVariableSelected,
-  selectVariablesWithGroupsReference,
-} from 'src/app/state/selectors/var-groups.selectors';
-import { ColumnMode, SelectionType, SortType, NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { Variable, VariableGroup } from 'src/app/state/interface';
+import { selectCurrentVariableSelected, selectCurrentVarList } from 'src/app/state/selectors/var-groups.selectors';
+import { NgxDatatableModule, SelectionType, SortType } from '@swimlane/ngx-datatable';
+import { Variable } from 'src/app/state/interface';
 import { onSelectVariable } from 'src/app/state/actions/var-and-groups.actions';
-import { selectOpenVariableModalMode } from 'src/app/state/selectors/open-variable.selectors';
 import { ModalComponent } from './modal/modal.component';
-import {
-  openVariableChartModal,
-  openVariableEditModal,
-} from 'src/app/state/actions/ui.actions';
+import { openVariableChartModal, openVariableEditModal } from 'src/app/state/actions/ui.actions';
 import { TableMenuComponent } from './table-menu/table-menu.component';
 import { VariableOptionsComponent } from './variable-options/variable-options.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { TableNavComponent } from './table-nav/table-nav.component';
+
 @Component({
-    selector: 'dct-table',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.css'],
-    standalone: true,
-    imports: [
-        TableNavComponent,
-        NgClass,
-        NgxDatatableModule,
-        BulkEditModalComponent,
-        VariableOptionsComponent,
-        ModalComponent,
-        TableMenuComponent,
-        AsyncPipe,
-    ],
+  selector: 'dct-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.css'],
+  standalone: true,
+  imports: [
+    TableNavComponent,
+    NgClass,
+    NgxDatatableModule,
+    BulkEditModalComponent,
+    VariableOptionsComponent,
+    ModalComponent,
+    TableMenuComponent,
+    AsyncPipe
+  ]
 })
 export class TableComponent implements OnInit {
   @ViewChild('table') table: any;
   @ViewChild(ModalComponent) ModalComponent?: ModalComponent;
   @Input() variablesWithGroups!: {
-    [id: string]: { groups: VariableGroup[]; label: string };
+    [id: string]: string[];
   } | null;
 
   vars$ = this.store.select(selectCurrentVarList);
-  modalMode$ = this.store.select(selectOpenVariableModalMode);
   selected: any[] = [];
   limit: number = 100;
   offset: number = 0;
@@ -54,10 +46,9 @@ export class TableComponent implements OnInit {
     { name: 'Name' },
     { name: 'Label' },
     { name: 'Weight' },
-    { name: 'View/Edit' },
+    { name: 'View/Edit' }
   ];
 
-  ColumnMode = ColumnMode;
   SortType = SortType;
   SelectionType = SelectionType;
 
@@ -69,12 +60,13 @@ export class TableComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   isVariableGroupsEmpty(variableID: string): boolean {
     if (this.variablesWithGroups) {
       if (this.variablesWithGroups[variableID]) {
-        return this.variablesWithGroups[variableID].groups.length === 0;
+        return this.variablesWithGroups[variableID].length === 0;
       } else {
         return true;
       }
@@ -115,11 +107,11 @@ export class TableComponent implements OnInit {
     this.ModalComponent?.open();
     if (data.type === 'edit')
       return this.store.dispatch(
-        openVariableEditModal({ variableID: data.variable['@_ID'] }),
+        openVariableEditModal({ variableID: data.variable['@_ID'] })
       );
     if (data.type === 'view')
       return this.store.dispatch(
-        openVariableChartModal({ variableID: data.variable['@_ID'] }),
+        openVariableChartModal({ variableID: data.variable['@_ID'] })
       );
   }
 }

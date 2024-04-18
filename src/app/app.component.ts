@@ -1,17 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { fetchDataset } from './state/actions/dataset.actions';
-import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
-import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
-import { selectIsCrossTabOpen } from './state/selectors/cross-tabulation.selectors';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { TableComponent } from './components/table/table.component';
 import { ImportComponent } from './components/import/import.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
 import { HeaderComponent } from './components/header/header.component';
-import { selectDatasetDownloadPending } from './new.state/dataset/dataset.selectors';
+import {
+  selectDatasetDownloadedSuccessfully,
+  selectDatasetDownloadPending
+} from './new.state/dataset/dataset.selectors';
+import { selectBodyToggleState, selectImportComponentState } from './new.state/ui/ui.selectors';
+import { selectVariablesWithCorrespondingGroups } from './new.state/xml/xml.selectors';
+import { DataverseFetchActions } from './new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-root',
@@ -32,10 +34,11 @@ export class AppComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
 
-  loaded$ = this.store.select(selectDatasetDownloadPending);
-  isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
-  isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
-  variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);
+  loading = this.store.selectSignal(selectDatasetDownloadPending);
+  loaded = this.store.selectSignal(selectDatasetDownloadedSuccessfully);
+  tabToggleState = this.store.selectSignal(selectBodyToggleState);
+  isOptionsMenuOpen = this.store.selectSignal(selectImportComponentState);
+  variablesWithGroups$ = this.store.select(selectVariablesWithCorrespondingGroups);
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -44,7 +47,7 @@ export class AppComponent implements OnInit {
       const apiKey = params['key'] as string;
       if (siteURL && fileID) {
         return this.store.dispatch(
-          fetchDataset({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
+          DataverseFetchActions.startDDIFetch({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
         );
       }
       if (localStorage.getItem('theme')) {

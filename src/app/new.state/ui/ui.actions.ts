@@ -18,8 +18,13 @@ export const CrossTabulationUIActions =
 export const VariableTabUIAction = createActionGroup({
   source: 'Variable Tab',
   events: {
+    // Toggle to Variable Tab
+    'Navigate to Variable Tab': emptyProps(),
+    // User has clicked group in sidebar
     'Change Selected Group ID': props<{ groupID: string }>(),
+    // User has opened a variables chart or edit modal
     'Change Open Variable': props<{ variableID: string, mode: 'edit' | 'view' }>(),
-    'Add/Remove Variable Selection Context': props<{ variableIDs: string[], selectedGroup: string }>()
+    // User has selected one or more variables
+    'Change Variable Selection Context': props<{ variableIDs: string[], selectedGroup: string }>()
   }
 });

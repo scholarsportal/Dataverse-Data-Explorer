@@ -29,6 +29,10 @@ npm install
 ng serve
 ```
 
+### Variable Selection Context
+
+When a user selects a variables, navigates to another group, and makes another selection, the app holds the selection information for both contexts in which the selection in made. In simple terms the user does not have to worry about losing their selection when they change groups.
+
 ![Data Curation Tool Launch Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Init%20Sequence%20Diagram.jpg?raw=true 'Launch Activity Diagram')
 
 ![Update Component View Reference](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Update%20Component%20View.jpg?raw=true 'Update Component View Reference')

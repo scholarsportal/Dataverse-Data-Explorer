@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadButtonComponent } from './file-upload-button/file-upload-button.component';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { datasetImportMetadataStart } from 'src/app/state/actions/dataset.actions';
-import { VariableForm, VariableFormTemplate } from 'src/app/state/interface';
+import { VariableFormTemplate } from 'src/app/state/interface';
 import {
   selectDatasetImportInProgress,
   selectDatasetImportNotStarted,
-  selectDatasetImportSuccess,
+  selectDatasetImportSuccess
 } from 'src/app/state/selectors/dataset.selectors';
 
 @Component({
@@ -17,6 +17,7 @@ import {
   imports: [CommonModule, FormsModule, FileUploadButtonComponent],
   templateUrl: './import.component.html',
   styleUrl: './import.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportComponent {
   importInProgress$ = this.store.select(selectDatasetImportInProgress);
@@ -33,7 +34,8 @@ export class ImportComponent {
   variableNotes = false;
   weights = false;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   onFileSelected(file: File) {
     // Handle the selected file here
@@ -45,6 +47,7 @@ export class ImportComponent {
       this.literalQuestion && this.interviewerQuestion && this.postQuestion
     );
   }
+
   questionTextIndeterminate(): boolean {
     return (
       this.literalQuestion || this.interviewerQuestion || this.postQuestion
@@ -74,11 +77,11 @@ export class ImportComponent {
       postQuestion: this.postQuestion,
       notes: this.variableNotes,
       weight: this.weights,
-      universe: this.universe,
+      universe: this.universe
     };
     if (fileText) {
       this.store.dispatch(
-        datasetImportMetadataStart({ file: fileText, variableTemplate }),
+        datasetImportMetadataStart({ file: fileText, variableTemplate })
       );
     }
   }

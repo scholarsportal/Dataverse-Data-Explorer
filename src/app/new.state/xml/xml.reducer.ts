@@ -2,14 +2,25 @@ import { ddiJSONStructure } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 
-export const initialState: { dataset?: ddiJSONStructure } = {};
+export const initialState: {
+  dataset?: ddiJSONStructure,
+  info?: {
+    siteURL: string,
+    fileID: number,
+    apiKey?: string
+  }
+} = {};
 
 export const xmlReducer = createReducer(
   initialState,
-  on(DataverseFetchActions.fetchDDISuccess, (state, { data }) => {
+  on(DataverseFetchActions.fetchDDISuccess, (state, { data, fileID, apiKey, siteURL }) => {
     return {
-      ...state,
-      dataset: data
+      dataset: data,
+      info: {
+        siteURL,
+        apiKey,
+        fileID
+      }
     };
   }),
   on(XmlManipulationActions.importConversionSuccess, (state, { importDdiData, variableTemplate }) => {

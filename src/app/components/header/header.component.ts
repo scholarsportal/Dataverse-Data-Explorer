@@ -1,20 +1,19 @@
-import {ChangeDetectionStrategy, Component, OnInit,} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {take} from 'rxjs';
-import {closeCrossTabulationTab, openCrossTabulationTab,} from 'src/app/state/actions/cross-tabulation.actions';
-import {datasetUploadRequest} from 'src/app/state/actions/dataset.actions';
-import {selectIsCrossTabOpen} from 'src/app/state/selectors/cross-tabulation.selectors';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { closeCrossTabulationTab, openCrossTabulationTab } from 'src/app/state/actions/cross-tabulation.actions';
+import { selectIsCrossTabOpen } from 'src/app/state/selectors/cross-tabulation.selectors';
 import {
   selectDatasetCitation,
-  selectDatasetForUpload,
   selectDatasetHasAPIKey,
   selectDatasetTitle,
   selectDatasetUploadFailed,
-  selectDatasetUploadSuccess,
+  selectDatasetUploadSuccess
 } from 'src/app/state/selectors/dataset.selectors';
-import {AsyncPipe, NgClass, NgOptimizedImage} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {VarCrosstabToggleComponent} from './var-crosstab-toggle/var-crosstab-toggle.component';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { VarCrosstabToggleComponent } from './var-crosstab-toggle/var-crosstab-toggle.component';
+import { selectDatasetUploadInfo } from '../../new.state/xml/xml.selectors';
+import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-header',
@@ -22,16 +21,15 @@ import {VarCrosstabToggleComponent} from './var-crosstab-toggle/var-crosstab-tog
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   title$ = this.store.select(selectDatasetTitle);
   citation$ = this.store.select(selectDatasetCitation);
   uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
   uploadFail$ = this.store.select(selectDatasetUploadFailed);
-  hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
-  protected isCrossTabOpen$ = this.store.selectSignal(selectIsCrossTabOpen);
-  sub$ = this.store.select(selectDatasetForUpload);
+  private hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
+  private isCrossTabOpen$ = this.store.selectSignal(selectIsCrossTabOpen);
   checked: boolean = true;
   showToggle: boolean = false;
 
@@ -75,14 +73,13 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
-    this.sub$
-      .pipe(take(1))
-      .subscribe(({dataset, fileID, siteURL, apiKey}) => {
-        if (dataset && fileID && siteURL) {
-          this.store.dispatch(
-            datasetUploadRequest({dataset, siteURL, fileID, apiKey}),
-          );
-        }
-      });
+    const datasetInfo = this.store.selectSignal(selectDatasetUploadInfo);
+    const ddiData = datasetInfo()?.dataset;
+    const siteURL = datasetInfo()?.info?.siteURL;
+    const fileID = datasetInfo()?.info?.fileID;
+    const apiKey = datasetInfo()?.info?.apiKey;
+    if (siteURL && fileID && apiKey && ddiData) {
+      this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
+    }
   }
 }

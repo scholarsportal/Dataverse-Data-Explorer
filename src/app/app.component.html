@@ -1,15 +1,15 @@
 <main class="main">
-  @if ((loaded$ | async) === 'success') {
+  @if (loaded()) {
     <dct-header class="header border-b"></dct-header>
-    @if (isCrossTabOpen$ | async) {
-      <dct-cross-tabulation class="body grid-flow-col"></dct-cross-tabulation>
+    @if (tabToggleState) {
+      <dct-cross-tabulation class="body grid-flow-col" />
     } @else {
       <div class="body">
         <dct-sidebar
           class="sidebar md:border-r border-light-surface z-20"
-        ></dct-sidebar>
-        @if (isOptionsMenuOpen$ | async) {
-          <dct-import class="table"></dct-import>
+        />
+        @if (isOptionsMenuOpen() === 'open') {
+          <dct-import class="table" />
         } @else {
           <dct-table
             class="table"

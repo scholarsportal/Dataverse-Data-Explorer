@@ -1,36 +1,36 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   changeSelectedGroup,
   groupChangeName,
   groupCreateNew,
-  groupDelete,
+  groupDelete
 } from 'src/app/state/actions/var-and-groups.actions';
-import { VariableGroup } from 'src/app/state/interface';
 import { selectDatasetVariableGroups } from 'src/app/state/selectors/dataset.selectors';
 import { selectCurrentGroup, selectCurrentGroupLabl } from 'src/app/state/selectors/var-groups.selectors';
 import { OptionsComponent } from './options/options.component';
 import { DefaultSidebarButtonComponent } from './default-sidebar-button/default-sidebar-button.component';
 import { RenamingSidebarButtonComponent } from './renaming-sidebar-button/renaming-sidebar-button.component';
 import { DeletingSidebarButtonComponent } from './deleting-sidebar-button/deleting-sidebar-button.component';
-import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { AsyncPipe, KeyValuePipe, NgClass } from '@angular/common';
 import { NewGroupComponent } from './new-group/new-group.component';
 
 @Component({
   selector: 'dct-sidebar',
-    templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.css'],
-    standalone: true,
-    imports: [
-        NewGroupComponent,
-        NgClass,
-        DeletingSidebarButtonComponent,
-        RenamingSidebarButtonComponent,
-        DefaultSidebarButtonComponent,
-        OptionsComponent,
-        AsyncPipe,
-        KeyValuePipe,
-    ],
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css'],
+  standalone: true,
+  imports: [
+    NewGroupComponent,
+    NgClass,
+    DeletingSidebarButtonComponent,
+    RenamingSidebarButtonComponent,
+    DefaultSidebarButtonComponent,
+    OptionsComponent,
+    AsyncPipe,
+    KeyValuePipe
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent {
   groups$ = this.store.select(selectDatasetVariableGroups);
@@ -41,9 +41,10 @@ export class SidebarComponent {
   renamingGroup: boolean = false;
   groupToBeChanged: string | null = null;
   renameInputValue: string = '';
-  selectedGroupLabl$ = this.store.select(selectCurrentGroupLabl)
+  selectedGroupLabl$ = this.store.select(selectCurrentGroupLabl);
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   getLabel(selection: any) {
     return selection?.labl || '<NO LABEL ON GROUP>';
@@ -59,7 +60,7 @@ export class SidebarComponent {
       if (elem instanceof HTMLElement) {
         elem?.blur();
       }
-      this.store.dispatch(changeSelectedGroup({ groupID: null, groupLabl: null}));
+      this.store.dispatch(changeSelectedGroup({ groupID: null, groupLabl: null }));
     } else {
       const selectedGroupLabl = this.getLabel(selection);
       const groupID = { groupID: selection['@_ID'], groupLabl: selectedGroupLabl };
@@ -98,8 +99,8 @@ export class SidebarComponent {
       this.store.dispatch(
         groupChangeName({
           groupID: this.groupToBeChanged,
-          newName,
-        }),
+          newName
+        })
       );
     }
     this.groupToBeChanged = null;
