@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { fetchDataset } from './state/actions/dataset.actions';
-import { selectDatasetLoading } from './state/selectors/dataset.selectors';
 import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
 import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
 import { selectIsCrossTabOpen } from './state/selectors/cross-tabulation.selectors';
@@ -12,6 +11,7 @@ import { ImportComponent } from './components/import/import.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
 import { HeaderComponent } from './components/header/header.component';
+import { selectDatasetDownloadPending } from './new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-root',
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
 
-  loaded$ = this.store.select(selectDatasetLoading);
+  loaded$ = this.store.select(selectDatasetDownloadPending);
   isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
   isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
   variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);

@@ -1,10 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
-import { Observable, of } from 'rxjs';
-import { JSONStructure } from '../state/interface';
+import { map, Observable } from 'rxjs';
+import { ddiJSONStructure, JSONStructure } from '../old.state/interface';
 import { Store } from '@ngrx/store';
-import { selectFileID, selectSiteURL } from '../state/selectors/dataset.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,6 @@ import { selectFileID, selectSiteURL } from '../state/selectors/dataset.selector
 export class DdiService {
   store = inject(Store);
   http = inject(HttpClient);
-
-  siteURL = this.store.selectSignal(selectSiteURL);
-  fileID = this.store.selectSignal(selectFileID);
 
   private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
     {
@@ -25,39 +21,40 @@ export class DdiService {
   fetchDatasetFromDataverse(
     fileID: number,
     siteURL: string
-  ): Observable<string> {
+  ): Observable<ddiJSONStructure> {
     return this.http.get(
       `${siteURL}/api/access/datafile/${fileID}/metadata/ddi`,
       { responseType: 'text' }
+    ).pipe(
+      map((data) => this.XMLtoJSON(data))
     );
   }
 
   uploadDatasetToDataverse(
     siteURL: string,
     fileID: number,
-    xml: string,
-    apiKey: string | undefined
+    jsonData: ddiJSONStructure,
+    apiKey: string
   ): Observable<any> {
-    if (apiKey) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/xml',
-          'X-Dataverse-key': apiKey
-        })
-      };
-      return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
-    } else {
-      return of({ error: 'No Api Key' });
-    }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml',
+        'X-Dataverse-key': apiKey
+      })
+    };
+    const xml = this.JSONtoXML(jsonData);
+    return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
   }
 
   fetchCrossTabulationFromVariables(
-    variable: string
+    variable: string,
+    siteURL: string,
+    fileID: number
   ) {
 
-    if (this.siteURL() && this.fileID()) {
+    if (siteURL && fileID) {
       return this.http.get(
-        `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
+        `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${variable}`,
         { responseType: 'text' }
       );
     } else {

@@ -47,6 +47,7 @@ export interface Variable {
   '@_wgt-var': string;
   '@_wgt'?: string;
 }
+
 export interface NesstarVariable {
   location: Location;
   labl: string;
@@ -70,46 +71,10 @@ export interface NesstarVariable {
   '@_wgt'?: string;
 }
 
-export interface VariableForm {
-  id: string;
-  label: string;
-  literalQuestion: string | null;
-  interviewQuestion: string | null;
-  postQuestion: string | null;
-  universe: string | null;
-  notes: string | null;
-  weight: string | null;
-  isWeight: boolean;
-}
-
-export interface VariableFormTemplate {
-  label: boolean;
-  literalQuestion: boolean;
-  interviewQuestion: boolean;
-  postQuestion: boolean;
-  universe: boolean;
-  notes: boolean;
-  weight: boolean;
-}
-
-export const initVariableForm = {
-  id: '',
-  name: '',
-  label: '',
-  literalQuestion: '',
-  interviewQuestion: '',
-  postQuestion: '',
-  universe: '',
-  notes: '',
-  groups: [],
-  weight: '',
-  isWeight: false,
-};
-
 export interface VariableGroup {
   labl: string;
   '@_ID': string;
-  '@_var': string;
+  '@_var'?: string;
 }
 
 interface StudyDescription {
@@ -167,7 +132,7 @@ interface XML {
   };
 }
 
-export interface JSONStructure {
+export interface ddiJSONStructure {
   '?xml': XML['?xml'];
   codeBook: CodeBook;
 }

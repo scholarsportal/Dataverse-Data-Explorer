@@ -14,9 +14,15 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 ### Pre-Requisites
 
 - NodeJS (runtime for Angular and client)
+
+  For development, I recommend using a Node Version manager such as [nvm](https://github.com/creationix/nvm) or [fnm](https://github.com/Schniz/fnm). Otherwise, NodeJS can be found [here](https://nodejs.org/en/download).
 - Angular (client framework)
 
-See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+  ```npm install -g @angular/cli```
+
+Integrating Data Explorer in your institution? See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+
+Now to start development.
 
 ```sh
 npm install
