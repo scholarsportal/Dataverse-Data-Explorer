@@ -1,15 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ddiJSONStructure } from './xml.interface';
+import { XmlState } from './xml.interface';
 
 export const selectXmlFeature =
-  createFeatureSelector<{
-    dataset?: ddiJSONStructure,
-    info?: {
-      siteURL: string,
-      fileID: number,
-      apiKey: string
-    }
-  }>('xml');
+  createFeatureSelector<XmlState>('xml');
 
 export const selectDatasetVariables =
   createSelector(selectXmlFeature, (state) =>
@@ -21,6 +14,28 @@ export const selectDatasetVariableGroups =
 
 export const selectDatasetUploadInfo = createSelector(
   selectXmlFeature, state => state);
+
+export const selectDatasetCitationData = createSelector(
+  selectXmlFeature, state => state.header
+);
+
+export const selectDatasetTitle = createSelector(
+  selectDatasetCitationData, (citationData => {
+    if (citationData) {
+      return citationData.title;
+    }
+    return null;
+  })
+);
+
+export const selectDatasetCitation = createSelector(
+  selectDatasetCitationData, (citationData => {
+    if (citationData) {
+      return citationData.citation;
+    }
+    return null;
+  })
+);
 
 export const selectVariablesWithCorrespondingGroups = createSelector(
   selectDatasetVariables, selectDatasetVariableGroups, (variables, groups) => {

@@ -136,3 +136,16 @@ export interface ddiJSONStructure {
   '?xml': XML['?xml'];
   codeBook: CodeBook;
 }
+
+export interface XmlState {
+  dataset: ddiJSONStructure | null,
+  header: {
+    citation: string;
+    title: string;
+  } | null,
+  info: {
+    siteURL: string,
+    fileID: number,
+    apiKey: string | undefined,
+  } | null,
+}

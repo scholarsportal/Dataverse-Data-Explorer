@@ -1,30 +1,32 @@
-import { ddiJSONStructure } from './xml.interface';
+import { XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 
-export const initialState: {
-  dataset?: ddiJSONStructure,
-  info?: {
-    siteURL: string,
-    fileID: number,
-    apiKey?: string
-  }
-} = {};
+export const initialState: XmlState = {
+  dataset: null,
+  info: null,
+  header: null
+};
 
 export const xmlReducer = createReducer(
   initialState,
-  on(DataverseFetchActions.fetchDDISuccess, (state, { data, fileID, apiKey, siteURL }) => {
-    return {
-      dataset: data,
-      info: {
-        siteURL,
-        apiKey,
-        fileID
-      }
-    };
-  }),
+  on(DataverseFetchActions.fetchDDISuccess,
+    (state, { data, fileID, siteURL, apiKey }) => {
+      return {
+        dataset: data,
+        info: {
+          siteURL,
+          apiKey,
+          fileID
+        },
+        header: {
+          citation: data.codeBook.stdyDscr.citation.biblCit,
+          title: data.codeBook.stdyDscr.citation.titlStmt.titl
+        }
+      };
+    }),
   on(XmlManipulationActions.importConversionSuccess, (state, { importDdiData, variableTemplate }) => {
-    const newState: { dataset?: ddiJSONStructure } = structuredClone(state);
+    const newState: XmlState = structuredClone(state);
     const variables = newState.dataset?.codeBook.dataDscr.var || [];
     const variableGroups = newState.dataset?.codeBook.dataDscr.varGrp || [];
     if (newState.dataset && variables.length && variableGroups.length) {
