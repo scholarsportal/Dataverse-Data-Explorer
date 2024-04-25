@@ -1,0 +1,49 @@
+<!-- CHART -->
+<div class="flex w-full mt-4">
+  <canvas id="variableChart"> {{ chartJS }}</canvas>
+</div>
+<!-- CHART DATA -->
+<table class="table-fixed w-full mt-10">
+  <thead class="table-header">
+  <tr class="border-b">
+    <th>Mark Invalid</th>
+    <th>Values</th>
+    <th>Categories</th>
+    <th>Count</th>
+    <th>Count (%)</th>
+    <th>Weighted Count</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (item of chartTable | keyvalue; track $index) {
+      <tr class="border-y">
+        <td class="w-full justify-between">
+          <input
+            class="mx-auto"
+            type="checkbox"
+            name="mark-invalid"
+            id="{{ $index }}"
+            [checked]="getChecked(item.value)"
+            (change)="toggleCheckbox(item.value)"
+          />
+        </td>
+        <td>{{ item.key }}</td>
+        <td>{{ getCategory(item.value) }}</td>
+        <td>{{ getCount(item.value) }}</td>
+        <td>{{ getCountPercent(item.value) | number: '1.0-2' }}</td>
+        <td>{{ getCountWeighted(item.value) | number: '1.0-2' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<h3 class="font-bold text-xl my-10">Summary Statistics</h3>
+<dct-summary-statistics
+  [summaryStats]="sumStat()"
+/>
+
+<h3 class="font-bold text-xl my-10">Variable Information</h3>
+@if (form()) {
+  <!--  <dct-variable-information-->
+    <!--  [form]="form()"/>-->
+}

@@ -1,0 +1,105 @@
+<nav class="nav md:grid">
+  <!--  Mobile Menu-->
+  <details class="dropdown w-full border-t p-3 md:hidden">
+    <summary class="btn w-full justify-between ">
+      <span>
+      {{ selectedGroupLabel() }}
+      </span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </summary>
+    <ul
+      class="p-2 w-[98%] items-center overflow-y-scroll shadow menu dropdown-content z-[1] bg-base-100 rounded-box">
+      <li (click)="changeGroup('ALL')" class="w-full btn"><a>All Variables</a></li>
+      @for (item of (simplifiedGroups() | keyvalue); track $index) {
+        <li class="w-full text-"
+            (click)="changeGroup(item.key)"><a>{{ item.value }}</a></li>
+      }
+    </ul>
+  </details>
+
+  <!--  Web Sidebar-->
+  <div class="hidden nav md:grid">
+    <div class="group-add">Add Group</div>
+    <div class="all-groups">
+      <dct-sidebar-button
+        (changeSelectedGroupID)="changeGroup($event)"
+        [selected]="selectedGroupID() === 'ALL'"
+        groupID="ALL"
+        label="All Variables"
+      />
+      @for (group of (simplifiedGroups() | keyvalue); track $index) {
+        <dct-sidebar-button
+          [groupID]="group.key"
+          [label]="group.value"
+          [selected]="group.key === selectedGroupID()"
+          (changeSelectedGroupID)="changeGroup($event)"
+        />
+      }
+    </div>
+    <button (click)="toggleImportComponentState()" [ngClass]="importButtonSelected()" class="border-t options">
+      Import Dataset
+    </button>
+  </div>
+</nav>
+
+<!--<div class="hidden md:contents">-->
+<!--  <div class="group-add flex flex-row items-center relative">-->
+<!--    @if (addingNewGroup) {-->
+<!--      <dct-new-group-button-->
+<!--        class="flex flex-row justify-between h-full w-full"-->
+<!--        (emitCancel)="resetUI()"-->
+<!--        (emitConfirm)="confirmGroup($event)"-->
+<!--      ></dct-new-group-button>-->
+<!--    } @else {-->
+
+<!--      <h2 class="m-5">-->
+<!--        Variable Groups-->
+<!--      </h2>-->
+<!--      <button-->
+<!--        class="btn btn-primary mr-5 absolute right-0"-->
+<!--        (click)="startAddingNewGroup()"-->
+<!--      >-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">-->
+<!--          <path-->
+<!--            d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />-->
+<!--        </svg>-->
+<!--        ADD-->
+<!--      </button>-->
+
+<!--    }-->
+<!--  </div>-->
+<!--  <nav class="all-groups">-->
+<!--    @if (groups | async) {-->
+<!--      <ol>-->
+<!--        <li>-->
+<!--          <div class="flex flex-row justify-between w-full">&lt;!&ndash;container&ndash;&gt;-->
+<!--            <button-->
+<!--              [ngClass]="{ allSelected: (selectedGroup$ | async) === null }"-->
+<!--              (click)="changeGroup(null)"-->
+<!--              class="h-16 px-5 w-full items-center text-start hover:bg-base-200"-->
+<!--            >-->
+<!--              All Variables-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        @for (varGroup of ((groups | async) | keyvalue); track $index) {-->
+<!--          <li class="">-->
+<!--            <dct-sidebar-button-->
+<!--              class=""-->
+<!--              [groupID]="getID(varGroup.value)"-->
+<!--              [label]="getLabel(varGroup.value)"-->
+<!--              (changeSelectedGroupID)="changeGroup($event)"-->
+<!--              (startDelete)="startGroupDelete($event)"-->
+<!--              (startRename)="startGroupRename($event)"-->
+<!--            >-->
+<!--            </dct-sidebar-button>-->
+<!--          </li>-->
+<!--        }-->
+<!--      </ol>-->
+<!--    }-->
+<!--  </nav>-->
+<!--  <dct-options class="options options-button options-colours"></dct-options>-->
+<!--</div>-->

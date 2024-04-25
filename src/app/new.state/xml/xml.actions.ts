@@ -46,6 +46,9 @@ export const XmlManipulationActions = createActionGroup({
     'Import Conversion Success': props<{
       importDdiData: ddiJSONStructure,
       variableTemplate: ImportVariableFormData
-    }>()
+    }>(),
+    'Rename Group': props<{ groupID: string, newLabel: string }>(),
+    'Delete Group': props<{ groupID: string }>(),
+    'Create Group': props<{ groupID: string, label: string }>()
   }
 });

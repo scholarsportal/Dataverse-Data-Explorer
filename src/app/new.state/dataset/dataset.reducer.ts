@@ -1,12 +1,12 @@
-import { ddiJSONStructure } from '../../old.state/interface';
-import { createReducer, on } from '@ngrx/store';
-import { DataverseFetchActions } from '../xml/xml.actions';
+import { ddiJSONStructure } from "../../old.state/interface";
+import { createReducer, on } from "@ngrx/store";
+import { DataverseFetchActions } from "../xml/xml.actions";
 
 export interface DatasetState {
   operationStatus: {
-    download: 'idle' | 'pending' | 'error' | 'success',
-    upload: 'idle' | 'pending' | 'error' | 'success',
-    import: 'idle' | 'pending' | 'error' | 'success'
+    download: "idle" | "pending" | "error" | "success",
+    upload: "idle" | "pending" | "error" | "success" | "disabled",
+    import: "idle" | "pending" | "error" | "success"
   },
   variables: {
     importedDataset: ddiJSONStructure | null,
@@ -24,9 +24,9 @@ export interface DatasetState {
 
 const initialState: DatasetState = {
   operationStatus: {
-    download: 'idle',
-    upload: 'idle',
-    import: 'idle'
+    download: "idle",
+    upload: "idle",
+    import: "idle"
   },
   variables: {
     importedDataset: null,
@@ -44,7 +44,7 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'pending' as const
+        download: "pending" as const
       }
     };
   }),
@@ -53,7 +53,7 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'error' as const
+        download: "error" as const
       }
     };
   }),
@@ -61,7 +61,7 @@ export const datasetReducer = createReducer(
     ...state,
     operationStatus: {
       ...state.operationStatus,
-      download: 'success' as const
+      download: "success" as const
     }
   }))
 );

@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FileUploadButtonComponent } from './file-upload-button/file-upload-button.component';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { datasetImportMetadataStart } from 'src/app/state/actions/dataset.actions';
-import { VariableFormTemplate } from 'src/app/state/interface';
 import {
-  selectDatasetImportInProgress,
-  selectDatasetImportNotStarted,
+  selectDatasetImportIdle,
+  selectDatasetImportPending,
   selectDatasetImportSuccess
-} from 'src/app/state/selectors/dataset.selectors';
+} from 'src/app/new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-import',
@@ -20,11 +18,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportComponent {
-  importInProgress$ = this.store.select(selectDatasetImportInProgress);
-  importNotStarted$ = this.store.select(selectDatasetImportNotStarted);
-  importSucceeded$ = this.store.select(selectDatasetImportSuccess);
+  importInProgress = this.store.selectSignal(selectDatasetImportPending);
+  importNotStarted = this.store.selectSignal(selectDatasetImportIdle);
+  importSucceeded = this.store.selectSignal(selectDatasetImportSuccess);
   file: File | undefined = undefined;
-  // variable options
+  // variable options-button
   variableGroups = false;
   labels = false;
   literalQuestion = false;
@@ -70,19 +68,19 @@ export class ImportComponent {
 
   async onImportButtonClick() {
     const fileText = await this.file?.text();
-    const variableTemplate: VariableFormTemplate = {
-      label: this.labels,
-      interviewQuestion: this.interviewerQuestion,
-      literalQuestion: this.literalQuestion,
-      postQuestion: this.postQuestion,
-      notes: this.variableNotes,
-      weight: this.weights,
-      universe: this.universe
-    };
-    if (fileText) {
-      this.store.dispatch(
-        datasetImportMetadataStart({ file: fileText, variableTemplate })
-      );
-    }
+    /* const variableTemplate: VariableFormTemplate = {
+       label: this.labels,
+       interviewQuestion: this.interviewerQuestion,
+       literalQuestion: this.literalQuestion,
+       postQuestion: this.postQuestion,
+       notes: this.variableNotes,
+       weight: this.weights,
+       universe: this.universe
+     };
+     if (fileText) {
+       this.store.dispatch(
+         datasetImportMetadataStart({ file: fileText, variableTemplate })
+       );
+     }*/
   }
 }

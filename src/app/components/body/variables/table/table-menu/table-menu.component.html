@@ -1,0 +1,66 @@
+<div class="flex flex-row px-5 h-[70px]">
+  <svg
+    class="my-6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    transform="rotate(90)"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+  <dct-multiselect-dropdown
+    (changeSelectedItems)="onGroupChange($event)"
+    [itemList]="allGroupsComputed()"
+    [selectedItems]="selectedGroups()"
+    class="items-center my-3.5 mx-1.5 p-0.5 w-2/6"
+    emptyPlaceholderText="Add Selected To Group(s)"
+    position="top"
+  ></dct-multiselect-dropdown>
+  <select
+    (change)="onSelectedWeightChange($event.target)"
+    class="select select-bordered border-slate-300 self-center ml-1"
+    id="assign-weight"
+    name="assign-weight"
+  >
+    <option disabled hidden selected value="">Assign Weight</option>
+    <option value="">Remove Weight</option>
+    @for (weightValue of weights | async | keyvalue; track $index) {
+      <option [value]="weightValue.key">
+        {{ weightValue.value }}
+      </option>
+    }
+  </select>
+  <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center">
+    APPLY
+  </button>
+
+  @if (currentSelectedGroupID | async; as selected) {
+    <div class="border-l mx-4"></div>
+    <button
+      (click)="onRemoveFromGroup(selected)"
+      class="btn btn-outline justify-end self-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="mr-2 w-5 h-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+        />
+      </svg>
+      <span>REMOVE FROM GROUP</span>
+    </button>
+  }
+</div>

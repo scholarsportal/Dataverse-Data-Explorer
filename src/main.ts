@@ -11,12 +11,13 @@ import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { xmlReducer } from './app/new.state/xml/xml.reducer';
 import { datasetReducer } from './app/new.state/dataset/dataset.reducer';
 import { XmlEffects } from './app/new.state/xml/xml.effects';
+import { uiReducer } from './app/new.state/ui/ui.reducer';
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
       BrowserModule,
-      StoreModule.forRoot({ xml: xmlReducer, dataset: datasetReducer }),
+      StoreModule.forRoot({ xml: xmlReducer, dataset: datasetReducer, ui: uiReducer }),
       StoreDevtoolsModule.instrument({
         maxAge: 25,
         logOnly: !isDevMode(),

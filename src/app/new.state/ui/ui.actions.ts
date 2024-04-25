@@ -25,6 +25,12 @@ export const VariableTabUIAction = createActionGroup({
     // User has opened a variables chart or edit modal
     'Change Open Variable': props<{ variableID: string, mode: 'edit' | 'view' }>(),
     // User has selected one or more variables
-    'Change Variable Selection Context': props<{ variableIDs: string[], selectedGroup: string }>()
+    'Change Variable Selection Context': props<{ variableIDs: string[], selectedGroup: string }>(),
+    // User clicks the import button
+    'Open Variable Import Menu': emptyProps(),
+    // User clicks the import button again while its open
+    // I don't expect users to use this often as the state will switch to close
+    // anytime the user switches groups, or presses the all variables button
+    'Close Variable Import Menu': emptyProps()
   }
 });

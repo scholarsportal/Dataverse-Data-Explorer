@@ -1,9 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { Variable } from '../interface';
 
-export const openOptionsMenu = createAction('[UI - Options] Open options menu');
+export const openOptionsMenu = createAction('[UI - Options] Open options-button menu');
 export const closeOptionsMenu = createAction(
-  '[UI - Options] Close options menu'
+  '[UI - Options] Close options-button menu'
 );
 export const openVariableEditModal = createAction(
   '[UI - Variable Modal] Open edit modal',

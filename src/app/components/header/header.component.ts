@@ -1,76 +1,80 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { closeCrossTabulationTab, openCrossTabulationTab } from 'src/app/state/actions/cross-tabulation.actions';
-import { selectIsCrossTabOpen } from 'src/app/state/selectors/cross-tabulation.selectors';
-import {
-  selectDatasetHasAPIKey,
-  selectDatasetUploadFailed,
-  selectDatasetUploadSuccess
-} from 'src/app/old.state/selectors/dataset.selectors';
+import { BodyToggleComponent } from './body-toggle/body-toggle.component';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
-import { VarCrosstabToggleComponent } from './var-crosstab-toggle/var-crosstab-toggle.component';
-import { selectDatasetCitation, selectDatasetTitle, selectDatasetUploadInfo } from '../../new.state/xml/xml.selectors';
+import {
+  selectDatasetCitation,
+  selectDatasetHasApiKey,
+  selectDatasetState,
+  selectDatasetTitle
+} from '../../new.state/xml/xml.selectors';
 import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
+import { selectDatasetUploadedSuccessfully, selectDatasetUploadError } from '../../new.state/dataset/dataset.selectors';
+import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
+import { CrossTabulationUIActions, VariableTabUIAction } from '../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [VarCrosstabToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage],
+  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   store = inject(Store);
 
+  currentThemeLight: boolean = true;
+  showToggle: boolean = false;
+
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
-  uploadSuccess$ = this.store.select(selectDatasetUploadSuccess);
-  uploadFail$ = this.store.select(selectDatasetUploadFailed);
-  private hasApiKey$ = this.store.select(selectDatasetHasAPIKey);
-  private isCrossTabOpen$ = this.store.selectSignal(selectIsCrossTabOpen);
-  checked: boolean = true;
-  showToggle: boolean = false;
+  bodyToggleState = this.store.selectSignal(selectBodyToggleState);
+
+  uploadSuccess$ = this.store.select(selectDatasetUploadedSuccessfully);
+  uploadFail$ = this.store.select(selectDatasetUploadError);
+  hasApiKey$ = this.store.select(selectDatasetHasApiKey);
 
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {
-      this.checked = false;
+      this.currentThemeLight = false;
     }
     this.showToggle = true;
   }
 
-  hangleToggle(open: boolean) {
-    if (open) {
-      this.openCrossTab();
-    } else {
-      this.closeCrossTab();
+  handleToggle($event: 'cross-tab' | 'variables') {
+    if ($event === 'cross-tab') {
+      return this.store.dispatch(CrossTabulationUIActions.navigateToCrossTabulationTab());
+    }
+    if ($event === 'variables') {
+      return this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
     }
   }
 
   openCrossTab() {
-    this.store.dispatch(openCrossTabulationTab());
+    this.store.dispatch(CrossTabulationUIActions.navigateToCrossTabulationTab());
   }
 
   closeCrossTab() {
-    this.store.dispatch(closeCrossTabulationTab());
+    this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
   }
 
   toggleTheme() {
     const theme = localStorage.getItem('theme');
     if (theme === 'light') {
-      this.checked = false;
+      this.currentThemeLight = false;
       localStorage.setItem('theme', 'dark');
       document.body.setAttribute('data-theme', 'dark');
     } else {
-      this.checked = true;
+      this.currentThemeLight = true;
       localStorage.setItem('theme', 'light');
       document.body.setAttribute('data-theme', 'light');
     }
   }
 
   handleUpload() {
-    const datasetInfo = this.store.selectSignal(selectDatasetUploadInfo);
+    const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
     const siteURL = datasetInfo()?.info?.siteURL;
     const fileID = datasetInfo()?.info?.fileID;

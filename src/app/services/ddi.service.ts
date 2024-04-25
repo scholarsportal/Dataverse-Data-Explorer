@@ -1,21 +1,21 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { XMLBuilder, XMLParser } from 'fast-xml-parser';
-import { map, Observable } from 'rxjs';
-import { ddiJSONStructure, JSONStructure } from '../old.state/interface';
-import { Store } from '@ngrx/store';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { XMLBuilder, XMLParser } from "fast-xml-parser";
+import { map, Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import { ddiJSONStructure } from "../new.state/xml/xml.interface";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DdiService {
   store = inject(Store);
   http = inject(HttpClient);
 
-  private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
+  private parseOptions: { ignoreAttributes: false; attributeNamePrefix: "@_" } =
     {
       ignoreAttributes: false,
-      attributeNamePrefix: '@_'
+      attributeNamePrefix: "@_"
     };
 
   fetchDatasetFromDataverse(
@@ -24,7 +24,7 @@ export class DdiService {
   ): Observable<ddiJSONStructure> {
     return this.http.get(
       `${siteURL}/api/access/datafile/${fileID}/metadata/ddi`,
-      { responseType: 'text' }
+      { responseType: "text" }
     ).pipe(
       map((data) => this.XMLtoJSON(data))
     );
@@ -38,8 +38,8 @@ export class DdiService {
   ): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/xml',
-        'X-Dataverse-key': apiKey
+        "Content-Type": "application/xml",
+        "X-Dataverse-key": apiKey
       })
     };
     const xml = this.JSONtoXML(jsonData);
@@ -55,22 +55,20 @@ export class DdiService {
     if (siteURL && fileID) {
       return this.http.get(
         `${siteURL}/api/access/datafile/${fileID}/?format=subset&variables=${variable}`,
-        { responseType: 'text' }
+        { responseType: "text" }
       );
     } else {
-      throw Error('No Site URL, File ID');
+      throw Error("No Site URL, File ID");
     }
   }
 
-  XMLtoJSON(xml: string): JSONStructure {
+  XMLtoJSON(xml: string): ddiJSONStructure {
     const parser = new XMLParser(this.parseOptions);
-    const parsed = parser.parse(xml);
-    return parsed;
+    return parser.parse(xml);
   }
 
-  JSONtoXML(json: JSONStructure): string {
+  JSONtoXML(json: ddiJSONStructure): string {
     const parser = new XMLBuilder(this.parseOptions);
-    const xml = parser.build(json);
-    return xml;
+    return parser.build(json);
   }
 }

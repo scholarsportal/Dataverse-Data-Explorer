@@ -1,0 +1,139 @@
+<button (click)="openModal()" class="btn btn-outline btn-sm">
+  BULK EDIT
+</button>
+<dialog #bulkEdit class="modal modal-bottom sm:modal-middle font-normal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="flex flex-row-reverse justify-between items-center">
+        <button (click)="closeModal()">
+          <svg
+            class="w-10 h-10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 18 18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="sr-only">close</span>
+        </button>
+        <h2 class="text-2xl">Bulk Edit Variables</h2>
+      </div>
+      <hr class="divider" />
+    </div>
+    <div class="modal-body h-full">
+      <form [formGroup]="variableForm" class="flex flex-col">
+        <label class="form-label" for="label">
+          Label
+          <input
+            class="form-input form-outline"
+            formControlName="label"
+            id="label"
+            name="label"
+            type="text"
+          />
+        </label>
+        <label class="form-label" for="literalQuestion">
+          Literal Question
+          <input
+            class="form-input form-outline"
+            formControlName="literalQuestion"
+            id="literalQuestion"
+            name="literalQuestion"
+            type="text"
+          />
+        </label>
+        <label class="form-label" for="interviewQuestion">
+          Interviewer Question
+          <input
+            class="form-input form-outline"
+            formControlName="interviewQuestion"
+            id="interviewQuestion"
+            name="interviewQuestion"
+            type="text"
+          />
+        </label>
+        <label class="form-label" for="postQTxt">
+          Post Question
+
+          <input
+            class="form-input form-outline"
+            formControlName="postQuestion"
+            id="postQTxt"
+            name="postQTxt"
+            type="text"
+          />
+        </label>
+        <label class="form-label" for="universe">
+          Universe
+          <input
+            class="form-input form-outline"
+            formControlName="universe"
+            id="universe"
+            name="universe"
+            type="text"
+          />
+        </label>
+        <label class="form-label" for="notes">
+          Notes
+          <textarea
+            class="form-input form-outline"
+            cols="50"
+            formControlName="notes"
+            id="notes"
+            name="notes"
+            rows="4"
+            type="text"
+          ></textarea>
+        </label>
+        <button
+          (click)="handleSave()"
+          class="btn btn-primary justify-start mt-5"
+        >
+          <svg
+            class="mx-1.5 w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <!--          <span class="mt-1">UPDATE {{ selected.length }} VARIABLES</span>-->
+        </button>
+      </form>
+    </div>
+    <div class="flex flex-col w-full mt-16">
+      <button
+        (click)="handleCancel()"
+        class="btn btn-outline justify-start"
+      >
+        <svg
+          class="mx-1.5 w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="mt-1">CLOSE</span>
+      </button>
+    </div>
+  </div>
+</dialog>
