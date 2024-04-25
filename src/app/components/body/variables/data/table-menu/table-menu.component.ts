@@ -2,7 +2,7 @@ import { Component, computed, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
-import { MultiselectDropdownComponent } from '../multiselect-dropdown/multiselect-dropdown.component';
+import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/multiselect-dropdown.component';
 import { Variable } from 'src/app/new.state/xml/xml.interface';
 import { selectCurrentGroupID } from 'src/app/new.state/ui/ui.selectors';
 import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';

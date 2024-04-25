@@ -41,6 +41,10 @@ const selectOpenVariableGroups = createSelector(
   }
 );
 
+export const selectVariableSelectionContext = createSelector(
+  selectUIFeature, state => state.bodyState.variables.variableSelectionContext
+);
+
 export const selectOpenVariableFormState = createSelector(
   selectOpenVariableID, selectDatasetProcessedVariables, selectOpenVariableGroups, (variableID, processedVariables, groups) => {
     let formState: VariableForm = { isWeight: false, groups: [] };

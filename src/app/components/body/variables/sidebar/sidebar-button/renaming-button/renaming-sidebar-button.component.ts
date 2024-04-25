@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,12 +10,24 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './renaming-sidebar-button.component.css'
 })
 export class RenamingSidebarButtonComponent {
-  @Input() label!: string;
-  @Output() emitConfirm: EventEmitter<string> = new EventEmitter<string>();
-  @Output() emitCancel: EventEmitter<boolean> = new EventEmitter();
+  labelPlaceholder: string = '';
+
+  label = input.required<string>();
+  emitConfirm = output<string>();
+  emitCancel = output();
+
+  constructor() {
+    effect(() => {
+      this.changeLabel(this.label());
+    });
+  }
+
+  changeLabel(label: string) {
+    this.labelPlaceholder = label;
+  }
 
   confirmRename() {
-    this.emitConfirm.emit(this.label);
+    this.emitConfirm.emit(this.labelPlaceholder);
   }
 
   cancelRename() {

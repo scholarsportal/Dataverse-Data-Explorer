@@ -34,10 +34,14 @@ h2 {
   @apply hover:text-light-inverse-on-surface hover:bg-light-outline hover:dark:bg-light-on-surface;
 }
 
-.options {
+.import {
   grid-area: 11 / 1 / 12 / 4;
   width: 100%;
 }
+
+/*.import-selected {*/
+/*  @apply bg-base-200;*/
+/*}*/
 
 .options-button {
   @apply flex

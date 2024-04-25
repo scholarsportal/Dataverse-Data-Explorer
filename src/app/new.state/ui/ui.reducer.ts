@@ -68,6 +68,26 @@ export const uiReducer = createReducer(initialState,
         }
       }
     })),
+  on(VariableTabUIAction.openVariableImportMenu, state => ({
+    ...state,
+    bodyState: {
+      ...state.bodyState,
+      variables: {
+        ...state.bodyState.variables,
+        importComponentState: 'open' as const
+      }
+    }
+  })),
+  on(VariableTabUIAction.closeVariableImportMenu, state => ({
+    ...state,
+    bodyState: {
+      ...state.bodyState,
+      variables: {
+        ...state.bodyState.variables,
+        importComponentState: 'close' as const
+      }
+    }
+  })),
   on(CrossTabulationUIActions.navigateToCrossTabulationTab, state => ({
     ...state,
     bodyToggle: 'cross-tab' as const

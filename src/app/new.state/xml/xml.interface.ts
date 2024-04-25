@@ -48,6 +48,15 @@ export interface Variable {
   '@_wgt'?: string;
 }
 
+export interface VariablesSimplified {
+  variableID: string,
+  name: string,
+  label: string,
+  weight: string,
+  isWeight: boolean,
+  selected: boolean
+}
+
 export interface NesstarVariable {
   location: Location;
   labl: string;

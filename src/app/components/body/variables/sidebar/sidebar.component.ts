@@ -9,6 +9,7 @@ import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { XmlManipulationActions } from 'src/app/new.state/xml/xml.actions';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import { SidebarButtonComponent } from './sidebar-button/sidebar-button.component';
+import { GroupButtonComponent } from './group-button/group-button.component';
 
 @Component({
   selector: 'dct-sidebar',
@@ -18,7 +19,8 @@ import { SidebarButtonComponent } from './sidebar-button/sidebar-button.componen
   imports: [
     KeyValuePipe,
     SidebarButtonComponent,
-    NgClass
+    NgClass,
+    GroupButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -47,7 +49,7 @@ export class SidebarComponent {
   importButtonSelected = computed(() => {
     let styleLabel = '';
     if (this.importComponentState() === 'open') {
-      styleLabel = 'import-selected';
+      styleLabel = 'bg-red';
     }
     return styleLabel;
   });
@@ -61,6 +63,7 @@ export class SidebarComponent {
   }
 
   changeGroup(groupID: string) {
+    // NOTE: Is this related to DaisyUI
     // const elem = document.activeElement;
     // if (elem instanceof HTMLElement) {
     //   elem?.blur();
@@ -68,40 +71,17 @@ export class SidebarComponent {
     this.store.dispatch(VariableTabUIAction.changeSelectedGroupID({ groupID }));
   }
 
-  deleteGroup(group: any) {
-    this.store.dispatch(XmlManipulationActions.deleteGroup({ groupID: group['@_ID'] }));
+  deleteGroup(groupID: string) {
+    this.store.dispatch(XmlManipulationActions.deleteGroup({ groupID }));
   }
 
-  renameGroup(newLabel: string) {
-    // if (newLabel !== '' && this.groupToBeChanged) {
-    //   this.store.dispatch(
-    //     XmlManipulationActions.renameGroup({
-    //       groupID: this.groupToBeChanged,
-    //       newLabel
-    //     })
-    //   );
-    // }
-  }
-
-  // startAddingNewGroup() {
-  //   this.addingNewGroup = true;
-  // }
-
-  addGroup(name: string) {
-    const id = `NVG${Math.floor(Math.random() * 1000000)}`;
-    this.store.dispatch(XmlManipulationActions.createGroup({ groupID: id, label: name }));
-  }
-
-  confirmGroup(name: string) {
-    this.addGroup(name);
-    this.resetUI();
-  }
-
-  cancelGroup() {
-    this.resetUI();
-  }
-
-  resetUI() {
-    // this.addingNewGroup = false;
+  renameGroup(value: { groupID: string, newLabel: string }) {
+    const { groupID, newLabel } = value;
+    this.store.dispatch(
+      XmlManipulationActions.renameGroup({
+        groupID: groupID,
+        newLabel
+      })
+    );
   }
 }
