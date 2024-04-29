@@ -22,28 +22,33 @@
     emptyPlaceholderText="Add Selected To Group(s)"
     position="top"
   ></dct-multiselect-dropdown>
-  <select
-    (change)="onSelectedWeightChange($event.target)"
-    class="select select-bordered border-slate-300 self-center ml-1"
-    id="assign-weight"
-    name="assign-weight"
-  >
-    <option disabled hidden selected value="">Assign Weight</option>
-    <option value="">Remove Weight</option>
-    @for (weightValue of weights | async | keyvalue; track $index) {
-      <option [value]="weightValue.key">
-        {{ weightValue.value }}
-      </option>
-    }
-  </select>
+  <label class="self-center ml-1">
+    <span class="sr-only">
+      Assign Weight
+    </span>
+    <select
+      (change)="onSelectedWeightChange($event.target)"
+      class="select select-bordered border-slate-300"
+      id="assign-weight"
+      name="assign-weight"
+    >
+      <option disabled hidden selected value="">Assign Weight</option>
+      <option value="">Remove Weight</option>
+      <!--    @for (weightValue of weights | async | keyvalue; track $index) {-->
+      <!--      <option [value]="weightValue.key">-->
+      <!--        {{ weightValue.value }}-->
+      <!--      </option>-->
+      <!--    }-->
+    </select>
+  </label>
   <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center">
     APPLY
   </button>
 
-  @if (currentSelectedGroupID | async; as selected) {
+  @if (groupID() !== 'ALL'; ) {
     <div class="border-l mx-4"></div>
     <button
-      (click)="onRemoveFromGroup(selected)"
+      (click)="onRemoveFromGroup(groupID())"
       class="btn btn-outline justify-end self-center"
     >
       <svg

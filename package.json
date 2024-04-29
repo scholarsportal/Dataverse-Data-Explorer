@@ -30,6 +30,7 @@
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "pivottable": "^2.23.0",
+    "primeng": "^17.15.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

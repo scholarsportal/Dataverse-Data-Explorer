@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/multiselect-dropdown.component';
-import { Variable } from 'src/app/new.state/xml/xml.interface';
-import { selectCurrentGroupID } from 'src/app/new.state/ui/ui.selectors';
 import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';
 import { selectDatasetProcessedGroups } from 'src/app/new.state/xml/xml.selectors';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
@@ -21,12 +19,12 @@ import { selectDatasetProcessedGroups } from 'src/app/new.state/xml/xml.selector
   styleUrl: './table-menu.component.css'
 })
 export class TableMenuComponent {
-  selectedVariables = input.required<Variable[]>();
+  selectedVariables = input.required<string[]>();
+  groupID = input.required<string>();
 
   selectedWeight: string = '';
 
   weights = this.store.select(selectDatasetWeights);
-  currentSelectedGroupID = this.store.select(selectCurrentGroupID);
   allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
 
   allGroupsComputed = computed(() => {
@@ -42,13 +40,7 @@ export class TableMenuComponent {
   }
 
   onRemoveFromGroup(groupID: string) {
-    // const variableIDs: string[] = [];
-    // this.selectedVariables.map((variable) =>
-    //   variableIDs.push(variable['@_ID'])
-    // );
-    // this.store.dispatch(
-    //   removeSelectedVariablesFromGroup({ variableIDs, groupID })
-    // );
+    // this.store.dispatch(XmlManipulationActions.)
   }
 
   onSelectedWeightChange(weight: any) {

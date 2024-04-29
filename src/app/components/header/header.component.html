@@ -12,6 +12,7 @@
         </div>
         <div>
           <label class="swap swap-rotate mr-3">
+            <span class="sr-only">Theme Toggle</span>
             <!-- this hidden checkbox controls the state -->
             <input
               (change)="toggleTheme()"
@@ -42,11 +43,14 @@
               />
             </svg>
           </label>
-          <select class="select select-ghost ml-1">
-            <option>French</option>
-            <option>English</option>
-            <option>Portuguese</option>
-          </select>
+          <label>
+            <span class="sr-only">Language Selection</span>
+            <select class="select select-ghost ml-1">
+              <option>French</option>
+              <option>English</option>
+              <option>Portuguese</option>
+            </select>
+          </label>
         </div>
       </div>
       <div class="py-3 md:py-10 md:h-full">

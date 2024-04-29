@@ -1,5 +1,5 @@
 <label class="input input-bordered mx-3 my-auto flex items-center gap-2 w-1/5">
-  <input (input)="search()" [(ngModel)]="searchValue" class="grow" placeholder="Search" type="text" />
+  <input (input)="search()" [(ngModel)]="searchTerm" class="grow" placeholder="Search" type="text" />
   <svg class="w-4 h-4 opacity-70"
        fill="currentColor"
        viewBox="0 0 16 16"
@@ -20,7 +20,7 @@
         name="items-per-page"
       >
         @for (option of pageLimitOptions; track $index) {
-          <option [value]="option.value" [selected]="option.value == limit()">
+          <option [value]="option.value" [selected]="option.value == itemsPerPage()">
             {{ option.value }}
           </option>
         }
@@ -29,10 +29,10 @@
   </div>
   <div class="flex flex-row align-middle justify-between">
     @if (total()) {
-      @if (total() > limit()) {
-        <span class="mr-4 my-auto"> 1 - {{ limit() }} of {{ total() }} variables</span>
+      @if (total() > itemsPerPage()) {
+        <span class="mr-4 my-auto">{{ indexRange() }}</span>
         <div>
-          <button (click)="pagePrevious()"
+          <button [disabled]="isFirstPage()" (click)="pagePrevious()"
                   class="btn border border-slate-300 bg-transparent my-3 mt-4 mr-1  table-nav-button">
             <span class="sr-only">Go To Previous Variable Page</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -41,7 +41,8 @@
                     clip-rule="evenodd" />
             </svg>
           </button>
-          <button (click)="pageNext()" class="btn border border-slate-300 bg-transparent my-3 mt-4 table-nav-button">
+          <button [disabled]="isLastPage()" (click)="pageNext()"
+                  class="btn border border-slate-300 bg-transparent my-3 mt-4 table-nav-button">
             <span class="sr-only">Go To Next Variable Page</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"

@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NgxDatatableModule, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { ModalComponent } from './modal/modal.component';
-import { VariableOptionsComponent } from './variable-options/variable-options.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { Variable } from '../../../../new.state/xml/xml.interface';
+import { VariablesSimplified } from '../../../../new.state/xml/xml.interface';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TableNavComponent } from '../data/table-nav/table-nav.component';
+import { VariableTabUIAction } from '../../../../new.state/ui/ui.actions';
+import { VariableOptionsButtonComponent } from './variable-options-button.component';
 
 @Component({
   selector: 'dct-table',
@@ -14,29 +18,97 @@ import { Variable } from '../../../../new.state/xml/xml.interface';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
-    NgxDatatableModule,
     BulkEditModalComponent,
-    VariableOptionsComponent,
-    KeyValuePipe
+    VariableOptionsButtonComponent,
+    KeyValuePipe,
+    NgxDatatableModule,
+    TableModule,
+    ButtonModule,
+    TableNavComponent,
+    ModalComponent,
+    NgClass
   ]
 })
 export class TableComponent {
   store = inject(Store);
-  table = viewChild('table');
   ModalComponent = viewChild(ModalComponent);
-  variables = input.required<{ [variableID: string]: Variable }>();
+  groupChanged = input.required<string>();
+  variables = input.required<VariablesSimplified[]>();
+  categoriesInvalid = input.required<any>();
+  openVariable = input.required<string>();
+  openVariableData = computed(() => {
+    let next = '';
+    let previous = '';
+    let variable: VariablesSimplified | null = null;
+    this.variables().map((variableData, index) => {
+      if (variableData.variableID === this.openVariable()) {
+        next = this.variables()[index + 1].variableID;
+        previous = this.variables()[index - 1].variableID;
+        variable = variableData;
+      }
+    });
+    return { next, previous, variable };
+  });
+  selectedVariables = input.required<string[]>();
+  currentPage = signal(0);
+  itemsPerPage = signal(10);
 
-  columns = [
-    { name: 'check' },
-    { name: 'ID' },
-    { name: 'Name' },
-    { name: 'Label' },
-    { name: 'Weight' },
-    { name: 'View/Edit' }
-  ];
+  searchResult = signal<VariablesSimplified[]>([]);
+  variablesResult = computed(() => {
+    if (this.searchResult().length) {
+      return this.searchResult();
+    } else {
+      return this.variables();
+    }
+  });
+  variablesLength = computed(() => {
+    return this.variablesResult().length;
+  });
 
-  SortType = SortType;
-  SelectionType = SelectionType;
+  isFirstPage = computed(() => {
+    return this.currentPage() === 0;
+  });
+  isLastPage = computed(() => {
+    return this.currentPage() + this.itemsPerPage() >= (this.variables().length - 1);
+  });
+
+
+  prev() {
+    this.currentPage.set(this.currentPage() - this.itemsPerPage());
+  }
+
+  next() {
+    this.currentPage.set(this.currentPage() + this.itemsPerPage());
+  }
+
+  reset() {
+    this.currentPage.set(0);
+  }
+
+  setItemsPerPage(itemsPerPage: number) {
+    this.itemsPerPage.set(itemsPerPage);
+  }
+
+  setSearchResultList(value: VariablesSimplified[]) {
+    this.searchResult.set(value);
+  }
+
+  setSelected(selection: string) {
+    if (this.selectedVariables().includes(selection)) {
+      const totalSelection = this.selectedVariables().filter(variableID => variableID !== selection);
+      this.store.dispatch(VariableTabUIAction.changeVariableSelectionContext({
+        selectedGroup: this.groupChanged(),
+        variableIDs: totalSelection
+      }));
+    } else {
+      const totalSelection = [selection, ...this.selectedVariables()];
+      this.store.dispatch(VariableTabUIAction.changeVariableSelectionContext({
+        selectedGroup: this.groupChanged(),
+        variableIDs: totalSelection
+      }));
+    }
+  }
+
 
 }
+

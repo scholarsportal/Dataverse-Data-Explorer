@@ -1,4 +1,4 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import { Component, computed, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariablesSimplified } from '../../../../../new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
@@ -11,17 +11,30 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './table-nav.component.css'
 })
 export class TableNavComponent {
+  searchTerm = '';
+
   groupChanged = input.required<string>();
-  searchValue = '';
+
+  variablesList = input.required<VariablesSimplified[]>();
   total = input.required<number>();
-  limitChange = output<number>();
+
+  itemsPerPage = input.required<number>();
+  currentPage = input.required<number>();
+  isLastPage = input.required<boolean>();
+  isFirstPage = input.required<boolean>();
+  indexRange = computed(() => {
+    if (this.total() === 1) {
+      return '1 variable';
+    } else {
+      return `${this.currentPage() + 1} - ${this.currentPage() + this.itemsPerPage()} of ${this.total()} variables`;
+    }
+  });
+
+  emitItemsPerPageChange = output<number>();
   pagePreviousClick = output();
   pageNextClick = output();
 
-  variablesList = input.required<VariablesSimplified[]>();
-  resultList = output<VariablesSimplified[]>();
-
-  limit = signal(10);
+  emitSearchResultList = output<VariablesSimplified[]>();
 
   pageLimitOptions = [
     { value: 10 },
@@ -32,7 +45,7 @@ export class TableNavComponent {
   constructor() {
     effect(() => {
       if (this.groupChanged().length) {
-        this.searchValue = '';
+        this.searchTerm = '';
         this.search();
       }
     });
@@ -41,15 +54,15 @@ export class TableNavComponent {
   search() {
     const newList = this.variablesList().filter(e => {
       const entries = Object.entries(e);
-      return entries.some(entry => entry[1] ? entry[1].toString().toLowerCase().includes(this.searchValue.toLowerCase()) : false);
+      return entries.some(entry => entry[1] ? entry[1].toString().toLowerCase().includes(this.searchTerm.toLowerCase()) : false);
     });
 
-    this.resultList.emit(newList);
+    this.emitSearchResultList.emit(newList);
   }
 
   onItemsPerPageChange(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
-    this.limitChange.emit(selectedValue);
+    this.emitItemsPerPageChange.emit(selectedValue);
   }
 
   pagePrevious() {
