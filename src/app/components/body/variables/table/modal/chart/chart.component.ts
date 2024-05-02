@@ -1,30 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 import { shuffleColours } from './chart.interface';
 import { Store } from '@ngrx/store';
 import { SummaryStatisticsComponent } from './summary-statistics/summary-statistics.component';
-import { SummaryStatistics, VariableForm } from 'src/app/new.state/ui/ui.interface';
+import { ChartData, SummaryStatistics, VariableForm } from 'src/app/new.state/ui/ui.interface';
 import { VariableInformationComponent } from './variable-information/variable-information.component';
-
-interface ChartData {
-  values: number;
-  categories: string;
-  count: string | number;
-  countPercent: number;
-  valid: boolean;
-
-  countWeighted?: string | number | undefined;
-}
+import { VariableTabUIAction } from '../../../../../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-chart',
@@ -34,59 +16,42 @@ interface ChartData {
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.css'
 })
-export class ChartComponent implements OnInit, OnChanges {
+export class ChartComponent implements OnInit {
   store = inject(Store);
   // $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
-  @Input() chart!: { y: string; x: number | null }[] | null;
-  @Input() chartTable!: { [id: number]: ChartData } | null;
+  variableID = input.required<string>();
+  chart = input.required<{ x: number, y: string }[]>();
+  chartTable = input.required<ChartData>();
   form = input.required<VariableForm>();
   sumStat = input.required<SummaryStatistics>();
+  categoriesInvalid = input.required<string[]>();
+
   @Input() weight!: { [id: string]: string } | null;
-
   public chartJS: any;
-  selectList: any[] = [];
 
-  ngOnInit(): void {
-    this.selectList = [];
+  constructor() {
+    effect(() => {
+      this.redrawChart(this.chart());
+    });
+  }
+
+  ngOnInit() {
     this.createChart();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.selectList = [];
-      this.redrawChart();
-    }
-  }
-
-  getCategory(value: ChartData | null) {
-    return value?.categories;
-  }
-
-  getCount(value: any) {
-    return value.count;
-  }
-
-  getCountPercent(value: any) {
-    return value.countPercent;
-  }
-
-  getCountWeighted(value: any) {
-    return value.countWeighted;
-  }
-
-  getChecked(value: any) {
-    return this.selectList.includes(value.categories);
-  }
-
-  toggleCheckbox(item: any) {
-    const index = this.selectList.indexOf(item.categories);
-    if (index !== -1) {
-      this.selectList.splice(index, 1);
+  toggleCheckbox(value: string) {
+    if (this.categoriesInvalid().includes(value)) {
+      const category = this.categoriesInvalid().filter(item => item !== value);
+      this.store.dispatch(VariableTabUIAction.changeMissingCategories({
+        variableID: this.variableID(),
+        categories: category
+      }));
     } else {
-      this.selectList.push(item.categories);
+      this.store.dispatch(VariableTabUIAction.changeMissingCategories({
+        variableID: this.variableID(),
+        categories: [...this.categoriesInvalid(), value]
+      }));
     }
-    this.redrawChart();
-    // redraw chart without items in select list
   }
 
   private createChart() {
@@ -95,13 +60,18 @@ export class ChartComponent implements OnInit, OnChanges {
       data: {
         datasets: [
           {
-            data: this.chart,
+            data: this.chart(),
             backgroundColor: shuffleColours()
           }
         ]
       },
       options: {
-        indexAxis: 'y'
+        indexAxis: 'y',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
       }
     });
 
@@ -124,16 +94,10 @@ export class ChartComponent implements OnInit, OnChanges {
     }
   }
 
-  private redrawChart() {
-    const filteredData: { y: string; x: number | null }[] = [];
-    this.chart?.map((item) => {
-      if (!this.selectList.includes(item.y)) {
-        filteredData.push(item);
-      }
-    });
+  private redrawChart(chart: { x: number, y: string }[]) {
     // Update chart data and redraw
     if (this.chartJS) {
-      this.chartJS.data.datasets[0].data = filteredData;
+      this.chartJS.data.datasets[0].data = chart;
       this.chartJS.update();
     }
   }

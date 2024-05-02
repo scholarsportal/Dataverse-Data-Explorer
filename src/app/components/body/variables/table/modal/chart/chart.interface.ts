@@ -15,15 +15,15 @@ export const backgroundColor = [
   '#B9FFB7',
   '#758BFD',
   '#D44D5C',
-  '#5574A6',
+  '#5574A6'
 ];
 
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 export function shuffleColours(): string[] {
   const colours = backgroundColor;
-  for (var i = colours.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = colours[i];
+  for (let i = colours.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = colours[i];
     colours[i] = colours[j];
     colours[j] = temp;
   }

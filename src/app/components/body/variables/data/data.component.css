@@ -1,0 +1,12 @@
+.navigation {
+  grid-area: 1 / 1 / 2 / 10;
+}
+
+.table {
+  grid-area: 1 / 1 / 11 / 10;
+}
+
+.menu {
+  grid-area: 11 / 1 / 12 / 10;
+}
+

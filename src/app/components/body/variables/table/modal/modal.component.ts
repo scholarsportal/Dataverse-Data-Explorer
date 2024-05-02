@@ -1,10 +1,20 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent } from './chart/chart.component';
 import { EditComponent } from './edit/edit.component';
-import { Store } from '@ngrx/store';
 import { ModalHeaderComponent } from './modal-header/modal-header.component';
 import { ModalFooterComponent } from './modal-footer/modal-footer.component';
+import { Store } from '@ngrx/store';
+import {
+  selectOpenVariableCategoriesMissing,
+  selectOpenVariableChart,
+  selectOpenVariableChartTable,
+  selectOpenVariableFormState,
+  selectOpenVariableID,
+  selectOpenVariableMode,
+  selectOpenVariableName,
+  selectOpenVariableSummaryStatistics
+} from '../../../../../new.state/ui/ui.selectors';
 
 @Component({
   selector: 'dct-modal',
@@ -20,21 +30,22 @@ import { ModalFooterComponent } from './modal-footer/modal-footer.component';
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
+  store = inject(Store);
   @ViewChild('variableModal') variableModal?: ElementRef;
   // header
-  // nextVar$ = this.store.select(selectGetNextVariableID);
-  // previousVar$ = this.store.select(selectGetPreviousVariableID);
+  nextVar = input.required<string>();
+  previousVar = input.required<string>();
   // form data
-  // modalMode$ = this.store.select(selectOpenVariableModalMode);
-  // variableData$ = this.store.select(selectOpenVariableDataAsForm);
-  // allWeights$ = this.store.select(selectVariableWeights);
+  modalMode = this.store.selectSignal(selectOpenVariableMode);
+  variableFormData = this.store.selectSignal(selectOpenVariableFormState);
+  variableName = this.store.selectSignal(selectOpenVariableName);
+  variableID = this.store.selectSignal(selectOpenVariableID);
+  // allWeights = input.required<{ [id: string]: string }>();
   // chart data
-  // chart$ = this.store.select(selectOpenVariableDataChart);
-  // chartTable$ = this.store.select(selectOpenVariableDataChartTable);
-  // sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
-
-  constructor(private store: Store) {
-  }
+  categoriesInvalid = this.store.selectSignal(selectOpenVariableCategoriesMissing);
+  chart = this.store.selectSignal(selectOpenVariableChart);
+  chartTable = this.store.selectSignal(selectOpenVariableChartTable);
+  sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
 
   open() {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
@@ -47,7 +58,7 @@ export class ModalComponent {
     // this.store.dispatch(closeVariableModal());
   }
 
-  // Listen for escape and dispatach close action
+  // Listen for escape and dispatch close action
   @HostListener('document:keydown.escape', ['$event'])
   onKeyDownHandler(event: KeyboardEvent) {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;

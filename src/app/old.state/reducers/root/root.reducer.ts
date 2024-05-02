@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import * as DatasetActions from '../../actions/dataset.actions';
-import * as ThemeActions from '../../actions/ui.actions';
 
 export interface RootState {
   theme: 'dark' | 'light' | 'dctTheme';
@@ -9,7 +8,7 @@ export interface RootState {
 
 export const initialState: RootState = {
   theme: 'dctTheme',
-  applicationMode: 'view',
+  applicationMode: 'view'
 };
 
 export const rootReducer = createReducer(
@@ -20,5 +19,5 @@ export const rootReducer = createReducer(
       newState.applicationMode = 'edit';
     }
     return newState;
-  }),
+  })
 );

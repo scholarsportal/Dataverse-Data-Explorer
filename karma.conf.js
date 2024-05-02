@@ -6,10 +6,12 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
+      require('karma-firefox-launcher'),
       require('karma-coverage'),
+      require('karma-jasmine'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-junit-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -25,13 +27,14 @@ module.exports = function(config) {
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
+    coverage: [],
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/client'),
       subdir: '.',
-      reporters: [{ type: 'html' }, { type: 'text-summary' }]
+      reporters: [{ type: 'html' }, { type: 'text-summary' }, { type: 'cobertura' }]
     },
     reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox'],
     restartOnFileChange: true
   });
 };

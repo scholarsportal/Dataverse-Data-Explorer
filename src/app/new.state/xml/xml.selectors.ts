@@ -11,6 +11,10 @@ export const selectDatasetHasApiKey = createSelector(
   selectXmlFeature, (state) => !!state.info?.apiKey
 );
 
+export const selectDatasetInfo = createSelector(
+  selectXmlFeature, state => state.info
+);
+
 export const selectDatasetCitationData = createSelector(
   selectXmlFeature, state => state.header
 );

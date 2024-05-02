@@ -8,6 +8,7 @@
 }
 
 .header {
+  display: grid;
   grid-area: 1 / 1 / 4 / 13;
 }
 

@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { VariableTabUIAction } from '../../../../../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-modal-header',
@@ -10,31 +11,35 @@ import { Store } from '@ngrx/store';
   styleUrl: './modal-header.component.css'
 })
 export class ModalHeaderComponent {
-  @Input() nextVar!: string | null | undefined;
-  @Input() previousVar!: string | null | undefined;
-  @Output() closeVariableModal: EventEmitter<any> = new EventEmitter<any>();
-  // modalMode$ = this.store.select(selectOpenVariableModalMode);
-  // id$ = this.store.select(selectOpenVariableID);
-  // name$ = this.store.select(selectOpenVariableDataName);
-
-  constructor(private store: Store) {
-  }
+  store = inject(Store);
+  nextVar = input.required<string>();
+  previousVar = input.required<string>();
+  modalMode = input.required<'edit' | 'view'>();
+  id = input.required<string>();
+  name = input.required<string>();
+  emitCloseModal = output();
 
   handleClose() {
-    this.closeVariableModal.emit();
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable({ variableID: '' }));
+    this.emitCloseModal.emit();
   }
 
-  // navigateToNextVariable(id: string | null | undefined) {
-  //   if (id) {
-  //     this.store.dispatch(changeOpenVariable({ variableID: id }));
-  //   }
-  // }
-  //
-  // switchToEdit() {
-  //   this.store.dispatch(changeVariableModalMode({ modalMode: 'edit' }));
-  // }
-  //
-  // switchToView() {
-  //   this.store.dispatch(changeVariableModalMode({ modalMode: 'view' }));
-  // }
+  navigateToNextVariable() {
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable({ variableID: this.nextVar(), mode: this.modalMode() }));
+  }
+
+  navigateToPreviousVariable() {
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable({
+      variableID: this.previousVar(),
+      mode: this.modalMode()
+    }));
+  }
+
+  switchToEdit() {
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable({ mode: 'edit', variableID: this.id() }));
+  }
+
+  switchToView() {
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable({ mode: 'view', variableID: this.id() }));
+  }
 }

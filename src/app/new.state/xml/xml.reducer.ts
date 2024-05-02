@@ -35,7 +35,7 @@ export const xmlReducer = createReducer(
       //   importDdiData.codeBook.dataDscr.varGrp,
       //   variableGroups
       // );
-      // Then match the incoming variables with the variables in the dataset
+      // Then match the incoming variables with the variables in the datas
       // const variablesMatched: MatchVariables = matchVariableIDs(
       //   importDdiData.codeBook.dataDscr.var,
       //   variables

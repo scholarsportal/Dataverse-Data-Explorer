@@ -1,17 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModalFooterComponent } from './modal-footer.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { globalInitialState } from '../../../../../../new.state/xml/xml.interface';
 
 describe('ModalFooterComponent', () => {
   let component: ModalFooterComponent;
   let fixture: ComponentFixture<ModalFooterComponent>;
+  let store: MockStore;
+  const initialState = globalInitialState;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalFooterComponent]
+      imports: [ModalFooterComponent],
+      providers: [provideMockStore({ initialState })]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalFooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

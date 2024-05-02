@@ -1,23 +1,30 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VarCrosstabToggleComponent } from "./body-toggle.component";
+import { BodyToggleComponent } from './body-toggle.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { globalInitialState } from '../../../new.state/xml/xml.interface';
 
-describe("VarCrosstabToggleComponent", () => {
-  let component: VarCrosstabToggleComponent;
-  let fixture: ComponentFixture<VarCrosstabToggleComponent>;
+describe('BodyToggleComponent', () => {
+  let component: BodyToggleComponent;
+  let fixture: ComponentFixture<BodyToggleComponent>;
+  let store: MockStore;
+  const initialState = globalInitialState;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VarCrosstabToggleComponent]
+      imports: [BodyToggleComponent],
+      providers: [provideMockStore({ initialState })]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(VarCrosstabToggleComponent);
+    fixture = TestBed.createComponent(BodyToggleComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('toggleState', 'variables');
     fixture.detectChanges();
+
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -23,9 +23,11 @@ export const VariableTabUIAction = createActionGroup({
     // User has clicked group in sidebar
     'Change Selected Group ID': props<{ groupID: string }>(),
     // User has opened a variables chart or edit modal
-    'Change Open Variable': props<{ variableID: string, mode: 'edit' | 'view' }>(),
+    'Change Open Variable': props<{ mode?: 'edit' | 'view', variableID: string }>(),
     // User has selected one or more variables
     'Change Variable Selection Context': props<{ variableIDs: string[], selectedGroup: string }>(),
+    // User marks a category (in the View Variable modal) an invalid
+    'Change Missing Categories': props<{ variableID: string, categories: string[] }>(),
     // User clicks the import button
     'Open Variable Import Menu': emptyProps(),
     // User clicks the import button again while its open

@@ -158,3 +158,47 @@ export interface XmlState {
     apiKey: string | undefined,
   } | null,
 }
+
+export const globalInitialState = {
+  ui: {
+    bodyToggle: 'variables',
+    bodyState: {
+      variables: {
+        groupSelectedID: 'ALL',
+        categoriesDeclaredMissing: {},
+        importComponentState: 'close',
+        variableSelectionContext: {},
+        openVariable: {
+          variableID: '',
+          mode: 'view'
+        }
+      },
+      crossTab: {
+        selection: {}
+      }
+    }
+  },
+  xml: {
+    dataset: null,
+    header: {
+      citation: '',
+      title: null,
+      info: null
+    }
+  },
+  dataset: {
+    operationStatus: {
+      download: 'idle',
+      upload: 'idle',
+      import: 'idle'
+    },
+    variables: {
+      importedDataset: null,
+      importedResult: null
+    },
+    crossTabulation: {
+      variableMetadata: {}
+    }
+  }
+};
+

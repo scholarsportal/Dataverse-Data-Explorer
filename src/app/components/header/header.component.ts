@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { BodyToggleComponent } from './body-toggle/body-toggle.component';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import {
   selectDatasetCitation,
   selectDatasetHasApiKey,
+  selectDatasetInfo,
   selectDatasetState,
   selectDatasetTitle
 } from '../../new.state/xml/xml.selectors';
@@ -13,13 +14,16 @@ import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
 import { selectDatasetUploadedSuccessfully, selectDatasetUploadError } from '../../new.state/dataset/dataset.selectors';
 import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
 import { CrossTabulationUIActions, VariableTabUIAction } from '../../new.state/ui/ui.actions';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage],
+  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage, SplitButtonModule, MenuModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
@@ -32,9 +36,40 @@ export class HeaderComponent implements OnInit {
   title = this.store.selectSignal(selectDatasetTitle);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
 
-  uploadSuccess$ = this.store.select(selectDatasetUploadedSuccessfully);
-  uploadFail$ = this.store.select(selectDatasetUploadError);
-  hasApiKey$ = this.store.select(selectDatasetHasApiKey);
+  uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
+  uploadFail = this.store.selectSignal(selectDatasetUploadError);
+  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
+  datasetInfo = this.store.selectSignal(selectDatasetInfo);
+  siteURL = computed(() => {
+    return this.datasetInfo()?.siteURL || '';
+  });
+  fileID = computed(() => {
+    return this.datasetInfo()?.fileID || '';
+  });
+
+  styleClass = signal('rounded hover:bg-base-100 hover:text-base-content my-1 py-1.5 px-2');
+  downloadOptions = signal<MenuItem[]>([
+    {
+      label: 'Download original file',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
+      styleClass: this.styleClass()
+    },
+    {
+      label: 'Download tab-delimited',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
+      styleClass: this.styleClass()
+    },
+    {
+      label: 'Download RData format file',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
+      styleClass: this.styleClass()
+    },
+    {
+      label: 'Download original DDI',
+      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
+      styleClass: this.styleClass()
+    }
+  ]);
 
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {

@@ -1,13 +1,13 @@
-<div class="h-full flex flew-row tabs-bordered" role="tablist">
+<div class="h-full flex flew-row" role="tablist">
   <a
     (click)="closeCrossTab()"
-    class="tab w-1/2 md:w-auto"
+    class="flex flex-row px-5 pb-2.5 w-1/2 md:w-auto"
     id="variables"
     ngClass="{{ variablesOpen() ? 'tab-active' : '' }}"
     role="tab"
   >
     <svg
-      class="w-6 h-6 mr-2"
+      class="w-6 h-6 mr-2 my-auto"
       fill="none"
       stroke="currentColor"
       stroke-width="1.5"
@@ -20,17 +20,20 @@
         stroke-linejoin="round"
       />
     </svg>
+    <span
+      class="my-auto">
     Variables
+    </span>
   </a>
   <a
     (click)="openCrossTab()"
-    class="tab w-1/2 md:w-auto"
+    class="flex flex-row px-5 pb-2.5 w-1/2 md:w-auto"
     id="cross-tab"
     ngClass="{{ crossTabOpen() ? 'tab-active' : '' }}"
     role="tab"
   >
     <svg
-      class="mr-2 swap-on fill-current w-6 h-6"
+      class="mr-2 swap-on fill-current my-auto w-6 h-6"
       fill="none"
       stroke="currentColor"
       stroke-width="1.5"
@@ -43,6 +46,8 @@
         stroke-linejoin="round"
       />
     </svg>
+    <span class="my-auto">
     Cross Tabulations
+    </span>
   </a>
 </div>

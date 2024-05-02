@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { SummaryStatistics, UIState, VariableForm } from './ui.interface';
+import { ChartData, SummaryStatistics, UIState, VariableForm } from './ui.interface';
 import {
   selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
@@ -17,12 +17,22 @@ export const selectOpenVariableID = createSelector(
   selectUIFeature, state => state.bodyState.variables.openVariable.variableID
 );
 
+export const selectOpenVariableName = createSelector(
+  selectOpenVariableID, selectDatasetProcessedVariables, (id, variables) => {
+    return variables[id]?.['@_name'] || '';
+  }
+);
+
 export const selectOpenVariableMode = createSelector(
   selectUIFeature, state => state.bodyState.variables.openVariable.mode
 );
 
 export const selectCurrentGroupID = createSelector(
   selectUIFeature, state => state.bodyState.variables.groupSelectedID
+);
+
+export const selectCategoriesMissing = createSelector(
+  selectUIFeature, state => state.bodyState.variables.categoriesDeclaredMissing
 );
 
 export const selectImportComponentState = createSelector(
@@ -41,8 +51,78 @@ const selectOpenVariableGroups = createSelector(
   }
 );
 
+export const selectOpenVariableCategoriesMissing = createSelector(
+  selectOpenVariableID, selectCategoriesMissing, (openVariableID, selectCategories) => {
+    const missingCategories: string[] = [];
+    if (selectCategories[openVariableID]) {
+      return selectCategories[openVariableID];
+    }
+    return missingCategories;
+  }
+);
+
 export const selectVariableSelectionContext = createSelector(
   selectUIFeature, state => state.bodyState.variables.variableSelectionContext
+);
+
+export const selectOpenVariableHasCategories = createSelector(
+  selectOpenVariableID, selectDatasetProcessedVariables, (openID, variables) => {
+    return !!variables[openID]?.catgry;
+
+  }
+);
+
+export const selectOpenVariableChartTable = createSelector(
+  selectOpenVariableID, selectDatasetProcessedVariables, selectOpenVariableCategoriesMissing, selectOpenVariableHasCategories, (variableID, variables, missing, hasCategories) => {
+    const chart: ChartData = {};
+    variables[variableID]?.catgry?.map(value => {
+      let count = Number.MAX_SAFE_INTEGER;
+      let weightedCount = Number.MAX_SAFE_INTEGER;
+      if (Array.isArray(value.catStat)) {
+        value.catStat.map(state => {
+          if (state['@_wgtd']) {
+            weightedCount = state['#text'] as number;
+          } else {
+            count = state['#text'] as number;
+          }
+        });
+      } else {
+        if (value.catStat['@_wgtd']) {
+          weightedCount = value.catStat['#text'] as number;
+        } else {
+          count = value.catStat['#text'] as number;
+        }
+      }
+      chart[value.catValu] = {
+        category: value.labl['#text'],
+        count,
+        weightedCount,
+        countPercent: 0,
+        invalid: missing.includes(value.catValu.toString())
+      };
+    });
+    return chart;
+  }
+);
+
+const truncatedText = (text: string) => {
+  if (text.length > 15) {
+    return text.substring(0, 15) + '...';
+  }
+  return text;
+};
+
+export const selectOpenVariableChart = createSelector(
+  selectOpenVariableChartTable, selectOpenVariableCategoriesMissing, (table, invalid) => {
+    const chart: { x: number, y: string }[] = [];
+    Object.values(table).map((values, index) => {
+      const value = (Object.keys(table)[index]);
+      if (!invalid.includes(value)) {
+        chart.push({ x: values.count, y: truncatedText(values.category) });
+      }
+    });
+    return chart;
+  }
 );
 
 export const selectOpenVariableFormState = createSelector(
@@ -78,8 +158,8 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       totalValidCount: '',
       totalInvalidCount: ''
     };
-    if (processedVariables[variableID].sumStat) {
-      processedVariables[variableID].sumStat.map(value => {
+    if (processedVariables[variableID]?.sumStat) {
+      processedVariables[variableID]?.sumStat.map(value => {
         switch (value['@_type']) {
           case 'mean':
             summaryStatistics.mean = (value['#text'] as string);

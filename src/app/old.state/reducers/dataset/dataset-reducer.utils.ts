@@ -1,10 +1,4 @@
-import {
-  NesstarVariable,
-  Variable,
-  VariableForm,
-  VariableFormTemplate,
-  VariableGroup,
-} from '../../interface';
+import { NesstarVariable, Variable, VariableFormTemplate, VariableGroup } from '../../interface';
 
 export interface MatchGroups {
   [datasetIDs: string]: {
@@ -22,13 +16,13 @@ export interface MatchVariables {
 
 export function matchGroups(
   importVariableGroups: VariableGroup[],
-  datasetVariableGroups: VariableGroup[],
+  datasetVariableGroups: VariableGroup[]
 ): MatchGroups {
   const groupMatched: MatchGroups = {};
   importVariableGroups.map((importVariableGroup) => {
     groupMatched[importVariableGroup['@_ID']] = {
       importedGroupID: importVariableGroup['@_ID'],
-      varList: importVariableGroup['@_var'] || '',
+      varList: importVariableGroup['@_var'] || ''
     };
   });
   return groupMatched;
@@ -36,10 +30,10 @@ export function matchGroups(
 
 export function matchVariableIDs(
   importVariables: Variable[] | any[],
-  datasetVariables: Variable[],
+  datasetVariables: Variable[]
 ): MatchVariables {
   const variablesMatched: MatchVariables = {};
-  console.log(importVariables);
+  // console.log(importVariables);
   importVariables?.map((importVariable) => {
     datasetVariables.map((datasetVariables) => {
       if (
@@ -48,7 +42,7 @@ export function matchVariableIDs(
       ) {
         variablesMatched[datasetVariables['@_ID']] = {
           importedVariableID: importVariable['@_ID'],
-          variable: importVariable,
+          variable: importVariable
         };
       }
     });
@@ -59,7 +53,7 @@ export function matchVariableIDs(
 export function createNewVarGroups(
   groupsMatched: MatchGroups,
   variablesMatched: MatchVariables,
-  datasetVariableGroups: VariableGroup[],
+  datasetVariableGroups: VariableGroup[]
 ): VariableGroup[] {
   const newGroups: VariableGroup[] = [];
   const newVariablesMatched: { [id: string]: string } = {};
@@ -80,7 +74,7 @@ export function createNewVarGroups(
       if (variableGroup['@_var']) {
         variableGroup['@_var'] = [
           ...variableGroup['@_var'].split(' '),
-          ...newVariables,
+          ...newVariables
         ].join(' ');
       }
     }
@@ -92,7 +86,7 @@ export function createNewVarGroups(
 export function createNewVariables(
   matchedVariables: MatchVariables,
   datasetVariables: Variable[],
-  variableTemplate: VariableFormTemplate,
+  variableTemplate: VariableFormTemplate
 ): { variables: Variable[]; count: number } {
   const newVariables: Variable[] = [];
   const newVariableReferences: { [oldVariableID: string]: string } = {};
@@ -100,7 +94,7 @@ export function createNewVariables(
   Object.keys(matchedVariables).map((value, index) => {
     newVariableReferences[
       Object.values(matchedVariables)[index].importedVariableID
-    ] = value;
+      ] = value;
   });
   datasetVariables.map((variable) => {
     if (matchedVariables[variable['@_ID']]) {
@@ -115,7 +109,7 @@ export function createNewVariables(
         }
         variable.labl = {
           ...variable.labl,
-          '#text': text,
+          '#text': text
         };
       }
       if (variableTemplate.universe) {
@@ -139,12 +133,12 @@ export function createNewVariables(
         if (
           newVariableReferences[
             matchedVariables[variable['@_ID']].variable['@_wgt-var']
-          ]
+            ]
         ) {
           variable['@_wgt-var'] =
             newVariableReferences[
               matchedVariables[variable['@_ID']].variable['@_wgt-var']
-            ];
+              ];
         }
       }
       if (variableTemplate.literalQuestion) {
@@ -153,7 +147,7 @@ export function createNewVariables(
           qstnLit:
             matchedVariables[variable['@_ID']].variable.qstn.qstnLit ||
             variable.qstn.qstnLit ||
-            '',
+            ''
         };
       }
       if (variableTemplate.interviewQuestion) {
@@ -162,7 +156,7 @@ export function createNewVariables(
           ivuInstr:
             matchedVariables[variable['@_ID']].variable.qstn.ivuInstr ||
             variable.qstn.ivuInstr ||
-            '',
+            ''
         };
       }
       if (variableTemplate.postQuestion) {
@@ -171,7 +165,7 @@ export function createNewVariables(
           postQTxt:
             matchedVariables[variable['@_ID']].variable.qstn.postQTxt ||
             variable.qstn.postQTxt ||
-            '',
+            ''
         };
       }
       changed += 1;

@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
         );
       }
       if (localStorage.getItem('theme')) {
-        let theme = localStorage.getItem('theme') as string;
+        const theme = localStorage.getItem('theme') as string;
         document.body.setAttribute('data-theme', theme);
       } else {
         const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');

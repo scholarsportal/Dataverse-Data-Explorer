@@ -1,17 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditComponent } from './edit.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { globalInitialState } from '../../../../../../new.state/xml/xml.interface';
 
 describe('EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
+  let store: MockStore;
+  const initialState = globalInitialState;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditComponent]
+      imports: [EditComponent],
+      providers: [provideMockStore({ initialState })]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(EditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

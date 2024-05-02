@@ -4,7 +4,6 @@ import { ModalComponent } from './modal/modal.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import { VariablesSimplified } from '../../../../new.state/xml/xml.interface';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TableNavComponent } from '../data/table-nav/table-nav.component';
@@ -21,7 +20,6 @@ import { VariableOptionsButtonComponent } from './variable-options-button.compon
     BulkEditModalComponent,
     VariableOptionsButtonComponent,
     KeyValuePipe,
-    NgxDatatableModule,
     TableModule,
     ButtonModule,
     TableNavComponent,
@@ -37,13 +35,14 @@ export class TableComponent {
   categoriesInvalid = input.required<any>();
   openVariable = input.required<string>();
   openVariableData = computed(() => {
+
     let next = '';
     let previous = '';
     let variable: VariablesSimplified | null = null;
     this.variables().map((variableData, index) => {
       if (variableData.variableID === this.openVariable()) {
-        next = this.variables()[index + 1].variableID;
-        previous = this.variables()[index - 1].variableID;
+        next = this.variables()[index + 1]?.variableID ?? '';
+        previous = this.variables()[index - 1]?.variableID ?? '';
         variable = variableData;
       }
     });
@@ -81,7 +80,7 @@ export class TableComponent {
     this.currentPage.set(this.currentPage() + this.itemsPerPage());
   }
 
-  reset() {
+  start() {
     this.currentPage.set(0);
   }
 
@@ -109,6 +108,10 @@ export class TableComponent {
     }
   }
 
+  launchModal(value: { mode: 'view' | 'edit', variableID: string }) {
+    this.store.dispatch(VariableTabUIAction.changeOpenVariable(value));
+    this.ModalComponent()?.open();
+  }
 
 }
 

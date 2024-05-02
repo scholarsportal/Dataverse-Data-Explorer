@@ -3,7 +3,7 @@ export interface UIState {
   bodyState: {
     variables: {
       groupSelectedID: string,
-      variablesDeclaredMissing: { [variableID: string]: string[] },
+      categoriesDeclaredMissing: { [variableID: string]: string[] },
       importComponentState: 'open' | 'close',
       variableSelectionContext: {
         [groupID: string]: string[]
@@ -36,6 +36,11 @@ export interface VariableForm {
   assignedWeight?: string
 }
 
+export const variableFormInit: VariableForm = {
+  groups: [],
+  isWeight: false
+};
+
 export interface ChartData {
   [value: string]: {
     category: string,
@@ -56,6 +61,7 @@ export type SummaryStatistics = {
   totalValidCount: string,
   totalInvalidCount: string,
 }
+
 
 export interface OpenVariableState {
   formData: VariableForm;

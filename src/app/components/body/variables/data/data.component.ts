@@ -1,0 +1,48 @@
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Variable, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import { KeyValuePipe } from '@angular/common';
+import { MobileViewComponent } from './mobile-view/mobile-view.component';
+import { TableNavComponent } from './table-nav/table-nav.component';
+import { TableComponent } from '../table/table.component';
+import { TableMenuComponent } from './table-menu/table-menu.component';
+
+@Component({
+  selector: 'dct-data',
+  standalone: true,
+  imports: [
+    KeyValuePipe,
+    MobileViewComponent,
+    TableNavComponent,
+    TableComponent,
+    TableMenuComponent
+  ],
+  templateUrl: './data.component.html',
+  styleUrl: './data.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class DataComponent {
+  variables = input.required<{ [variableID: string]: Variable }>();
+  openVariable = input.required<string>();
+  selectedVariables = input.required<string[]>();
+  categoriesInvalid = input.required<string[]>();
+  variablesSimplified = computed(() => {
+    const simplified: VariablesSimplified[] = [];
+    Object.values(this.variables()).forEach((value) => {
+      const newObj = {
+        variableID: value['@_ID'],
+        name: value['@_name'],
+        label: value.labl['#text'] || '',
+        weight: value['@_wgt-var'] || '',
+        isWeight: !!value['@_wgt'],
+        selected: this.selectedVariables().includes(value['@_ID'])
+      };
+      simplified.push(newObj);
+    });
+    return simplified;
+  });
+
+  // This used to notify the search box that the user has changed the displayed
+  // variables listed so the search box resets
+  groupChanged = input.required<string>();
+
+}

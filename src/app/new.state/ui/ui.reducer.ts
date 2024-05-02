@@ -8,7 +8,7 @@ export const initialState: UIState = {
     variables: {
       groupSelectedID: 'ALL',
       importComponentState: 'close',
-      variablesDeclaredMissing: {},
+      categoriesDeclaredMissing: {},
       variableSelectionContext: {
         'ALL': []
       },
@@ -49,7 +49,8 @@ export const uiReducer = createReducer(initialState,
           variables: {
             ...state.bodyState.variables,
             openVariable: {
-              variableID, mode
+              variableID: mode ? variableID : '',
+              mode: mode ?? state.bodyState.variables.openVariable.mode
             }
           }
         }
@@ -63,6 +64,7 @@ export const uiReducer = createReducer(initialState,
         variables: {
           ...state.bodyState.variables,
           variableSelectionContext: {
+            ...state.bodyState.variables.variableSelectionContext,
             [selectedGroup]: variableIDs
           }
         }
@@ -85,6 +87,19 @@ export const uiReducer = createReducer(initialState,
       variables: {
         ...state.bodyState.variables,
         importComponentState: 'close' as const
+      }
+    }
+  })),
+  on(VariableTabUIAction.changeMissingCategories, (state, { variableID, categories }) => ({
+    ...state,
+    bodyState: {
+      ...state.bodyState,
+      variables: {
+        ...state.bodyState.variables,
+        categoriesDeclaredMissing: {
+          ...state.bodyState.variables.categoriesDeclaredMissing,
+          [variableID]: categories
+        }
       }
     }
   })),
