@@ -61,20 +61,37 @@
     >
     </textarea>
   </label>
-  <label class="form-label w-full" for="multiselect"
+  <label class="flex flex-col w-full" for="multiselect"
   >Group(s)
-    <!--    <dct-multiselect-dropdown-->
-    <!--      id="multiselect"-->
-    <!--      [itemList]="$allValuesInDropdown()"-->
-    <!--      [selectedItems]="$selectedGroups()"-->
-    <!--      (changeSelectedItems)="onGroupChange($event)"-->
-    <!--    ></dct-multiselect-dropdown>-->
+    <p-multiSelect
+      (onChange)="logIT($event)"
+      [filter]="false"
+      [ngModelOptions]="{standalone: true}"
+      [ngModel]="variableGroups()"
+      [options]="allGroupsArray()" [placeholder]="'Add Variable to Group'" display="chip"
+      panelStyleClass="bg-base-200 p-3 w-full"
+      styleClass="rounded bg-base-200 py-1.5 px-2">
+      <ng-template class="hidden" pTemplate="filter"></ng-template>
+      <ng-template let-value pTemplate="selectedItems">
+        @for (option of variableGroups(); track $index) {
+          <span class="text-primary-content rounded bg-primary px-2 py-1.5 mx-2">
+            {{ allGroups()[option].labl || 'no label' }}
+          </span>
+        }
+      </ng-template>
+      <ng-template let-value pTemplate="item">
+          <span class="text-base-content my-2">
+            {{ allGroups()[value].labl || 'no label' }}
+          </span>
+      </ng-template>
+    </p-multiSelect>
+
   </label>
   <div class="flex flex-row mt-3 pr-5">
     <label class="form-label sr-only" for="weightVar">Weight Variable</label>
     <select
       class="select select-bordered w-full max-w-xs"
-      formControlName="weight"
+      formControlName="assignedWeight"
       id="weightVar"
     >
       <option value="">No Weight Assigned</option>
@@ -98,7 +115,7 @@
     </label>
   </div>
 </form>
-<button class="btn btn-primary justify-start w-full mt-5">
+<button (click)="handleSave()" class="btn btn-primary justify-start w-full mt-5">
   <svg
     class="w-6 h-6"
     fill="none"

@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
@@ -19,6 +19,7 @@ import { selectDatasetProcessedGroups } from 'src/app/new.state/xml/xml.selector
   styleUrl: './table-menu.component.css'
 })
 export class TableMenuComponent {
+  store = inject(Store);
   selectedVariables = input.required<string[]>();
   groupID = input.required<string>();
 
@@ -35,9 +36,6 @@ export class TableMenuComponent {
     return values;
   });
   selectedGroups = signal<string[]>([]);
-
-  constructor(private store: Store) {
-  }
 
   onRemoveFromGroup(groupID: string) {
     // this.store.dispatch(XmlManipulationActions.)

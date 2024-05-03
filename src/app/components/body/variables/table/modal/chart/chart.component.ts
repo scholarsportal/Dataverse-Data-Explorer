@@ -23,6 +23,7 @@ export class ChartComponent implements OnInit {
   chart = input.required<{ x: number, y: string }[]>();
   chartTable = input.required<ChartData>();
   form = input.required<VariableForm>();
+  groups = input.required<string[]>();
   sumStat = input.required<SummaryStatistics>();
   categoriesInvalid = input.required<string[]>();
 

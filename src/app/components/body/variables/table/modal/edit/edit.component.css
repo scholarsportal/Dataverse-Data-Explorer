@@ -1,6 +1,11 @@
 .form-label {
   @apply flex flex-col my-1;
 }
+
 .form-input {
   @apply rounded border p-2;
+}
+
+input.p-element {
+  @apply bg-base-200;
 }

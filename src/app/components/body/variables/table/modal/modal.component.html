@@ -24,9 +24,15 @@
           [form]="variableFormData()"
           [sumStat]="sumStats()"
           [variableID]="variableID()"
+          [groups]="variableGroups()"
         ></dct-chart>
       } @else if (modalMode() === 'edit') {
-        <dct-edit />
+        <dct-edit
+          [weights]="allWeights()"
+          [form]="variableFormData()"
+          [variableGroups]="variableGroups()"
+          [allGroups]="allGroups()"
+        />
       }
     </div>
     <dct-modal-footer

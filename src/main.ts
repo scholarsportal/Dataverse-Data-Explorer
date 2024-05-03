@@ -1,6 +1,5 @@
 import { AppComponent } from './app/app.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { EffectsModule } from '@ngrx/effects';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -26,7 +25,6 @@ bootstrapApplication(AppComponent, {
       // Add this line to 'activate effects for actions'
       EffectsModule.forRoot([XmlEffects])
     ),
-    NgxDatatableModule,
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),
     provideAnimations()

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent } from './chart/chart.component';
 import { EditComponent } from './edit/edit.component';
@@ -15,6 +15,11 @@ import {
   selectOpenVariableName,
   selectOpenVariableSummaryStatistics
 } from '../../../../../new.state/ui/ui.selectors';
+import {
+  selectDatasetProcessedGroups,
+  selectVariablesWithCorrespondingGroups
+} from '../../../../../new.state/xml/xml.selectors';
+import { selectDatasetWeights } from '../../../../../new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-modal',
@@ -40,7 +45,12 @@ export class ModalComponent {
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
   variableName = this.store.selectSignal(selectOpenVariableName);
   variableID = this.store.selectSignal(selectOpenVariableID);
-  // allWeights = input.required<{ [id: string]: string }>();
+  allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
+  variablesAndTheirGroups = this.store.selectSignal(selectVariablesWithCorrespondingGroups);
+  variableGroups = computed(() => {
+    return this.variablesAndTheirGroups()[this.variableID()] || [];
+  });
+  allWeights = this.store.selectSignal(selectDatasetWeights);
   // chart data
   categoriesInvalid = this.store.selectSignal(selectOpenVariableCategoriesMissing);
   chart = this.store.selectSignal(selectOpenVariableChart);

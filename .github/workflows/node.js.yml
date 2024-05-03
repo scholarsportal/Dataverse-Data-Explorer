@@ -20,6 +20,7 @@ jobs:
           node-version: "20.x"
       - name: Install dependencies
         run: npm install
+        
       - name: Run tests
         run: npm run test
       - name: Code Coverage Report

@@ -33,6 +33,14 @@ import { TableComponent } from './variables/table/table.component';
 export class BodyComponent {
   store = inject(Store);
 
+  bodyToggleState = this.store.selectSignal(selectBodyToggleState);
+  crossTabulationTabOpen = computed(() => {
+    return this.bodyToggleState() === 'cross-tab';
+  });
+  variablesTabOpen = computed(() => {
+    return this.bodyToggleState() === 'variables';
+  });
+
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
@@ -46,14 +54,6 @@ export class BodyComponent {
   categoriesMissing = this.store.selectSignal(selectOpenVariableCategoriesMissing);
   openVariable = this.store.selectSignal(selectOpenVariableID);
   importComponentState = this.store.selectSignal(selectImportComponentState);
-
-  bodyToggleState = this.store.selectSignal(selectBodyToggleState);
-  crossTabulationTabOpen = computed(() => {
-    return this.bodyToggleState() === 'cross-tab';
-  });
-  variablesTabOpen = computed(() => {
-    return this.bodyToggleState() === 'variables';
-  });
 
   // When groupID changes or user selects group, we filter the variables passed to the datatables component
   filteredByGroupID = computed(() => {
