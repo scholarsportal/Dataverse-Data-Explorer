@@ -64,16 +64,16 @@
   <label class="flex flex-col w-full" for="multiselect"
   >Group(s)
     <p-multiSelect
-      (onChange)="logIT($event)"
+      (onChange)="changeGroup($event)"
       [filter]="false"
       [ngModelOptions]="{standalone: true}"
-      [ngModel]="variableGroups()"
+      [ngModel]="variableGroupsPlaceholder"
       [options]="allGroupsArray()" [placeholder]="'Add Variable to Group'" display="chip"
       panelStyleClass="bg-base-200 p-3 w-full"
       styleClass="rounded bg-base-200 py-1.5 px-2">
       <ng-template class="hidden" pTemplate="filter"></ng-template>
       <ng-template let-value pTemplate="selectedItems">
-        @for (option of variableGroups(); track $index) {
+        @for (option of variableGroupsPlaceholder; track $index) {
           <span class="text-primary-content rounded bg-primary px-2 py-1.5 mx-2">
             {{ allGroups()[option].labl || 'no label' }}
           </span>

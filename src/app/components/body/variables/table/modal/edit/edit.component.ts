@@ -5,7 +5,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { Store } from '@ngrx/store';
 import { VariableForm } from '../../../../../../new.state/ui/ui.interface';
 import { VariableGroup } from '../../../../../../new.state/xml/xml.interface';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'dct-edit',
@@ -24,7 +24,7 @@ export class EditComponent {
   store = inject(Store);
   form = input.required<VariableForm>();
   variableGroups = input.required<string[]>();
-  variableGroupsPlaceholder = signal<string[]>([]);
+  variableGroupsPlaceholder: string[] = [];
   allGroups = input.required<{ [groupID: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
@@ -53,12 +53,7 @@ export class EditComponent {
 
   constructor() {
     effect(() => {
-      const data = this.variableForm.valueChanges.subscribe(data => {
-        return data;
-      });
-      if (data) {
-        this.emitFormChanged.emit(true);
-      }
+      this.variableGroupsPlaceholder = this.variableGroups();
       this.variableForm.patchValue({
         label: this.form().label,
         literalQuestion: this.form().literalQuestion,
@@ -72,15 +67,9 @@ export class EditComponent {
     });
   }
 
-  logIT(event: any) {
-    console.log(event);
-  }
-
-  changeGroup(groupID: string) {
-    if (this.variableGroups().includes(groupID)) {
-      this.selected.set(this.variableGroups().filter(id => id !== groupID));
-    } else {
-      this.selected.set([...this.variableGroups(), groupID]);
+  changeGroup(change: MultiSelectChangeEvent) {
+    if (change.value) {
+      this.variableGroupsPlaceholder = change.value;
     }
   }
 
