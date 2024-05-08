@@ -14,14 +14,35 @@
       stroke-linejoin="round"
     />
   </svg>
-  <dct-multiselect-dropdown
-    (changeSelectedItems)="onGroupChange($event)"
-    [itemList]="allGroupsComputed()"
-    [selectedItems]="selectedGroups()"
-    class="items-center my-3.5 mx-1.5 p-0.5 w-2/6"
-    emptyPlaceholderText="Add Selected To Group(s)"
-    position="top"
-  ></dct-multiselect-dropdown>
+  <div class="w-1/3 ml-2 h-8">
+    <p-multiSelect [(ngModel)]="selectedGroups" [filter]="false" [options]="allGroupsComputed() | keyvalue"
+                   [showToggleAll]="false" display="chip"
+                   optionLabel="value"
+                   optionValue="key"
+                   panelStyleClass="bg-base-200 rounded-t px-2 py-2 mb-1.5"
+                   placeholder="Add Selected to Group(s)" styleClass="min-w-full mt-3.5 rounded border px-2 py-2">
+      <ng-template let-value pTemplate="selectedItems">
+        @if (value?.length) {
+          @for (group of value; track $index) {
+            <span class="rounded border p-2 mx-2">{{ group.value }}</span>
+          }
+        } @else {
+          <span>Add Selected Variables to Group(s)</span>
+        }
+      </ng-template>
+      <ng-template class="flex flex-row" let-value pTemplate="item">
+        <span class="">{{ value.value }}</span>
+      </ng-template>
+    </p-multiSelect>
+  </div>
+  <!--  <dct-multiselect-dropdown-->
+  <!--    (changeSelectedItems)="onGroupChange($event)"-->
+  <!--    [itemList]="allGroupsComputed()"-->
+  <!--    [selectedItems]="selectedGroups()"-->
+  <!--    class="items-center my-3.5 mx-1.5 p-0.5 w-2/6"-->
+  <!--    emptyPlaceholderText="Add Selected To Group(s)"-->
+  <!--    position="top"-->
+  <!--  ></dct-multiselect-dropdown>-->
   <label class="self-center ml-1">
     <span class="sr-only">
       Assign Weight
@@ -34,11 +55,11 @@
     >
       <option disabled hidden selected value="">Assign Weight</option>
       <option value="">Remove Weight</option>
-      <!--    @for (weightValue of weights | async | keyvalue; track $index) {-->
-      <!--      <option [value]="weightValue.key">-->
-      <!--        {{ weightValue.value }}-->
-      <!--      </option>-->
-      <!--    }-->
+      @for (weightValue of weights() | keyvalue; track $index) {
+        <option [value]="weightValue.key">
+          {{ weightValue.value }}
+        </option>
+      }
     </select>
   </label>
   <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center">

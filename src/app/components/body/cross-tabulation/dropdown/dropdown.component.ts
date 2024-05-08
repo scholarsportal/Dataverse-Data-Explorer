@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   MultiselectDropdownComponent
-} from '../../variables/table/multiselect-dropdown/multiselect-dropdown.component';
+} from '../../variables/data/table/multiselect-dropdown/multiselect-dropdown.component';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,

@@ -8,6 +8,21 @@ import { ModalComponent } from './modal/modal.component';
   standalone: true,
   imports: [CommonModule, ModalComponent],
   template: `
+    @if (!variableInCrossTab()) {
+      <button class="rounded bg-primary text-primary-content px-2 py-1.5 mx-2 my-auto flex flex-row">
+        <span class="hidden xl:flex">Add to Cross Tabulation</span>
+        <span class="flex xl:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        </span>
+      </button>
+    } @else {
+      <button class="rounded bg-error text-light-on-primary px-2 py-1.5 mx-2 my-auto">
+        <span class="hidden lg:flex">Remove Cross Tabulation</span>
+      </button>
+    }
     <button (click)="launchView()" class="mt-2 mx-2">
       <svg
         class="w-5 h-5"
@@ -24,7 +39,7 @@ import { ModalComponent } from './modal/modal.component';
         />
       </svg>
     </button>
-    <button (click)="launchEdit()" class="">
+    <button (click)="launchEdit()" class="mt-2 mx-2">
       <svg
         class="w-5 h-5"
         fill="none"
@@ -45,7 +60,10 @@ import { ModalComponent } from './modal/modal.component';
 export class VariableOptionsButtonComponent {
   store = inject(Store);
   variableID = input.required<string>();
+  variableInCrossTab = input.required<boolean>();
   emitLaunchModal = output<{ mode: 'view' | 'edit', variableID: string }>();
+  emitAddToCrossTab = output<string>();
+  emitRemoveFromCrossTab = output<string>();
 
   launchView() {
     this.emitLaunchModal.emit({ mode: 'view', variableID: this.variableID() });
@@ -55,4 +73,11 @@ export class VariableOptionsButtonComponent {
     this.emitLaunchModal.emit({ mode: 'edit', variableID: this.variableID() });
   }
 
+  addToCrossTab() {
+    this.emitAddToCrossTab.emit(this.variableID());
+  }
+
+  removeToCrossTab() {
+    this.emitRemoveFromCrossTab.emit(this.variableID());
+  }
 }

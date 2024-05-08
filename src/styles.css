@@ -15,40 +15,15 @@
     @apply rounded-sm;
   }
 
-  datatable-header {
-    @apply pt-5 font-bold border-light-outline dark:border-dark-outline-variant dark:text-light-outline-variant;
+  p-multiselect
+  .p-multiselect-panel
+  .p-multiselect-items
+  .p-multiselect-item
+  .p-checkbox {
+    display: none;
   }
 
-  datatable-footer {
-    @apply dark:text-light-outline-variant;
-  }
-
-  datatable-body-row {
-    @apply border-t w-full h-16 border-light-outline-variant hover:bg-base-200;
-  }
-
-
-  datatable-pager  a {
-    padding-left: 1rem;
-  }
-
-  .ngx-datatable.bootstrap .datatable-body-row,
-  .ngx-datatable.material .datatable-body-row .datatable-row-group {
-    @apply items-center transition-colors duration-100;
-  }
-
-  .ngx-datatable.bootstrap:not(.cell-selection) .datatable-body-row:hover,
-  .ngx-datatable.material:not(.cell-selection)
-    .datatable-body-row:hover
-    .datatable-row-group {
-    @apply bg-base-200 transition-colors duration-100;
-  }
-  .rounded-box {
-    @apply rounded-none;
-  }
-  
 }
-
 
 
 @layer components {
@@ -71,7 +46,7 @@
     font-weight: 500;
   }
 
-  .btn-secondary, .btn-primary {  
+  .btn-secondary, .btn-primary {
     @apply text-base-100
   }
 
@@ -80,18 +55,18 @@
   }
 
   .btn-outline:hover {
-    background: color-mix( in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black );
-    border-color: color-mix( in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black );
-    color:inherit
+    background: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
+    border-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
+    color: inherit
   }
 
   .input, .select {
     height: 2.5rem;
     min-height: 2.5rem;
     border-radius: 4px;
-    
+
   }
-  
+
   input, select, textarea {
     color-scheme: initial;
   }

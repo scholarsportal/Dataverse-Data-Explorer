@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { Variable, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import { Variable, VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
 import { MobileViewComponent } from './mobile-view/mobile-view.component';
 import { TableNavComponent } from './table-nav/table-nav.component';
-import { TableComponent } from '../table/table.component';
 import { TableMenuComponent } from './table-menu/table-menu.component';
+import { TableComponent } from './table/table.component';
 
 @Component({
   selector: 'dct-data',
@@ -12,8 +12,8 @@ import { TableMenuComponent } from './table-menu/table-menu.component';
   imports: [
     KeyValuePipe,
     MobileViewComponent,
-    TableNavComponent,
     TableComponent,
+    TableNavComponent,
     TableMenuComponent
   ],
   templateUrl: './data.component.html',
@@ -21,10 +21,13 @@ import { TableMenuComponent } from './table-menu/table-menu.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataComponent {
+  groups = input.required<{ [variableID: string]: VariableGroup }>();
   variables = input.required<{ [variableID: string]: Variable }>();
   openVariable = input.required<string>();
   selectedVariables = input.required<string[]>();
   categoriesInvalid = input.required<string[]>();
+  variableInCrossTabSelection = input.required<boolean>();
+  weights = input.required<{ [weightID: string]: string }>();
   variablesSimplified = computed(() => {
     const simplified: VariablesSimplified[] = [];
     Object.values(this.variables()).forEach((value) => {

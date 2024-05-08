@@ -3,12 +3,12 @@ import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { VariablesSimplified } from '../../../../new.state/xml/xml.interface';
+import { VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { TableNavComponent } from '../data/table-nav/table-nav.component';
-import { VariableTabUIAction } from '../../../../new.state/ui/ui.actions';
+import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { VariableOptionsButtonComponent } from './variable-options-button.component';
+import { TableNavComponent } from '../table-nav/table-nav.component';
 
 @Component({
   selector: 'dct-table',
@@ -34,6 +34,7 @@ export class TableComponent {
   variables = input.required<VariablesSimplified[]>();
   categoriesInvalid = input.required<any>();
   openVariable = input.required<string>();
+  variableInCrossTab = input.required<boolean>();
   openVariableData = computed(() => {
 
     let next = '';

@@ -1,7 +1,7 @@
 import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { VariableTabUIAction } from '../../../../../../new.state/ui/ui.actions';
+import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-modal-header',

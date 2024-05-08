@@ -14,5 +14,4 @@ import { VariableForm } from 'src/app/new.state/ui/ui.interface';
 })
 export class VariableInformationComponent {
   form = input.required<VariableForm>();
-
 }

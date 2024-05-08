@@ -61,26 +61,28 @@
     >
     </textarea>
   </label>
-  <label class="flex flex-col w-full" for="multiselect"
+  <label class="flex flex-col w-full mt-2" for="multiselect"
   >Group(s)
     <p-multiSelect
       (onChange)="changeGroup($event)"
       [filter]="false"
       [ngModelOptions]="{standalone: true}"
       [ngModel]="variableGroupsPlaceholder"
-      [options]="allGroupsArray()" [placeholder]="'Add Variable to Group'" display="chip"
-      panelStyleClass="bg-base-200 p-3 w-full"
-      styleClass="rounded bg-base-200 py-1.5 px-2">
+      [options]="allGroupsArray()"
+      display="chip"
+      id="multiselect" panelStyleClass="bg-base-200 rounded-b px-2"
+      placeholder="Add Variable to Group"
+      styleClass="rounded bg-base-200 p-2 w-full max-w-full">
       <ng-template class="hidden" pTemplate="filter"></ng-template>
       <ng-template let-value pTemplate="selectedItems">
         @for (option of variableGroupsPlaceholder; track $index) {
-          <span class="text-primary-content rounded bg-primary px-2 py-1.5 mx-2">
+          <p-chip styleClass="text-primary-content bg-primary rounded px-2 mx-2">
             {{ allGroups()[option].labl || 'no label' }}
-          </span>
+          </p-chip>
         }
       </ng-template>
       <ng-template let-value pTemplate="item">
-          <span class="text-base-content my-2">
+          <span class="text-base-content flex flex-row m-2">
             {{ allGroups()[value].labl || 'no label' }}
           </span>
       </ng-template>
@@ -88,21 +90,22 @@
 
   </label>
   <div class="flex flex-row mt-3 pr-5">
-    <label class="form-label sr-only" for="weightVar">Weight Variable</label>
-    <select
-      class="select select-bordered w-full max-w-xs"
-      formControlName="assignedWeight"
-      id="weightVar"
-    >
-      <option value="">No Weight Assigned</option>
-      <!--      @for (weightValue of $weights() | keyvalue; track $index) {-->
-      <!--        <option [value]="weightValue.key">-->
-      <!--          {{ weightValue.value }}-->
-      <!--        </option>-->
-      <!--      }-->
-    </select>
+    <label class="form-label" for="weightVar">Weight Variable
+      <select
+        class="select select-bordered w-full max-w-xs"
+        formControlName="assignedWeight"
+        id="weightVar"
+      >
+        <option value="">No Weight Assigned</option>
+        @for (weightValue of weights() | keyvalue; track $index) {
+          <option [value]="weightValue.key">
+            {{ weightValue.value }}
+          </option>
+        }
+      </select>
+    </label>
     <label
-      class="flex flex-row items-center ml-5 dark:text-dark-inverse-surface"
+      class="flex flex-row my-auto items-center ml-5 dark:text-dark-inverse-surface"
       for="isWeight"
     >
       <input

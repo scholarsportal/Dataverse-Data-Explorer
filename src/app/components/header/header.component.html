@@ -55,7 +55,7 @@
       </div>
       <div class="py-2 md:h-full">
         <h1 class="flex flex-row pb-4">{{ title() }}</h1>
-        <p class="flex flex-row text-sm">
+        <p class="flex flex-row text-xs md:text-sm lg:text-base">
           {{ citation() }}
         </p>
       </div>
@@ -93,7 +93,7 @@
                 styleClass="w-fit bg-secondary text-secondary-content rounded py-3 px-1">
         </p-menu>
         <button [disabled]="!hasApiKey()"
-                class="flex flex-row rounded bg-primary disabled:bg-base-100 text-primary-content my-auto p-2 ml-1.5">
+                class="hidden md:flex flex-row rounded bg-primary disabled:bg-base-100 text-primary-content my-auto p-2 ml-1.5">
           <svg
             class="w-5 h-5 mr-1.5"
             fill="none"

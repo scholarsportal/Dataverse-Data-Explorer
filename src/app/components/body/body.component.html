@@ -5,7 +5,10 @@
   } @else if (importComponentState() === 'close') {
     <dct-data class="data md:grid"
               [variables]="filteredByGroupID()"
+              [variableInCrossTabSelection]="variableInCrossTab()"
               [selectedVariables]="selectedVariables()"
+              [weights]="allWeights()"
+              [groups]="groups()"
               [openVariable]="openVariable()"
               [groupChanged]="groupIDChanged()"
               [categoriesInvalid]="categoriesMissing()"

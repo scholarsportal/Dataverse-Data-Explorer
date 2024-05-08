@@ -53,10 +53,9 @@
       <td>{{ variable.label }}</td>
       <td>{{ variable.weight }}</td>
       <td class="invisible group-hover:visible flex flex-row">
-        <button class="rounded bg-primary text-light-on-primary px-2 py-1.5 mx-2 my-auto">Add to Cross Tabulation
-        </button>
         <div class="mt-0.5">
-          <dct-variable-options-button (emitLaunchModal)="launchModal($event)" [variableID]="variable.variableID" />
+          <dct-variable-options-button (emitLaunchModal)="launchModal($event)" [variableID]="variable.variableID"
+                                       [variableInCrossTab]="variableInCrossTab()" class="flex flex-row" />
         </div>
       </td>
     </tr>

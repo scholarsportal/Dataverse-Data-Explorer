@@ -27,6 +27,21 @@ export const selectOpenVariableMode = createSelector(
   selectUIFeature, state => state.bodyState.variables.openVariable.mode
 );
 
+export const selectOpenVariableInCrossTabSelection = createSelector(
+  selectUIFeature, state => {
+    const selection = Object.values(state.bodyState.crossTab.selection);
+    const openVariable = state.bodyState.variables.openVariable.variableID;
+    let inCrossTab = false;
+    for (const value of selection) {
+      if (value.variableID === (openVariable)) {
+        inCrossTab = true;
+        break;
+      }
+    }
+    return inCrossTab;
+  }
+);
+
 export const selectCurrentGroupID = createSelector(
   selectUIFeature, state => state.bodyState.variables.groupSelectedID
 );

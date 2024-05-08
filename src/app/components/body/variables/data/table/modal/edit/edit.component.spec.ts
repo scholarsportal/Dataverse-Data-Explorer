@@ -19,6 +19,10 @@ describe('EditComponent', () => {
 
     fixture = TestBed.createComponent(EditComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('form', { groups: [], isWeight: false });
+    fixture.componentRef.setInput('variableGroups', []);
+    fixture.componentRef.setInput('allGroups', {});
+    fixture.componentRef.setInput('weights', {});
     fixture.detectChanges();
   });
 

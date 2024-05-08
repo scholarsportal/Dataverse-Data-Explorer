@@ -1,10 +1,12 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
-import { MultiselectDropdownComponent } from '../../table/multiselect-dropdown/multiselect-dropdown.component';
-import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';
-import { selectDatasetProcessedGroups } from 'src/app/new.state/xml/xml.selectors';
+import { VariableGroup } from '../../../../../new.state/xml/xml.interface';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ChipsModule } from 'primeng/chips';
+import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/multiselect-dropdown.component';
+import { FormsModule } from '@angular/forms';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -14,7 +16,7 @@ import { selectDatasetProcessedGroups } from 'src/app/new.state/xml/xml.selector
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
-  imports: [CommonModule, MultiselectDropdownComponent],
+  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, ChipsModule, FormsModule],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css'
 })
@@ -25,9 +27,8 @@ export class TableMenuComponent {
 
   selectedWeight: string = '';
 
-  weights = this.store.select(selectDatasetWeights);
-  allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
-
+  weights = input.required<{ [weightID: string]: string }>();
+  allGroups = input.required<{ [id: string]: VariableGroup }>();
   allGroupsComputed = computed(() => {
     const values: { [id: string]: string } = {};
     Object.values(this.allGroups()).map((variableGroup) => {
@@ -37,6 +38,12 @@ export class TableMenuComponent {
   });
   selectedGroups = signal<string[]>([]);
 
+  constructor() {
+    effect(() => {
+
+    });
+  }
+
   onRemoveFromGroup(groupID: string) {
     // this.store.dispatch(XmlManipulationActions.)
   }
@@ -45,6 +52,10 @@ export class TableMenuComponent {
     if (weight.value) {
       this.selectedWeight = weight.value;
     }
+  }
+
+  logIT(trhing: any) {
+    console.log(trhing);
   }
 
   onGroupChange(groups: string[]) {

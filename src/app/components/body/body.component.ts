@@ -7,6 +7,7 @@ import {
   selectImportComponentState,
   selectOpenVariableCategoriesMissing,
   selectOpenVariableID,
+  selectOpenVariableInCrossTabSelection,
   selectVariableSelectionContext
 } from '../../new.state/ui/ui.selectors';
 import { Variable } from '../../new.state/xml/xml.interface';
@@ -14,7 +15,8 @@ import { SidebarComponent } from './variables/sidebar/sidebar.component';
 import { DataComponent } from './variables/data/data.component';
 import { CrossTabulationComponent } from './cross-tabulation/cross-tabulation.component';
 import { ImportComponent } from '../import/import.component';
-import { TableComponent } from './variables/table/table.component';
+import { selectDatasetWeights } from '../../new.state/dataset/dataset.selectors';
+import { TableComponent } from './variables/data/table/table.component';
 
 @Component({
   selector: 'dct-body',
@@ -33,6 +35,7 @@ import { TableComponent } from './variables/table/table.component';
 export class BodyComponent {
   store = inject(Store);
 
+  variableInCrossTab = this.store.selectSignal(selectOpenVariableInCrossTabSelection);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   crossTabulationTabOpen = computed(() => {
     return this.bodyToggleState() === 'cross-tab';
@@ -42,6 +45,7 @@ export class BodyComponent {
   });
 
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
+  allWeights = this.store.selectSignal(selectDatasetWeights);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
   groupIDChanged = computed(() => {

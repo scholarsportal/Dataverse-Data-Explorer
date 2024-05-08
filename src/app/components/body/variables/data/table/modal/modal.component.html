@@ -24,6 +24,7 @@
           [form]="variableFormData()"
           [sumStat]="sumStats()"
           [variableID]="variableID()"
+          [weights]="allWeights()"
           [groups]="variableGroups()"
         ></dct-chart>
       } @else if (modalMode() === 'edit') {
@@ -37,7 +38,7 @@
     </div>
     <dct-modal-footer
       (closeVariableModal)="close()"
-      class="flex flex-col w-full pt-10"
+      class="flex flex-col w-full pt-2"
     ></dct-modal-footer>
   </div>
 </dialog>

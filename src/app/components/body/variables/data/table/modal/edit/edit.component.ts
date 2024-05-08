@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { VariableForm } from '../../../../../../new.state/ui/ui.interface';
-import { VariableGroup } from '../../../../../../new.state/xml/xml.interface';
+import { VariableForm } from 'src/app/new.state/ui/ui.interface';
+import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'dct-edit',
@@ -15,7 +16,8 @@ import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
     MultiselectDropdownComponent,
     FormsModule,
     ReactiveFormsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ChipModule
   ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css'

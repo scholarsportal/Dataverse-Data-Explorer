@@ -14,12 +14,12 @@ import {
   selectOpenVariableMode,
   selectOpenVariableName,
   selectOpenVariableSummaryStatistics
-} from '../../../../../new.state/ui/ui.selectors';
+} from 'src/app/new.state/ui/ui.selectors';
 import {
   selectDatasetProcessedGroups,
   selectVariablesWithCorrespondingGroups
-} from '../../../../../new.state/xml/xml.selectors';
-import { selectDatasetWeights } from '../../../../../new.state/dataset/dataset.selectors';
+} from 'src/app/new.state/xml/xml.selectors';
+import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-modal',

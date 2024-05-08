@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { SummaryStatisticsComponent } from './summary-statistics/summary-statistics.component';
 import { ChartData, SummaryStatistics, VariableForm } from 'src/app/new.state/ui/ui.interface';
 import { VariableInformationComponent } from './variable-information/variable-information.component';
-import { VariableTabUIAction } from '../../../../../../new.state/ui/ui.actions';
+import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-chart',
@@ -20,6 +20,7 @@ export class ChartComponent implements OnInit {
   store = inject(Store);
   // $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
   variableID = input.required<string>();
+  weights = input.required<{ [variableID: string]: string }>();
   chart = input.required<{ x: number, y: string }[]>();
   chartTable = input.required<ChartData>();
   form = input.required<VariableForm>();
@@ -68,6 +69,13 @@ export class ChartComponent implements OnInit {
       },
       options: {
         indexAxis: 'y',
+        scales: {
+          y: {
+            ticks: {
+              autoSkip: false
+            }
+          }
+        },
         plugins: {
           legend: {
             display: false
