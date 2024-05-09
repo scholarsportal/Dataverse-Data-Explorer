@@ -23,6 +23,27 @@ npm install
 ng serve
 ```
 
+## App State
+
+![Data Explorer State Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/150d423b-b520-41b8-a908-6586d7aa1084)
+
+The tool has a state divided into three distinct state groups. 
+
+The XML State is the final DDI file that will be uploaded to Dataverse.
+
+The Dataset State contains information about operations being operated on the dataset (upload and download status), any extra information gained from an API call (variable cross tab data), as well as imported file information.
+
+The UI state represents any UI changes, including any temporary visual changes to the dataset (invalid values in the chart modal). 
+
+## Actions
+
+![1. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/ad32a66e-caab-4c40-894e-8b103f3779a2)
+
+![2. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/2348e3bb-ed50-4868-9326-d4bc49998665)
+
+![3. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/74f97864-5673-4959-aacc-68927df80cd5)
+
+
 ![Data Curation Tool Launch Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Init%20Sequence%20Diagram.jpg?raw=true 'Launch Activity Diagram')
 
 ![Update Component View Reference](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Update%20Component%20View.jpg?raw=true 'Update Component View Reference')
