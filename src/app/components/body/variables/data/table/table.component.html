@@ -3,7 +3,7 @@
   (emitSearchResultList)="setSearchResultList($event)"
   (pageNextClick)="next()"
   (pagePreviousClick)="prev()"
-  [currentPage]="currentPage()"
+  [currentPage]="currentPage"
   [groupChanged]="groupChanged()"
   [isFirstPage]="isFirstPage()"
   [isLastPage]="isLastPage()"
@@ -13,11 +13,11 @@
   class="flex flex-row w-full justify-between px-5"
 />
 
-<p-table [first]="currentPage()"
+<p-table [first]="currentPage"
          [paginator]="true"
          [rows]="itemsPerPage()"
          [scrollable]="true"
-         [value]="variablesResult()"
+         [value]="searchResultVariables()"
          class="w-full m-5 min-h-12 overflow-y-auto"
          paginatorStyleClass="hidden"
          scrollHeight="flex">
@@ -26,7 +26,7 @@
       <th>
         <label>
           <span class="sr-only">Select All Variable</span>
-          <input class="h-3.5 w-3.5" id="ALL" type="checkbox">
+          <input (change)="toggleAll()" [checked]="allVariablesSelected()" class="h-3.5 w-3.5" id="ALL" type="checkbox">
         </label>
       </th>
       <th pSortableColumn="variableID">ID</th>
@@ -35,7 +35,8 @@
       <th pSortableColumn="weight">Weight</th>
       <th>
         <span class="invisible">Options</span>
-        <dct-bulk-edit-modal ngClass="{{ selectedVariables().length > 1 ? 'visible' : 'invisible'  }}" />
+        <dct-bulk-edit-modal [selectedVariables]="selectedVariables()"
+                             ngClass="{{ selectedVariables().length > 1 ? 'visible' : 'invisible'  }}" />
       </th>
     </tr>
   </ng-template>
@@ -51,7 +52,15 @@
       <td>{{ variable.variableID }}</td>
       <td>{{ variable.name }}</td>
       <td>{{ variable.label }}</td>
-      <td>{{ variable.weight }}</td>
+      <td>
+        @if (variable.weight.length) {
+          <span>{{ variable.weight }}</span>
+        } @else if (variable.isWeight) {
+          <span class="rounded px-2 bg-success text-success-content">Weight</span>
+        } @else {
+          <span class="rounded px-2 border">No Weight</span>
+        }
+      </td>
       <td class="invisible group-hover:visible flex flex-row">
         <div class="mt-0.5">
           <dct-variable-options-button (emitLaunchModal)="launchModal($event)" [variableID]="variable.variableID"

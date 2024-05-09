@@ -46,8 +46,16 @@ export const selectCurrentGroupID = createSelector(
   selectUIFeature, state => state.bodyState.variables.groupSelectedID
 );
 
-export const selectCategoriesMissing = createSelector(
+export const selectVariablesCategoriesMissing = createSelector(
   selectUIFeature, state => state.bodyState.variables.categoriesDeclaredMissing
+);
+
+export const selectCrossTabSelection = createSelector(
+  selectUIFeature, state => state.bodyState.crossTab.selection
+);
+
+export const selectCrossTabCategoriesMissing = createSelector(
+  selectUIFeature, state => state.bodyState.crossTab.missingCategories
 );
 
 export const selectImportComponentState = createSelector(
@@ -67,7 +75,7 @@ const selectOpenVariableGroups = createSelector(
 );
 
 export const selectOpenVariableCategoriesMissing = createSelector(
-  selectOpenVariableID, selectCategoriesMissing, (openVariableID, selectCategories) => {
+  selectOpenVariableID, selectVariablesCategoriesMissing, (openVariableID, selectCategories) => {
     const missingCategories: string[] = [];
     if (selectCategories[openVariableID]) {
       return selectCategories[openVariableID];
@@ -83,13 +91,14 @@ export const selectVariableSelectionContext = createSelector(
 export const selectOpenVariableHasCategories = createSelector(
   selectOpenVariableID, selectDatasetProcessedVariables, (openID, variables) => {
     return !!variables[openID]?.catgry;
-
   }
 );
 
 export const selectOpenVariableChartTable = createSelector(
   selectOpenVariableID, selectDatasetProcessedVariables, selectOpenVariableCategoriesMissing, selectOpenVariableHasCategories, (variableID, variables, missing, hasCategories) => {
     const chart: ChartData = {};
+    let totalCount = 0;
+    let totalWeightCount = 0;
     variables[variableID]?.catgry?.map(value => {
       let count = Number.MAX_SAFE_INTEGER;
       let weightedCount = Number.MAX_SAFE_INTEGER;
@@ -97,24 +106,33 @@ export const selectOpenVariableChartTable = createSelector(
         value.catStat.map(state => {
           if (state['@_wgtd']) {
             weightedCount = state['#text'] as number;
+            totalWeightCount += state['#text'] as number;
           } else {
             count = state['#text'] as number;
+            totalCount += state['#text'] as number;
           }
         });
       } else {
         if (value.catStat['@_wgtd']) {
           weightedCount = value.catStat['#text'] as number;
+          totalWeightCount += value.catStat['#text'] as number;
         } else {
           count = value.catStat['#text'] as number;
+          totalCount += value.catStat['#text'] as number;
         }
       }
       chart[value.catValu] = {
-        category: value.labl['#text'],
+        category: value.labl?.['#text'] ? value.labl['#text'] : 'NO LABEL',
         count,
         weightedCount,
         countPercent: 0,
+        weightedCountPercent: 0,
         invalid: missing.includes(value.catValu.toString())
       };
+    });
+    Object.values(chart).forEach((value) => {
+      value.countPercent = (value.count / totalCount) * 100;
+      value.weightedCountPercent = (value.weightedCount / totalCount) * 100;
     });
     return chart;
   }

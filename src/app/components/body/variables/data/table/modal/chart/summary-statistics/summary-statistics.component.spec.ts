@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SummaryStatisticsComponent } from './summary-statistics.component';
-import { SummaryStatistics } from '../../../../../../../new.state/ui/ui.interface';
+import { SummaryStatistics } from 'src/app/new.state/ui/ui.interface';
 
 describe('SummaryStatisticsComponent', () => {
   let component: SummaryStatisticsComponent;

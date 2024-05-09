@@ -21,12 +21,19 @@ export class MultiselectDropdownComponent {
   changeSelectedItems = output<string[]>();
   computedPosition = computed(() => {
     if (this.position() === 'top') {
-      return 'bottom-9';
+      return 'bottom-10';
     } else {
       return 'top-9';
     }
   });
   isDialogueOpen = signal(false);
+  selectedItemsMatched = computed(() => {
+    const selected: { [id: string]: string } = {};
+    this.selectedItems().map((item) => {
+      selected[item] = this.itemList()[item];
+    });
+    return selected;
+  });
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
@@ -45,18 +52,6 @@ export class MultiselectDropdownComponent {
       this.closeDialog();
     }
   }
-
-  private dialogContainsTarget(target: EventTarget | null): boolean {
-    return this.el?.nativeElement.contains(target as Node);
-  }
-
-  selectedItemsMatched = computed(() => {
-    const selected: { [id: string]: string } = {};
-    this.selectedItems().map((item) => {
-      selected[item] = this.itemList()[item];
-    });
-    return selected;
-  });
 
   checkSelected(variableGroup: string): boolean {
     return this.selectedItems().includes(variableGroup);
@@ -92,5 +87,9 @@ export class MultiselectDropdownComponent {
     const modal = this.multiselectDropdownElement
     ()?.nativeElement as HTMLDialogElement;
     modal?.close();
+  }
+
+  private dialogContainsTarget(target: EventTarget | null): boolean {
+    return this.el?.nativeElement.contains(target as Node);
   }
 }

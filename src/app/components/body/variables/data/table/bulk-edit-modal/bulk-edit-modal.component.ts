@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 })
 export class BulkEditModalComponent {
   @ViewChild('bulkEdit') bulkEditModalElement?: ElementRef;
+  selectedVariables = input.required<string[]>();
 
   // @Input() selected!: Variable[];
   variableForm = new FormGroup({

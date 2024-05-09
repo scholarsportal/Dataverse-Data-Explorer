@@ -20,6 +20,7 @@ export class ChartComponent implements OnInit {
   store = inject(Store);
   // $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
   variableID = input.required<string>();
+  hasCategories = input.required<boolean>();
   weights = input.required<{ [variableID: string]: string }>();
   chart = input.required<{ x: number, y: string }[]>();
   chartTable = input.required<ChartData>();
@@ -69,13 +70,6 @@ export class ChartComponent implements OnInit {
       },
       options: {
         indexAxis: 'y',
-        scales: {
-          y: {
-            ticks: {
-              autoSkip: false
-            }
-          }
-        },
         plugins: {
           legend: {
             display: false
@@ -107,6 +101,9 @@ export class ChartComponent implements OnInit {
     // Update chart data and redraw
     if (this.chartJS) {
       this.chartJS.data.datasets[0].data = chart;
+      if (this.chartJS.data?.options?.scales?.y?.ticks) {
+        this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
+      }
       this.chartJS.update();
     }
   }

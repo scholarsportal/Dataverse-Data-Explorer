@@ -1,8 +1,8 @@
-<div>
-  <!-- CHART -->
-  <div class="flex w-full mt-4">
-    <canvas id="variableChart"> {{ chartJS }}</canvas>
-  </div>
+<!-- CHART -->
+<div [ngClass]="{ 'blur': !hasCategories() }" class="flex h-full w-full mt-4">
+  <canvas id="variableChart"> {{ chartJS }}</canvas>
+</div>
+@if (hasCategories()) {
   <!-- CHART DATA -->
   <table class="table-fixed w-full mt-10">
     <thead class="table-header">
@@ -13,6 +13,7 @@
       <th>Count</th>
       <th>Count (%)</th>
       <th>Weighted Count</th>
+      <th>Weighted (%)</th>
     </tr>
     </thead>
     <tbody>
@@ -31,17 +32,16 @@
           <td>{{ item.key }}</td>
           <td>{{ item.value.category }}</td>
           <td>{{ item.value.count }}</td>
-          <td>{{ item.value.countPercent }}</td>
-          <td>{{ item.value.weightedCount }}</td>
-          <!--        <td>{{ getCategory(item.value) }}</td>-->
-          <!--        <td>{{ getCount(item.value) }}</td>-->
-          <!--        <td>{{ getCountPercent(item.value) | number: '1.0-2' }}</td>-->
-          <!--        <td>{{ getCountWeighted(item.value) | number: '1.0-2' }}</td>-->
+          <td>{{ item.value.countPercent  | number : '1.2-2' }}</td>
+          <td>{{ item.value.weightedCount | number : '1.2-2' }}</td>
+          <td>{{ item.value.weightedCountPercent | number : '1.2-2' }}</td>
         </tr>
       }
     </tbody>
   </table>
-</div>
+} @else {
+  <div class="h-44 absolute z-20 top-96 mx-auto text-xl">This Variable Has No Categories</div>
+}
 
 <h3 class="font-bold text-xl mt-10">Summary Statistics</h3>
 <dct-summary-statistics

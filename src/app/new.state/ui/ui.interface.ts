@@ -14,6 +14,7 @@ export interface UIState {
       }
     },
     crossTab: {
+      missingCategories: { [variableID: string]: string[] },
       selection: {
         [index: number]: {
           variableID: string,
@@ -47,6 +48,7 @@ export interface ChartData {
     count: number,
     countPercent: number,
     weightedCount: number,
+    weightedCountPercent: number,
     invalid: boolean
   };
 }

@@ -11,8 +11,10 @@
   class="hidden md:flex flex-col w-full table" />
 
 
-<dct-table-menu
-  [allGroups]="groups()"
-  [groupID]="groupChanged()"
-  [selectedVariables]="selectedVariables()" [weights]="weights()"
-  class="hidden md:flex menu z-20 border-t bg-base-100" />
+@if (selectedVariables().length > 1) {
+  <dct-table-menu
+    [allGroups]="groups()"
+    [groupID]="groupChanged()"
+    [selectedVariables]="selectedVariables()" [weights]="weights()"
+    class="hidden md:flex menu z-20 border-t bg-base-100" />
+}

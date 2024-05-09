@@ -1,25 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { KeyValuePipe } from '@angular/common';
-import { DropdownComponent } from '../dropdown/dropdown.component';
 import { selectDatasetProcessedGroups, selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
-// import {
-//   selectCategoriesForSelectedVariables,
-//   selectedVariablesInCrossTab,
-//   selectMissingCategoriesForSelectedVariables,
-//   selectVariablesMetadata
-// } from "../../../old.state/selectors/cross-tabulation.selectors";
-// import {
-//   changeMissingVariables,
-//   changeOrientionInGivenPosition,
-//   changeVariableInGivenPosition,
-//   fetchCrossTabValuesAndChangeVariableInGivenPosition,
-//   removeVariableFromCrossTabulation
-// } from "../../../old.state/actions/cross-tabulation.actions";
-// import {
-//   selectDatasetProcessedVariables,
-//   selectDatasetVariableGroups
-// } from "../../../old.state/selectors/dataset.selectors";
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { selectCrossTabSelection, selectVariablesCategoriesMissing } from '../../../../new.state/ui/ui.selectors';
+
 
 @Component({
   selector: 'dct-variable-selection',
@@ -45,9 +30,9 @@ export class VariableSelectionComponent {
   store = inject(Store);
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
-  // categories = this.store.selectSignal(selectCategoriesForSelectedVariables);
+  categories = this.store.selectSignal(selectVariablesCategoriesMissing);
   // missing = this.store.selectSignal(selectMissingCategoriesForSelectedVariables);
-  // selectedVariables = this.store.selectSignal(selectedVariablesInCrossTab);
+  selectedVariables = this.store.selectSignal(selectCrossTabSelection);
   // // Current values in cross tab
   // variablesMetadata = this.store.selectSignal(selectVariablesMetadata);
 
@@ -60,9 +45,9 @@ export class VariableSelectionComponent {
   //   return values;
   // });
   //
-  // selectedVariablesArray = computed(() => {
-  //   return Object.values(this.selectedVariables());
-  // });
+  selectedVariablesArray = computed(() => {
+    return Object.values(this.selectedVariables());
+  });
   //
   // variablesAlreadySelected = computed(() => {
   //   const variables: string[] = [];
@@ -72,26 +57,26 @@ export class VariableSelectionComponent {
   //   return variables;
   // });
   //
-  // onVariableOrientationChange(value: { newOrientation: 'row' | 'column', index: number }) {
-  //   this.store.dispatch(changeOrientionInGivenPosition({ ...value }));
-  // }
-  //
-  // changeVariableInGivenPosition(value: { orientation: 'row' | 'column', variableID: string, index: number }) {
-  //   const { variableID } = value;
-  //   if (this.valuesAlreadyFetchedInCrossTab()[variableID]) {
-  //     this.store.dispatch(changeVariableInGivenPosition({ ...value }));
-  //   } else {
-  //     this.store.dispatch(fetchCrossTabValuesAndChangeVariableInGivenPosition({ ...value }));
-  //   }
-  // }
-  //
-  // changeMissingCategoriesForVariable(value: { variableID: string, missing: string[] }) {
-  //   const { variableID, missing } = value;
-  //   this.store.dispatch(changeMissingVariables({ variableID, missing }));
-  // }
-  //
-  // removeVariable(event: { index: number }) {
-  //   const { index } = event;
-  //   this.store.dispatch(removeVariableFromCrossTabulation({ index }));
-  // }
+  onVariableOrientationChange(value: { newOrientation: 'rows' | 'cols' | '', index: number }) {
+    // this.store.dispatch(changeOrientionInGivenPosition({ ...value }));
+  }
+
+  changeVariableInGivenPosition(value: { orientation: 'rows' | 'cols' | '', variableID: string, index: number }) {
+    const { variableID } = value;
+    /* if (this.valuesAlreadyFetchedInCrossTab()[variableID]) {
+       this.store.dispatch(changeVariableInGivenPosition({ ...value }));
+     } else {
+       this.store.dispatch(fetchCrossTabValuesAndChangeVariableInGivenPosition({ ...value }));
+     }*/
+  }
+
+  changeMissingCategoriesForVariable(value: { variableID: string, missing: string[] }) {
+    const { variableID, missing } = value;
+    // this.store.dispatch(changeMissingVariables({ variableID, missing }));
+  }
+
+  removeVariable(event: { index: number }) {
+    const { index } = event;
+    // this.store.dispatch(removeVariableFromCrossTabulation({ index }));
+  }
 }

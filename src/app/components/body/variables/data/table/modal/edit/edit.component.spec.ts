@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditComponent } from './edit.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { globalInitialState } from '../../../../../../new.state/xml/xml.interface';
+import { globalInitialState } from 'src/app/new.state/xml/xml.interface';
 
 describe('EditComponent', () => {
   let component: EditComponent;

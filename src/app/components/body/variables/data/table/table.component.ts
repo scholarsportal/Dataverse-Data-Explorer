@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { VariableOptionsButtonComponent } from './variable-options-button.component';
 import { TableNavComponent } from '../table-nav/table-nav.component';
+import { ChipsModule } from 'primeng/chips';
 
 @Component({
   selector: 'dct-table',
@@ -24,7 +25,8 @@ import { TableNavComponent } from '../table-nav/table-nav.component';
     ButtonModule,
     TableNavComponent,
     ModalComponent,
-    NgClass
+    NgClass,
+    ChipsModule
   ]
 })
 export class TableComponent {
@@ -50,11 +52,11 @@ export class TableComponent {
     return { next, previous, variable };
   });
   selectedVariables = input.required<string[]>();
-  currentPage = signal(0);
-  itemsPerPage = signal(10);
-
+  allVariablesSelected = computed(() => {
+    return this.selectedVariables().length === this.variables().length;
+  });
   searchResult = signal<VariablesSimplified[]>([]);
-  variablesResult = computed(() => {
+  searchResultVariables = computed(() => {
     if (this.searchResult().length) {
       return this.searchResult();
     } else {
@@ -62,27 +64,60 @@ export class TableComponent {
     }
   });
   variablesLength = computed(() => {
-    return this.variablesResult().length;
+    return this.searchResultVariables().length;
   });
 
-  isFirstPage = computed(() => {
-    return this.currentPage() === 0;
-  });
-  isLastPage = computed(() => {
-    return this.currentPage() + this.itemsPerPage() >= (this.variables().length - 1);
+  currentPage = 0;
+  itemsPerPage = signal(10);
+
+  isFirstPage = (() => {
+    return this.currentPage === 0;
   });
 
+  isLastPage = (() => {
+    return this.currentPage + this.itemsPerPage() >= (this.variables().length - 1);
+  });
+
+  constructor() {
+    effect(() => {
+      if (this.groupChanged()) {
+        this.start();
+      }
+    });
+  }
+
+  toggleAll() {
+    if (this.selectedVariables().length > 4) {
+      this.store.dispatch(VariableTabUIAction.changeVariableSelectionContext({
+        selectedGroup: this.groupChanged(),
+        variableIDs: []
+      }));
+    } else {
+      const values: string[] = [];
+      this.variables().map(variable => {
+        values.push(variable.variableID);
+      });
+      this.store.dispatch(VariableTabUIAction.changeVariableSelectionContext({
+        selectedGroup: this.groupChanged(),
+        variableIDs: values
+      }));
+    }
+  }
 
   prev() {
-    this.currentPage.set(this.currentPage() - this.itemsPerPage());
+    if (this.currentPage - this.itemsPerPage() <= 0) {
+      this.currentPage = 0;
+    } else {
+      this.currentPage = (this.currentPage - this.itemsPerPage());
+    }
   }
 
   next() {
-    this.currentPage.set(this.currentPage() + this.itemsPerPage());
+    this.currentPage = (this.currentPage + this.itemsPerPage());
   }
 
   start() {
-    this.currentPage.set(0);
+    this.currentPage = 0;
   }
 
   setItemsPerPage(itemsPerPage: number) {

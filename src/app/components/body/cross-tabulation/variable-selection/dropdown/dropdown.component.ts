@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   MultiselectDropdownComponent
-} from '../../variables/data/table/multiselect-dropdown/multiselect-dropdown.component';
+} from '../../../variables/data/table/multiselect-dropdown/multiselect-dropdown.component';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -24,21 +24,21 @@ export class DropdownComponent {
   store = inject(Store);
   // Inputs
   index = input.required<number>();
-  groups = input.required<VariableGroup[]>();
+  groups = input.required<{ [groupID: string]: VariableGroup }>();
   variables = input.required<{ [id: string]: Variable }>();
-  variableOrientation = input.required<'row' | 'column'>();
+  variableOrientation = input.required<'rows' | 'cols' | ''>();
   selectedVariableID = input.required<string>();
   variablesAlreadySelected =
     input.required<string[]>();
   categories = input.required<{ [variableID: string]: { [categoryID: string]: string } }>();
   missing = input.required<{ [variableID: string]: string[] }>();
   // Output
-  emitChangeVariableOrientation = output<{ newOrientation: 'row' | 'column', index: number }>();
-  emitChangeSelectedVariable = output<{ variableID: string, index: number, orientation: 'row' | 'column' }>();
+  emitChangeVariableOrientation = output<{ newOrientation: 'rows' | 'cols' | '', index: number }>();
+  emitChangeSelectedVariable = output<{ variableID: string, index: number, orientation: 'rows' | 'cols' | '' }>();
   emitChangeSelectedCategories = output<{
     index: number,
     variableID: string,
-    orientation: 'row' | 'column',
+    orientation: 'rows' | 'cols' | '',
     missing: string[]
   }>();
   emitRemoveVariable = output<{ index: number }>();
@@ -81,10 +81,10 @@ export class DropdownComponent {
     const value: any | null =
       (event?.target as HTMLSelectElement).value || null;
     if (value && value === 'row') {
-      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'row' });
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'rows' });
     }
     if (value && value === 'column') {
-      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'column' });
+      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'cols' });
     }
   }
 

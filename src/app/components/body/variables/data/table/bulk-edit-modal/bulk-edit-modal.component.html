@@ -93,10 +93,10 @@
         </label>
         <button
           (click)="handleSave()"
-          class="btn btn-primary justify-start mt-5"
+          class="btn btn-primary justify-start mt-2.5"
         >
           <svg
-            class="mx-1.5 w-6 h-6"
+            class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
@@ -109,17 +109,17 @@
               stroke-linejoin="round"
             />
           </svg>
-          <!--          <span class="mt-1">UPDATE {{ selected.length }} VARIABLES</span>-->
+          <span class="">UPDATE {{ selectedVariables().length }} VARIABLES</span>
         </button>
       </form>
     </div>
-    <div class="flex flex-col w-full mt-16">
+    <div class="flex flex-col w-full my-3">
       <button
         (click)="handleCancel()"
         class="btn btn-outline justify-start"
       >
         <svg
-          class="mx-1.5 w-6 h-6"
+          class="w-6 h-6"
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"
@@ -132,7 +132,7 @@
             stroke-linejoin="round"
           />
         </svg>
-        <span class="mt-1">CLOSE</span>
+        <span class="">CLOSE</span>
       </button>
     </div>
   </div>

@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';
 
 export const initialState: UIState = {
-  bodyToggle: 'variables',
+  bodyToggle: 'cross-tab',
   bodyState: {
     variables: {
       groupSelectedID: 'ALL',
@@ -18,6 +18,7 @@ export const initialState: UIState = {
       }
     },
     crossTab: {
+      missingCategories: {},
       selection: {}
     }
   }
@@ -113,8 +114,9 @@ export const uiReducer = createReducer(initialState,
       bodyState: {
         ...state.bodyState,
         crossTab: {
+          ...state.bodyState.crossTab,
           selection: {
-            ...state.bodyState.crossTab,
+            ...state.bodyState.crossTab.selection,
             // This makes sure we are adding to the last index of the current
             // selection
             [Object.keys(state.bodyState.crossTab.selection).length]: {

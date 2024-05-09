@@ -10,6 +10,7 @@ import {
   selectOpenVariableChart,
   selectOpenVariableChartTable,
   selectOpenVariableFormState,
+  selectOpenVariableHasCategories,
   selectOpenVariableID,
   selectOpenVariableMode,
   selectOpenVariableName,
@@ -41,6 +42,7 @@ export class ModalComponent {
   nextVar = input.required<string>();
   previousVar = input.required<string>();
   // form data
+  hasCategories = this.store.selectSignal(selectOpenVariableHasCategories);
   modalMode = this.store.selectSignal(selectOpenVariableMode);
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
   variableName = this.store.selectSignal(selectOpenVariableName);

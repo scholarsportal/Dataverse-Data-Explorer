@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VariableInformationComponent } from './variable-information.component';
-import { variableFormInit } from '../../../../../../../new.state/ui/ui.interface';
+import { variableFormInit } from 'src/app/new.state/ui/ui.interface';
 
 describe('VariableInformationComponent', () => {
   let component: VariableInformationComponent;

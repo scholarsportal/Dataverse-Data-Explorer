@@ -1,16 +1,16 @@
-<!--@for (item of selectedVariablesArray(); track $index) {-->
-<!--  <dct-dropdown-->
-<!--    [index]="$index"-->
-<!--    [groups]="groups()"-->
-<!--    [variables]="variables()"-->
-<!--    [categories]="categories()"-->
-<!--    [variableOrientation]="item.orientation"-->
-<!--    [selectedVariableID]="item.variableID"-->
-<!--    [missing]="missing()"-->
-<!--    [variablesAlreadySelected]="variablesAlreadySelected()"-->
-<!--    (emitChangeVariableOrientation)="onVariableOrientationChange($event)"-->
-<!--    (emitChangeSelectedVariable)="changeVariableInGivenPosition($event)"-->
-<!--    (emitChangeSelectedCategories)="changeMissingCategoriesForVariable($event)"-->
-<!--    (emitRemoveVariable)="removeVariable($event)"-->
-<!--  ></dct-dropdown>-->
-<!--}-->
+@for (item of selectedVariablesArray(); track $index) {
+  <dct-dropdown
+    [index]="$index"
+    [groups]="groups()"
+    [variables]="variables()"
+    [categories]="{}"
+    [variableOrientation]="item.orientation"
+    [selectedVariableID]="item.variableID"
+    [missing]="{}"
+    [variablesAlreadySelected]="[]"
+    (emitChangeVariableOrientation)="onVariableOrientationChange($event)"
+    (emitChangeSelectedVariable)="changeVariableInGivenPosition($event)"
+    (emitChangeSelectedCategories)="changeMissingCategoriesForVariable($event)"
+    (emitRemoveVariable)="removeVariable($event)"
+  ></dct-dropdown>
+}

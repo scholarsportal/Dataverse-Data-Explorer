@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MultiselectDropdownComponent } from './multiselect-dropdown.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { globalInitialState } from '../../../../../new.state/xml/xml.interface';
+import { globalInitialState } from 'src/app/new.state/xml/xml.interface';
 
 describe('MultiselectDropdownComponent', () => {
   let component: MultiselectDropdownComponent;
