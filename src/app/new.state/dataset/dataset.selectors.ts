@@ -57,3 +57,9 @@ export const selectDatasetWeights = createSelector(
     return weights;
   }
 );
+
+export const selectDatasetVariableCrossTabValues = createSelector(
+  selectDatasetFeature, state => {
+    return state.crossTabulation.variableMetadata;
+  }
+);

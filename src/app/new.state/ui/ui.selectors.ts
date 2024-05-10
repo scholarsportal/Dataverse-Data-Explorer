@@ -5,6 +5,7 @@ import {
   selectDatasetProcessedVariables,
   selectVariablesWithCorrespondingGroups
 } from '../xml/xml.selectors';
+import { selectDatasetVariableCrossTabValues } from '../dataset/dataset.selectors';
 
 export const selectUIFeature =
   createFeatureSelector<UIState>('ui');
@@ -48,10 +49,6 @@ export const selectCurrentGroupID = createSelector(
 
 export const selectVariablesCategoriesMissing = createSelector(
   selectUIFeature, state => state.bodyState.variables.categoriesDeclaredMissing
-);
-
-export const selectCrossTabSelection = createSelector(
-  selectUIFeature, state => state.bodyState.crossTab.selection
 );
 
 export const selectCrossTabCategoriesMissing = createSelector(
@@ -222,5 +219,30 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       });
     }
     return summaryStatistics;
+  }
+);
+
+export const selectCrossTabSelection = createSelector(
+  selectUIFeature, state => state.bodyState.crossTab.selection
+);
+
+export const selectCrossTabRows = createSelector(
+  selectCrossTabSelection, selection => {
+    const rows: string[] = [];
+    return rows;
+  }
+);
+
+export const selectCrossTabCols = createSelector(
+  selectCrossTabSelection, selection => {
+    const cols: string[] = [];
+    return cols;
+  }
+);
+
+export const selectCrossTabulationTableData = createSelector(
+  selectDatasetVariableCrossTabValues, selectCrossTabRows, selectCrossTabCols, (crossTabValues, rows, cols) => {
+    const tableData: { [rowOrColumnID: string]: string }[] = [];
+    return { crossTabValues, tableData, rows, cols };
   }
 );

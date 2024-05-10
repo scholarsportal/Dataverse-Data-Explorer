@@ -7,7 +7,7 @@ export const CrossTabulationUIActions =
       // Toggle to Cross Tabulation tab
       'Navigate to Cross Tabulation tab': emptyProps(),
       // Add Variable to Cross Tabulation selection
-      'Add to Selection': props<{ variableID: string, orientation: 'rows' | 'cols' }>(),
+      'Add to Selection': props<{ variableID: string, orientation: 'rows' | 'cols' | '' }>(),
       // Remove Variable From Cross Tabulation using variableID
       'Remove Variable Using VariableID': props<{ variableID: string }>(),
       // Remove variable from cross tabulation selection using index

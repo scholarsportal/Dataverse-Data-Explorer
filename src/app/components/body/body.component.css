@@ -11,3 +11,8 @@
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(11, 1fr);
 }
+
+.cross-tab {
+  grid-area: 1 / 1 / 5 / 13;
+  max-height: 100%;
+}

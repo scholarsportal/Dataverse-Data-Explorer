@@ -1,5 +1,6 @@
-import { Component, effect, ElementRef, inject, input, ViewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { defaultCols, defaultRows, defaultTable } from './default-table';
 
 declare var jQuery: any; // Declare jQuery
 declare var $: any; // Declare jQuery
@@ -16,17 +17,31 @@ export class CrossTableComponent {
   data = input.required<{ [variableLabel: string]: string }[]>();
   rows = input.required<string[]>();
   cols = input.required<string[]>();
+  hasData = false;
   element: ElementRef = inject(ElementRef);
+
+  tableClass = computed(() => {
+    if (this.hasData) {
+      return '';
+    } else {
+      return 'blur ';
+    }
+
+  });
 
   constructor() {
     effect(() => {
-      if (this.data()) {
+      if (this.rows().length || this.cols().length) {
+        this.hasData = true;
         this.createTable(this.data(), this.rows(), this.cols());
+      } else if (!this.cols().length && !this.rows().length) {
+        this.hasData = false;
+        this.createTable(defaultTable, defaultRows, defaultCols);
       }
     });
   }
 
-  createTable(data: { [id: string]: string }[], rows: string[], cols: string[]) {
+  createTable(data: { [id: string]: string }[] | { [id: string]: any }, rows: string[], cols: string[]) {
     if (!this.element?.nativeElement?.children) {
       console.log('Cannot build element');
       return;
@@ -47,7 +62,8 @@ export class CrossTableComponent {
       {
         rows: rows,
         cols: cols,
-        aggregatorName: 'Count as Fraction of Total'
+        aggregatorName: 'Count',
+        showUI: false
       },
       true
     );

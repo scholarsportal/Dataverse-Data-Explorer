@@ -1,5 +1,7 @@
+<h3 class="font-bold text-3xl">Variables</h3>
 @for (item of selectedVariablesArray(); track $index) {
   <dct-dropdown
+    class="flex flex-row w-full pr-5 my-2.5 justify-between rounded bg-base-300"
     [index]="$index"
     [groups]="groups()"
     [variables]="variables()"
@@ -13,4 +15,6 @@
     (emitChangeSelectedCategories)="changeMissingCategoriesForVariable($event)"
     (emitRemoveVariable)="removeVariable($event)"
   ></dct-dropdown>
+} @empty {
+  <div class="my-10">Nothing here yet. Add a variable to start creating your table</div>
 }

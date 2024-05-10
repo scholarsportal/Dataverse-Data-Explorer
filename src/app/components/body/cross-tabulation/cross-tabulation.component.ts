@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CrossTableComponent } from './cross-table/cross-table.component';
-// import {
-//   selectCurrentCrossTableData,
-//   selectRowsAndCategories
-// } from 'src/app/state/selectors/cross-tabulation.selectors';
-// import { addVariableToCrossTabulation } from 'src/app/state/actions/cross-tabulation.actions';
+
 import { VariableSelectionComponent } from './variable-selection/variable-selection.component';
+import { CrossTabulationUIActions } from '../../../new.state/ui/ui.actions';
+import { selectCrossTabulationTableData } from '../../../new.state/ui/ui.selectors';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'dct-cross-tabulation',
   standalone: true,
-  imports: [CommonModule, VariableSelectionComponent, CrossTableComponent],
+  imports: [CommonModule, VariableSelectionComponent, CrossTableComponent, DropdownModule, FormsModule],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,8 +20,20 @@ import { VariableSelectionComponent } from './variable-selection/variable-select
 export class CrossTabulationComponent {
   store = inject(Store);
 
-  // $tableRowsAndColumns = this.store.selectSignal(selectRowsAndCategories);
-  // $table = this.store.selectSignal(selectCurrentCrossTableData);
+  tableData = this.store.selectSignal(selectCrossTabulationTableData);
+  table = computed(() => {
+    return this.tableData().tableData;
+  });
+  rows = computed(() => {
+    return this.tableData().rows;
+  });
+
+  cols = computed(() => {
+    return this.tableData().cols;
+  });
+
+  options = signal(['Value', 'Weighted Value', 'Row Percentage', 'Column Percentage', 'Total Percentage']);
+  selectedOption = signal('Value');
 
   // computedTable = computed(() => {
   //   const table: { [p: string]: string }[] = [];
@@ -45,16 +57,9 @@ export class CrossTabulationComponent {
   //   return lengthOfRows && lengthOfColumns && this.computedTable().length;
   // });
   //
-  // addNewEmptyRow() {
-  //   this.store.dispatch(
-  //     addVariableToCrossTabulation({ variableID: '', orientation: 'row' })
-  //   );
-  // }
-  //
-  // addNewEmptyColumn() {
-  //   this.store.dispatch(
-  //     addVariableToCrossTabulation({ variableID: '', orientation: 'column' })
-  //   );
-  // }
-
+  addNewEmptyRow() {
+    this.store.dispatch(
+      CrossTabulationUIActions.addToSelection({ variableID: '', orientation: '' })
+    );
+  }
 }
