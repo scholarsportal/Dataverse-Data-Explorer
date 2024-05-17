@@ -1,14 +1,24 @@
 <div class="py-52 mx-3 text-center md:hidden">
-  The Cross Tabulation Calculator is optimized for larger screens. Open this page on
-  a device such as a tablet, or computer to use the tool.
+  The Cross Tabulation Calculator is optimized for larger screens. Open this
+  page on a device such as a tablet, or computer to use the tool.
 </div>
 <dct-variable-selection class="" />
 
 <div class="flex flex-row">
   <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
-         xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round" />
+    <svg
+      class="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 4.5v15m7.5-7.5h-15"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
     <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
   </button>
@@ -19,17 +29,48 @@
     styleClass="rounded border h-fit mt-3 w-44 px-2 py-2 mx-5"
   >
     <ng-template let-value pTemplate="item">
-      <span [ngClass]="{'bg-base-300 hover:bg-base-100': selectedOption() === (value)}"
-            class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300">
-      {{ value }}
+      <span
+        [ngClass]="{
+          'bg-base-300 hover:bg-base-100': selectedOption() === value
+        }"
+        class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
+      >
+        {{ value }}
       </span>
     </ng-template>
   </p-dropdown>
+  <button
+    class="bg-warning text-warning-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
+  >
+    View Graph
+  </button>
+  <button
+    class="bg-info text-info-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
+  >
+    <span>Export Table</span>
+  </button>
 </div>
 
-<dct-cross-table
-  [cols]="cols()"
-  [data]="table()"
-  [rows]="rows()"
-  class="mx-auto my-auto graph-area"
-></dct-cross-table>
+@if (hasData() && hasRowOrColumn()) {
+  <dct-cross-table
+    [cols]="cols()"
+    [data]="table()"
+    [rows]="rows()"
+    [hasData]="true"
+    class="mx-auto my-auto graph-area"
+  ></dct-cross-table>
+} @else {
+  <dct-cross-table
+    [cols]="defaultColumns"
+    [data]="defaultTable"
+    [rows]="defaultRows"
+    [hasData]="false"
+    class="mx-auto my-auto graph-area"
+  ></dct-cross-table>
+
+  <div class="w-full text-3xl font-medium relative bottom-96">
+    <h3 class="text-center mx-auto">
+      No Data! Start adding variables to generate your table
+    </h3>
+  </div>
+}

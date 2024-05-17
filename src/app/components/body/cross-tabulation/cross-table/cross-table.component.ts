@@ -1,47 +1,52 @@
-import { Component, computed, effect, ElementRef, inject, input, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { defaultCols, defaultRows, defaultTable } from './default-table';
 
-declare var jQuery: any; // Declare jQuery
-declare var $: any; // Declare jQuery
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const jQuery: any; // Declare jQuery
+// declare const $: any; // Declare jQuery
 
 @Component({
   selector: 'dct-cross-table',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './cross-table.component.html',
-  styleUrl: './cross-table.component.css'
+  styleUrl: './cross-table.component.css',
 })
 export class CrossTableComponent {
   @ViewChild('output') outputElement?: ElementRef;
-  data = input.required<{ [variableLabel: string]: string }[]>();
+  data = input.required<{ [variableLabel: string]: string }[] | unknown[]>();
   rows = input.required<string[]>();
   cols = input.required<string[]>();
-  hasData = false;
+  hasData = input.required<boolean>();
   element: ElementRef = inject(ElementRef);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public chartJS: any;
 
   tableClass = computed(() => {
-    if (this.hasData) {
+    if (this.hasData()) {
       return '';
     } else {
       return 'blur ';
     }
-
   });
 
   constructor() {
     effect(() => {
-      if (this.rows().length || this.cols().length) {
-        this.hasData = true;
-        this.createTable(this.data(), this.rows(), this.cols());
-      } else if (!this.cols().length && !this.rows().length) {
-        this.hasData = false;
-        this.createTable(defaultTable, defaultRows, defaultCols);
+      if (this.data() && (this.rows() || this.cols())) {
+        this.createTable();
       }
     });
   }
 
-  createTable(data: { [id: string]: string }[] | { [id: string]: any }, rows: string[], cols: string[]) {
+  createTable() {
     if (!this.element?.nativeElement?.children) {
       console.log('Cannot build element');
       return;
@@ -56,16 +61,21 @@ export class CrossTableComponent {
     while (targetElement.firstChild) {
       targetElement.removeChild(targetElement.firstChild);
     }
+    // const renderers = jQuery.extend(
+    //   jQuery.pivotUtilities.renderers,
+    //   jQuery.pivotUtilities.d3_renderers,
+    // );
 
     targetElement.pivotUI(
-      data,
+      this.data(),
       {
-        rows: rows,
-        cols: cols,
+        rows: this.rows(),
+        cols: this.cols(),
         aggregatorName: 'Count',
-        showUI: false
+        showUI: false,
+        rendererName: 'Horizontal Stacked Bar Chart',
       },
-      true
+      true,
     );
   }
 }

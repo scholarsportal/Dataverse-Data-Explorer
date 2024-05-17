@@ -11,6 +11,7 @@ import { xmlReducer } from './app/new.state/xml/xml.reducer';
 import { datasetReducer } from './app/new.state/dataset/dataset.reducer';
 import { XmlEffects } from './app/new.state/xml/xml.effects';
 import { uiReducer } from './app/new.state/ui/ui.reducer';
+import { DatasetEffects } from './app/new.state/dataset/dataset.effects';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -23,7 +24,7 @@ bootstrapApplication(AppComponent, {
         connectInZone: true
       }),
       // Add this line to 'activate effects for actions'
-      EffectsModule.forRoot([XmlEffects])
+      EffectsModule.forRoot([XmlEffects, DatasetEffects])
     ),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),

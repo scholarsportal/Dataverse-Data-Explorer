@@ -1,20 +1,36 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 import { shuffleColours } from './chart.interface';
 import { Store } from '@ngrx/store';
 import { SummaryStatisticsComponent } from './summary-statistics/summary-statistics.component';
-import { ChartData, SummaryStatistics, VariableForm } from 'src/app/new.state/ui/ui.interface';
+import {
+  ChartData,
+  SummaryStatistics,
+  VariableForm,
+} from 'src/app/new.state/ui/ui.interface';
 import { VariableInformationComponent } from './variable-information/variable-information.component';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-chart',
   standalone: true,
-  imports: [CommonModule, SummaryStatisticsComponent, VariableInformationComponent],
+  imports: [
+    CommonModule,
+    SummaryStatisticsComponent,
+    VariableInformationComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './chart.component.html',
-  styleUrl: './chart.component.css'
+  styleUrl: './chart.component.css',
 })
 export class ChartComponent implements OnInit {
   store = inject(Store);
@@ -22,7 +38,7 @@ export class ChartComponent implements OnInit {
   variableID = input.required<string>();
   hasCategories = input.required<boolean>();
   weights = input.required<{ [variableID: string]: string }>();
-  chart = input.required<{ x: number, y: string }[]>();
+  chart = input.required<{ x: number; y: string }[]>();
   chartTable = input.required<ChartData>();
   form = input.required<VariableForm>();
   groups = input.required<string[]>();
@@ -30,6 +46,8 @@ export class ChartComponent implements OnInit {
   categoriesInvalid = input.required<string[]>();
 
   @Input() weight!: { [id: string]: string } | null;
+  // Reason: ChartJS works better with an any definition
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public chartJS: any;
 
   constructor() {
@@ -44,16 +62,22 @@ export class ChartComponent implements OnInit {
 
   toggleCheckbox(value: string) {
     if (this.categoriesInvalid().includes(value)) {
-      const category = this.categoriesInvalid().filter(item => item !== value);
-      this.store.dispatch(VariableTabUIAction.changeMissingCategories({
-        variableID: this.variableID(),
-        categories: category
-      }));
+      const category = this.categoriesInvalid().filter(
+        (item) => item !== value,
+      );
+      this.store.dispatch(
+        VariableTabUIAction.changeMissingCategories({
+          variableID: this.variableID(),
+          categories: category,
+        }),
+      );
     } else {
-      this.store.dispatch(VariableTabUIAction.changeMissingCategories({
-        variableID: this.variableID(),
-        categories: [...this.categoriesInvalid(), value]
-      }));
+      this.store.dispatch(
+        VariableTabUIAction.changeMissingCategories({
+          variableID: this.variableID(),
+          categories: [...this.categoriesInvalid(), value],
+        }),
+      );
     }
   }
 
@@ -64,18 +88,18 @@ export class ChartComponent implements OnInit {
         datasets: [
           {
             data: this.chart(),
-            backgroundColor: shuffleColours()
-          }
-        ]
+            backgroundColor: shuffleColours(),
+          },
+        ],
       },
       options: {
         indexAxis: 'y',
         plugins: {
           legend: {
-            display: false
-          }
-        }
-      }
+            display: false,
+          },
+        },
+      },
     });
 
     const light = 'black';
@@ -97,7 +121,7 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  private redrawChart(chart: { x: number, y: string }[]) {
+  private redrawChart(chart: { x: number; y: string }[]) {
     // Update chart data and redraw
     if (this.chartJS) {
       this.chartJS.data.datasets[0].data = chart;

@@ -1,20 +1,27 @@
 import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { KeyValuePipe } from '@angular/common';
-import { selectDatasetProcessedGroups, selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
+import {
+  selectDatasetProcessedGroups,
+  selectDatasetProcessedVariables,
+} from 'src/app/new.state/xml/xml.selectors';
 import { DropdownComponent } from './dropdown/dropdown.component';
-import { selectCrossTabSelection, selectVariablesCategoriesMissing } from '../../../../new.state/ui/ui.selectors';
-
+import {
+  selectCrossTabCategoriesMissing,
+  selectCrossTabSelection,
+} from '../../../../new.state/ui/ui.selectors';
+import {
+  selectDatasetAllVariableCategories,
+  selectDatasetVariableCrossTabValues,
+} from '../../../../new.state/dataset/dataset.selectors';
+import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [
-    KeyValuePipe,
-    DropdownComponent
-  ],
+  imports: [KeyValuePipe, DropdownComponent],
   templateUrl: './variable-selection.component.html',
-  styleUrl: './variable-selection.component.css'
+  styleUrl: './variable-selection.component.css',
 })
 export class VariableSelectionComponent {
   /** This is a smart component. It handles all communication with the store,
@@ -30,53 +37,75 @@ export class VariableSelectionComponent {
   store = inject(Store);
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
-  categories = this.store.selectSignal(selectVariablesCategoriesMissing);
-  // missing = this.store.selectSignal(selectMissingCategoriesForSelectedVariables);
-  selectedVariables = this.store.selectSignal(selectCrossTabSelection);
-  // // Current values in cross tab
-  // variablesMetadata = this.store.selectSignal(selectVariablesMetadata);
+  categories = this.store.selectSignal(selectDatasetAllVariableCategories);
+  missing = this.store.selectSignal(selectCrossTabCategoriesMissing);
+  selection = this.store.selectSignal(selectCrossTabSelection);
+  // Current values in cross tab
+  variablesMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
 
-  // valuesAlreadyFetchedInCrossTab = computed(() => {
-  //   const values: { [variableID: string]: boolean } = {};
-  //   Object.keys(this.variablesMetadata()).map((key) => {
-  //     // values[key] = this.variablesMetadata()[key].crossTabValues ? true : false;
-  //     values[key] = !!this.variablesMetadata()[key].crossTabValues;
-  //   });
-  //   return values;
-  // });
-  //
-  selectedVariablesArray = computed(() => {
-    return Object.values(this.selectedVariables());
+  variablesAlreadySelected = computed(() => {
+    const variables: string[] = [];
+    Object.values(this.selection()).map((value) => {
+      variables.push(value.variableID);
+    });
+    return variables;
   });
-  //
-  // variablesAlreadySelected = computed(() => {
-  //   const variables: string[] = [];
-  //   Object.keys(this.selectedVariables()).map((_, index) => {
-  //     variables.push(this.selectedVariables()[index].variableID);
-  //   });
-  //   return variables;
-  // });
-  //
-  onVariableOrientationChange(value: { newOrientation: 'rows' | 'cols' | '', index: number }) {
-    // this.store.dispatch(changeOrientionInGivenPosition({ ...value }));
+
+  onVariableOrientationChange(value: {
+    newOrientation: 'rows' | 'cols' | '';
+    index: number;
+    variableID: string;
+  }) {
+    const { newOrientation, index, variableID } = value;
+    this.store.dispatch(
+      CrossTabulationUIActions.changeValueInGivenIndex({
+        orientation: newOrientation,
+        index,
+        variableID,
+      }),
+    );
   }
 
-  changeVariableInGivenPosition(value: { orientation: 'rows' | 'cols' | '', variableID: string, index: number }) {
-    const { variableID } = value;
-    /* if (this.valuesAlreadyFetchedInCrossTab()[variableID]) {
-       this.store.dispatch(changeVariableInGivenPosition({ ...value }));
-     } else {
-       this.store.dispatch(fetchCrossTabValuesAndChangeVariableInGivenPosition({ ...value }));
-     }*/
+  changeVariableInGivenPosition(value: {
+    orientation: 'rows' | 'cols' | '';
+    variableID: string;
+    index: number;
+  }) {
+    const { variableID, index, orientation } = value;
+    if (this.variablesMetadata()[variableID]) {
+      this.store.dispatch(
+        CrossTabulationUIActions.changeValueInGivenIndex({
+          index,
+          variableID,
+          orientation,
+        }),
+      );
+    } else {
+      this.store.dispatch(
+        CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex({
+          ...value,
+        }),
+      );
+    }
   }
 
-  changeMissingCategoriesForVariable(value: { variableID: string, missing: string[] }) {
+  changeMissingCategoriesForVariable(value: {
+    variableID: string;
+    missing: string[];
+  }) {
     const { variableID, missing } = value;
-    // this.store.dispatch(changeMissingVariables({ variableID, missing }));
+    console.log(variableID);
+    console.log(missing);
+    // this.store.dispatch(CrossTabulationUIActions.changeMissingCategories({ variableID, missing }));
   }
 
-  removeVariable(event: { index: number }) {
-    const { index } = event;
+  removeVariable(value: { index: number }) {
+    const { index } = value;
+    this.store.dispatch(
+      CrossTabulationUIActions.removeVariablesUsingIndex({ index }),
+    );
     // this.store.dispatch(removeVariableFromCrossTabulation({ index }));
   }
 }

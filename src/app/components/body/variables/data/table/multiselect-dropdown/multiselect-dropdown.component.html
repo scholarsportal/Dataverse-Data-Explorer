@@ -20,7 +20,7 @@
   </dialog>
   <button
     (click)="toggleDialog()"
-    class="rounded border border-light-outline-variant absolute justify-start min-h-8 h-full w-full py-0.5 pr-0"
+    class="rounded border text-black absolute bg-white justify-start min-h-8 h-full w-full py-0.5 pr-0"
   >
     <div class="flex flex-row">
       <svg
@@ -46,9 +46,9 @@
           }
         </ul>
       } @else if (!selectedItems().length && (itemList() | keyvalue).length) {
-        <span class="self-center button-label pr-5">{{ emptyPlaceholderText() }}</span>
+        <span class="self-center button-label pr-5 text-black">{{ emptyPlaceholderText() }}</span>
       } @else if (!selectedItems().length && !(itemList() | keyvalue).length) {
-        <span class="self-center button-label pr-5">{{ emptySetPlaceholderText() }}</span>
+        <span class="self-center button-label pr-5 text-black">{{ emptySetPlaceholderText() }}</span>
       }
     </div>
   </button>

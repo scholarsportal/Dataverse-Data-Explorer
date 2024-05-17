@@ -14,13 +14,16 @@
   button {
     @apply rounded-sm;
   }
-
-  p-multiselect .p-multiselect-panel .p-multiselect-items .p-multiselect-item .p-checkbox {
-    display: none;
+}
+@layer primeng {
+  .p-multiselect-filter-container {
+    @apply rounded border;
   }
 
+  .p-multiselect-filter .p-inputtext .p-component {
+    @apply rounded border;
+  }
 }
-
 
 @layer components {
   .btn {
@@ -42,8 +45,9 @@
     font-weight: 500;
   }
 
-  .btn-secondary, .btn-primary {
-    @apply text-base-100
+  .btn-secondary,
+  .btn-primary {
+    @apply text-base-100;
   }
 
   .btn-outline {
@@ -51,24 +55,33 @@
   }
 
   .btn-outline:hover {
-    background: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
-    border-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
-    color: inherit
+    background: color-mix(
+      in oklab,
+      oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+      black
+    );
+    border-color: color-mix(
+      in oklab,
+      oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+      black
+    );
+    color: inherit;
   }
 
-  .input, .select {
+  .input,
+  .select {
     height: 2.5rem;
     min-height: 2.5rem;
     border-radius: 4px;
-
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     color-scheme: initial;
   }
 
   .form-outline {
     @apply border border-slate-300 bg-transparent;
   }
-
 }

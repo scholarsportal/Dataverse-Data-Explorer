@@ -1,25 +1,93 @@
 <div class="w-full flex flex-row">
-  <label class="sr-only" for="rowColumnSelect">Choose row/column</label>
-  <select
-    (change)="onChangeVariableOrientation($event)"
-    [value]="variableOrientation()"
-    class="dropdown"
-    id="rowColumnSelect"
-    name="rowColumnSelect"
-  >
-    <option value="row">ROW</option>
-    <option value="column">COLUMN</option>
-  </select>
-  <label class="sr-only" for="groupDropdown">Group:</label>
-  <select (change)="onGroupChange($event)" class="dropdown" id="groupDropdown">
-    <option [defaultSelected]="true" disabled value="">Filter by Group</option>
-    <option value="all">Show All Variables</option>
-    @for (group of groups() | keyvalue; track $index) {
-      <option [value]="group.key">{{ group.value.labl }}</option>
-    }
-  </select>
-  <label class="sr-only" for="variableDropdown">Variable:</label>
-  <select
+  <label class="m-2 flex flex-col" for="rowColumnSelect">
+    Row or column?
+    <p-dropdown
+      [ngModel]="variableOrientation()"
+      (ngModelChange)="onChangeVariableOrientation($event)"
+      [options]="['rows', 'cols']"
+      placeholder="None"
+      styleClass="w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
+      panelStyleClass="w-44 py-1.5 mt-0.5 bg-base-100 rounded-b border-x border-b"
+    >
+      <ng-template pTemplate="selectedItem" let-item>{{
+        item === 'rows' ? 'Row' : 'Column'
+      }}</ng-template>
+      <ng-template pTemplate="item" let-item>
+        <li class="py-2.5 w-full h-full">
+          <span class="rounded px-2">{{
+            item === 'rows' ? 'ROW' : 'COLUMN'
+          }}</span>
+        </li>
+      </ng-template>
+    </p-dropdown>
+  </label>
+  <label class="m-2 flex flex-col" for="groupDropdown">
+    Group (Filter)
+    <p-dropdown
+      [ngModel]="selectedGroup()"
+      optionValue="key"
+      optionLabel="value.labl"
+      (ngModelChange)="onGroupChange($event)"
+      placeholder="All Variables"
+      [options]="groups() | keyvalue"
+      styleClass="w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
+      panelStyleClass="w-44 py-1.5 mt-0.5 bg-base-100 rounded-b border-x border-b"
+    >
+      <ng-template pTemplate="item" let-item>
+        <li class="hover:bg-base-300 py-2.5 w-full h-full">
+          <span class="rounded px-2">{{ item.value.labl }}</span>
+        </li>
+      </ng-template>
+    </p-dropdown>
+  </label>
+  <label class="m-2 w-1/3 flex flex-col" for="variableDropdown"
+    >Variable
+    <p-dropdown
+      [ngModel]="selectedVariableID()"
+      [options]="filteredVariables()"
+      (ngModelChange)="onVariableChange($event)"
+      [filter]="true"
+      filterBy="label"
+      optionValue="variableID"
+      optionLabel="label"
+      placeholder="Select Variable"
+      styleClass="w-full py-1.5 px-3 mt-2 rounded border bg-base-100"
+      panelStyleClass="w-44 relative rounded-b my-0.5 mr-2 border bg-base-100"
+    >
+      <ng-template pTemplate="filter" let-options="options">
+        <div class="flex p-3">
+          <div class="w-full">
+            <input
+              class="px-2 rounded border w-full"
+              type="text"
+              pInputText
+              placeholder="Filter"
+              [(ngModel)]="filterValue"
+              (click)="$event.stopPropagation()"
+              (keyup)="options.filter($event)"
+            />
+          </div>
+          <!-- <button pButton icon="pi pi-times" class="ml-3" (click)="myResetFunction(options)"></button> -->
+        </div>
+      </ng-template>
+      <ng-template pTemplate="item" let-items>
+        <li
+          [ariaDisabled]="variablesAlreadySelected().includes(items.variableID)"
+          [ngClass]="{
+            'text-base-300 hover:bg-current':
+              variablesAlreadySelected().includes(items.variableID)
+          }"
+          class="hover:bg-base-300 py-2.5 w-full h-full"
+        >
+          <span class="rounded px-2">{{ items.label }}</span>
+        </li>
+      </ng-template>
+      <ng-template pTemplate="selectedItem" let-value>
+        <span class="px-2 my-2">{{ value.label }}</span>
+      </ng-template>
+    </p-dropdown>
+  </label>
+  <!-- <select
     (change)="onVariableChange($event)"
     [value]="selectedVariableID()"
     class="dropdown"
@@ -35,11 +103,49 @@
         {{ variable.labl['#text'] }}
       </option>
     }
-  </select>
-  <label
-    class="m-2 w-96"
-    for="categoriesSelectedDropdown">
-    <dct-multiselect-dropdown
+  </select> -->
+  <label class="m-2 w-96" for="categoriesSelectedDropdown">
+    Categories (Filter)
+    <p-multiSelect
+      [options]="filteredCategories() | keyvalue"
+      [ngModel]="filteredMissing()"
+      placeholder="{{
+        (filteredCategories() | keyvalue).length
+          ? 'Filter Categories'
+          : 'Select A Variable With Categories'
+      }}"
+      (ngModelChange)="changeMissingValues($event)"
+      optionLabel="value"
+      optionValue="key"
+      styleClass="w-full px-3 py-1.5 mt-2 rounded border bg-base-100"
+      panelStyleClass="rounded-b bg-base-100 border px-1.5 py-2"
+    >
+      <ng-template pTemplate="empty">
+        <span>Nothing Here</span>
+      </ng-template>
+      <ng-template pTemplate="selectedItems" let-items>
+        @if (!hasCategories()) {
+          <span>Select Variable with Categories</span>
+        } @else {
+          <div class="overflow-x-auto">
+            @for (item of items; track $index) {
+              <span
+                class="rounded bg-primary text-primary-content mr-1.5 px-2"
+                >{{ item.value }}</span
+              >
+            } @empty {
+              <span>Nothing Selected</span>
+            }
+          </div>
+        }
+      </ng-template>
+      <ng-template pTemplate="closeicon" class="hidden"></ng-template>
+      <ng-template pTemplate="filtericon" class="hidden"></ng-template>
+      <ng-template pTemplate="item" let-item>
+        <span class="my-0.5 mx-1.5">{{ item.value }}</span>
+      </ng-template>
+    </p-multiSelect>
+    <!-- <dct-multiselect-dropdown
       (changeSelectedItems)="changeMissingValues($event)"
       [itemList]="filteredCategories()"
       [selectedItems]="filteredMissing()"
@@ -47,15 +153,22 @@
       emptySetPlaceholderText="Choose a variable with categories"
       id="categoriesSelectedDropdown"
       position="bottom"
-    />
+    /> -->
   </label>
 </div>
 <button (click)="removeVariable(index())" class="">
-  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-       xmlns="http://www.w3.org/2000/svg">
+  <svg
+    class="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
       stroke-linecap="round"
-      stroke-linejoin="round" />
+      stroke-linejoin="round"
+    />
   </svg>
 </button>

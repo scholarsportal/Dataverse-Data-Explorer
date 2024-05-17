@@ -1,5 +1,5 @@
 .table-header {
-  @apply text-neutral;
+  @apply text-black;
 }
 
 .table-row {

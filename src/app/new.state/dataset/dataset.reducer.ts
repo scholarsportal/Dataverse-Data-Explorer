@@ -1,39 +1,34 @@
 import { ddiJSONStructure } from '../../old.state/interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions } from '../xml/xml.actions';
+import { DatasetActions } from './dataset.actions';
 
 export interface DatasetState {
   operationStatus: {
-    download: 'idle' | 'pending' | 'error' | 'success',
-    upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled',
-    import: 'idle' | 'pending' | 'error' | 'success'
-  },
+    download: 'idle' | 'pending' | 'error' | 'success';
+    upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled';
+    import: 'idle' | 'pending' | 'error' | 'success';
+  };
   variables: {
-    importedDataset: ddiJSONStructure | null,
-    importedResult: string | null
-  },
+    importedDataset: ddiJSONStructure | null;
+    importedResult: string | null;
+  };
   crossTabulation: {
-    variableMetadata: {
-      [variableID: string]: {
-        crossTabValues: string[],
-      }
-    }
-  }
+    [variableID: string]: string[];
+  };
 }
 
 const initialState: DatasetState = {
   operationStatus: {
     download: 'idle',
     upload: 'idle',
-    import: 'idle'
+    import: 'idle',
   },
   variables: {
     importedDataset: null,
-    importedResult: null
+    importedResult: null,
   },
-  crossTabulation: {
-    variableMetadata: {}
-  }
+  crossTabulation: {},
 };
 
 export const datasetReducer = createReducer(
@@ -43,24 +38,33 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'pending' as const
-      }
+        download: 'pending' as const,
+      },
     };
   }),
-  on(DataverseFetchActions.fetchDDIError, state => {
+  on(DataverseFetchActions.fetchDDIError, (state) => {
     return {
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'error' as const
-      }
+        download: 'error' as const,
+      },
     };
   }),
-  on(DataverseFetchActions.fetchDDISuccess, state => ({
+  on(DataverseFetchActions.fetchDDISuccess, (state) => ({
     ...state,
     operationStatus: {
       ...state.operationStatus,
-      download: 'success' as const
-    }
-  }))
+      download: 'success' as const,
+    },
+  })),
+  on(DatasetActions.updateCrossTabValues, (state, { data, variableID }) => {
+    return {
+      ...state,
+      crossTabulation: {
+        ...state.crossTabulation,
+        [variableID]: data,
+      },
+    };
+  }),
 );

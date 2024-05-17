@@ -1,11 +1,18 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Variable, VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import {
-  MultiselectDropdownComponent
-} from '../../../variables/data/table/multiselect-dropdown/multiselect-dropdown.component';
+import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -16,9 +23,9 @@ import {
 @Component({
   selector: 'dct-dropdown',
   standalone: true,
-  imports: [CommonModule, FormsModule, MultiselectDropdownComponent],
+  imports: [CommonModule, FormsModule, MultiSelectModule, DropdownModule],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css'
+  styleUrl: './dropdown.component.css',
 })
 export class DropdownComponent {
   store = inject(Store);
@@ -28,39 +35,66 @@ export class DropdownComponent {
   variables = input.required<{ [id: string]: Variable }>();
   variableOrientation = input.required<'rows' | 'cols' | ''>();
   selectedVariableID = input.required<string>();
-  variablesAlreadySelected =
-    input.required<string[]>();
-  categories = input.required<{ [variableID: string]: { [categoryID: string]: string } }>();
+  variablesAlreadySelected = input.required<string[]>();
+  categories = input.required<{
+    [variableID: string]: { [categoryID: string]: string };
+  }>();
   missing = input.required<{ [variableID: string]: string[] }>();
   // Output
-  emitChangeVariableOrientation = output<{ newOrientation: 'rows' | 'cols' | '', index: number }>();
-  emitChangeSelectedVariable = output<{ variableID: string, index: number, orientation: 'rows' | 'cols' | '' }>();
+  emitChangeVariableOrientation = output<{
+    newOrientation: 'rows' | 'cols' | '';
+    index: number;
+    variableID: string;
+  }>();
+  emitChangeSelectedVariable = output<{
+    variableID: string;
+    index: number;
+    orientation: 'rows' | 'cols' | '';
+  }>();
   emitChangeSelectedCategories = output<{
-    index: number,
-    variableID: string,
-    orientation: 'rows' | 'cols' | '',
-    missing: string[]
+    index: number;
+    variableID: string;
+    orientation: 'rows' | 'cols' | '';
+    missing: string[];
   }>();
   emitRemoveVariable = output<{ index: number }>();
   // Component Values
   selectedGroup = signal<string | null>(null);
 
   filteredVariables = computed(() => {
-    if (this.selectedGroup()) {
-      const newVariables: Variable[] = [];
-      this.selectedGroup()
-        ?.split(' ')
-        .map((variableID: string) =>
-          newVariables.push(this.variables()[variableID])
-        );
+    const newVariables: {
+      variableID: string;
+      label: string;
+      disabled: boolean;
+    }[] = [];
+    const selectedGroupID = this.selectedGroup() || '';
+    const selectedGroup = this.groups()[selectedGroupID] || null;
+    if (selectedGroup) {
+      selectedGroup?.['@_var']?.split(' ').map((variableID: string) =>
+        newVariables.push({
+          variableID: variableID,
+          label: this.variables()[variableID].labl['#text'],
+          disabled: this.variablesAlreadySelected().includes(variableID),
+        }),
+      );
       return newVariables;
     } else {
-      return Object.values(this.variables());
+      Object.values(this.variables()).map((variable) => {
+        newVariables.push({
+          variableID: variable['@_ID'],
+          label: variable.labl['#text'],
+          disabled: this.variablesAlreadySelected().includes(variable['@_ID']),
+        });
+      });
+      return newVariables;
     }
   });
 
   filteredCategories = computed(() => {
-    if (this.selectedVariableID() && this.categories()[this.selectedVariableID()]) {
+    if (
+      this.selectedVariableID() &&
+      this.categories()[this.selectedVariableID()]
+    ) {
       return this.categories()[this.selectedVariableID()];
     } else {
       const emptySet: { [categoryID: string]: string } = {};
@@ -69,7 +103,10 @@ export class DropdownComponent {
   });
 
   filteredMissing = computed(() => {
-    if (this.selectedVariableID() && this.missing()[this.selectedVariableID()]) {
+    if (
+      this.selectedVariableID() &&
+      this.missing()[this.selectedVariableID()]
+    ) {
       return this.missing()[this.selectedVariableID()];
     } else {
       const emptySet: string[] = [];
@@ -77,20 +114,31 @@ export class DropdownComponent {
     }
   });
 
-  onChangeVariableOrientation(event: Event) {
-    const value: any | null =
-      (event?.target as HTMLSelectElement).value || null;
-    if (value && value === 'row') {
-      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'rows' });
+  hasCategories = computed(() => {
+    return this.categories()[this.selectedVariableID()]
+      ? Object.keys(this.categories()[this.selectedVariableID()]).length > 0
+      : false;
+  });
+  filterValue: string = '';
+
+  onChangeVariableOrientation(value: string) {
+    if (value === 'rows') {
+      this.emitChangeVariableOrientation.emit({
+        index: this.index(),
+        newOrientation: 'rows',
+        variableID: this.selectedVariableID(),
+      });
     }
-    if (value && value === 'column') {
-      this.emitChangeVariableOrientation.emit({ index: this.index(), newOrientation: 'cols' });
+    if (value === 'cols') {
+      this.emitChangeVariableOrientation.emit({
+        index: this.index(),
+        newOrientation: 'cols',
+        variableID: this.selectedVariableID(),
+      });
     }
   }
 
-  onGroupChange(event: Event) {
-    const value: string | null =
-      (event?.target as HTMLSelectElement).value || null;
+  onGroupChange(value: string) {
     if (value && value !== 'all') {
       this.selectedGroup.set(value);
     } else if (value === 'all') {
@@ -105,28 +153,31 @@ export class DropdownComponent {
     );
   }
 
-  onVariableChange(event: Event) {
-    const value: string | null =
-      (event?.target as HTMLSelectElement).value || null;
+  onVariableChange(value: string) {
+    this.filterValue = '';
     if (value) {
       this.emitChangeSelectedVariable.emit({
         index: this.index(),
         orientation: this.variableOrientation(),
-        variableID: value
+        variableID: value,
       });
     }
   }
 
   changeMissingValues(missing: string[]) {
-    const index = this.index();
-    const variableID = this.selectedVariableID();
-    const orientation = this.variableOrientation();
-    if (this.selectedVariableID()) {
-      this.emitChangeSelectedCategories.emit({ index, missing, variableID, orientation });
-    }
+    this.store.dispatch(
+      CrossTabulationUIActions.changeMissingCategories({
+        variableID: this.selectedVariableID(),
+        missing,
+      }),
+    );
   }
 
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
+  }
+
+  logIT(item: unknown) {
+    console.log(item);
   }
 }

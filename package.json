@@ -25,6 +25,7 @@
     "@ngrx/store": "^17.1.1",
     "@ngrx/store-devtools": "^17.1.1",
     "chart.js": "^4.4.1",
+    "d3": "^7.9.0",
     "fast-xml-parser": "^4.3.3",
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
@@ -64,7 +65,7 @@
     "karma-junit-reporter": "^2.0.1",
     "postcss": "^8.4.31",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.1",
     "typescript": "~5.2.2"
   },
