@@ -36,9 +36,9 @@ export class VariableSelectionComponent {
 
   store = inject(Store);
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
-  variables = this.store.selectSignal(selectDatasetProcessedVariables);
   categories = this.store.selectSignal(selectDatasetAllVariableCategories);
   missing = this.store.selectSignal(selectCrossTabCategoriesMissing);
+  variables = this.store.selectSignal(selectDatasetProcessedVariables);
   selection = this.store.selectSignal(selectCrossTabSelection);
   // Current values in cross tab
   variablesMetadata = this.store.selectSignal(
@@ -89,16 +89,6 @@ export class VariableSelectionComponent {
         }),
       );
     }
-  }
-
-  changeMissingCategoriesForVariable(value: {
-    variableID: string;
-    missing: string[];
-  }) {
-    const { variableID, missing } = value;
-    console.log(variableID);
-    console.log(missing);
-    // this.store.dispatch(CrossTabulationUIActions.changeMissingCategories({ variableID, missing }));
   }
 
   removeVariable(value: { index: number }) {

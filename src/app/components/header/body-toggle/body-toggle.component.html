@@ -1,13 +1,15 @@
 <div class="h-full flex flew-row" role="tablist">
-  <a
-    (click)="closeCrossTab()"
-    class="flex flex-row px-5 pb-2.5 w-1/2 md:w-auto"
-    id="variables"
-    ngClass="{{ variablesOpen() ? 'tab-active' : '' }}"
+  <button
     role="tab"
+    aria-selected="true"
+    aria-controls="tabpanel-id"
+    id="variables"
+    [ngClass]="{ 'tab-active': variablesOpen() }"
+    (click)="openVariables()"
+    class="flex flex-row px-5"
   >
     <svg
-      class="w-6 h-6 mr-2 my-auto"
+      class="w-6 h-6 my-auto mr-2.5"
       fill="none"
       stroke="currentColor"
       stroke-width="1.5"
@@ -20,20 +22,20 @@
         stroke-linejoin="round"
       />
     </svg>
-    <span
-      class="my-auto">
-    Variables
-    </span>
-  </a>
-  <a
-    (click)="openCrossTab()"
-    class="flex flex-row px-5 pb-2.5 w-1/2 md:w-auto"
-    id="cross-tab"
-    ngClass="{{ crossTabOpen() ? 'tab-active' : '' }}"
+    <div class="my-auto">Variables</div>
+  </button>
+
+  <button
     role="tab"
+    aria-selected="true"
+    aria-controls="tabpanel-id"
+    id="cross-tab"
+    class="h-full flex flex-row px-5 my-auto"
+    (click)="openCrossTab()"
+    [ngClass]="{ 'tab-active': crossTabOpen() }"
   >
     <svg
-      class="mr-2 swap-on fill-current my-auto w-6 h-6"
+      class="mx-2.5 my-auto w-6 h-6"
       fill="none"
       stroke="currentColor"
       stroke-width="1.5"
@@ -46,8 +48,6 @@
         stroke-linejoin="round"
       />
     </svg>
-    <span class="my-auto">
-    Cross Tabulations
-    </span>
-  </a>
+    <div class="my-auto">Cross Tabulations</div>
+  </button>
 </div>

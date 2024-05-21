@@ -1,26 +1,43 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
+import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-variable-options-button',
   standalone: true,
   imports: [CommonModule, ModalComponent],
   template: `
-    @if (!variableInCrossTab()) {
-      <button class="rounded bg-primary text-primary-content px-2 py-1.5 mx-2 my-auto flex flex-row">
+    @if (!variablesComputed().includes(variableID())) {
+      <button
+        (click)="addToCrossTab()"
+        class="rounded bg-primary text-primary-content px-2 py-1.5 mx-2 my-auto flex flex-row"
+      >
         <span class="hidden xl:flex">Add to Cross Tabulation</span>
         <span class="flex xl:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
         </span>
       </button>
     } @else {
-      <button class="rounded bg-error text-light-on-primary px-2 py-1.5 mx-2 my-auto">
-        <span class="hidden lg:flex">Remove Cross Tabulation</span>
+      <button
+        (click)="removeFromCrossTab()"
+        class="visible rounded bg-error text-light-on-primary px-2 py-1.5 mx-2 my-auto"
+      >
+        <span class="hidden lg:flex">Remove From Cross Tabulation</span>
       </button>
     }
     <button (click)="launchView()" class="mt-2 mx-2">
@@ -55,15 +72,24 @@ import { ModalComponent } from './modal/modal.component';
         />
       </svg>
     </button>
-  `
+  `,
 })
 export class VariableOptionsButtonComponent {
   store = inject(Store);
   variableID = input.required<string>();
-  variableInCrossTab = input.required<boolean>();
-  emitLaunchModal = output<{ mode: 'view' | 'edit', variableID: string }>();
-  emitAddToCrossTab = output<string>();
-  emitRemoveFromCrossTab = output<string>();
+  crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
+  variablesInCrossTab =
+    input.required<
+      { variableID: string; orientation: 'rows' | 'cols' | '' }[]
+    >();
+  emitLaunchModal = output<{ mode: 'view' | 'edit'; variableID: string }>();
+  variablesComputed = computed(() => {
+    const variables: string[] = [];
+    this.variablesInCrossTab().map((value) => {
+      variables.push(value.variableID);
+    });
+    return variables;
+  });
 
   launchView() {
     this.emitLaunchModal.emit({ mode: 'view', variableID: this.variableID() });
@@ -74,10 +100,27 @@ export class VariableOptionsButtonComponent {
   }
 
   addToCrossTab() {
-    this.emitAddToCrossTab.emit(this.variableID());
+    if (this.crossTabValuesFetched()[this.variableID()]) {
+      this.store.dispatch(
+        CrossTabulationUIActions.addToSelection({
+          variableID: this.variableID(),
+          orientation: '',
+        }),
+      );
+    } else {
+      this.store.dispatch(
+        CrossTabulationUIActions.fetchCrossTabAndAddToSelection({
+          variableID: this.variableID(),
+        }),
+      );
+    }
   }
 
-  removeToCrossTab() {
-    this.emitRemoveFromCrossTab.emit(this.variableID());
+  removeFromCrossTab() {
+    this.store.dispatch(
+      CrossTabulationUIActions.removeVariableUsingVariableID({
+        variableID: this.variableID(),
+      }),
+    );
   }
 }

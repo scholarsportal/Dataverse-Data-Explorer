@@ -10,6 +10,7 @@ export const CrossTabulationUIActions = createActionGroup({
       variableID: string;
       orientation: 'rows' | 'cols' | '';
     }>(),
+    'Fetch Cross Tab And Add To Selection': props<{ variableID: string }>(),
     // Change value in given index
     'Change Value in Given Index': props<{
       index: number;

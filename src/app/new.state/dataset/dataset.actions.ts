@@ -6,8 +6,8 @@ export const DatasetActions = createActionGroup({
     'Update cross tab values': props<{
       variableID: string;
       data: string[];
-      orientation: 'rows' | 'cols' | '';
-      index: number;
+      orientation?: 'rows' | 'cols' | '';
+      index?: number;
     }>(),
   },
 });

@@ -4,7 +4,7 @@
 </div>
 <dct-variable-selection class="" />
 
-<div class="flex flex-row">
+<div class="flex flex-row mb-20">
   <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5">
     <svg
       class="w-5 h-5"
@@ -40,12 +40,14 @@
     </ng-template>
   </p-dropdown>
   <button
-    class="bg-warning text-warning-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
+    [disabled]="!hasData()"
+    class="disabled:bg-opacity-30 bg-warning text-warning-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
   >
     View Graph
   </button>
   <button
     class="bg-info text-info-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
+    (click)="exportTable()"
   >
     <span>Export Table</span>
   </button>
@@ -57,6 +59,8 @@
     [data]="table()"
     [rows]="rows()"
     [hasData]="true"
+    [selectedViewOption]="selectedOptionComputed()"
+    [exportClicked]="exportTable"
     class="mx-auto my-auto graph-area"
   ></dct-cross-table>
 } @else {
@@ -65,6 +69,7 @@
     [data]="defaultTable"
     [rows]="defaultRows"
     [hasData]="false"
+    [exportClicked]="exportTable"
     class="mx-auto my-auto graph-area"
   ></dct-cross-table>
 

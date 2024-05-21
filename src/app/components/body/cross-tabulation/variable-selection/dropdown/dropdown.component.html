@@ -6,7 +6,7 @@
       (ngModelChange)="onChangeVariableOrientation($event)"
       [options]="['rows', 'cols']"
       placeholder="None"
-      styleClass="w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
+      styleClass="w-24 lg:w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
       panelStyleClass="w-44 py-1.5 mt-0.5 bg-base-100 rounded-b border-x border-b"
     >
       <ng-template pTemplate="selectedItem" let-item>{{
@@ -30,7 +30,7 @@
       (ngModelChange)="onGroupChange($event)"
       placeholder="All Variables"
       [options]="groups() | keyvalue"
-      styleClass="w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
+      styleClass="w-24 lg:w-44 py-1.5 px-3 mt-2 bg-base-100 rounded border"
       panelStyleClass="w-44 py-1.5 mt-0.5 bg-base-100 rounded-b border-x border-b"
     >
       <ng-template pTemplate="item" let-item>
@@ -55,7 +55,7 @@
       panelStyleClass="w-44 relative rounded-b my-0.5 mr-2 border bg-base-100"
     >
       <ng-template pTemplate="filter" let-options="options">
-        <div class="flex p-3">
+        <div class="flex p-3 border-b">
           <div class="w-full">
             <input
               class="px-2 rounded border w-full"
@@ -82,9 +82,14 @@
           <span class="rounded px-2">{{ items.label }}</span>
         </li>
       </ng-template>
-      <ng-template pTemplate="selectedItem" let-value>
-        <span class="px-2 my-2">{{ value.label }}</span>
-      </ng-template>
+      <!-- <ng-template pTemplate="selectedItem" let-value>
+        {{ logIT(value) }}
+        <span class="px-2 my-2">{{
+          value?.label?.length
+            ? value.label
+            : variables()[selectedVariableID()].labl['#text']
+        }}</span>
+      </ng-template> -->
     </p-dropdown>
   </label>
   <!-- <select
@@ -104,7 +109,7 @@
       </option>
     }
   </select> -->
-  <label class="m-2 w-96" for="categoriesSelectedDropdown">
+  <label class="m-2 w-36 lg:w-96 h-full" for="categoriesSelectedDropdown">
     Categories (Filter)
     <p-multiSelect
       [options]="filteredCategories() | keyvalue"
@@ -158,7 +163,7 @@
 </div>
 <button (click)="removeVariable(index())" class="">
   <svg
-    class="w-6 h-6"
+    class="mx-2 w-6 h-6"
     fill="none"
     stroke="currentColor"
     stroke-width="1.5"

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './body-toggle.component.html',
-  styleUrl: './body-toggle.component.css'
+  styleUrl: './body-toggle.component.css',
 })
 export class BodyToggleComponent {
   toggleState = input.required<'cross-tab' | 'variables'>();
@@ -20,7 +20,7 @@ export class BodyToggleComponent {
     return this.toggleState() === 'cross-tab';
   });
 
-  closeCrossTab() {
+  openVariables() {
     this.changeToggleState.emit('variables');
   }
 

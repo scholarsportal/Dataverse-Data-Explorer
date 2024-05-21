@@ -15,15 +15,6 @@
     @apply rounded-sm;
   }
 }
-@layer primeng {
-  .p-multiselect-filter-container {
-    @apply rounded border;
-  }
-
-  .p-multiselect-filter .p-inputtext .p-component {
-    @apply rounded border;
-  }
-}
 
 @layer components {
   .btn {

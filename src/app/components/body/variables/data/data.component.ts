@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { Variable, VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
+import {
+  Variable,
+  VariableGroup,
+  VariablesSimplified,
+} from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
 import { MobileViewComponent } from './mobile-view/mobile-view.component';
 import { TableNavComponent } from './table-nav/table-nav.component';
@@ -14,11 +23,11 @@ import { TableComponent } from './table/table.component';
     MobileViewComponent,
     TableComponent,
     TableNavComponent,
-    TableMenuComponent
+    TableMenuComponent,
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
@@ -26,7 +35,13 @@ export class DataComponent {
   openVariable = input.required<string>();
   selectedVariables = input.required<string[]>();
   categoriesInvalid = input.required<string[]>();
-  variableInCrossTabSelection = input.required<boolean>();
+  variablesInCrossTabSelection = input.required<
+    {
+      variableID: string;
+      orientation: '' | 'rows' | 'cols';
+    }[]
+  >();
+  crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
   weights = input.required<{ [weightID: string]: string }>();
   variablesSimplified = computed(() => {
     const simplified: VariablesSimplified[] = [];
@@ -37,7 +52,7 @@ export class DataComponent {
         label: value.labl['#text'] || '',
         weight: value['@_wgt-var'] || '',
         isWeight: !!value['@_wgt'],
-        selected: this.selectedVariables().includes(value['@_ID'])
+        selected: this.selectedVariables().includes(value['@_ID']),
       };
       simplified.push(newObj);
     });
@@ -47,5 +62,4 @@ export class DataComponent {
   // This used to notify the search box that the user has changed the displayed
   // variables listed so the search box resets
   groupChanged = input.required<string>();
-
 }

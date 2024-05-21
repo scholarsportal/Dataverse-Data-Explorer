@@ -10,19 +10,46 @@ import { DatasetActions } from './dataset.actions';
 export class DatasetEffects {
   private actions$ = inject(Actions);
 
-  fetchCrossTab$ = createEffect(
+  fetchCrossTabAndSetIndex$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex),
+        ofType(
+          CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex,
+        ),
         switchMap(({ variableID, index, orientation }) =>
           ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
             map((data) =>
-              DatasetActions.updateCrossTabValues({ variableID, data, orientation, index })
+              DatasetActions.updateCrossTabValues({
+                variableID,
+                data,
+                orientation,
+                index,
+              }),
             ),
-            catchError((error) => of(DataverseFetchActions.fetchDDIError(error)))
-          )
-        )
+            catchError((error) =>
+              of(DataverseFetchActions.fetchDDIError(error)),
+            ),
+          ),
+        ),
       );
-    }
+    },
+  );
+
+  fetchCrossTab$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(CrossTabulationUIActions.fetchCrossTabAndAddToSelection),
+        switchMap(({ variableID }) =>
+          ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
+            map((data) =>
+              DatasetActions.updateCrossTabValues({ variableID, data }),
+            ),
+            catchError((error) =>
+              of(DataverseFetchActions.fetchDDIError(error)),
+            ),
+          ),
+        ),
+      );
+    },
   );
 }

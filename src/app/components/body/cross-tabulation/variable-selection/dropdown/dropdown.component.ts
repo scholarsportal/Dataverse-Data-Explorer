@@ -7,12 +7,13 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Variable, VariableGroup } from 'src/app/new.state/xml/xml.interface';
+import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -32,7 +33,7 @@ export class DropdownComponent {
   // Inputs
   index = input.required<number>();
   groups = input.required<{ [groupID: string]: VariableGroup }>();
-  variables = input.required<{ [id: string]: Variable }>();
+  variables = this.store.selectSignal(selectDatasetProcessedVariables);
   variableOrientation = input.required<'rows' | 'cols' | ''>();
   selectedVariableID = input.required<string>();
   variablesAlreadySelected = input.required<string[]>();
@@ -50,12 +51,6 @@ export class DropdownComponent {
     variableID: string;
     index: number;
     orientation: 'rows' | 'cols' | '';
-  }>();
-  emitChangeSelectedCategories = output<{
-    index: number;
-    variableID: string;
-    orientation: 'rows' | 'cols' | '';
-    missing: string[];
   }>();
   emitRemoveVariable = output<{ index: number }>();
   // Component Values

@@ -4,7 +4,7 @@ import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';
 import { DatasetActions } from '../dataset/dataset.actions';
 
 export const initialState: UIState = {
-  bodyToggle: 'cross-tab',
+  bodyToggle: 'variables',
   bodyState: {
     variables: {
       groupSelectedID: 'ALL',
@@ -167,13 +167,21 @@ export const uiReducer = createReducer(
   ),
   on(
     DatasetActions.updateCrossTabValues,
-    (state, { variableID, orientation, index }) => {
+    (state, { variableID, orientation = '', index = -1 }) => {
       const newSelection = structuredClone(state.bodyState.crossTab.selection);
-      newSelection[index] = {
-        ...newSelection[index],
-        variableID,
-        orientation,
-      };
+      if (index === -1) {
+        newSelection[newSelection.length] = {
+          ...newSelection[newSelection.length],
+          variableID,
+          orientation,
+        };
+      } else {
+        newSelection[index] = {
+          ...newSelection[index],
+          variableID,
+          orientation,
+        };
+      }
       return {
         ...state,
         bodyState: {
@@ -189,15 +197,24 @@ export const uiReducer = createReducer(
   on(
     CrossTabulationUIActions.removeVariableUsingVariableID,
     (state, { variableID }) => {
-      const newSelection = structuredClone(state.bodyState.crossTab.selection);
-      newSelection.filter((value) => value.variableID !== variableID);
+      const newSelection = state.bodyState.crossTab.selection;
+      const changedSelection: {
+        variableID: string;
+        orientation: '' | 'rows' | 'cols';
+      }[] = [];
+      newSelection.forEach((value) => {
+        if (value.variableID !== variableID) {
+          changedSelection.push(value);
+        }
+      });
+      console.log(newSelection);
       return {
         ...state,
         bodyState: {
           ...state.bodyState,
           crossTab: {
             ...state.bodyState.crossTab,
-            selection: newSelection,
+            selection: changedSelection,
           },
         },
       };

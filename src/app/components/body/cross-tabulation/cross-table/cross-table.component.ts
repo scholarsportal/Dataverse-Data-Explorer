@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { utils, writeFile } from 'xlsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const jQuery: any; // Declare jQuery
@@ -26,6 +27,8 @@ export class CrossTableComponent {
   rows = input.required<string[]>();
   cols = input.required<string[]>();
   hasData = input.required<boolean>();
+  exportClicked = input.required<() => void>();
+  selectedViewOption = input<string>('Count');
   element: ElementRef = inject(ElementRef);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public chartJS: any;
@@ -45,6 +48,18 @@ export class CrossTableComponent {
       }
     });
   }
+
+  exportTable = computed(() => {
+    if (this.exportClicked()) {
+      console.log('tetetetet');
+      const element = this.outputElement?.nativeElement as HTMLTableElement;
+      const workbook = utils.table_to_book(element);
+      writeFile(workbook, 'data.xlsx');
+      return null;
+    } else {
+      return null;
+    }
+  });
 
   createTable() {
     if (!this.element?.nativeElement?.children) {
@@ -71,7 +86,7 @@ export class CrossTableComponent {
       {
         rows: this.rows(),
         cols: this.cols(),
-        aggregatorName: 'Count',
+        aggregatorName: this.selectedViewOption(),
         showUI: false,
         rendererName: 'Horizontal Stacked Bar Chart',
       },

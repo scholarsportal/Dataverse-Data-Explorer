@@ -65,6 +65,25 @@ export class CrossTabulationComponent {
     'Total Percentage',
   ]);
   selectedOption = signal('Show Value');
+  selectedOptionComputed = computed(() => {
+    switch (this.selectedOption()) {
+      case 'Show Value':
+        return 'Count';
+        break;
+      case 'Row Percentage':
+        return 'Count as Fraction of Rows';
+        break;
+      case 'Column Percentage':
+        return 'Count as Fraction of Columns';
+        break;
+      case 'Total Percentage':
+        return 'Count as Fraction of Total';
+        break;
+      default:
+        return 'Count';
+        break;
+    }
+  });
 
   addNewEmptyRow() {
     this.store.dispatch(
@@ -74,4 +93,6 @@ export class CrossTabulationComponent {
       }),
     );
   }
+
+  exportTable = () => {};
 }
