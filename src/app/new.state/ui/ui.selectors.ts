@@ -1,36 +1,23 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import {
-  ChartData,
-  SummaryStatistics,
-  UIState,
-  VariableForm,
-} from './ui.interface';
+import { ChartData, SummaryStatistics, UIState, VariableForm } from './ui.interface';
 import {
   selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
-  selectVariablesWithCorrespondingGroups,
+  selectVariablesWithCorrespondingGroups
 } from '../xml/xml.selectors';
-import {
-  selectDatasetVariableCrossTabValues,
-  selectDatasetAllVariableCategories,
-} from '../dataset/dataset.selectors';
-import {
-  createRowAndCategoryLabels,
-  createTable,
-  matchCategoriesWithLabels,
-  truncatedText,
-} from './util';
+import { selectDatasetAllVariableCategories, selectDatasetVariableCrossTabValues } from '../dataset/dataset.selectors';
+import { createRowAndCategoryLabels, createTable, matchCategoriesWithLabels, truncatedText } from './util';
 
 export const selectUIFeature = createFeatureSelector<UIState>('ui');
 
 export const selectBodyToggleState = createSelector(
   selectUIFeature,
-  (state) => state.bodyToggle,
+  (state) => state.bodyToggle
 );
 
 export const selectOpenVariableID = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.openVariable.variableID,
+  (state) => state.bodyState.variables.openVariable.variableID
 );
 
 export const selectOpenVariableName = createSelector(
@@ -38,12 +25,12 @@ export const selectOpenVariableName = createSelector(
   selectDatasetProcessedVariables,
   (id, variables) => {
     return variables[id]?.['@_name'] || '';
-  },
+  }
 );
 
 export const selectOpenVariableMode = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.openVariable.mode,
+  (state) => state.bodyState.variables.openVariable.mode
 );
 
 export const selectOpenVariableInCrossTabSelection = createSelector(
@@ -59,27 +46,27 @@ export const selectOpenVariableInCrossTabSelection = createSelector(
       }
     }
     return inCrossTab;
-  },
+  }
 );
 
 export const selectCurrentGroupID = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.groupSelectedID,
+  (state) => state.bodyState.variables.groupSelectedID
 );
 
 export const selectVariablesCategoriesMissing = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.categoriesDeclaredMissing,
+  (state) => state.bodyState.variables.categoriesDeclaredMissing
 );
 
 export const selectCrossTabCategoriesMissing = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.crossTab.missingCategories,
+  (state) => state.bodyState.crossTab.missingCategories
 );
 
 export const selectImportComponentState = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.importComponentState,
+  (state) => state.bodyState.variables.importComponentState
 );
 
 const selectOpenVariableGroups = createSelector(
@@ -91,11 +78,11 @@ const selectOpenVariableGroups = createSelector(
     const groups: { [groupID: string]: string }[] = [];
     if (correspondingGroups[variableID]) {
       correspondingGroups[variableID].map((value) =>
-        groups.push({ [value]: processedGroups[value].labl || 'NO LABEL' }),
+        groups.push({ [value]: processedGroups[value].labl || 'NO LABEL' })
       );
     }
     return groups;
-  },
+  }
 );
 
 export const selectOpenVariableCategoriesMissing = createSelector(
@@ -107,12 +94,12 @@ export const selectOpenVariableCategoriesMissing = createSelector(
       return selectCategories[openVariableID];
     }
     return missingCategories;
-  },
+  }
 );
 
 export const selectVariableSelectionContext = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.variables.variableSelectionContext,
+  (state) => state.bodyState.variables.variableSelectionContext
 );
 
 export const selectOpenVariableHasCategories = createSelector(
@@ -120,7 +107,7 @@ export const selectOpenVariableHasCategories = createSelector(
   selectDatasetProcessedVariables,
   (openID, variables) => {
     return !!variables[openID]?.catgry;
-  },
+  }
 );
 
 export const selectOpenVariableChartTable = createSelector(
@@ -159,7 +146,7 @@ export const selectOpenVariableChartTable = createSelector(
         weightedCount,
         countPercent: 0,
         weightedCountPercent: 0,
-        invalid: missing.includes(value.catValu.toString()),
+        invalid: missing.includes(value.catValu.toString())
       };
     });
     Object.values(chart).forEach((value) => {
@@ -168,7 +155,7 @@ export const selectOpenVariableChartTable = createSelector(
         (value.weightedCount / totalWeightCount) * 100;
     });
     return chart;
-  },
+  }
 );
 
 export const selectOpenVariableChart = createSelector(
@@ -183,7 +170,7 @@ export const selectOpenVariableChart = createSelector(
       }
     });
     return chart;
-  },
+  }
 );
 
 export const selectOpenVariableFormState = createSelector(
@@ -202,11 +189,11 @@ export const selectOpenVariableFormState = createSelector(
         postQuestion: processedVariables[variableID].qstn?.postQTxt || '',
         universe: processedVariables[variableID].universe,
         notes: processedVariables[variableID].notes['#text'] || '',
-        assignedWeight: processedVariables[variableID]['@_wgt-var'],
+        assignedWeight: processedVariables[variableID]['@_wgt-var']
       };
     }
     return formState;
-  },
+  }
 );
 
 export const selectOpenVariableSummaryStatistics = createSelector(
@@ -222,7 +209,7 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       mean: '',
       maximum: '',
       totalValidCount: '',
-      totalInvalidCount: '',
+      totalInvalidCount: ''
     };
     if (processedVariables[variableID]?.sumStat) {
       processedVariables[variableID]?.sumStat.map((value) => {
@@ -255,12 +242,12 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       });
     }
     return summaryStatistics;
-  },
+  }
 );
 
 export const selectCrossTabSelection = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.crossTab.selection,
+  (state) => state.bodyState.crossTab.selection
 );
 
 export const selectCrossTabRows = createSelector(
@@ -273,7 +260,7 @@ export const selectCrossTabRows = createSelector(
       }
     });
     return rows;
-  },
+  }
 );
 
 export const selectCrossTabCols = createSelector(
@@ -286,7 +273,7 @@ export const selectCrossTabCols = createSelector(
       }
     });
     return cols;
-  },
+  }
 );
 
 export const selectMatchCategories = createSelector(
@@ -297,10 +284,10 @@ export const selectMatchCategories = createSelector(
     const data = matchCategoriesWithLabels(
       allCategories,
       crossTabValues,
-      missingCategories,
+      missingCategories
     );
     return data;
-  },
+  }
 );
 
 export const selectCrossTabulationTableData = createSelector(
@@ -310,7 +297,7 @@ export const selectCrossTabulationTableData = createSelector(
   (crossTabSelection, processedAndMatchedCategories, variables) => {
     const rowAndColumnLabels = createRowAndCategoryLabels(
       crossTabSelection,
-      variables,
+      variables
     );
     const { labels, rows, cols } = rowAndColumnLabels;
     const table = createTable(processedAndMatchedCategories, labels);
@@ -321,5 +308,5 @@ export const selectCrossTabulationTableData = createSelector(
       }
     });
     return { table: removeEmptyValuesFromTable, rows, cols };
-  },
+  }
 );

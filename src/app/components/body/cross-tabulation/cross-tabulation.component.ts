@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CrossTableComponent } from './cross-table/cross-table.component';
 
@@ -15,6 +9,10 @@ import { selectCrossTabulationTableData } from '../../../new.state/ui/ui.selecto
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { defaultCols, defaultRows, defaultTable } from './default-table';
+import { CrossChartComponent } from './cross-chart/cross-chart.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+
+import 'node_modules/primeng/';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -25,10 +23,12 @@ import { defaultCols, defaultRows, defaultTable } from './default-table';
     CrossTableComponent,
     DropdownModule,
     FormsModule,
+    CrossChartComponent,
+    SelectButtonModule
   ],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrossTabulationComponent {
   store = inject(Store);
@@ -36,6 +36,8 @@ export class CrossTabulationComponent {
   defaultRows = defaultRows;
   defaultTable = defaultTable;
   tableData = this.store.selectSignal(selectCrossTabulationTableData);
+  chartOrTable = signal(['Chart', 'Table']);
+  defaultDataView = signal('Table');
 
   table = computed(() => {
     return this.tableData().table;
@@ -62,7 +64,7 @@ export class CrossTabulationComponent {
     'Weighted Value',
     'Row Percentage',
     'Column Percentage',
-    'Total Percentage',
+    'Total Percentage'
   ]);
   selectedOption = signal('Show Value');
   selectedOptionComputed = computed(() => {
@@ -89,10 +91,11 @@ export class CrossTabulationComponent {
     this.store.dispatch(
       CrossTabulationUIActions.addToSelection({
         variableID: '',
-        orientation: '',
-      }),
+        orientation: ''
+      })
     );
   }
 
-  exportTable = () => {};
+  exportTable = () => {
+  };
 }

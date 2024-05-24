@@ -20,7 +20,10 @@ export class XmlEffects {
             map((data) =>
               DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey })
             ),
-            catchError((error) => of(DataverseFetchActions.fetchDDIError(error)))
+            catchError((error) => {
+              console.log(error);
+              return of(DataverseFetchActions.fetchDDIError(error));
+            })
           )
         )
       );

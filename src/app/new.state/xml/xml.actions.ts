@@ -13,7 +13,7 @@ export const DataverseFetchActions =
         apiKey?: string
       }>(),
       // API call failed for a variety of reasons
-      'Fetch DDI Error': props<{ error: string }>(),
+      'Fetch DDI Error': props<{ error: Error }>(),
       // DDI file found
       'Fetch DDI Success': props<{
         data: ddiJSONStructure,

@@ -1,12 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  ElementRef,
-  inject,
-  input,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { utils, writeFile } from 'xlsx';
 
@@ -18,8 +10,9 @@ declare const jQuery: any; // Declare jQuery
   selector: 'dct-cross-table',
   standalone: true,
   imports: [CommonModule],
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './cross-table.component.html',
-  styleUrl: './cross-table.component.css',
+  styleUrl: './cross-table.component.css'
 })
 export class CrossTableComponent {
   @ViewChild('output') outputElement?: ElementRef;
@@ -35,9 +28,19 @@ export class CrossTableComponent {
 
   tableClass = computed(() => {
     if (this.hasData()) {
-      return '';
+      return '[&_table]:w-full  ';
     } else {
       return 'blur ';
+    }
+  });
+  exportTable = computed(() => {
+    if (this.exportClicked()) {
+      const element = this.outputElement?.nativeElement as HTMLTableElement;
+      const workbook = utils.table_to_book(element);
+      writeFile(workbook, 'data.xlsx');
+      return null;
+    } else {
+      return null;
     }
   });
 
@@ -48,18 +51,6 @@ export class CrossTableComponent {
       }
     });
   }
-
-  exportTable = computed(() => {
-    if (this.exportClicked()) {
-      console.log('tetetetet');
-      const element = this.outputElement?.nativeElement as HTMLTableElement;
-      const workbook = utils.table_to_book(element);
-      writeFile(workbook, 'data.xlsx');
-      return null;
-    } else {
-      return null;
-    }
-  });
 
   createTable() {
     if (!this.element?.nativeElement?.children) {
@@ -88,9 +79,9 @@ export class CrossTableComponent {
         cols: this.cols(),
         aggregatorName: this.selectedViewOption(),
         showUI: false,
-        rendererName: 'Horizontal Stacked Bar Chart',
+        rendererName: 'Horizontal Stacked Bar Chart'
       },
-      true,
+      true
     );
   }
 }

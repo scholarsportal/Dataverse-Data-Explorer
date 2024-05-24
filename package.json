@@ -45,6 +45,7 @@
     "@angular-eslint/template-parser": "17.3.0",
     "@angular/cli": "^17.3.2",
     "@angular/compiler-cli": "^17.3.1",
+    "@types/d3": "^7.4.3",
     "@types/datatables.net": "^1.10.21",
     "@types/dom-view-transitions": "^1.0.4",
     "@types/jasmine": "~4.3.0",

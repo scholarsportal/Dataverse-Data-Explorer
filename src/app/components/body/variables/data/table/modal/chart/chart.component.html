@@ -17,26 +17,26 @@
     </tr>
     </thead>
     <tbody>
-      @for (item of chartTable() | keyvalue; track $index) {
-        <tr class="border-y">
-          <td class="w-full justify-between">
-            <input
-              class="mx-auto"
-              type="checkbox"
-              name="mark-invalid"
-              id="{{ $index }}"
-              [checked]="item.value.invalid"
-              (change)="toggleCheckbox(item.key)"
-            />
-          </td>
-          <td>{{ item.key }}</td>
-          <td>{{ item.value.category }}</td>
-          <td>{{ item.value.count }}</td>
-          <td>{{ item.value.countPercent  | number : '1.2-2' }}</td>
-          <td>{{ item.value.weightedCount | number : '1.2-2' }}</td>
-          <td>{{ item.value.weightedCountPercent | number : '1.2-2' }}</td>
-        </tr>
-      }
+    @for (item of chartTable() | keyvalue; track $index) {
+      <tr class="border-y">
+        <td class="w-full justify-between">
+          <input
+            class="mx-auto"
+            type="checkbox"
+            name="mark-invalid"
+            id="{{ $index }}"
+            [checked]="item.value.invalid"
+            (change)="toggleCheckbox(item.key)"
+          />
+        </td>
+        <td>{{ item.key }}</td>
+        <td>{{ item.value.category }}</td>
+        <td>{{ item.value.count }}</td>
+        <td>{{ item.value.countPercent  | number : '1.2-2' }}</td>
+        <td>{{ item.value.weightedCount | number : '1.2-2' }}</td>
+        <td>{{ item.value.weightedCountPercent | number : '1.2-2' }}</td>
+      </tr>
+    }
     </tbody>
   </table>
 } @else {

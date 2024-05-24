@@ -4,31 +4,32 @@
 </div>
 <dct-variable-selection class="" />
 
-<div class="flex flex-row mb-20">
-  <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5">
-    <svg
-      class="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="3"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
+<div class="flex flex-row justify-between mb-10">
+  <div class="flex flex-row">
+    <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5">
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 4.5v15m7.5-7.5h-15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
+    </button>
+    <p-dropdown
+      [(ngModel)]="selectedOption"
+      [options]="options()"
+      panelStyleClass="rounded-b border w-full h-full mt-0.5 py-2"
+      styleClass="rounded border h-fit mt-3 w-44 px-2 py-2 mx-5"
     >
-      <path
-        d="M12 4.5v15m7.5-7.5h-15"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
-  </button>
-  <p-dropdown
-    [(ngModel)]="selectedOption"
-    [options]="options()"
-    panelStyleClass="rounded-b border w-full h-full mt-0.5 py-2"
-    styleClass="rounded border h-fit mt-3 w-44 px-2 py-2 mx-5"
-  >
-    <ng-template let-value pTemplate="item">
+      <ng-template let-value pTemplate="item">
       <span
         [ngClass]="{
           'bg-base-300 hover:bg-base-100': selectedOption() === value
@@ -37,32 +38,44 @@
       >
         {{ value }}
       </span>
-    </ng-template>
-  </p-dropdown>
-  <button
-    [disabled]="!hasData()"
-    class="disabled:bg-opacity-30 bg-warning text-warning-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
-  >
-    View Graph
-  </button>
-  <button
-    class="bg-info text-info-content rounded py-1.5 px-2 mx-1.5 mb-2.5 mt-3 transition-all duration-75 disabled::bg-opacity-25"
-    (click)="exportTable()"
-  >
-    <span>Export Table</span>
-  </button>
+      </ng-template>
+    </p-dropdown>
+  </div>
+  <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row">
+    <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
+                    styleClass="bg-base-200 rounded mt-3 px-2 py-2">
+      <ng-template let-item pTemplate>
+        <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"
+              class="px-1.5 py-0.5 rounded">{{ item }}</span>
+      </ng-template>
+    </p-selectButton>
+    <button
+      (click)="exportTable()"
+      class="text-primary mx-2.5 mb-2.5 mt-3 hover:underline"
+    >
+      <span>Export Table As .csv</span>
+    </button>
+  </div>
 </div>
 
 @if (hasData() && hasRowOrColumn()) {
-  <dct-cross-table
-    [cols]="cols()"
-    [data]="table()"
-    [rows]="rows()"
-    [hasData]="true"
-    [selectedViewOption]="selectedOptionComputed()"
-    [exportClicked]="exportTable"
-    class="mx-auto my-auto graph-area"
-  ></dct-cross-table>
+  @if (defaultDataView() === 'Table') {
+    <dct-cross-table
+      [cols]="cols()"
+      [data]="table()"
+      [rows]="rows()"
+      [hasData]="true"
+      [selectedViewOption]="selectedOptionComputed()"
+      [exportClicked]="exportTable"
+      class="mx-auto my-auto graph-area"
+    ></dct-cross-table>
+  } @else {
+    <dct-cross-chart
+      [cols]="cols()"
+      [data]="table()"
+      [rows]="rows()"
+    />
+  }
 } @else {
   <dct-cross-table
     [cols]="defaultColumns"

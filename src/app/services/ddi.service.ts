@@ -7,7 +7,7 @@ import { ddiJSONStructure } from '../new.state/xml/xml.interface';
 import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DdiService {
   store = inject(Store);
@@ -31,31 +31,33 @@ export class DdiService {
   private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
     {
       ignoreAttributes: false,
-      attributeNamePrefix: '@_',
+      attributeNamePrefix: '@_'
     };
 
   fetchDatasetFromDataverse(
     fileID: number,
-    siteURL: string,
+    siteURL: string
   ): Observable<ddiJSONStructure> {
     return this.http
       .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi`, {
-        responseType: 'text',
+        responseType: 'text'
       })
-      .pipe(map((data) => this.XMLtoJSON(data)));
+      .pipe(map((data) => {
+        return this.XMLtoJSON(data);
+      }));
   }
 
   uploadDatasetToDataverse(
     siteURL: string,
     fileID: number,
     jsonData: ddiJSONStructure,
-    apiKey: string,
+    apiKey: string
   ): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml',
-        'X-Dataverse-key': apiKey,
-      }),
+        'X-Dataverse-key': apiKey
+      })
     };
     const xml = this.JSONtoXML(jsonData);
     return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
@@ -66,7 +68,7 @@ export class DdiService {
       return this.http
         .get(
           `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
-          { responseType: 'text' },
+          { responseType: 'text' }
         )
         .pipe(map((data) => this.splitLines(data).slice(1)));
     } else {

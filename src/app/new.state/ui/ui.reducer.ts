@@ -4,32 +4,32 @@ import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';
 import { DatasetActions } from '../dataset/dataset.actions';
 
 export const initialState: UIState = {
-  bodyToggle: 'variables',
+  bodyToggle: 'cross-tab',
   bodyState: {
     variables: {
       groupSelectedID: 'ALL',
       importComponentState: 'close',
       categoriesDeclaredMissing: {},
       variableSelectionContext: {
-        ALL: [],
+        ALL: []
       },
       openVariable: {
         variableID: '',
-        mode: 'view',
-      },
+        mode: 'view'
+      }
     },
     crossTab: {
       missingCategories: {},
-      selection: [],
-    },
-  },
+      selection: []
+    }
+  }
 };
 
 export const uiReducer = createReducer(
   initialState,
   on(VariableTabUIAction.navigateToVariableTab, (state) => ({
     ...state,
-    bodyToggle: 'variables' as const,
+    bodyToggle: 'variables' as const
   })),
   on(VariableTabUIAction.changeSelectedGroupID, (state, { groupID }) => ({
     ...state,
@@ -38,9 +38,9 @@ export const uiReducer = createReducer(
       variables: {
         ...state.bodyState.variables,
         groupSelectedID: groupID,
-        importComponentState: 'close' as const,
-      },
-    },
+        importComponentState: 'close' as const
+      }
+    }
   })),
   on(VariableTabUIAction.changeOpenVariable, (state, { variableID, mode }) => ({
     ...state,
@@ -50,10 +50,10 @@ export const uiReducer = createReducer(
         ...state.bodyState.variables,
         openVariable: {
           variableID: mode ? variableID : '',
-          mode: mode ?? state.bodyState.variables.openVariable.mode,
-        },
-      },
-    },
+          mode: mode ?? state.bodyState.variables.openVariable.mode
+        }
+      }
+    }
   })),
   on(
     VariableTabUIAction.changeVariableSelectionContext,
@@ -65,11 +65,11 @@ export const uiReducer = createReducer(
           ...state.bodyState.variables,
           variableSelectionContext: {
             ...state.bodyState.variables.variableSelectionContext,
-            [selectedGroup]: variableIDs,
-          },
-        },
-      },
-    }),
+            [selectedGroup]: variableIDs
+          }
+        }
+      }
+    })
   ),
   on(VariableTabUIAction.openVariableImportMenu, (state) => ({
     ...state,
@@ -77,9 +77,9 @@ export const uiReducer = createReducer(
       ...state.bodyState,
       variables: {
         ...state.bodyState.variables,
-        importComponentState: 'open' as const,
-      },
-    },
+        importComponentState: 'open' as const
+      }
+    }
   })),
   on(VariableTabUIAction.closeVariableImportMenu, (state) => ({
     ...state,
@@ -87,9 +87,9 @@ export const uiReducer = createReducer(
       ...state.bodyState,
       variables: {
         ...state.bodyState.variables,
-        importComponentState: 'close' as const,
-      },
-    },
+        importComponentState: 'close' as const
+      }
+    }
   })),
   on(
     VariableTabUIAction.changeMissingCategories,
@@ -101,15 +101,15 @@ export const uiReducer = createReducer(
           ...state.bodyState.variables,
           categoriesDeclaredMissing: {
             ...state.bodyState.variables.categoriesDeclaredMissing,
-            [variableID]: categories,
-          },
-        },
-      },
-    }),
+            [variableID]: categories
+          }
+        }
+      }
+    })
   ),
   on(CrossTabulationUIActions.navigateToCrossTabulationTab, (state) => ({
     ...state,
-    bodyToggle: 'cross-tab' as const,
+    bodyToggle: 'cross-tab' as const
   })),
   on(
     CrossTabulationUIActions.addToSelection,
@@ -123,12 +123,12 @@ export const uiReducer = createReducer(
             ...state.bodyState.crossTab.selection,
             {
               variableID,
-              orientation,
-            },
-          ],
-        },
-      },
-    }),
+              orientation
+            }
+          ]
+        }
+      }
+    })
   ),
   on(
     CrossTabulationUIActions.changeValueInGivenIndex,
@@ -141,11 +141,11 @@ export const uiReducer = createReducer(
           ...state.bodyState,
           crossTab: {
             ...state.bodyState.crossTab,
-            selection: newSelection,
-          },
-        },
+            selection: newSelection
+          }
+        }
       };
-    },
+    }
   ),
   on(
     CrossTabulationUIActions.changeMissingCategories,
@@ -158,12 +158,12 @@ export const uiReducer = createReducer(
             ...state.bodyState.crossTab,
             missingCategories: {
               ...state.bodyState.crossTab.missingCategories,
-              [variableID]: missing,
-            },
-          },
-        },
+              [variableID]: missing
+            }
+          }
+        }
       };
-    },
+    }
   ),
   on(
     DatasetActions.updateCrossTabValues,
@@ -173,13 +173,13 @@ export const uiReducer = createReducer(
         newSelection[newSelection.length] = {
           ...newSelection[newSelection.length],
           variableID,
-          orientation,
+          orientation
         };
       } else {
         newSelection[index] = {
           ...newSelection[index],
           variableID,
-          orientation,
+          orientation
         };
       }
       return {
@@ -188,11 +188,11 @@ export const uiReducer = createReducer(
           ...state.bodyState,
           crossTab: {
             ...state.bodyState.crossTab,
-            selection: newSelection,
-          },
-        },
+            selection: newSelection
+          }
+        }
       };
-    },
+    }
   ),
   on(
     CrossTabulationUIActions.removeVariableUsingVariableID,
@@ -214,11 +214,11 @@ export const uiReducer = createReducer(
           ...state.bodyState,
           crossTab: {
             ...state.bodyState.crossTab,
-            selection: changedSelection,
-          },
-        },
+            selection: changedSelection
+          }
+        }
       };
-    },
+    }
   ),
   on(CrossTabulationUIActions.removeVariablesUsingIndex, (state, { index }) => {
     const selection = [...state.bodyState.crossTab.selection];
@@ -229,9 +229,9 @@ export const uiReducer = createReducer(
         ...state.bodyState,
         crossTab: {
           ...state.bodyState.crossTab,
-          selection: selection,
-        },
-      },
+          selection: selection
+        }
+      }
     };
-  }),
+  })
 );

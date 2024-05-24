@@ -12,7 +12,7 @@ export function matchCategoriesWithLabels(
     [variableID: string]: { [categoryID: string]: string };
   },
   crossTabValues: { [variableID: string]: string[] },
-  missingCategories: { [variableID: string]: string[] },
+  missingCategories: { [variableID: string]: string[] }
 ) {
   const matched: { [variableID: string]: string[] } = {};
   Object.keys(crossTabValues).map((key) => {
@@ -36,7 +36,7 @@ export function createRowAndCategoryLabels(
     variableID: string;
     orientation: 'rows' | 'cols' | '';
   }[],
-  processedVariables: { [p: string]: Variable },
+  processedVariables: { [p: string]: Variable }
 ): {
   labels: { [variableID: string]: string };
   rows: string[];
@@ -46,40 +46,49 @@ export function createRowAndCategoryLabels(
   const cols: string[] = [];
   const labels: { [variableID: string]: string } = {};
   variablesInCrossTab.map((item) => {
+    console.log(item);
     const processed = processedVariables[item.variableID] || null;
     const newLabel = processed
       ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
       : 'var-not-found';
     labels[item.variableID] = newLabel;
-    item.orientation === 'cols' ? cols.push(newLabel) : rows.push(newLabel);
+    if (item.orientation === 'cols') {
+      cols.push(newLabel);
+    } else if (item.orientation === 'rows') {
+      rows.push(newLabel);
+    }
   });
   return { labels, rows, cols };
 }
 
 export function createTable(
   processedCategories: { [categoryID: string]: string[] },
-  rowAndColumnLabels: { [variableID: string]: string },
+  rowAndColumnLabels: { [variableID: string]: string }
 ) {
+  console.log(rowAndColumnLabels);
   const data: { [categoryLabel: string]: string }[] = [];
   Object.keys(processedCategories).map((categoryKeyAsVariableID: string) => {
     // categoryKey here is a variableID
     const item = processedCategories[categoryKeyAsVariableID];
-    item.map((categoryLabel: string, index) => {
-      if (categoryLabel !== '') {
-        if (data[index]) {
-          data[index] = {
-            ...data[index],
-            [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel,
-          };
+    if (Object.keys(rowAndColumnLabels).includes(categoryKeyAsVariableID)) {
+      item.map((categoryLabel: string, index) => {
+        if (categoryLabel !== '') {
+          if (data[index]) {
+            data[index] = {
+              ...data[index],
+              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel
+            };
+          } else {
+            data[index] = {
+              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel
+            };
+          }
         } else {
-          data[index] = {
-            [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel,
-          };
+          data[index] = {};
         }
-      } else {
-        data[index] = {};
-      }
-    });
+      });
+    }
+
   });
   return data;
 }

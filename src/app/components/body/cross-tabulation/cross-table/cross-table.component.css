@@ -1,0 +1,43 @@
+table {
+  @apply table;
+}
+
+th {
+  @apply border;
+}
+
+.pvtRowLabel {
+  @apply font-semibold bg-neutral border;
+}
+
+.pvtColLabel {
+  @apply font-semibold bg-neutral border;
+}
+
+.pvtAxisLabel {
+  @apply border bg-neutral;
+}
+
+.pvtTotalLabel {
+  @apply border;
+}
+
+.pvtRowTotalLabel {
+  @apply border;
+}
+
+.pvtTotal {
+  @apply border;
+}
+
+.pvtVal {
+  @apply border;
+}
+
+.rowTotal {
+  @apply border;
+}
+
+.pvtGrandTotal {
+  @apply bg-neutral border;
+}

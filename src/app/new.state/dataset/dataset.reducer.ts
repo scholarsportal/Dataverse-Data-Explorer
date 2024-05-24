@@ -22,13 +22,13 @@ const initialState: DatasetState = {
   operationStatus: {
     download: 'idle',
     upload: 'idle',
-    import: 'idle',
+    import: 'idle'
   },
   variables: {
     importedDataset: null,
-    importedResult: null,
+    importedResult: null
   },
-  crossTabulation: {},
+  crossTabulation: {}
 };
 
 export const datasetReducer = createReducer(
@@ -38,33 +38,33 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'pending' as const,
-      },
+        download: 'pending' as const
+      }
     };
   }),
-  on(DataverseFetchActions.fetchDDIError, (state) => {
+  on(DataverseFetchActions.fetchDDIError, (state, { error }) => {
     return {
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'error' as const,
-      },
+        download: 'error' as const
+      }
     };
   }),
   on(DataverseFetchActions.fetchDDISuccess, (state) => ({
     ...state,
     operationStatus: {
       ...state.operationStatus,
-      download: 'success' as const,
-    },
+      download: 'success' as const
+    }
   })),
   on(DatasetActions.updateCrossTabValues, (state, { data, variableID }) => {
     return {
       ...state,
       crossTabulation: {
         ...state.crossTabulation,
-        [variableID]: data,
-      },
+        [variableID]: data
+      }
     };
-  }),
+  })
 );
