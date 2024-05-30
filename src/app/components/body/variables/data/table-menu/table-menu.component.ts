@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
 import { VariableGroup } from '../../../../../new.state/xml/xml.interface';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { ChipsModule } from 'primeng/chips';
+import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
+import { ChipModule } from 'primeng/chip';
 import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/multiselect-dropdown.component';
 import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
-  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, ChipsModule, FormsModule],
+  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css'
 })
@@ -24,9 +25,8 @@ export class TableMenuComponent {
   store = inject(Store);
   selectedVariables = input.required<string[]>();
   groupID = input.required<string>();
-
   selectedWeight: string = '';
-
+  variableGroupsPlaceholder: string[] = [];
   weights = input.required<{ [weightID: string]: string }>();
   allGroups = input.required<{ [id: string]: VariableGroup }>();
   allGroupsComputed = computed(() => {
@@ -35,6 +35,9 @@ export class TableMenuComponent {
       values[variableGroup['@_ID']] = variableGroup.labl;
     });
     return values;
+  });
+  allGroupsArray = computed(() => {
+    return Object.keys(this.allGroups());
   });
   selectedGroups = signal<string[]>([]);
 
@@ -51,6 +54,12 @@ export class TableMenuComponent {
   onSelectedWeightChange(weight: any) {
     if (weight.value) {
       this.selectedWeight = weight.value;
+    }
+  }
+
+  changeGroup(change: MultiSelectChangeEvent) {
+    if (change.value) {
+      this.variableGroupsPlaceholder = change.value;
     }
   }
 

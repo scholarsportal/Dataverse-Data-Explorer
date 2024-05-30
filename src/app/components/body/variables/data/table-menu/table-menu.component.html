@@ -1,4 +1,4 @@
-<div class="flex flex-row px-5 h-[70px]">
+<div class="flex flex-row px-5 h-full">
   <svg
     class="my-6"
     fill="none"
@@ -14,7 +14,7 @@
       stroke-linejoin="round"
     />
   </svg>
-
+<!--
   <dct-multiselect-dropdown
     (changeSelectedItems)="onGroupChange($event)"
     [itemList]="allGroupsComputed()"
@@ -23,6 +23,56 @@
     emptyPlaceholderText="Add Selected To Group(s)"
     position="top"
   ></dct-multiselect-dropdown>
+-->
+
+<label class="multiselect self-center ml-1" for="multiselect-nav"
+>
+<span class="sr-only">Add Variable to Group</span>
+
+  <p-multiSelect
+      (onChange)="changeGroup($event)"
+      filter="false"
+      showHeader="false"
+      [ngModelOptions]="{standalone: true}"
+      [ngModel]="variableGroupsPlaceholder"
+      [options]="allGroupsArray()"
+      id="multiselect-nav" 
+      placeholder="Add Variable to Group"
+      styleClass="select select-bordered border-slate-300 max-w-64"
+      >
+      <ng-template let-value pTemplate="selectedItems">
+        <span *ngIf="variableGroupsPlaceholder.length > 0; 
+          then allSelectedTemplate;
+          else elseTemplate"></span>
+        <ng-template #allSelectedTemplate>
+          @for (option of variableGroupsPlaceholder; track $index) {
+            <span *ngIf="$index == 0" class="">
+              {{ allGroups()[option].labl || 'no label' }}
+            </span>
+            <span *ngIf="$index > 0" class="-ml-1">
+              , {{ allGroups()[option].labl || 'no label' }}
+            </span>
+          }
+        </ng-template>
+        <ng-template #elseTemplate>
+          <ng-template [ngIf]="value?.length ?? 0 > 0" [ngIfElse]="defaultTemplate"
+            >{{ value?.length ?? 0 }} selected
+          </ng-template>
+          <ng-template #defaultTemplate>Add Variable to Group</ng-template>
+        </ng-template>
+      </ng-template>
+      <ng-template let-value pTemplate="item">
+        <div class="">
+          <input *ngIf="!variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" />
+          <input *ngIf="variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" checked />
+          {{ allGroups()[value].labl || 'no label' }}
+        </div>
+      </ng-template>
+      <ng-template pTemplate="dropdownicon"></ng-template>
+  </p-multiSelect>
+
+  </label>
+
   <label class="self-center ml-1">
     <span class="sr-only">
       Assign Weight

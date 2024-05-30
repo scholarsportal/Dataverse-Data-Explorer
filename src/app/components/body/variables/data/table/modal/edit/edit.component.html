@@ -61,35 +61,53 @@
     >
     </textarea>
   </label>
-  <label class="flex flex-col w-full mt-2" for="multiselect"
-  >Group(s)
-    <p-multiSelect
-      (onChange)="changeGroup($event)"
-      [filter]="false"
-      [ngModelOptions]="{standalone: true}"
-      [ngModel]="variableGroupsPlaceholder"
-      [options]="allGroupsArray()"
-      display="chip"
-      id="multiselect" panelStyleClass="bg-base-200 rounded-b px-2"
-      placeholder="Add Variable to Group"
-      styleClass="rounded bg-base-200 p-2 w-full max-w-full">
-      <ng-template class="hidden" pTemplate="filter"></ng-template>
-      <ng-template let-value pTemplate="selectedItems">
-        @for (option of variableGroupsPlaceholder; track $index) {
-          <p-chip styleClass="text-primary-content bg-primary rounded px-2 mx-2">
-            {{ allGroups()[option].labl || 'no label' }}
-          </p-chip>
-        }
-      </ng-template>
-      <ng-template let-value pTemplate="item">
-          <span class="text-base-content flex flex-row m-2">
+  <div class="flex flex-row">
+    <label class="form-label w-full" for="multiselect-edit">
+      Group(s)
+      <p-multiSelect
+        (onChange)="changeGroup($event)"
+        [filter]="false"
+        showHeader="false"
+        [ngModelOptions]="{standalone: true}"
+        [ngModel]="variableGroupsPlaceholder"
+        [options]="allGroupsArray()"
+        id="multiselect-edit"
+        placeholder="Add Variable to Group"
+        styleClass="select select-bordered border-slate-300 w-full"
+        >
+        <ng-template let-value pTemplate="selectedItems">
+          <span *ngIf="variableGroupsPlaceholder.length > 0; 
+            then allSelectedTemplate;
+            else elseTemplate"></span>
+          <ng-template #allSelectedTemplate>
+            @for (option of variableGroupsPlaceholder; track $index) {
+              <span *ngIf="$index == 0" class="">
+                {{ allGroups()[option].labl || 'no label' }}
+              </span>
+              <span *ngIf="$index > 0" class="-ml-1">
+                , {{ allGroups()[option].labl || 'no label' }}
+              </span>
+            }
+          </ng-template>
+          <ng-template #elseTemplate>
+            <ng-template [ngIf]="value?.length ?? 0 > 0" [ngIfElse]="defaultTemplate"
+              >{{ value?.length ?? 0 }} selected
+            </ng-template>
+            <ng-template #defaultTemplate>Add Variable to Group</ng-template>
+          </ng-template>
+        </ng-template>
+        <ng-template let-value pTemplate="item">
+          <div class="">
+            <input *ngIf="!variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" />
+            <input *ngIf="variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" checked />
             {{ allGroups()[value].labl || 'no label' }}
-          </span>
-      </ng-template>
-    </p-multiSelect>
-
-  </label>
-  <div class="flex flex-row mt-3 pr-5">
+          </div>
+        </ng-template>
+        <ng-template pTemplate="dropdownicon"></ng-template>
+      </p-multiSelect>
+    </label>
+  </div>
+  <div class="flex flex-row pr-5">
     <label class="form-label" for="weightVar">Weight Variable
       <select
         class="select select-bordered w-full max-w-xs"
