@@ -12,13 +12,14 @@ import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import { VariablesSimplified, VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { VariableOptionsButtonComponent } from './variable-options-button.component';
 import { TableNavComponent } from '../table-nav/table-nav.component';
 import { ChipsModule } from 'primeng/chips';
+import { TableMenuComponent } from '../table-menu/table-menu.component';
 
 @Component({
   selector: 'dct-table',
@@ -33,6 +34,7 @@ import { ChipsModule } from 'primeng/chips';
     TableModule,
     ButtonModule,
     TableNavComponent,
+    TableMenuComponent,
     ModalComponent,
     NgClass,
     ChipsModule,
@@ -43,6 +45,8 @@ export class TableComponent {
   ModalComponent = viewChild(ModalComponent);
   groupChanged = input.required<string>();
   variables = input.required<VariablesSimplified[]>();
+  groups = input.required<{ [variableID: string]: VariableGroup }>();
+  weights = input.required<{ [weightID: string]: string }>();
   categoriesInvalid = input.required<string[]>();
   openVariable = input.required<string>();
   variablesInCrossTab =

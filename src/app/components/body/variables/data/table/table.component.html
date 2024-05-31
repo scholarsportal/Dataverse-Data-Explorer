@@ -19,7 +19,7 @@
   [rows]="itemsPerPage()"
   [scrollable]="true"
   [value]="searchResultVariables()"
-  class="w-full m-5 min-h-12 overflow-y-auto"
+  class="w-full pl-5 overflow-y-auto"
   paginatorStyleClass="hidden"
   scrollHeight="flex"
 >
@@ -96,6 +96,15 @@
     </tr>
   </ng-template>
 </p-table>
+@if (selectedVariables().length > 1) {
+  <dct-table-menu
+    [allGroups]="groups()"
+    [groupID]="groupChanged()"
+    [selectedVariables]="selectedVariables()"
+    [weights]="weights()"
+    class="hidden md:flex table-menu z-20 border-t bg-base-100 max-h-16"
+  />
+}
 <dct-modal
   [nextVar]="openVariableData().next"
   [previousVar]="openVariableData().previous"

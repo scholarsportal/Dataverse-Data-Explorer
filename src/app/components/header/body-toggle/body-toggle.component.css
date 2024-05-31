@@ -5,7 +5,7 @@
 }
 
 .tab-active {
-  @apply text-primary border-b-4;
+  @apply font-bold border-b-4 rounded-none;
 }
 
 .tab.tab-active:not(.tab-disabled):not([disabled]), .tab:is(input:checked) {

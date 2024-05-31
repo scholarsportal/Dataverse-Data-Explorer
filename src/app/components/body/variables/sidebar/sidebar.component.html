@@ -41,9 +41,11 @@
         />
       }
     </div>
-    <button (click)="toggleImportComponentState()" [ngClass]="{'bg-base-200': importButtonSelected()}"
-            class="flex justify-between w-full h-full px-5 items-center hover:bg-base-200 border-t import">
-      <span [ngClass]="{'font-bold': importButtonSelected()}">
+    
+  </div>
+  <button (click)="toggleImportComponentState()" [ngClass]="{'bg-base-200': importButtonSelected()}"
+            class="flex justify-between w-full px-5 py-5 items-center hover:bg-base-200 border-t rounded-none import max-h-16">
+      <span [ngClass]="{'font-bold': importButtonSelected()}" class="metadata-lbl">
       Import Metadata
       </span>
       <svg
@@ -61,5 +63,4 @@
         />
       </svg>
     </button>
-  </div>
 </nav>

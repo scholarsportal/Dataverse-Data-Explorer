@@ -2,7 +2,7 @@
   height: 100vh;
   max-height: 100vh;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
   font-size: 0.85rem;
 }
 

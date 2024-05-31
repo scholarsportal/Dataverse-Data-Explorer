@@ -6,7 +6,7 @@
     id="variables"
     [ngClass]="{ 'tab-active': variablesOpen() }"
     (click)="openVariables()"
-    class="flex flex-row px-5"
+    class="flex flex-row px-5 pb-4"
   >
     <svg
       class="w-6 h-6 my-auto mr-2.5"
@@ -30,7 +30,7 @@
     aria-selected="true"
     aria-controls="tabpanel-id"
     id="cross-tab"
-    class="h-full flex flex-row px-5 my-auto"
+    class="h-full flex flex-row px-5 my-auto pb-4"
     (click)="openCrossTab()"
     [ngClass]="{ 'tab-active': crossTabOpen() }"
   >

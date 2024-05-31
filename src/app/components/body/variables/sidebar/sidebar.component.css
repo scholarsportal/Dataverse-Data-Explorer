@@ -23,10 +23,9 @@ h2 {
   @apply bg-base-200 font-bold;
 }
 
-
 .all-groups {
   height: 100%;
-  grid-area: 2 / 1 / 11 / 4;
+  grid-area: 2 / 1 / 12 / 4;
   overflow-y: auto;
 }
 
@@ -35,7 +34,7 @@ h2 {
 }
 
 .import {
-  grid-area: 11 / 1 / 12 / 4;
+  grid-area: 12 / 1 / 12 / 4;
   width: 100%;
 }
 
