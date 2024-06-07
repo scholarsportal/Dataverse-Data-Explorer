@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, OnInit } from '@angular/core';
-import { Chart } from 'chart.js/auto';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -15,18 +14,11 @@ import { NgClass } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrossChartComponent implements OnInit {
-  data = input.required<{
-    datasets: {
-      label: string,
-      data: {
-        [label: string]: number
-      },
-    }[]
-  }>();
+  data = input.required<{ [id: string]: string }[]>();
   rows = input.required<string[]>();
   cols = input.required<string[]>();
   hasData = computed(() => {
-    return !!this.data().datasets.length;
+    return !!this.data().length;
   });
   public chartJS: any;
 
@@ -43,27 +35,27 @@ export class CrossChartComponent implements OnInit {
   }
 
   private createChart() {
-    this.chartJS = new Chart('crossTabChart', {
-      type: 'bar',
-      data: this.data(),
-      options: {
-        plugins: {
-          title: {
-            display: true,
-            text: 'Dataset Chart'
-          }
-        },
-        responsive: true,
-        scales: {
-          x: {
-            stacked: true
-          },
-          y: {
-            stacked: true
-          }
-        }
-      }
-    });
+    // this.chartJS = new Chart('crossTabChart', {
+    //   type: 'bar',
+    //   data: this.data(),
+    //   options: {
+    //     plugins: {
+    //       title: {
+    //         display: true,
+    //         text: 'Dataset Chart'
+    //       }
+    //     },
+    //     responsive: true,
+    //     scales: {
+    //       x: {
+    //         stacked: true
+    //       },
+    //       y: {
+    //         stacked: true
+    //       }
+    //     }
+    //   }
+    // });
     const light = 'black', dark = 'white', neutral = '#c8c5d0', theme = localStorage.getItem('theme');
 
     if (theme === 'light') {
