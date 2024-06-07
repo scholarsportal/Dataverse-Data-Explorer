@@ -49,6 +49,29 @@ export const XmlManipulationActions = createActionGroup({
     }>(),
     'Rename Group': props<{ groupID: string, newLabel: string }>(),
     'Delete Group': props<{ groupID: string }>(),
-    'Create Group': props<{ groupID: string, label: string }>()
+    'Create Group': props<{ groupID: string, label: string }>(),
+    'Remove Variables From Group': props<{ variableIDs: string[], groupID: string }>(),
+    'Save Variable Info': props<{
+      variableID: string | string[], newVariableValue: {
+        label: string;
+        literalQuestion: string;
+        interviewQuestion: string;
+        postQuestion: string;
+        universe: string;
+        notes: string;
+        assignedWeight: string;
+        isWeight: boolean,
+      }, groups: string[]
+    }>(),
+    'Bulk Save Variable Info': props<{
+      variableIDs: string[], groups?: string[], assignedWeight?: string, newVariableValue?: {
+        label: string;
+        literalQuestion: string;
+        interviewQuestion: string;
+        postQuestion: string;
+        universe: string;
+        notes: string;
+      }
+    }>()
   }
 });

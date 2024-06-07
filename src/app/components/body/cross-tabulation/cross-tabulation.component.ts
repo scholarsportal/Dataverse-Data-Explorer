@@ -5,7 +5,7 @@ import { CrossTableComponent } from './cross-table/cross-table.component';
 
 import { VariableSelectionComponent } from './variable-selection/variable-selection.component';
 import { CrossTabulationUIActions } from '../../../new.state/ui/ui.actions';
-import { selectCrossTabulationTableData } from '../../../new.state/ui/ui.selectors';
+import { selectCrossCharts, selectCrossTabulationTableData } from '../../../new.state/ui/ui.selectors';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { defaultCols, defaultRows, defaultTable } from './default-table';
@@ -36,6 +36,7 @@ export class CrossTabulationComponent {
   defaultRows = defaultRows;
   defaultTable = defaultTable;
   tableData = this.store.selectSignal(selectCrossTabulationTableData);
+  tableChart = this.store.selectSignal(selectCrossCharts);
   chartOrTable = signal(['Chart', 'Table']);
   defaultDataView = signal('Table');
 

@@ -2,6 +2,7 @@ import { Component, ElementRef, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { XmlManipulationActions } from '../../../../../../new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-bulk-edit-modal',
@@ -40,23 +41,18 @@ export class BulkEditModalComponent {
   }
 
   handleSave() {
-    /* if (this.selected && this.variableForm.value && this.variableForm.valid) {
-       const selected = JSON.parse(JSON.stringify(this.selected));
-       const value = this.variableForm.value;
-       const variables: { [id: string]: Variable } = {};
-       selected.map((element: Variable) => {
-         element.labl['#text'] = value.label ?? element.labl['#text'];
-         element['qstn'] = {
-           qstnLit: value.literalQuestion ?? element.qstn?.qstnLit ?? '',
-           ivuInstr: value.interviewQuestion ?? element.qstn?.ivuInstr ?? '',
-           postQTxt: value.postQuestion ?? element.qstn?.postQTxt ?? '',
-         };
-         element.universe = value.universe ?? element.universe;
-         element.notes['#text'] = value.notes ?? element.notes['#text'];
-         variables[element['@_ID']] = element;
-       });
-       this.store.dispatch(bulkEditVariables({ variables }));
-     }*/
+    const newVariableValue = {
+      label: this.variableForm.value.label || '',
+      literalQuestion: this.variableForm.value.literalQuestion || '',
+      interviewQuestion: this.variableForm.value.interviewQuestion || '',
+      postQuestion: this.variableForm.value.postQuestion || '',
+      universe: this.variableForm.value.universe || '',
+      notes: this.variableForm.value.notes || ''
+    };
+    this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
+      variableIDs: this.selectedVariables(),
+      newVariableValue
+    }));
   }
 
   handleCancel() {

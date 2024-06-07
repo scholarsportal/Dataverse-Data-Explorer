@@ -7,6 +7,7 @@ import { VariableForm } from 'src/app/new.state/ui/ui.interface';
 import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import { ChipModule } from 'primeng/chip';
+import { XmlManipulationActions } from '../../../../../../../new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-edit',
@@ -27,6 +28,7 @@ export class EditComponent {
   form = input.required<VariableForm>();
   variableGroups = input.required<string[]>();
   variableGroupsPlaceholder: string[] = [];
+  variableID = input.required<string>();
   allGroups = input.required<{ [groupID: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
@@ -76,32 +78,20 @@ export class EditComponent {
   }
 
   handleSave() {
-    (this.variableForm.valueChanges.subscribe(data => {
-      console.log(data);
+    const newVariableValue = {
+      label: this.variableForm.value.label || '',
+      literalQuestion: this.variableForm.value.literalQuestion || '',
+      interviewQuestion: this.variableForm.value.interviewQuestion || '',
+      postQuestion: this.variableForm.value.postQuestion || '',
+      universe: this.variableForm.value.universe || '',
+      notes: this.variableForm.value.notes || '',
+      assignedWeight: this.variableForm.value.assignedWeight || '',
+      isWeight: this.variableForm.value.isWeight || false
+    };
+    this.store.dispatch(XmlManipulationActions.saveVariableInfo({
+      variableID: this.variableID(),
+      groups: this.variableGroupsPlaceholder,
+      newVariableValue
     }));
-    //   if (this.variableForm.value?.id && this.groups) {
-    //     const newGroups: string[] = [];
-    //     const variable: VariableForm = {
-    //       id: this.variableForm.value.id,
-    //       label: this.variableForm.value.label ?? '',
-    //       literalQuestion: this.variableForm.value.literalQuestion ?? '',
-    //       interviewQuestion: this.variableForm.value.interviewQuestion ?? '',
-    //       postQuestion: this.variableForm.value.postQuestion ?? '',
-    //       notes: this.variableForm.value.notes ?? '',
-    //       universe: this.variableForm.value.universe ?? '',
-    //       isWeight: this.variableForm.value.isWeight ?? false,
-    //       weight: this.variableForm.value.weight ?? null,
-    //     };
-    //     this.groups.map((value) => {
-    //       newGroups.push(value['@_ID']);
-    //     });
-    //     this.store.dispatch(
-    //       saveVariable({
-    //         variableID: this.variableForm.value.id,
-    //         variable,
-    //         groups: newGroups,
-    //       }),
-    //     );
-    //   }
   }
 }

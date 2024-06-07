@@ -1,81 +1,93 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
-import * as d3 from 'd3';
+import { ChangeDetectionStrategy, Component, computed, effect, input, OnInit } from '@angular/core';
+import { Chart } from 'chart.js/auto';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'dct-cross-chart',
   standalone: true,
-  imports: [],
+  imports: [NgClass],
   template: `
-    <h3>Stacked Bar Chart</h3>
-    <figure
-      #crossChart
-      id="crossChart"
-    ></figure>
+    <div [ngClass]="{ 'blur': !hasData() }" class="flex h-full w2/3 mt-4">
+      <canvas id="crossTabChart"> {{ chartJS }}</canvas>
+    </div>
   `,
   styleUrl: './cross-chart.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CrossChartComponent {
-  data = input.required<{ [variableLabel: string]: string }[] | unknown[]>();
+export class CrossChartComponent implements OnInit {
+  data = input.required<{
+    datasets: {
+      label: string,
+      data: {
+        [label: string]: number
+      },
+    }[]
+  }>();
   rows = input.required<string[]>();
   cols = input.required<string[]>();
-  // D3
-  private svg: any;
-  private margin = 50;
-  private width = 750 - (this.margin * 2);
-  private height = 400 - (this.margin * 2);
+  hasData = computed(() => {
+    return !!this.data().datasets.length;
+  });
+  public chartJS: any;
 
   constructor() {
     effect(() => {
-      if (this.data().length && (this.rows() || this.cols())) {
-        this.createSVG();
-        this.drawBars(this.data());
+      if (this.hasData()) {
+        this.redrawChart(this.data());
       }
     });
   }
 
-  private createSVG(): void {
-    this.svg = d3.select('figure#crossChart')
-      .append('svg')
-      .attr('width', this.width + (this.margin * 2))
-      .attr('height', this.height + (this.margin * 2))
-      .append('g')
-      .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
+  ngOnInit() {
+    this.createChart();
   }
 
-  private drawBars(data: any) {
-    // Create the X-axis band scale
-    const x = d3.scaleBand()
-      .range([0, this.width])
-      .domain(data.map((d: { category: string, [other: string]: string }) => d.category))
-      .padding(0.2);
+  private createChart() {
+    this.chartJS = new Chart('crossTabChart', {
+      type: 'bar',
+      data: this.data(),
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Dataset Chart'
+          }
+        },
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            stacked: true
+          }
+        }
+      }
+    });
+    const light = 'black', dark = 'white', neutral = '#c8c5d0', theme = localStorage.getItem('theme');
 
-    // Draw the X-axis on the DOM
-    this.svg.append('g')
-      .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'translate(-10,0)rotate(-45)')
-      .style('text-anchor', 'end');
+    if (theme === 'light') {
+      this.chartJS.options.scales.x.grid.color = neutral;
+      this.chartJS.options.scales.y.grid.color = neutral;
+      this.chartJS.options.scales.x.ticks.color = light;
+      this.chartJS.options.scales.y.ticks.color = light;
+    } else {
+      this.chartJS.options.scales.x.grid.color = dark;
+      this.chartJS.options.scales.y.grid.color = dark;
+      this.chartJS.options.scales.x.ticks.color = dark;
+      this.chartJS.options.scales.y.ticks.color = dark;
+      this.chartJS.options.plugins.legend.labels.color = dark;
+    }
+  }
 
-    // Create the Y-axis band scale
-    const y = d3.scaleLinear()
-      .domain([0, 200000])
-      .range([this.height, 0]);
-
-    // Draw the Y-axis on the DOM
-    this.svg.append('g')
-      .call(d3.axisLeft(y));
-
-    // Create and fill the bars
-    this.svg.selectAll('bars')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('x', (d: any) => x(d.Framework))
-      .attr('y', (d: any) => y(d.Stars))
-      .attr('width', x.bandwidth())
-      .attr('height', (d: any) => this.height - y(d.Stars))
-      .attr('fill', '#d04a35');
+  private redrawChart(data: any) {
+    // Update chart data and redraw
+    if (this.chartJS) {
+      this.chartJS.data = data;
+      // if (this.chartJS.data?.options?.scales?.y?.ticks) {
+      //   this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
+      // }
+      this.chartJS.update();
+    }
   }
 }

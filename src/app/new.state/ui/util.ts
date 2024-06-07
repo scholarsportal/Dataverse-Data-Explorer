@@ -46,7 +46,6 @@ export function createRowAndCategoryLabels(
   const cols: string[] = [];
   const labels: { [variableID: string]: string } = {};
   variablesInCrossTab.map((item) => {
-    console.log(item);
     const processed = processedVariables[item.variableID] || null;
     const newLabel = processed
       ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
@@ -65,7 +64,6 @@ export function createTable(
   processedCategories: { [categoryID: string]: string[] },
   rowAndColumnLabels: { [variableID: string]: string }
 ) {
-  console.log(rowAndColumnLabels);
   const data: { [categoryLabel: string]: string }[] = [];
   Object.keys(processedCategories).map((categoryKeyAsVariableID: string) => {
     // categoryKey here is a variableID

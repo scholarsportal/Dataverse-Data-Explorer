@@ -1,6 +1,15 @@
 import { XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
+import {
+  changeGroupsForMultipleVariables,
+  changeGroupsForSingleVariable,
+  changeMultipleVariables,
+  changeSingleVariable,
+  deleteVariableGroup,
+  removeVariablesFromGroups,
+  renameVariableGroup
+} from './xml.util';
 
 export const initialState: XmlState = {
   dataset: null,
@@ -63,5 +72,127 @@ export const xmlReducer = createReducer(
         ...state
       };
     }
-  )
+  ),
+  on(XmlManipulationActions.renameGroup, (state, { groupID, newLabel }) => {
+    let duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+    duplicateVariableGroups = renameVariableGroup(duplicateVariableGroups, groupID, newLabel);
+    return {
+      ...state,
+      dataset: !state.dataset ? null : {
+        ...state.dataset,
+        codeBook: {
+          ...state.dataset?.codeBook,
+          dataDscr: {
+            ...state.dataset?.codeBook.dataDscr,
+            varGrp: duplicateVariableGroups
+          }
+        }
+      }
+    };
+  }),
+  on(XmlManipulationActions.deleteGroup, (state, { groupID }) => {
+    let duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+    duplicateVariableGroups = deleteVariableGroup(duplicateVariableGroups, groupID);
+    return {
+      ...state,
+      dataset: !state.dataset ? null : {
+        ...state.dataset,
+        codeBook: {
+          ...state.dataset?.codeBook,
+          dataDscr: {
+            ...state.dataset?.codeBook.dataDscr,
+            varGrp: duplicateVariableGroups
+          }
+        }
+      }
+    };
+  }),
+  on(XmlManipulationActions.createGroup, (state, { groupID, label }) => {
+    let duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+    duplicateVariableGroups.push({
+      '@_ID': groupID,
+      labl: label,
+      '@_var': ''
+    });
+    return {
+      ...state,
+      dataset: !state.dataset ? null : {
+        ...state.dataset,
+        codeBook: {
+          ...state.dataset?.codeBook,
+          dataDscr: {
+            ...state.dataset?.codeBook.dataDscr,
+            varGrp: duplicateVariableGroups
+          }
+        }
+      }
+    };
+  }),
+  on(XmlManipulationActions.removeVariablesFromGroup, (state, { groupID, variableIDs }) => {
+    const duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+    const patchedVariableGroups = removeVariablesFromGroups(groupID, variableIDs, duplicateVariableGroups);
+    return {
+      ...state,
+      dataset: !state.dataset ? null : {
+        ...state.dataset,
+        codeBook: {
+          ...state.dataset?.codeBook,
+          dataDscr: {
+            ...state.dataset?.codeBook.dataDscr,
+            varGrp: patchedVariableGroups
+          }
+        }
+      }
+    };
+  }),
+  on(XmlManipulationActions.saveVariableInfo,
+    (state, { variableID, newVariableValue, groups }) => {
+      let duplicateVariables = structuredClone(state.dataset?.codeBook.dataDscr.var || []);
+      let duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+      if (Array.isArray(variableID)) {
+      } else {
+        duplicateVariables = changeSingleVariable(duplicateVariables, variableID, newVariableValue);
+        duplicateVariableGroups = changeGroupsForSingleVariable(duplicateVariableGroups, variableID, groups);
+      }
+      return {
+        ...state,
+        dataset: !state.dataset ? null : {
+          ...state.dataset,
+          codeBook: {
+            ...state.dataset?.codeBook,
+            dataDscr: {
+              ...state.dataset?.codeBook.dataDscr,
+              var: duplicateVariables,
+              varGrp: duplicateVariableGroups
+            }
+          }
+        }
+      };
+    }),
+  on(XmlManipulationActions.bulkSaveVariableInfo,
+    (state, { variableIDs, newVariableValue, groups, assignedWeight }) => {
+      let duplicateVariables = structuredClone(state.dataset?.codeBook.dataDscr.var || []);
+      let duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
+      if (newVariableValue) {
+        duplicateVariables = changeMultipleVariables(duplicateVariables, variableIDs, newVariableValue, assignedWeight);
+      }
+      if (groups) {
+        console.log(groups);
+        duplicateVariableGroups = changeGroupsForMultipleVariables(duplicateVariableGroups, variableIDs, groups);
+      }
+      return {
+        ...state,
+        dataset: !state.dataset ? null : {
+          ...state.dataset,
+          codeBook: {
+            ...state.dataset?.codeBook,
+            dataDscr: {
+              ...state.dataset?.codeBook.dataDscr,
+              var: duplicateVariables,
+              varGrp: duplicateVariableGroups
+            }
+          }
+        }
+      };
+    })
 );
