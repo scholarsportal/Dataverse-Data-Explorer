@@ -117,9 +117,6 @@ export function changeGroupsForMultipleVariables(
   newGroups: string[]
 ) {
   const updatedGroupArray: VariableGroup[] = [];
-  // BUG
-  // TODO
-  // This algorithm is n^2. We need to try to improve it.
   (variableGroups).forEach((variableGroup) => {
     if (newGroups.includes(variableGroup['@_ID'])) {
       const variablesAsArray = !!variableGroup['@_var']?.length ? variableGroup['@_var']?.split(' ') || [] : [];
