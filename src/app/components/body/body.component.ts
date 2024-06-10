@@ -1,14 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  selectDatasetProcessedGroups,
-  selectDatasetProcessedVariables,
-} from '../../new.state/xml/xml.selectors';
+import { selectDatasetProcessedGroups, selectDatasetProcessedVariables } from '../../new.state/xml/xml.selectors';
 import {
   selectBodyToggleState,
   selectCrossTabSelection,
@@ -16,17 +8,14 @@ import {
   selectImportComponentState,
   selectOpenVariableCategoriesMissing,
   selectOpenVariableID,
-  selectVariableSelectionContext,
+  selectVariableSelectionContext
 } from '../../new.state/ui/ui.selectors';
 import { Variable } from '../../new.state/xml/xml.interface';
 import { SidebarComponent } from './variables/sidebar/sidebar.component';
 import { DataComponent } from './variables/data/data.component';
 import { CrossTabulationComponent } from './cross-tabulation/cross-tabulation.component';
 import { ImportComponent } from '../import/import.component';
-import {
-  selectDatasetVariableCrossTabValues,
-  selectDatasetWeights,
-} from '../../new.state/dataset/dataset.selectors';
+import { selectDatasetVariableCrossTabValues, selectDatasetWeights } from '../../new.state/dataset/dataset.selectors';
 import { TableComponent } from './variables/data/table/table.component';
 
 @Component({
@@ -37,11 +26,11 @@ import { TableComponent } from './variables/data/table/table.component';
     DataComponent,
     CrossTabulationComponent,
     ImportComponent,
-    TableComponent,
+    TableComponent
   ],
   templateUrl: './body.component.html',
   styleUrl: './body.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BodyComponent {
   store = inject(Store);

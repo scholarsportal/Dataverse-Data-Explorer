@@ -1,14 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import {
-  Variable,
-  VariableGroup,
-  VariablesSimplified,
-} from 'src/app/new.state/xml/xml.interface';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Variable, VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
 import { MobileViewComponent } from './mobile-view/mobile-view.component';
 import { TableNavComponent } from './table-nav/table-nav.component';
@@ -27,7 +18,7 @@ import { TableComponent } from './table/table.component';
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
