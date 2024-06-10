@@ -14,7 +14,7 @@ import { TableComponent } from './table/table.component';
     MobileViewComponent,
     TableComponent,
     TableNavComponent,
-    TableMenuComponent,
+    TableMenuComponent
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
@@ -37,15 +37,17 @@ export class DataComponent {
   variablesSimplified = computed(() => {
     const simplified: VariablesSimplified[] = [];
     Object.values(this.variables()).forEach((value) => {
-      const newObj = {
-        variableID: value['@_ID'],
-        name: value['@_name'],
-        label: value.labl['#text'] || '',
-        weight: value['@_wgt-var'] || '',
-        isWeight: !!value['@_wgt'],
-        selected: this.selectedVariables().includes(value['@_ID']),
-      };
-      simplified.push(newObj);
+      if (value?.['@_ID']) {
+        const newObj = {
+          variableID: value['@_ID'],
+          name: value['@_name'],
+          label: value.labl['#text'] || '',
+          weight: value['@_wgt-var'] || '',
+          isWeight: !!value['@_wgt'],
+          selected: this.selectedVariables().includes(value['@_ID'])
+        };
+        simplified.push(newObj);
+      }
     });
     return simplified;
   });

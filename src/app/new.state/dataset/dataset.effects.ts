@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DdiService } from '../../services/ddi.service';
 import { CrossTabulationUIActions } from '../ui/ui.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { DataverseFetchActions } from '../xml/xml.actions';
 import { DatasetActions } from './dataset.actions';
 
@@ -14,25 +14,25 @@ export class DatasetEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(
-          CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex,
+          CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex
         ),
-        switchMap(({ variableID, index, orientation }) =>
+        exhaustMap(({ variableID, index, orientation }) =>
           ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
             map((data) =>
               DatasetActions.updateCrossTabValues({
                 variableID,
                 data,
                 orientation,
-                index,
-              }),
+                index
+              })
             ),
             catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          ),
-        ),
+              of(DataverseFetchActions.fetchDDIError(error))
+            )
+          )
+        )
       );
-    },
+    }
   );
 
   fetchCrossTab$ = createEffect(
@@ -42,14 +42,14 @@ export class DatasetEffects {
         switchMap(({ variableID }) =>
           ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
             map((data) =>
-              DatasetActions.updateCrossTabValues({ variableID, data }),
+              DatasetActions.updateCrossTabValues({ variableID, data })
             ),
             catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          ),
-        ),
+              of(DataverseFetchActions.fetchDDIError(error))
+            )
+          )
+        )
       );
-    },
+    }
   );
 }

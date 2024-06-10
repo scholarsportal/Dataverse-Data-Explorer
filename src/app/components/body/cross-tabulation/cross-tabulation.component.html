@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  @if (hasData() && hasRowOrColumn()) {
+  @if (hasData()) {
     @if (defaultDataView() === 'Table') {
       <dct-cross-table
         [cols]="cols()"

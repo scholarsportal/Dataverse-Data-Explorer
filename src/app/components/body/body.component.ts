@@ -37,7 +37,7 @@ export class BodyComponent {
 
   variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
   crossTabValuesFetched = this.store.selectSignal(
-    selectDatasetVariableCrossTabValues,
+    selectDatasetVariableCrossTabValues
   );
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   crossTabulationTabOpen = computed(() => {
@@ -55,13 +55,13 @@ export class BodyComponent {
     return this.selectedGroupID();
   });
   selectedVariableContext = this.store.selectSignal(
-    selectVariableSelectionContext,
+    selectVariableSelectionContext
   );
   selectedVariables = computed(() => {
     return this.selectedVariableContext()[this.selectedGroupID()] || [];
   });
   categoriesMissing = this.store.selectSignal(
-    selectOpenVariableCategoriesMissing,
+    selectOpenVariableCategoriesMissing
   );
   openVariable = this.store.selectSignal(selectOpenVariableID);
   importComponentState = this.store.selectSignal(selectImportComponentState);
@@ -73,11 +73,12 @@ export class BodyComponent {
     } else {
       const filteredVariables: { [variableID: string]: Variable } = {};
       if (this.groups()[this.selectedGroupID()]) {
-        this.groups()
-          [this.selectedGroupID()]['@_var']?.split(' ')
-          .map((variableID) => {
+        if (!!this.groups()[this.selectedGroupID()]['@_var']) {
+          const selectedGroupVariableArray = this.groups()[this.selectedGroupID()]['@_var']?.split(' ') || [];
+          selectedGroupVariableArray.map((variableID) => {
             filteredVariables[variableID] = this.variables()[variableID];
           });
+        }
       }
       return filteredVariables;
     }

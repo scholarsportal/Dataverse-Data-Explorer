@@ -129,6 +129,7 @@ export const xmlReducer = createReducer(
     };
   }),
   on(XmlManipulationActions.removeVariablesFromGroup, (state, { groupID, variableIDs }) => {
+    console.log(variableIDs);
     const duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
     const patchedVariableGroups = removeVariablesFromGroups(groupID, variableIDs, duplicateVariableGroups);
     return {

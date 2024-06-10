@@ -2,6 +2,7 @@ import { UIState } from './ui.interface';
 import { createReducer, on } from '@ngrx/store';
 import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';
 import { DatasetActions } from '../dataset/dataset.actions';
+import { XmlManipulationActions } from '../xml/xml.actions';
 
 export const initialState: UIState = {
   bodyToggle: 'cross-tab',
@@ -71,6 +72,19 @@ export const uiReducer = createReducer(
       }
     })
   ),
+  on(XmlManipulationActions.removeVariablesFromGroup, (state, { groupID }) => ({
+    ...state,
+    bodyState: {
+      ...state.bodyState,
+      variables: {
+        ...state.bodyState.variables,
+        variableSelectionContext: {
+          ...state.bodyState.variables.variableSelectionContext,
+          [groupID]: []
+        }
+      }
+    }
+  })),
   on(VariableTabUIAction.openVariableImportMenu, (state) => ({
     ...state,
     bodyState: {
