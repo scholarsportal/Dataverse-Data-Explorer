@@ -121,9 +121,7 @@ export function changeGroupsForMultipleVariables(
     if (newGroups.includes(variableGroup['@_ID'])) {
       const variablesAsArray = !!variableGroup['@_var']?.length ? variableGroup['@_var']?.split(' ') || [] : [];
       variablesAsArray.push(...variableIDs);
-      console.log(variablesAsArray);
       variableGroup['@_var'] = variablesAsArray.join(' ');
-      console.log(variableGroup);
     }
     updatedGroupArray.push(variableGroup);
   });

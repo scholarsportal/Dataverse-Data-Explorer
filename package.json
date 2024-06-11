@@ -7,6 +7,7 @@
     "build": "ng build --output-path docs --base-href /Dataverse-Data-Curation-Tool/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint"
   },
   "private": true,
