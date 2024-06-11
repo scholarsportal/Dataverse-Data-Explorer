@@ -14,14 +14,25 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 ### Pre-Requisites
 
 - NodeJS (runtime for Angular and client)
+
+  For development, I recommend using a Node Version manager such as [nvm](https://github.com/creationix/nvm) or [fnm](https://github.com/Schniz/fnm). Otherwise, NodeJS can be found [here](https://nodejs.org/en/download).
 - Angular (client framework)
 
-See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+  ```npm install -g @angular/cli```
+
+Integrating Data Explorer in your institution? See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+
+Now to start development.
 
 ```sh
 npm install
 ng serve
 ```
+
+### Variable Selection Context
+
+When a user selects a variables, navigates to another group, and makes another selection, the app holds the selection information for both contexts in which the selection in made. In simple terms the user does not have to worry about losing their selection when they change groups.
+
 
 ## App State
 
@@ -42,7 +53,6 @@ The UI state represents any UI changes, including any temporary visual changes t
 ![2. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/2348e3bb-ed50-4868-9326-d4bc49998665)
 
 ![3. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/74f97864-5673-4959-aacc-68927df80cd5)
-
 
 ![Data Curation Tool Launch Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Init%20Sequence%20Diagram.jpg?raw=true 'Launch Activity Diagram')
 

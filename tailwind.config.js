@@ -4,7 +4,7 @@ module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
-      colors: {        
+      colors: {
         light: {
           // primary
           primary: '#4338ca',
@@ -84,7 +84,7 @@ module.exports = {
 
           // surface
           surface: '#0d0c0f',
-          'surface-variant': '#49454F',
+          'surface-variant': '#323236',
           'on-surface': '#E6E1E5',
           'on-surface-variant': '#CAC4D0',
           'surface-tint': '#D0BCFF',
@@ -101,49 +101,47 @@ module.exports = {
           // misc
           shadow: '#000000',
           scrim: '#000000',
-        }
+        },
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-      //   serif: ['Ubuntu'],
-      //   mono: ['Ubuntu'],
+        //   serif: ['Ubuntu'],
+        //   mono: ['Ubuntu'],
       },
     },
   },
-  plugins: [
-    require("daisyui"),
-  ],
+  plugins: [require('daisyui')],
   daisyui: {
     themes: [
       {
         light: {
-          "primary": "#4338CA",
-          "secondary": "#DB2777",
-          "accent": "#ffffff",
-          "neutral": "#000000",
-          "base-100": "#ffffff",
-          "error": "#d00000",
-          "success": "#108400"
+          primary: '#4338CA',
+          secondary: '#DB2777',
+          accent: '#ffffff',
+          neutral: '#F3F4F6',
+          'base-100': '#ffffff',
+          error: '#d00000',
+          success: '#108400',
         },
       },
       {
         dark: {
-          "primary": "#DBCCFF",
-          "secondary": "#FFC7E0",
-          "accent": "#ffffff",
-          "neutral": "#ffffff",
-          "base-100": "#3F3F46",
-          "error": "#ffa5a5",
-          "success": "#6effc9"
+          primary: '#DBCCFF',
+          secondary: '#FFC7E0',
+          accent: '#ffffff',
+          neutral: '#323236',
+          'base-100': '#3F3F46',
+          error: '#ffa5a5',
+          success: '#6effc9',
         },
-      }
+      },
     ],
-    darkTheme: "dark", // name of one of the included themes for dark mode
+    darkTheme: 'dark', // name of one of the included themes for dark mode
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes
-    prefix: "", // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
+    prefix: '', // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
     logs: true, // Shows info about daisyUI version and used config in the console when building your CSS
-    themeRoot: ":root", // The element that receives theme color CSS variables
+    themeRoot: ':root', // The element that receives theme color CSS variables
   },
 };

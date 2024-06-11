@@ -1,25 +1,16 @@
-<main class="main">
-  @if ((loaded$ | async) === 'success') {
+<main class="md:grid main">
+  @if (loaded()) {
     <dct-header class="header border-b"></dct-header>
-    @if (isCrossTabOpen$ | async) {
-      <dct-cross-tabulation class="body grid-flow-col"></dct-cross-tabulation>
-    } @else {
-      <div class="body">
-        <dct-sidebar
-          class="sidebar md:border-r border-light-surface z-20"
-        ></dct-sidebar>
-        @if (isOptionsMenuOpen$ | async) {
-          <dct-import class="table"></dct-import>
-        } @else {
-          <dct-table
-            class="table"
-            [variablesWithGroups]="variablesWithGroups$ | async"
-          ></dct-table>
-        }
-      </div>
-    }
-  }
-  @if ((loaded$ | async) === 'idle') {
+    <dct-body class="body" />
+  } @else if (loading()) {
+    <div class="h-screen w-screen flex flex-col items-center my-auto">
+      <h1
+        class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary"
+      >
+        Loading dataset ...
+      </h1>
+    </div>
+  } @else {
     <div
       class="beautiful h-screen w-screen flex flex-col justify-around items-center"
     >
@@ -34,15 +25,6 @@
       <button class="rounded border px-3 py-1.5 text-white">
         Import Your Own XML File
       </button>
-    </div>
-  }
-  @if ((loaded$ | async) === 'pending') {
-    <div class="h-screen w-screen flex flex-col items-center my-auto">
-      <h1
-        class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary"
-      >
-        Loading dataset ...
-      </h1>
     </div>
   }
 </main>

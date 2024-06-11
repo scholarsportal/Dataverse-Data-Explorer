@@ -1,0 +1,75 @@
+h2 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.nav {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  grid-area: 1 / 1 / 12 / 4;
+}
+
+.group-add {
+  grid-area: 1 / 1 / 1 / 4;
+}
+
+.all-variables {
+  grid-area: 2 / 1 / 2 / 4;
+}
+
+.allSelected {
+  @apply bg-base-200 font-bold;
+}
+
+.all-groups {
+  height: 100%;
+  grid-area: 2 / 1 / 12 / 4;
+  overflow-y: auto;
+}
+
+.sidebar-button {
+  @apply hover:text-light-inverse-on-surface hover:bg-light-outline hover:dark:bg-light-on-surface;
+}
+
+.import {
+  grid-area: 12 / 1 / 12 / 4;
+  width: 100%;
+}
+
+/*.import-selected {*/
+/*  @apply bg-base-200;*/
+/*}*/
+
+.options-button {
+  @apply flex
+  border-t;
+}
+
+.selected {
+  @apply bg-light-outline
+  text-light-inverse-on-surface
+  dark:bg-light-on-surface;
+}
+
+.confirm-button {
+  @apply p-2
+  bg-light-on-surface-variant
+  text-light-surface
+  dark:bg-dark-on-surface
+  dark:text-dark-surface;
+}
+
+.cancel-button {
+  @apply p-2
+  rounded-r
+  bg-light-on-surface-variant
+  text-light-surface
+  dark:bg-dark-on-surface
+  dark:text-dark-surface;
+}
+
+.changed {
+  @apply bg-pink-500;
+}

@@ -1,0 +1,16 @@
+<!--Mobile View-->
+<dct-mobile-view [variables]="variables()" class="w-full md:hidden" />
+
+<dct-table
+  [categoriesInvalid]="categoriesInvalid()"
+  [crossTabValuesFetched]="crossTabValuesFetched()"
+  [groupChanged]="groupChanged()"
+  [groups]="groups()"
+  [isFetching]="isFetching()"
+  [openVariable]="openVariable()"
+  [selectedVariables]="selectedVariables()"
+  [variablesInCrossTab]="variablesInCrossTabSelection()"
+  [variables]="variablesSimplified()"
+  [weights]="weights()"
+  class="hidden md:flex flex-col w-full table"
+/>

@@ -1,17 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { fetchDataset } from './state/actions/dataset.actions';
-import { selectDatasetLoading } from './state/selectors/dataset.selectors';
-import { selectVariablesWithGroupsReference } from './state/selectors/var-groups.selectors';
-import { selectIsOptionsMenuOpen } from './state/selectors/open-variable.selectors';
-import { selectIsCrossTabOpen } from './state/selectors/cross-tabulation.selectors';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { TableComponent } from './components/table/table.component';
-import { ImportComponent } from './components/import/import.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { CrossTabulationComponent } from './components/cross-tabulation/cross-tabulation.component';
 import { HeaderComponent } from './components/header/header.component';
+import {
+  selectDatasetDownloadedSuccessfully,
+  selectDatasetDownloadPending
+} from './new.state/dataset/dataset.selectors';
+import { DataverseFetchActions } from './new.state/xml/xml.actions';
+import { BodyComponent } from './components/body/body.component';
 
 @Component({
   selector: 'dct-root',
@@ -20,22 +17,16 @@ import { HeaderComponent } from './components/header/header.component';
   standalone: true,
   imports: [
     HeaderComponent,
-    CrossTabulationComponent,
-    SidebarComponent,
-    ImportComponent,
-    TableComponent,
     AsyncPipe,
-    CommonModule
+    CommonModule,
+    BodyComponent
   ]
 })
 export class AppComponent implements OnInit {
   private store = inject(Store);
+  loading = this.store.selectSignal(selectDatasetDownloadPending);
+  loaded = this.store.selectSignal(selectDatasetDownloadedSuccessfully);
   private route = inject(ActivatedRoute);
-
-  loaded$ = this.store.select(selectDatasetLoading);
-  isCrossTabOpen$ = this.store.select(selectIsCrossTabOpen);
-  isOptionsMenuOpen$ = this.store.select(selectIsOptionsMenuOpen);
-  variablesWithGroups$ = this.store.select(selectVariablesWithGroupsReference);
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -44,11 +35,11 @@ export class AppComponent implements OnInit {
       const apiKey = params['key'] as string;
       if (siteURL && fileID) {
         return this.store.dispatch(
-          fetchDataset({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
+          DataverseFetchActions.startDDIFetch({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
         );
       }
       if (localStorage.getItem('theme')) {
-        let theme = localStorage.getItem('theme') as string;
+        const theme = localStorage.getItem('theme') as string;
         document.body.setAttribute('data-theme', theme);
       } else {
         const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');

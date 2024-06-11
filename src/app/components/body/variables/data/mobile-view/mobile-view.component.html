@@ -1,0 +1,24 @@
+@if ((variables() | keyvalue).length) {
+  <div class="p-5">{{ (variables() | keyvalue).length }} Variable{{ (variables() | keyvalue).length > 1 ? 's' : '' }}
+  </div>
+  @for (variable of variables() | keyvalue; track $index) {
+    <table class="table w-full border-y border-base-300">
+      <tr>
+        <td class="bg-base-200 text-base-content px-3 w-1/3">ID</td>
+        <td class="px-3 w-2/3">{{ variable.value['@_ID'] }}</td>
+      </tr>
+      <tr class="">
+        <td class="bg-base-200 text-base-content px-3 w-1/3">Name</td>
+        <td class="px-3 w-full">{{ variable.value['@_name'] }}</td>
+      </tr>
+      <tr>
+        <td class="bg-base-200 text-base-content px-3 w-1/3">Label</td>
+        <td class="px-3 w-full">{{ variable.value.labl['#text'] }}</td>
+      </tr>
+      <tr>
+        <td class="bg-base-200 text-base-content px-3 w-1/3">Weight</td>
+        <td class="px-3 w-full">{{ variable.value['@_wgt-var'] }}</td>
+      </tr>
+    </table>
+  }
+}

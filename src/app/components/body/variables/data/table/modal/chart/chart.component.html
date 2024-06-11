@@ -1,0 +1,55 @@
+<!-- CHART -->
+<div [ngClass]="{ 'blur': !hasCategories() }" class="flex h-full w-full mt-4">
+  <canvas id="variableChart"> {{ chartJS }}</canvas>
+</div>
+@if (hasCategories()) {
+  <!-- CHART DATA -->
+  <table class="table-fixed w-full mt-10">
+    <thead class="table-header">
+    <tr class="border-b">
+      <th>Mark Invalid</th>
+      <th>Values</th>
+      <th>Categories</th>
+      <th>Count</th>
+      <th>Count (%)</th>
+      <th>Weighted Count</th>
+      <th>Weighted (%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (item of chartTable() | keyvalue; track $index) {
+      <tr class="border-y">
+        <td class="w-full justify-between">
+          <input
+            class="mx-auto"
+            type="checkbox"
+            name="mark-invalid"
+            id="{{ $index }}"
+            [checked]="item.value.invalid"
+            (change)="toggleCheckbox(item.key)"
+          />
+        </td>
+        <td>{{ item.key }}</td>
+        <td>{{ item.value.category }}</td>
+        <td>{{ item.value.count }}</td>
+        <td>{{ item.value.countPercent  | number : '1.2-2' }}</td>
+        <td>{{ item.value.weightedCount | number : '1.2-2' }}</td>
+        <td>{{ item.value.weightedCountPercent | number : '1.2-2' }}</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+} @else {
+  <div class="h-44 absolute z-20 top-96 mx-auto text-xl">This Variable Has No Categories</div>
+}
+
+<h3 class="font-bold text-xl mt-10">Summary Statistics</h3>
+<dct-summary-statistics
+  [summaryStats]="sumStat()"
+/>
+
+<h3 class="font-bold text-xl mt-5">Variable Information</h3>
+@if (form()) {
+  <dct-variable-information class="mb-10"
+                            [form]="form()" />
+}

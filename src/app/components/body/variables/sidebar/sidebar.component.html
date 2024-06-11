@@ -1,0 +1,66 @@
+<nav class="nav md:grid">
+  <!--  Mobile Menu-->
+  <details class="dropdown w-full border-t p-3 md:hidden">
+    <summary class="btn w-full justify-between ">
+      <span>
+      {{ selectedGroupLabel() }}
+      </span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </summary>
+    <ul
+      class="p-2 w-[98%] items-center overflow-y-scroll shadow menu dropdown-content z-[1] bg-base-100 rounded-box">
+      <li (click)="changeGroup('ALL')" class="w-full btn"><a>All Variables</a></li>
+      @for (item of (simplifiedGroups() | keyvalue); track $index) {
+        <li class="w-full text-"
+            (click)="changeGroup(item.key)"><a>{{ item.value }}</a></li>
+      }
+    </ul>
+  </details>
+
+  <!--  Web Sidebar-->
+  <div class="hidden nav md:grid">
+    <dct-group-button class="group-add" />
+    <div class="all-groups">
+      <dct-sidebar-button
+        (changeSelectedGroupID)="changeGroup($event)"
+        [selected]="selectedGroupID() === 'ALL'"
+        groupID="ALL"
+        label="All Variables"
+      />
+      @for (group of (simplifiedGroups() | keyvalue); track $index) {
+        <dct-sidebar-button
+          [groupID]="group.key"
+          [label]="group.value"
+          [selected]="group.key === selectedGroupID()"
+          (changeSelectedGroupID)="changeGroup($event)"
+          (emitDeleteGroup)="deleteGroup($event)"
+          (emitRenameGroup)="renameGroup($event)"
+        />
+      }
+    </div>
+    
+  </div>
+  <button (click)="toggleImportComponentState()" [ngClass]="{'bg-base-200': importButtonSelected()}"
+            class="flex justify-between w-full px-5 py-5 items-center hover:bg-base-200 border-t rounded-none import max-h-16">
+      <span [ngClass]="{'font-bold': importButtonSelected()}" class="metadata-lbl">
+      Import Metadata
+      </span>
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+</nav>

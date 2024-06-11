@@ -1,0 +1,48 @@
+<table class="mx-auto w-full mb-10">
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Literal Question</th>
+    <td class="border-b p-2 text-right">{{ form().literalQuestion || '' }}</td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Interviewer Instructions</th>
+    <td class="border-b p-2 text-right">
+      {{ form().interviewQuestion || '' }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Post Questions</th>
+    <td class="border-b p-2 text-right">
+      {{ form().postQuestion || '' }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Universe</th>
+    <td class="border-b p-2 text-right">
+      {{ form().universe || '' }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Notes</th>
+    <td class="border-b p-2 text-right">
+      {{ form().notes || '' }}
+    </td>
+  </tr>
+  <!--  <tr class="table-row border-b">-->
+  <!--    <th class="text-left font-medium">Groups</th>-->
+  <!--    <td class="border-b p-2 text-right">-->
+  <!--      @for (group of $groups() | keyvalue; track group.key) {-->
+  <!--        <span> {{ group.value }}, </span>-->
+  <!--      }-->
+  <!--    </td>-->
+  <!--  </tr>-->
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Weight Variable</th>
+    <td class="border-b p-2 text-right">
+      {{ form().assignedWeight }}
+    </td>
+  </tr>
+  <tr class="table-row border-b">
+    <th class="text-left font-medium">Is Weight</th>
+    <td class="border-b p-2 capitalize text-right">{{ form().isWeight }}</td>
+  </tr>
+</table>

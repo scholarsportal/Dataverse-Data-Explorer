@@ -1,0 +1,16 @@
+.sidebar {
+  max-height: 100%;
+  grid-area: 1 / 1 / 5 / 4;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+}
+.data {
+  grid-area: 1 / 4 / 5 / 13;
+  max-height: 100%;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+}
+.cross-tab {
+  grid-area: 1 / 1 / 5 / 13;
+  min-height: 100%;
+}

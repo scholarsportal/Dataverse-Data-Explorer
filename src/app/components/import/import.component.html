@@ -1,79 +1,79 @@
 <h2 class="import-heading w-full px-5 pt-10">Import XML</h2>
 <div class="import-options flex flex-col px-5">
   <p class="w-full mb-5">Select DDI Sections and Texts to include:</p>
-  <label for="variable-groups" class="input-label">
+  <label class="input-label" for="variable-groups">
     <input
-      type="checkbox"
-      name="variable-groups"
-      id="variable-groups"
       [(ngModel)]="variableGroups"
+      id="variable-groups"
+      name="variable-groups"
+      type="checkbox"
     />
     Variable Groups
   </label>
-  <label for="labels" class="input-label">
-    <input type="checkbox" name="labels" id="labels" [(ngModel)]="labels" />
+  <label class="input-label" for="labels">
+    <input [(ngModel)]="labels" id="labels" name="labels" type="checkbox" />
     Labels
   </label>
-  <label for="question-texts" class="input-label">
+  <label class="input-label" for="question-texts">
     <input
-      type="checkbox"
-      name="question-texts"
-      id="question-texts"
-      [indeterminate]="questionTextIndeterminate() && !questionTextSelection()"
       (change)="onQuestionTextSelect()"
+      [indeterminate]="questionTextIndeterminate() && !questionTextSelection()"
       [ngModel]="questionTextSelection()"
+      id="question-texts"
+      name="question-texts"
+      type="checkbox"
     />
     Question Texts
   </label>
   <div class="flex flex-col px-5">
-    <label for="literal-question" class="input-label">
+    <label class="input-label" for="literal-question">
       <input
-        type="checkbox"
-        name="literal-question"
-        id="literal-question"
         [(ngModel)]="literalQuestion"
+        id="literal-question"
+        name="literal-question"
+        type="checkbox"
       />
       Literal Question
     </label>
-    <label for="interviewer-question" class="input-label">
+    <label class="input-label" for="interviewer-question">
       <input
-        type="checkbox"
-        name="interviewer-question"
-        id="interviewer-question"
         [(ngModel)]="interviewerQuestion"
+        id="interviewer-question"
+        name="interviewer-question"
+        type="checkbox"
       />
       Interviewer Question
     </label>
-    <label for="postQText" class="input-label">
+    <label class="input-label" for="postQText">
       <input
-        type="checkbox"
-        name="postQText"
-        id="postQText"
         [(ngModel)]="postQuestion"
+        id="postQText"
+        name="postQText"
+        type="checkbox"
       />
       Post Question
     </label>
   </div>
-  <label for="universe" class="input-label">
+  <label class="input-label" for="universe">
     <input
-      type="checkbox"
-      name="universe"
-      id="universe"
       [(ngModel)]="universe"
+      id="universe"
+      name="universe"
+      type="checkbox"
     />
     Universe
   </label>
-  <label for="variable-notes" class="input-label">
+  <label class="input-label" for="variable-notes">
     <input
-      type="checkbox"
-      name="variable-notes"
-      id="variable-notes"
       [(ngModel)]="variableNotes"
+      id="variable-notes"
+      name="variable-notes"
+      type="checkbox"
     />
     Variable Notes
   </label>
-  <label for="weights" class="input-label">
-    <input type="checkbox" name="weights" id="weights" [(ngModel)]="weights" />
+  <label class="input-label" for="weights">
+    <input [(ngModel)]="weights" id="weights" name="weights" type="checkbox" />
     Weights
   </label>
   @if (file) {
@@ -84,7 +84,7 @@
       (fileSelected)="onFileSelected($event)"
     ></dct-file-upload-button>
   }
-  @if (importNotStarted$ | async) {
+  @if (importNotStarted()) {
     <button
       [disabled]="!file"
       (click)="onImportButtonClick()"
@@ -96,7 +96,7 @@
         Import
       }
     </button>
-  } @else if (importInProgress$ | async) {
+  } @else if (importInProgress()) {
     <button
       disabled
       type="button"
@@ -121,7 +121,7 @@
       </svg>
       Importing...
     </button>
-  } @else if (importSucceeded$ | async) {
+  } @else if (importSucceeded()) {
     <span>Imported Metadata Successfully</span>
   }
 </div>

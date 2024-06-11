@@ -1,0 +1,112 @@
+<dct-table-nav
+  (emitItemsPerPageChange)="setItemsPerPage($event)"
+  (emitSearchResultList)="setSearchResultList($event)"
+  (pageNextClick)="next()"
+  (pagePreviousClick)="prev()"
+  [currentPage]="currentPage"
+  [groupChanged]="groupChanged()"
+  [isFirstPage]="isFirstPage()"
+  [isLastPage]="isLastPage()"
+  [itemsPerPage]="itemsPerPage()"
+  [total]="variablesLength()"
+  [variablesList]="variables()"
+  class="flex flex-row w-full justify-between px-5"
+/>
+
+<p-table
+  [first]="currentPage"
+  [paginator]="true"
+  [rows]="itemsPerPage()"
+  [scrollable]="true"
+  [value]="searchResultVariables()"
+  class="w-full pl-5 overflow-y-auto"
+  paginatorStyleClass="hidden"
+  scrollHeight="flex"
+>
+  <ng-template pTemplate="header">
+    <tr class="bg-base-100 border-b-2 z-20">
+      <th>
+        <label>
+          <span class="sr-only">Select All Variable</span>
+          <input
+            (change)="toggleAll()"
+            [checked]="allVariablesSelected()"
+            class="h-3.5 w-3.5"
+            id="ALL"
+            type="checkbox"
+          />
+        </label>
+      </th>
+      <th pSortableColumn="variableID">ID</th>
+      <th pSortableColumn="name">Name</th>
+      <th pSortableColumn="label">Label</th>
+      <th pSortableColumn="weight">Weight</th>
+      <th>
+        <span class="invisible">Options</span>
+        <dct-bulk-edit-modal
+          [selectedVariables]="selectedVariables()"
+          ngClass="{{
+            selectedVariables().length > 1 ? 'visible' : 'invisible'
+          }}"
+        />
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template let-variable pTemplate="body">
+    <tr
+      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300 cursor-pointer"
+    >
+      <td>
+        <label>
+          <span class="sr-only">{{ variable.name }}</span>
+          <input
+            (change)="setSelected(variable.variableID)"
+            [checked]="variable.selected"
+            [id]="variable.variableID"
+            class="h-3.5 w-3.5"
+            type="checkbox"
+          />
+        </label>
+      </td>
+      <td>{{ variable.variableID }}</td>
+      <td>{{ variable.name }}</td>
+      <td>{{ variable.label }}</td>
+      <td>
+        @if (variable.weight.length) {
+          <span>{{ variable.weight }}</span>
+        } @else if (variable.isWeight) {
+          <span class="rounded px-2 bg-success text-success-content"
+          >Weight</span
+          >
+        } @else {
+          <span class="rounded px-2 border">No Weight</span>
+        }
+      </td>
+      <td class="invisible group-hover:visible flex flex-row">
+        <div class="mt-0.5">
+          <dct-variable-options-button
+            (emitLaunchModal)="launchModal($event)"
+            [crossTabValuesFetched]="crossTabValuesFetched()"
+            [isFetching]="isFetching()"
+            [variableID]="variable.variableID"
+            [variablesInCrossTab]="variablesInCrossTab()"
+            class="flex flex-row"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+@if (selectedVariables().length > 1) {
+  <dct-table-menu
+    [allGroups]="groups()"
+    [groupID]="groupChanged()"
+    [selectedVariables]="selectedVariables()"
+    [weights]="weights()"
+    class="hidden md:flex table-menu z-20 border-t bg-base-100 max-h-16"
+  />
+}
+<dct-modal
+  [nextVar]="openVariableData().next"
+  [previousVar]="openVariableData().previous"
+/>
