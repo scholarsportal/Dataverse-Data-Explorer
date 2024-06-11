@@ -32,6 +32,7 @@ export class DataComponent {
       orientation: '' | 'rows' | 'cols';
     }[]
   >();
+  isFetching = input.required<boolean>();
   crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
   weights = input.required<{ [weightID: string]: string }>();
   variablesSimplified = computed(() => {

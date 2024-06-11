@@ -5,7 +5,7 @@ import { DatasetActions } from '../dataset/dataset.actions';
 import { XmlManipulationActions } from '../xml/xml.actions';
 
 export const initialState: UIState = {
-  bodyToggle: 'cross-tab',
+  bodyToggle: 'variables',
   bodyState: {
     variables: {
       groupSelectedID: 'ALL',

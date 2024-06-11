@@ -3,7 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   selectDatasetProcessedVariables,
   selectDatasetVariableGroups,
-  selectDatasetVariables,
+  selectDatasetVariables
 } from '../xml/xml.selectors';
 import { Variable } from '../xml/xml.interface';
 
@@ -12,7 +12,7 @@ export const selectDatasetFeature =
 
 export const selectDatasetDownloadPending = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.download === 'pending',
+  (state) => state.operationStatus.download === 'pending'
 );
 
 export const selectDatasetDownloadedSuccessfully = createSelector(
@@ -25,32 +25,32 @@ export const selectDatasetDownloadedSuccessfully = createSelector(
       variables?.length &&
       groups?.length
     );
-  },
+  }
 );
 
 export const selectDatasetUploadedSuccessfully = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.upload === 'success',
+  (state) => state.operationStatus.upload === 'success'
 );
 
 export const selectDatasetUploadError = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.upload === 'error',
+  (state) => state.operationStatus.upload === 'error'
 );
 
 export const selectDatasetImportIdle = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.import === 'idle',
+  (state) => state.operationStatus.import === 'idle'
 );
 
 export const selectDatasetImportPending = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.import === 'pending',
+  (state) => state.operationStatus.import === 'pending'
 );
 
 export const selectDatasetImportSuccess = createSelector(
   selectDatasetFeature,
-  (state) => state.operationStatus.import === 'success',
+  (state) => state.operationStatus.import === 'success'
 );
 
 export const selectDatasetWeights = createSelector(
@@ -68,14 +68,19 @@ export const selectDatasetWeights = createSelector(
     }
 
     return weights;
-  },
+  }
 );
 
 export const selectDatasetVariableCrossTabValues = createSelector(
   selectDatasetFeature,
   (state) => {
     return state.crossTabulation;
-  },
+  }
+);
+
+export const selectVariableCrossTabIsFetching = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.variableDownload === 'pending'
 );
 
 export const selectDatasetAllVariableCategories = createSelector(
@@ -91,11 +96,11 @@ export const selectDatasetAllVariableCategories = createSelector(
         variable.catgry.map((cat) => {
           categories[variable['@_ID']] = {
             ...categories[variable['@_ID']],
-            [cat.catValu]: cat.labl?.['#text'] ? cat.labl['#text'] : '',
+            [cat.catValu]: cat.labl?.['#text'] ? cat.labl['#text'] : ''
           };
         });
       }
     });
     return categories;
-  },
+  }
 );

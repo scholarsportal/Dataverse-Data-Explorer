@@ -76,7 +76,7 @@
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
           <span class="rounded px-2 bg-success text-success-content"
-            >Weight</span
+          >Weight</span
           >
         } @else {
           <span class="rounded px-2 border">No Weight</span>
@@ -87,6 +87,7 @@
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
             [crossTabValuesFetched]="crossTabValuesFetched()"
+            [isFetching]="isFetching()"
             [variableID]="variable.variableID"
             [variablesInCrossTab]="variablesInCrossTab()"
             class="flex flex-row"

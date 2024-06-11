@@ -42,24 +42,24 @@
         </ng-template>
       </p-dropdown>
     </div>
-    <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row">
-      <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
-                      styleClass="bg-base-200 rounded mt-3 px-2 py-2">
-        <ng-template let-item pTemplate>
-          <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"
-                class="px-1.5 py-0.5 rounded">{{ item }}</span>
-        </ng-template>
-      </p-selectButton>
-      <button
-        (click)="exportTable()"
-        class="text-primary mx-2.5 mb-2.5 mt-3 hover:underline"
-      >
-        <span>Export Table As .csv</span>
-      </button>
-    </div>
+    <!--    <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row">-->
+    <!--      <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"-->
+    <!--                      styleClass="bg-base-200 rounded mt-3 px-2 py-2">-->
+    <!--        <ng-template let-item pTemplate>-->
+    <!--          <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"-->
+    <!--                class="px-1.5 py-0.5 rounded">{{ item }}</span>-->
+    <!--        </ng-template>-->
+    <!--      </p-selectButton>-->
+    <!--      <button-->
+    <!--        (click)="exportTable()"-->
+    <!--        class="text-primary mx-2.5 mb-2.5 mt-3 hover:underline"-->
+    <!--      >-->
+    <!--        <span>Export Table As .csv</span>-->
+    <!--      </button>-->
+    <!--    </div>-->
   </div>
 
-  @if (hasData()) {
+  @if (hasData() && hasRowOrColumn()) {
     @if (defaultDataView() === 'Table') {
       <dct-cross-table
         [cols]="cols()"
@@ -89,7 +89,11 @@
 
     <div class="w-full text-3xl font-medium relative bottom-96">
       <h3 class="text-center mx-auto">
-        No Data! Start adding variables to generate your table
+        @if (hasData() && !hasRowOrColumn()) {
+          One more step. Set your rows and/or columns.
+        } @else {
+          No Data! Start adding variables to generate your table
+        }
       </h3>
     </div>
   }

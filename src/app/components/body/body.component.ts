@@ -15,7 +15,11 @@ import { SidebarComponent } from './variables/sidebar/sidebar.component';
 import { DataComponent } from './variables/data/data.component';
 import { CrossTabulationComponent } from './cross-tabulation/cross-tabulation.component';
 import { ImportComponent } from '../import/import.component';
-import { selectDatasetVariableCrossTabValues, selectDatasetWeights } from '../../new.state/dataset/dataset.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectDatasetWeights,
+  selectVariableCrossTabIsFetching
+} from '../../new.state/dataset/dataset.selectors';
 import { TableComponent } from './variables/data/table/table.component';
 
 @Component({
@@ -39,6 +43,7 @@ export class BodyComponent {
   crossTabValuesFetched = this.store.selectSignal(
     selectDatasetVariableCrossTabValues
   );
+  crossTabIsFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   crossTabulationTabOpen = computed(() => {
     return this.bodyToggleState() === 'cross-tab';

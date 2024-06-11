@@ -5,6 +5,7 @@
   } @else if (importComponentState() === 'close') {
     <dct-data
       class="data md:grid"
+      [isFetching]="crossTabIsFetching()"
       [variables]="filteredByGroupID()"
       [variablesInCrossTabSelection]="variablesInCrossTab()"
       [crossTabValuesFetched]="crossTabValuesFetched()"
