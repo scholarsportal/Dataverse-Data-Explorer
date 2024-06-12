@@ -11,10 +11,17 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
   template: `
     @if (!variablesComputed().includes(variableID())) {
       <button
+        [disabled]="isFetching()"
         (click)="addToCrossTab()"
-        class="rounded bg-primary text-primary-content px-2 py-1.5 mx-2 my-auto flex flex-row"
+        class="rounded bg-primary text-primary-content px-2 py-1.5 mx-2 my-auto flex flex-row disabled:bg-opacity-75"
       >
-        <span class="hidden xl:flex">Add to Cross Tabulation</span>
+        <span class="hidden xl:flex">
+          @if (isFetching()) {
+            Loading data. Please Wait.
+          } @else {
+            Add to Cross Tabulation
+          }
+        </span>
         <span class="flex xl:hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,12 +79,13 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
         />
       </svg>
     </button>
-  `,
+  `
 })
 export class VariableOptionsButtonComponent {
   store = inject(Store);
   variableID = input.required<string>();
   crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
+  isFetching = input.required<boolean>();
   variablesInCrossTab =
     input.required<
       { variableID: string; orientation: 'rows' | 'cols' | '' }[]
@@ -104,14 +112,14 @@ export class VariableOptionsButtonComponent {
       this.store.dispatch(
         CrossTabulationUIActions.addToSelection({
           variableID: this.variableID(),
-          orientation: '',
-        }),
+          orientation: ''
+        })
       );
     } else {
       this.store.dispatch(
         CrossTabulationUIActions.fetchCrossTabAndAddToSelection({
-          variableID: this.variableID(),
-        }),
+          variableID: this.variableID()
+        })
       );
     }
   }
@@ -119,8 +127,8 @@ export class VariableOptionsButtonComponent {
   removeFromCrossTab() {
     this.store.dispatch(
       CrossTabulationUIActions.removeVariableUsingVariableID({
-        variableID: this.variableID(),
-      }),
+        variableID: this.variableID()
+      })
     );
   }
 }

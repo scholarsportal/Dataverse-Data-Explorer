@@ -35,6 +35,12 @@ module.exports = function(config) {
     },
     reporters: ['progress', 'kjhtml'],
     browsers: ['Chrome', 'Firefox'],
+    customLaunchers: {
+      ChromeHeadlessCustom: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
     restartOnFileChange: true
   });
 };

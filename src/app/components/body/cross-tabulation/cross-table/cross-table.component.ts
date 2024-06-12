@@ -1,6 +1,5 @@
 import { Component, computed, effect, ElementRef, inject, input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { utils, writeFile } from 'xlsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const jQuery: any; // Declare jQuery
@@ -31,16 +30,6 @@ export class CrossTableComponent {
       return '[&_table]:w-full  ';
     } else {
       return 'blur ';
-    }
-  });
-  exportTable = computed(() => {
-    if (this.exportClicked()) {
-      const element = this.outputElement?.nativeElement as HTMLTableElement;
-      const workbook = utils.table_to_book(element);
-      writeFile(workbook, 'data.xlsx');
-      return null;
-    } else {
-      return null;
     }
   });
 

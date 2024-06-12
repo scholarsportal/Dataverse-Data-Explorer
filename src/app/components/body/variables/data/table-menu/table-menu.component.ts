@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
@@ -8,6 +8,7 @@ import { ChipModule } from 'primeng/chip';
 import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/multiselect-dropdown.component';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
+import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -26,20 +27,12 @@ export class TableMenuComponent {
   selectedVariables = input.required<string[]>();
   groupID = input.required<string>();
   selectedWeight: string = '';
-  variableGroupsPlaceholder: string[] = [];
+  selectedGroups: string[] = [];
   weights = input.required<{ [weightID: string]: string }>();
   allGroups = input.required<{ [id: string]: VariableGroup }>();
-  allGroupsComputed = computed(() => {
-    const values: { [id: string]: string } = {};
-    Object.values(this.allGroups()).map((variableGroup) => {
-      values[variableGroup['@_ID']] = variableGroup.labl;
-    });
-    return values;
-  });
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
   });
-  selectedGroups = signal<string[]>([]);
 
   constructor() {
     effect(() => {
@@ -48,7 +41,10 @@ export class TableMenuComponent {
   }
 
   onRemoveFromGroup(groupID: string) {
-    // this.store.dispatch(XmlManipulationActions.)
+    this.store.dispatch(XmlManipulationActions.removeVariablesFromGroup({
+      groupID,
+      variableIDs: this.selectedVariables()
+    }));
   }
 
   onSelectedWeightChange(weight: any) {
@@ -59,52 +55,15 @@ export class TableMenuComponent {
 
   changeGroup(change: MultiSelectChangeEvent) {
     if (change.value) {
-      this.variableGroupsPlaceholder = change.value;
+      this.selectedGroups = change.value;
     }
   }
 
-  logIT(trhing: any) {
-    console.log(trhing);
-  }
-
-  onGroupChange(groups: string[]) {
-    this.selectedGroups.set(groups);
-  }
-
   onApplyChanges() {
-    /*    if (this.selectedVariables.length) {
-          const groups: VariableGroup[] = JSON.parse(
-            JSON.stringify(this.selectedGroups)
-          );
-          const newGroups: { [id: string]: VariableGroup } = {};
-          const variables: Variable[] = JSON.parse(
-            JSON.stringify(this.selectedVariables)
-          );
-          const newVariables: { [id: string]: Variable } = {};
-          const variableIDs: string[] = [];
-          variables.map((variable) => {
-            if (!(variable['@_wgt'] === 'wgt')) {
-              variable['@_wgt-var'] = this.selectedWeight;
-              variableIDs.push(variable['@_ID']);
-            }
-            newVariables[variable['@_ID']] = variable;
-          });
-          groups.map((variableGroup) => {
-            const variablesInGroup: string[] = variableGroup['@_var'].split(' ');
-            variables.map((variable): void => {
-              if (!variablesInGroup.includes(variable['@_ID'])) {
-                variablesInGroup.push(variable['@_ID']);
-              }
-            });
-            variableGroup['@_var'] = variablesInGroup.join(' ');
-            newGroups[variableGroup['@_ID']] = variableGroup;
-          });
-          this.store.dispatch(
-            bulkChangeGroupsAndWeight({
-              groups: newGroups,
-              variables: newVariables
-            })
-          );
-        }*/
+    this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
+      variableIDs: this.selectedVariables(),
+      assignedWeight: this.selectedWeight,
+      groups: this.selectedGroups
+    }));
   }
 }

@@ -8,7 +8,6 @@
 
 # Node
 /node_modules
-!/node_modules/fast-xml-parser/src/fxp.d.ts
 npm-debug.log
 yarn-error.log
 

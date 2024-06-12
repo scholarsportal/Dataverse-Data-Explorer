@@ -1,14 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import {
-  Variable,
-  VariableGroup,
-  VariablesSimplified,
-} from 'src/app/new.state/xml/xml.interface';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Variable, VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
 import { MobileViewComponent } from './mobile-view/mobile-view.component';
 import { TableNavComponent } from './table-nav/table-nav.component';
@@ -23,11 +14,11 @@ import { TableComponent } from './table/table.component';
     MobileViewComponent,
     TableComponent,
     TableNavComponent,
-    TableMenuComponent,
+    TableMenuComponent
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
@@ -41,20 +32,23 @@ export class DataComponent {
       orientation: '' | 'rows' | 'cols';
     }[]
   >();
+  isFetching = input.required<boolean>();
   crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
   weights = input.required<{ [weightID: string]: string }>();
   variablesSimplified = computed(() => {
     const simplified: VariablesSimplified[] = [];
     Object.values(this.variables()).forEach((value) => {
-      const newObj = {
-        variableID: value['@_ID'],
-        name: value['@_name'],
-        label: value.labl['#text'] || '',
-        weight: value['@_wgt-var'] || '',
-        isWeight: !!value['@_wgt'],
-        selected: this.selectedVariables().includes(value['@_ID']),
-      };
-      simplified.push(newObj);
+      if (value?.['@_ID']) {
+        const newObj = {
+          variableID: value['@_ID'],
+          name: value['@_name'],
+          label: value.labl['#text'] || '',
+          weight: value['@_wgt-var'] || '',
+          isWeight: !!value['@_wgt'],
+          selected: this.selectedVariables().includes(value['@_ID'])
+        };
+        simplified.push(newObj);
+      }
     });
     return simplified;
   });

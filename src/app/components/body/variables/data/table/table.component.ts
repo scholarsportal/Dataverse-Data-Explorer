@@ -1,18 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { VariablesSimplified, VariableGroup } from 'src/app/new.state/xml/xml.interface';
+import { VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
@@ -37,8 +28,8 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
     TableMenuComponent,
     ModalComponent,
     NgClass,
-    ChipsModule,
-  ],
+    ChipsModule
+  ]
 })
 export class TableComponent {
   store = inject(Store);
@@ -53,6 +44,7 @@ export class TableComponent {
     input.required<
       { variableID: string; orientation: 'rows' | 'cols' | '' }[]
     >();
+  isFetching = input.required<boolean>();
   crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
   openVariableData = computed(() => {
     let next = '';
@@ -86,6 +78,14 @@ export class TableComponent {
   currentPage = 0;
   itemsPerPage = signal(10);
 
+  constructor() {
+    effect(() => {
+      if (this.groupChanged()) {
+        this.start();
+      }
+    });
+  }
+
   isFirstPage = () => {
     return this.currentPage === 0;
   };
@@ -96,21 +96,13 @@ export class TableComponent {
     );
   };
 
-  constructor() {
-    effect(() => {
-      if (this.groupChanged()) {
-        this.start();
-      }
-    });
-  }
-
   toggleAll() {
     if (this.selectedVariables().length > 4) {
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: [],
-        }),
+          variableIDs: []
+        })
       );
     } else {
       const values: string[] = [];
@@ -120,8 +112,8 @@ export class TableComponent {
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: values,
-        }),
+          variableIDs: values
+        })
       );
     }
   }
@@ -153,21 +145,21 @@ export class TableComponent {
   setSelected(selection: string) {
     if (this.selectedVariables().includes(selection)) {
       const totalSelection = this.selectedVariables().filter(
-        (variableID) => variableID !== selection,
+        (variableID) => variableID !== selection
       );
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: totalSelection,
-        }),
+          variableIDs: totalSelection
+        })
       );
     } else {
       const totalSelection = [selection, ...this.selectedVariables()];
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: totalSelection,
-        }),
+          variableIDs: totalSelection
+        })
       );
     }
   }

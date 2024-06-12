@@ -2,11 +2,13 @@ import { ddiJSONStructure } from '../../old.state/interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions } from '../xml/xml.actions';
 import { DatasetActions } from './dataset.actions';
+import { CrossTabulationUIActions } from '../ui/ui.actions';
 
 export interface DatasetState {
   operationStatus: {
     download: 'idle' | 'pending' | 'error' | 'success';
     upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled';
+    variableDownload: 'idle' | 'pending' | 'error' | 'success';
     import: 'idle' | 'pending' | 'error' | 'success';
   };
   variables: {
@@ -22,6 +24,7 @@ const initialState: DatasetState = {
   operationStatus: {
     download: 'idle',
     upload: 'idle',
+    variableDownload: 'idle',
     import: 'idle'
   },
   variables: {
@@ -64,6 +67,33 @@ export const datasetReducer = createReducer(
       crossTabulation: {
         ...state.crossTabulation,
         [variableID]: data
+      }
+    };
+  }),
+  on(CrossTabulationUIActions.fetchCrossTabAndAddToSelection, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        variableDownload: 'pending' as const
+      }
+    };
+  }),
+  on(CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        variableDownload: 'pending' as const
+      }
+    };
+  }),
+  on(DatasetActions.updateCrossTabValues, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        variableDownload: 'success' as const
       }
     };
   })

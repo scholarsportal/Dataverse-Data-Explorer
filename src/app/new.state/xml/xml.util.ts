@@ -117,20 +117,12 @@ export function changeGroupsForMultipleVariables(
   newGroups: string[]
 ) {
   const updatedGroupArray: VariableGroup[] = [];
-  // This algorithm is n^2. We need to try to improve it.
-  structuredClone(variableGroups).forEach((variableGroup) => {
-    variableIDs.map((variableID) => {
-      const variablesInCurrentGroup = variableGroup['@_var']?.split(' ') || [];
-      if (variablesInCurrentGroup.includes(variableID) && !newGroups.includes(variableGroup['@_ID'])) {
-        const index = variablesInCurrentGroup.indexOf(variableID);
-        if (index > -1) {
-          variablesInCurrentGroup.splice(index, 1);
-        }
-      }
-      if (!variablesInCurrentGroup.includes(variableID) && newGroups.includes(variableGroup['@_ID'])) {
-        variablesInCurrentGroup.push(variableID);
-      }
-    });
+  (variableGroups).forEach((variableGroup) => {
+    if (newGroups.includes(variableGroup['@_ID'])) {
+      const variablesAsArray = !!variableGroup['@_var']?.length ? variableGroup['@_var']?.split(' ') || [] : [];
+      variablesAsArray.push(...variableIDs);
+      variableGroup['@_var'] = variablesAsArray.join(' ');
+    }
     updatedGroupArray.push(variableGroup);
   });
   return updatedGroupArray;
