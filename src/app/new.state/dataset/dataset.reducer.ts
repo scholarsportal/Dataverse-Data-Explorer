@@ -96,5 +96,22 @@ export const datasetReducer = createReducer(
         variableDownload: 'success' as const
       }
     };
+  }),
+  on(DataverseFetchActions.startDatasetUpload, (state) => ({
+    ...state,
+    operationStatus: {
+      ...state.operationStatus,
+      upload: 'pending' as const
+    }
+  })),
+  on(DataverseFetchActions.datasetUploadSuccess, (state, data) => {
+    console.log(data);
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        upload: 'success' as const
+      }
+    };
   })
 );
