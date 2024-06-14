@@ -17,13 +17,14 @@ import { CrossTabulationUIActions, VariableTabUIAction } from '../../new.state/u
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'dct-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage, SplitButtonModule, MenuModule],
+  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage, SplitButtonModule, MenuModule, ButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
@@ -47,27 +48,22 @@ export class HeaderComponent implements OnInit {
     return this.datasetInfo()?.fileID || '';
   });
 
-  styleClass = signal('hover:bg-base-300 focus:bg-base-300 py-4 px-5');
   downloadOptions = signal<MenuItem[]>([
     {
       label: 'Download original file',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
-      styleClass: this.styleClass()
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`
     },
     {
       label: 'Download tab-delimited',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
-      styleClass: this.styleClass()
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`
     },
     {
       label: 'Download RData format file',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
-      styleClass: this.styleClass()
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`
     },
     {
       label: 'Download original DDI',
-      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
-      styleClass: this.styleClass()
+      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`
     }
   ]);
 
@@ -118,4 +114,5 @@ export class HeaderComponent implements OnInit {
       this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
     }
   }
+  
 }

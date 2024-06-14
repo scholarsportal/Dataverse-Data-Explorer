@@ -104,10 +104,13 @@
 .p-multiselect-item {
   padding: 0.5rem 1rem;
 }
-.p-menuitem-text {
-  @apply leading-normal;
+.p-menuitem-link {
+  @apply leading-normal p-5 hover:bg-base-300 focus:bg-base-300;
 }
 .p-multiselect-item:hover, .p-multiselect-item:focus {
+  @apply bg-base-300
+}
+.p-focus {
   @apply bg-base-300
 }
 .p-checkbox {

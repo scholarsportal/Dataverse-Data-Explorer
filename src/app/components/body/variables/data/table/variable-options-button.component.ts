@@ -9,7 +9,6 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
   standalone: true,
   imports: [CommonModule, ModalComponent],
   template: `
-
     <div class="tooltip tooltip-left tooltip-primary" data-tip="View variable">
       <button (click)="launchView()" class="p-2 btn-action">
       <svg
