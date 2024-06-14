@@ -49,8 +49,8 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 
     @if (!variablesComputed().includes(variableID())) {
       @if (isFetching()) {
-        <div class="tooltip tooltip-open tooltip-primary tooltip-left mt-1 mx-2" data-tip="Loading data. Please wait.">
-          <span class="loading loading-spinner loading-sm"></span>
+        <div class="tooltip tooltip-primary tooltip-left mx-2" data-tip="Loading data. Please wait.">
+          <span class="loading loading-spinner loading-sm mt-2"></span>
         </div>
       } @else {
         <div class="tooltip tooltip-left tooltip-primary" data-tip="Add to cross tabulation">
@@ -65,7 +65,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
         </div>
       }
     } @else {
-      <div class="tooltip tooltip-left" data-tip="Remove From Cross Tabulation">
+      <div class="tooltip tooltip-primary tooltip-left" data-tip="Remove From Cross Tabulation">
         <button
           (click)="removeFromCrossTab()"
           class="visible p-2 btn-action"

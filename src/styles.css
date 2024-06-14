@@ -89,7 +89,6 @@
   .table :where(thead, tfoot) {
     @apply text-base-content;
   }
-
   
 }
 
@@ -97,13 +96,16 @@
 }
 
 .select {
-  @apply border border-slate-300 rounded;
+  @apply border-slate-300 rounded;
 }
 .p-multiselect-items-wrapper {
   @apply bg-base-100 rounded border border-slate-300;
 }
 .p-multiselect-item {
   padding: 0.5rem 1rem;
+}
+.p-menuitem-text {
+  @apply leading-normal;
 }
 .p-multiselect-item:hover, .p-multiselect-item:focus {
   @apply bg-base-300
@@ -115,7 +117,7 @@
   padding-top: .3rem;
 }
 .dropdownicon {
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: calc(100% - 20px) calc(1px + 50%), calc(100% - 16.1px) calc(1px + 50%);
   background-size: 4px 4px, 4px 4px;

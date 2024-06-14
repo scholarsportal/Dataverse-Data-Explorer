@@ -50,7 +50,7 @@
           <div class="flex flex-row">
             <label>
               <span class="sr-only">Language Selection</span>
-              <select class="select select-ghost ml-1">
+              <select class="border-0 select select-ghost ml-1">
                 <option>French</option>
                 <option>English</option>
                 <option>Portuguese</option>
@@ -85,11 +85,11 @@
       <div class="flex flex-row md:px-5 pb-4 md:order-last">
         <button
           (click)="menu.toggle($event)"
-          class="flex flex-row btn btn-secondary"
+          class="flex flex-row border-0 btn btn-secondary dropdownicon"
           pButton
         >
           <svg
-            class="w-5 h-5 mr-2.5"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
@@ -103,27 +103,14 @@
             />
           </svg>
           Download
-          <svg
-            class="w-5 h-5 ml-8"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m19.5 8.25-7.5 7.5-7.5-7.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <span class="ml-5"> </span>
         </button>
         <p-menu
           #menu
           [model]="downloadOptions()"
           [popup]="true"
           label="Download All"
-          styleClass="w-fit bg-secondary text-secondary-content rounded py-3 px-1"
+          styleClass="rounded bg-base-100 border border-slate-300"
         >
         </p-menu>
         <button

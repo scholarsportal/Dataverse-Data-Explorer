@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
     return this.datasetInfo()?.fileID || '';
   });
 
-  styleClass = signal('rounded hover:bg-base-100 hover:text-base-content my-1 py-1.5 px-2');
+  styleClass = signal('hover:bg-base-300 focus:bg-base-300 py-4 px-5');
   downloadOptions = signal<MenuItem[]>([
     {
       label: 'Download original file',
