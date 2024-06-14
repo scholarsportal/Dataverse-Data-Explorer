@@ -43,6 +43,10 @@
     @apply text-base-100;
   }
 
+  .btn-action {
+    @apply hover:bg-base-100 transition ease-in-out duration-300;
+  }
+
   .btn-outline {
     @apply border border-slate-300 bg-transparent;
   }
@@ -77,6 +81,16 @@
   .form-outline {
     @apply border border-slate-300 bg-transparent;
   }
+
+  .tooltip {
+    z-index: 2 !important;
+  }
+
+  .table :where(thead, tfoot) {
+    @apply text-base-content;
+  }
+
+  
 }
 
 @layer utilities {

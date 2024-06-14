@@ -54,7 +54,7 @@
   </ng-template>
   <ng-template let-variable pTemplate="body">
     <tr
-      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300 cursor-pointer"
+      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300"
     >
       <td>
         <label>
@@ -76,13 +76,13 @@
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
           <span class="rounded px-2 bg-success text-success-content"
-          >Weight</span
+            >Weight</span
           >
         } @else {
           <span class="rounded px-2 border">No Weight</span>
         }
       </td>
-      <td class="invisible group-hover:visible flex flex-row">
+      <td class="invisible group-hover:visible flex flex-row float-right">
         <div class="mt-0.5">
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
