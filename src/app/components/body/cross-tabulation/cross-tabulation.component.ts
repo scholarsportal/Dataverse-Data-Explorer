@@ -43,7 +43,8 @@ export class CrossTabulationComponent {
   chartOrTable = signal(['Chart', 'Table']);
   defaultDataView = signal('Table');
   table = computed(() => {
-    return this.tableData().table;
+    const empty: { [key: string]: string }[] = [];
+    return this.tableData()?.table || empty;
   });
   rows = computed(() => {
     return this.tableData().rows;
@@ -52,10 +53,10 @@ export class CrossTabulationComponent {
     return this.tableData().cols;
   });
   hasData = computed(() => {
-    return this.tableData().table?.length > 0;
+    return this.table.length > 0;
   });
   hasRowOrColumn = computed(() => {
-    return this.tableData().cols.length || this.tableData().rows.length;
+    return this.tableData()?.cols?.length && this.tableData()?.rows?.length;
   });
   options = signal([
     'Show Value',
