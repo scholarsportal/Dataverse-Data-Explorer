@@ -21,7 +21,6 @@ export class XmlEffects {
               DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey, metadataID, language })
             ),
             catchError((error) => {
-              console.log(error);
               return of(DataverseFetchActions.fetchDDIError(error));
             })
           )

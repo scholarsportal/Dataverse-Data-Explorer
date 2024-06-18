@@ -105,7 +105,6 @@ export const datasetReducer = createReducer(
     }
   })),
   on(DataverseFetchActions.datasetUploadSuccess, (state, data) => {
-    console.log(data);
     return {
       ...state,
       operationStatus: {

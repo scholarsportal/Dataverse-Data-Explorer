@@ -3,12 +3,12 @@ import * as DatasetActions from '../../actions/dataset.actions';
 import * as VarAndGroups from '../../actions/var-and-groups.actions';
 import { JSONStructure, Variable, VariableGroup } from '../../interface';
 import {
-  MatchGroups,
-  MatchVariables,
   createNewVarGroups,
   createNewVariables,
+  MatchGroups,
   matchGroups,
   matchVariableIDs,
+  MatchVariables
 } from './dataset-reducer.utils';
 
 export interface DatasetState {
@@ -39,19 +39,19 @@ export const initialState: DatasetState = {
   datasetInfo: {
     fileID: null,
     siteURL: null,
-    apiKey: undefined,
+    apiKey: undefined
   },
   download: {
-    status: 'idle',
+    status: 'idle'
   },
   upload: {
-    status: 'idle',
+    status: 'idle'
   },
   import: {
     status: 'idle',
     changed: null,
-    rejected: null,
-  },
+    rejected: null
+  }
 };
 
 export const datasetReducer = createReducer(
@@ -60,35 +60,35 @@ export const datasetReducer = createReducer(
     (state): DatasetState => ({
       ...state,
       download: {
-        status: 'pending' as const,
-      },
-    }),
+        status: 'pending' as const
+      }
+    })
   ),
   on(DatasetActions.setDataset,
     (state, { dataset }): DatasetState => ({
       ...state,
       dataset,
       download: {
-        status: 'success' as const,
-      },
-    }),
+        status: 'success' as const
+      }
+    })
   ),
   on(DatasetActions.fetchDatasetError,
     (state, { error }): DatasetState => ({
       ...state,
       download: {
-        status: 'error' as const,
+        status: 'error' as const
       },
-      errorMessage: error,
-    }),
+      errorMessage: error
+    })
   ),
   on(DatasetActions.datasetConversionPending,
     (state): DatasetState => ({
       ...state,
       download: {
-        status: 'converting' as const,
-      },
-    }),
+        status: 'converting' as const
+      }
+    })
   ),
   on(DatasetActions.datasetConversionSuccess,
     (state, { dataset, siteURL, fileID, apiKey }): DatasetState => ({
@@ -97,21 +97,21 @@ export const datasetReducer = createReducer(
       datasetInfo: {
         siteURL,
         fileID,
-        apiKey,
+        apiKey
       },
       download: {
-        status: 'success' as const,
-      },
-    }),
+        status: 'success' as const
+      }
+    })
   ),
   on(DatasetActions.datasetConversionError,
     (state, { error }): DatasetState => ({
       ...state,
       download: {
-        status: 'error' as const,
+        status: 'error' as const
       },
-      errorMessage: error,
-    }),
+      errorMessage: error
+    })
   ),
   on(DatasetActions.saveVariable, (state, { variableID, variable, groups }) => {
     const newState = JSON.parse(JSON.stringify(state));
@@ -125,12 +125,12 @@ export const datasetReducer = createReducer(
           variables[index]['qstn'] = {
             ivuInstr: variable.interviewQuestion ?? '',
             postQTxt: variable.postQuestion ?? '',
-            qstnLit: variable.literalQuestion,
+            qstnLit: variable.literalQuestion
           };
           variables[index].universe = variable.universe ?? '';
           variables[index].notes = {
             ...variables[index].notes,
-            '#text': variable.notes ?? '',
+            '#text': variable.notes ?? ''
           };
           variable.isWeight
             ? (variables[index]['@_wgt'] = 'wgt')
@@ -168,11 +168,11 @@ export const datasetReducer = createReducer(
       newState.dataset?.codeBook?.dataDscr?.varGrp?.push({
         '@_ID': groupID,
         labl: label,
-        '@_var': '',
+        '@_var': ''
       });
     }
     return {
-      ...newState,
+      ...newState
     };
   }),
   on(VarAndGroups.removeSelectedVariablesFromGroup,
@@ -190,9 +190,9 @@ export const datasetReducer = createReducer(
         }
       }
       return {
-        ...newState,
+        ...newState
       };
-    },
+    }
   ),
   on(VarAndGroups.groupDelete, (state, { groupID }) => {
     const newState: DatasetState = JSON.parse(JSON.stringify(state));
@@ -207,7 +207,7 @@ export const datasetReducer = createReducer(
       }
     }
     return {
-      ...newState,
+      ...newState
     };
   }),
   on(VarAndGroups.groupChangeName, (state, { groupID, newName }) => {
@@ -222,7 +222,7 @@ export const datasetReducer = createReducer(
       }
     }
     return {
-      ...newState,
+      ...newState
     };
   }),
   on(VarAndGroups.bulkEditVariables, (state, { variables }) => {
@@ -236,7 +236,7 @@ export const datasetReducer = createReducer(
       }
     }
     return {
-      ...newState,
+      ...newState
     };
   }),
   on(VarAndGroups.bulkChangeGroupsAndWeight, (state, { groups, variables }) => {
@@ -256,35 +256,35 @@ export const datasetReducer = createReducer(
       }
     }
     return {
-      ...newState,
+      ...newState
     };
   }),
   on(DatasetActions.datasetUploadRequest, (state) => ({
     ...state,
     upload: {
-      status: 'pending' as const,
-    },
+      status: 'pending' as const
+    }
   })),
   on(DatasetActions.datasetUploadSuccess, (state) => ({
     ...state,
     upload: {
-      status: 'success' as const,
-    },
+      status: 'success' as const
+    }
   })),
   on(DatasetActions.datasetUploadFailed, (state, { error }) => ({
     ...state,
     upload: {
       status: 'error' as const,
-      error,
-    },
+      error
+    }
   })),
   on(DatasetActions.datasetImportMetadataStart, (state) => {
     return {
       ...state,
       import: {
         ...state.import,
-        status: 'pending' as const,
-      },
+        status: 'pending' as const
+      }
     };
   }),
   on(
@@ -296,17 +296,16 @@ export const datasetReducer = createReducer(
       if (newState.dataset && variables.length && variableGroups.length) {
         const groupMatched: MatchGroups = matchGroups(
           dataset.codeBook.dataDscr.varGrp,
-          variableGroups,
+          variableGroups
         );
-        console.log(dataset);
         const variablesMatched: MatchVariables = matchVariableIDs(
           dataset.codeBook.dataDscr.var,
-          variables,
+          variables
         );
         const newGroups: VariableGroup[] = createNewVarGroups(
           groupMatched,
           variablesMatched,
-          variableGroups,
+          variableGroups
         );
         const newVariables: { variables: Variable[]; count: number } =
           createNewVariables(variablesMatched, variables, variableTemplate);
@@ -317,8 +316,8 @@ export const datasetReducer = createReducer(
         newState.import.rejected = variables.length - newVariables.count;
       }
       return {
-        ...newState,
+        ...newState
       };
-    },
-  ),
+    }
+  )
 );

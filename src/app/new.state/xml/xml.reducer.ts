@@ -178,7 +178,6 @@ export const xmlReducer = createReducer(
         duplicateVariables = changeMultipleVariables(duplicateVariables, variableIDs, newVariableValue, assignedWeight);
       }
       if (assignedWeight) {
-        console.log(assignedWeight);
         duplicateVariables = changeMultipleVariableWeights(duplicateVariables, variableIDs, assignedWeight === 'remove' ? '' : assignedWeight);
       }
       if (groups) {

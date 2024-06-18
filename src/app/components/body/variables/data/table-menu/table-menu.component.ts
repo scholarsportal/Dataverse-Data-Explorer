@@ -58,7 +58,6 @@ export class TableMenuComponent {
   }
 
   onApplyChanges() {
-    console.log(this.selectedWeight);
     this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
       variableIDs: this.selectedVariables(),
       assignedWeight: this.selectedWeight,

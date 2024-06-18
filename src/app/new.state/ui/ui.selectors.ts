@@ -264,12 +264,11 @@ export const selectMatchCategories = createSelector(
   selectDatasetVariableCrossTabValues,
   selectCrossTabCategoriesMissing,
   (allCategories, crossTabValues, missingCategories) => {
-    const data = matchCategoriesWithLabels(
+    return matchCategoriesWithLabels(
       allCategories,
       crossTabValues,
       missingCategories
     );
-    return data;
   }
 );
 
@@ -281,12 +280,7 @@ export const selectCrossTabulationTableData = createSelector(
   (crossTabSelection,
    processedAndMatchedCategories,
    variables) => {
-    let rowAndColumnLabels: { labels: { [variableID: string]: string }, rows: string[], cols: string[] } = {
-      labels: {},
-      cols: [],
-      rows: []
-    };
-    rowAndColumnLabels = createRowAndCategoryLabels(
+    const rowAndColumnLabels = createRowAndCategoryLabels(
       crossTabSelection,
       variables
     );
@@ -337,7 +331,6 @@ export const selectCrossCharts = createSelector(
       }
     });
 
-    console.log(tempChart);
 
     crossTabSelection.map((value) => {
       if (!!value.variableID) {
@@ -359,8 +352,6 @@ export const selectCrossCharts = createSelector(
         crossChart.datasets.push({ label, data });
       }
     });
-
-    console.log(crossChart.datasets);
 
     return crossChart;
   }

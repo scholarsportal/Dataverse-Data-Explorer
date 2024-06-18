@@ -118,7 +118,6 @@ export function changeSingleVariable(
   structuredClone(variableArray).forEach((variable) => {
     let tempVar: Variable = variable;
     if (variable['@_ID'] === variableID) {
-      console.log(variable);
       tempVar = updateGivenVariable(variable, newVariableValue);
     }
     updatedVariableList.push(tempVar);
@@ -204,11 +203,8 @@ export function deleteVariableGroup(duplicateVariableGroups: VariableGroup[], gr
 
 export function removeVariablesFromGroups(groupID: string, variableIDs: string[], duplicateVariableGroups: VariableGroup[]) {
   const variableGroupArrayLength: number = duplicateVariableGroups.length;
-  console.log(duplicateVariableGroups);
   for (let i = 0; i < variableGroupArrayLength; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
-    console.log(currentVariableGroup['@_ID']);
-    console.log(groupID);
     if (currentVariableGroup['@_ID'] === groupID) {
       const variableListAsArray: string[] = currentVariableGroup['@_var']?.split(' ') || [];
       let i = variableListAsArray.length;

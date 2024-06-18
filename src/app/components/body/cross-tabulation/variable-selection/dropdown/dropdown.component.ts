@@ -164,8 +164,4 @@ export class DropdownComponent {
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
   }
-
-  logIT(item: unknown) {
-    console.log(item);
-  }
 }
