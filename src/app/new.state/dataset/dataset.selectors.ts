@@ -18,12 +18,10 @@ export const selectDatasetDownloadPending = createSelector(
 export const selectDatasetDownloadedSuccessfully = createSelector(
   selectDatasetFeature,
   selectDatasetVariables,
-  selectDatasetVariableGroups,
-  (state, variables, groups) => {
+  (state, variables) => {
     return !!(
       state.operationStatus.download === 'success' &&
-      variables?.length &&
-      groups?.length
+      variables?.length
     );
   }
 );
