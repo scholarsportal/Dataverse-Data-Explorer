@@ -24,13 +24,31 @@ function updateGivenVariable(
   variable: Variable,
   newVariableValue: VariableForm
 ): Variable {
-  const updatedVariable = structuredClone(variable);
-  updatedVariable.labl['#text'] = newVariableValue.label;
-  updatedVariable.notes['#text'] = newVariableValue.notes;
-  updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
-  updatedVariable['@_wgt-var'] = newVariableValue.isWeight
-    ? ''
-    : newVariableValue.assignedWeight;
+  let updatedVariable = structuredClone(variable);
+  if (updatedVariable.labl?.['#text']) {
+    updatedVariable.labl = { '#text': newVariableValue.label, '@_level': 'variable' };
+  } else {
+    updatedVariable.labl = {
+      ...updatedVariable.labl,
+      '#text': newVariableValue.label
+    };
+  }
+  if (!!updatedVariable['@_wgt']) {
+    updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
+  } else {
+    updatedVariable = { ...updatedVariable, '@_wgt': newVariableValue.isWeight ? 'wgt' : '' };
+  }
+  if (!!updatedVariable['@_wgt-var']) {
+    updatedVariable['@_wgt-var'] = newVariableValue.isWeight ? '' : newVariableValue.assignedWeight;
+  } else {
+    updatedVariable = {
+      ...updatedVariable,
+      '@_wgt-var': newVariableValue.isWeight ? '' : newVariableValue.assignedWeight
+    };
+  }
+  if (Array.isArray(updatedVariable.notes)) {
+    updatedVariable.notes[1] = newVariableValue.notes;
+  }
   if (!updatedVariable.qstn) {
     updatedVariable.qstn = {
       qstnLit: newVariableValue.literalQuestion,
@@ -64,6 +82,33 @@ export function changeMultipleVariables(
   return updatedVariableList;
 }
 
+export function changeMultipleVariableWeights(
+  variableArray: Variable[],
+  variableID: string[],
+  assignedWeight: string
+) {
+  const updatedVariableList: Variable[] = [];
+  structuredClone(variableArray).forEach((variable) => {
+    let tempVar: Variable = variable;
+    if (variableID.includes(variable['@_ID'])) {
+      const patchedVariable: VariableForm = {
+        label: variable.labl?.['#text'] ? variable.labl['#text'] : '',
+        literalQuestion: variable.qstn?.qstnLit ? variable.qstn.qstnLit : '',
+        interviewQuestion: variable.qstn?.ivuInstr ? variable.qstn.ivuInstr : '',
+        postQuestion: variable.qstn?.postQTxt ? variable.qstn.postQTxt : '',
+        universe: variable.universe || '',
+        notes: Array.isArray(variable.notes) ? variable.notes[1] : '',
+        isWeight: !!variable['@_wgt'],
+        assignedWeight: assignedWeight
+      };
+      tempVar = updateGivenVariable(variable, patchedVariable);
+    }
+    updatedVariableList.push(tempVar);
+  });
+
+  return updatedVariableList;
+}
+
 export function changeSingleVariable(
   variableArray: Variable[],
   variableID: string,
@@ -73,6 +118,7 @@ export function changeSingleVariable(
   structuredClone(variableArray).forEach((variable) => {
     let tempVar: Variable = variable;
     if (variable['@_ID'] === variableID) {
+      console.log(variable);
       tempVar = updateGivenVariable(variable, newVariableValue);
     }
     updatedVariableList.push(tempVar);
@@ -129,8 +175,8 @@ export function changeGroupsForMultipleVariables(
 }
 
 export function renameVariableGroup(duplicateVariableGroups: VariableGroup[], groupID: string, newLabel: string) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
-  for (let i = 0; i < variableGroupArrayLength; i++) {
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
+  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
       currentVariableGroup.labl = newLabel;
@@ -141,9 +187,9 @@ export function renameVariableGroup(duplicateVariableGroups: VariableGroup[], gr
 }
 
 export function deleteVariableGroup(duplicateVariableGroups: VariableGroup[], groupID: string) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
   let index = -1;
-  for (let i = 0; i < variableGroupArrayLength; i++) {
+  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
       index = i;
@@ -157,10 +203,12 @@ export function deleteVariableGroup(duplicateVariableGroups: VariableGroup[], gr
 }
 
 export function removeVariablesFromGroups(groupID: string, variableIDs: string[], duplicateVariableGroups: VariableGroup[]) {
-
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
+  console.log(duplicateVariableGroups);
   for (let i = 0; i < variableGroupArrayLength; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
+    console.log(currentVariableGroup['@_ID']);
+    console.log(groupID);
     if (currentVariableGroup['@_ID'] === groupID) {
       const variableListAsArray: string[] = currentVariableGroup['@_var']?.split(' ') || [];
       let i = variableListAsArray.length;

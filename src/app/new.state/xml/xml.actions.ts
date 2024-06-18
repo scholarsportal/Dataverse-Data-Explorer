@@ -10,7 +10,9 @@ export const DataverseFetchActions =
       'Start DDI Fetch': props<{
         siteURL: string,
         fileID: number,
-        apiKey?: string
+        apiKey?: string,
+        language?: string,
+        metadataID?: number
       }>(),
       // API call failed for a variety of reasons
       'Fetch DDI Error': props<{ error: Error }>(),
@@ -19,7 +21,9 @@ export const DataverseFetchActions =
         data: ddiJSONStructure,
         siteURL: string,
         fileID: number,
-        apiKey?: string
+        apiKey?: string,
+        metadataID?: number,
+        language?: string,
       }>(),
       // User starts upload
       'Start Dataset Upload': props<{

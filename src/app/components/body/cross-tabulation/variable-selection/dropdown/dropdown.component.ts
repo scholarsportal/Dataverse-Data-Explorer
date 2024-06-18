@@ -1,11 +1,4 @@
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +19,7 @@ import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selec
   standalone: true,
   imports: [CommonModule, FormsModule, MultiSelectModule, DropdownModule],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css',
+  styleUrl: './dropdown.component.css'
 })
 export class DropdownComponent {
   store = inject(Store);
@@ -69,16 +62,16 @@ export class DropdownComponent {
         newVariables.push({
           variableID: variableID,
           label: this.variables()[variableID].labl['#text'],
-          disabled: this.variablesAlreadySelected().includes(variableID),
-        }),
+          disabled: this.variablesAlreadySelected().includes(variableID)
+        })
       );
       return newVariables;
     } else {
       Object.values(this.variables()).map((variable) => {
         newVariables.push({
           variableID: variable['@_ID'],
-          label: variable.labl['#text'],
-          disabled: this.variablesAlreadySelected().includes(variable['@_ID']),
+          label: variable.labl?.['#text'] ? variable.labl['#text'] : `${variable['@_name']} - No Label`,
+          disabled: this.variablesAlreadySelected().includes(variable['@_ID'])
         });
       });
       return newVariables;
@@ -121,14 +114,14 @@ export class DropdownComponent {
       this.emitChangeVariableOrientation.emit({
         index: this.index(),
         newOrientation: 'rows',
-        variableID: this.selectedVariableID(),
+        variableID: this.selectedVariableID()
       });
     }
     if (value === 'cols') {
       this.emitChangeVariableOrientation.emit({
         index: this.index(),
         newOrientation: 'cols',
-        variableID: this.selectedVariableID(),
+        variableID: this.selectedVariableID()
       });
     }
   }
@@ -154,7 +147,7 @@ export class DropdownComponent {
       this.emitChangeSelectedVariable.emit({
         index: this.index(),
         orientation: this.variableOrientation(),
-        variableID: value,
+        variableID: value
       });
     }
   }
@@ -163,8 +156,8 @@ export class DropdownComponent {
     this.store.dispatch(
       CrossTabulationUIActions.changeMissingCategories({
         variableID: this.selectedVariableID(),
-        missing,
-      }),
+        missing
+      })
     );
   }
 

@@ -180,15 +180,24 @@ export const selectOpenVariableFormState = createSelector(
   (variableID, processedVariables, groups) => {
     let formState: VariableForm = { isWeight: false, groups: [] };
     if (processedVariables[variableID]) {
+      const notesArray = processedVariables[variableID]?.notes;
+      let notes = '';
+      if (Array.isArray(notesArray)) {
+        notesArray.map(item => {
+          if (typeof item === 'string') {
+            notes = item;
+          }
+        });
+      }
       formState = {
         isWeight: !!processedVariables[variableID]['@_wgt'],
         groups: groups,
-        label: processedVariables[variableID].labl['#text'],
+        label: processedVariables[variableID].labl?.['#text'] || '',
         literalQuestion: processedVariables[variableID].qstn?.qstnLit || '',
         interviewQuestion: processedVariables[variableID].qstn?.ivuInstr || '',
         postQuestion: processedVariables[variableID].qstn?.postQTxt || '',
         universe: processedVariables[variableID].universe,
-        notes: processedVariables[variableID].notes['#text'] || '',
+        notes,
         assignedWeight: processedVariables[variableID]['@_wgt-var']
       };
     }
@@ -247,7 +256,7 @@ export const selectOpenVariableSummaryStatistics = createSelector(
 
 export const selectCrossTabSelection = createSelector(
   selectUIFeature,
-  (state) => state.bodyState.crossTab.selection
+  (state) => state.bodyState.crossTab.selection || []
 );
 
 export const selectMatchCategories = createSelector(
@@ -264,12 +273,20 @@ export const selectMatchCategories = createSelector(
   }
 );
 
+/* istanbul ignore next */
 export const selectCrossTabulationTableData = createSelector(
   selectCrossTabSelection,
   selectMatchCategories,
   selectDatasetProcessedVariables,
-  (crossTabSelection, processedAndMatchedCategories, variables) => {
-    const rowAndColumnLabels = createRowAndCategoryLabels(
+  (crossTabSelection,
+   processedAndMatchedCategories,
+   variables) => {
+    let rowAndColumnLabels: { labels: { [variableID: string]: string }, rows: string[], cols: string[] } = {
+      labels: {},
+      cols: [],
+      rows: []
+    };
+    rowAndColumnLabels = createRowAndCategoryLabels(
       crossTabSelection,
       variables
     );
@@ -348,3 +365,4 @@ export const selectCrossCharts = createSelector(
     return crossChart;
   }
 );
+

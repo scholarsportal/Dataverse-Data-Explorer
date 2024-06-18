@@ -42,7 +42,7 @@ export class DataComponent {
         const newObj = {
           variableID: value['@_ID'],
           name: value['@_name'],
-          label: value.labl['#text'] || '',
+          label: value.labl?.['#text'] || '',
           weight: value['@_wgt-var'] || '',
           isWeight: !!value['@_wgt'],
           selected: this.selectedVariables().includes(value['@_ID'])
