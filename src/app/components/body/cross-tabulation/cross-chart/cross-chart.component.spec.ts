@@ -10,10 +10,13 @@ describe('CrossChartComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CrossChartComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CrossChartComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', []);
+    fixture.componentRef.setInput('rows', []);
+    fixture.componentRef.setInput('cols', []);
     fixture.detectChanges();
   });
 

@@ -10,10 +10,11 @@ describe('RenamingSidebarButtonComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RenamingSidebarButtonComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(RenamingSidebarButtonComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('label', '');
     fixture.detectChanges();
   });
 

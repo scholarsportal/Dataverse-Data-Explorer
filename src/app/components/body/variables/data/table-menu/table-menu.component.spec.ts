@@ -20,6 +20,8 @@ describe('TableMenuComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('selectedVariables', []);
     fixture.componentRef.setInput('groupID', []);
+    fixture.componentRef.setInput('weights', {});
+    fixture.componentRef.setInput('allGroups', {});
     fixture.detectChanges();
   });
 

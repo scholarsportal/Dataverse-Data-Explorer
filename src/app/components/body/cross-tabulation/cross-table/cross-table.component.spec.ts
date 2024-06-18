@@ -10,10 +10,15 @@ describe('CrossTableComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CrossTableComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CrossTableComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', []);
+    fixture.componentRef.setInput('rows', []);
+    fixture.componentRef.setInput('cols', []);
+    fixture.componentRef.setInput('hasData', false);
+    fixture.componentRef.setInput('exportClicked', () => void {});
     fixture.detectChanges();
   });
 
