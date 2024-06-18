@@ -48,9 +48,7 @@ export class TableMenuComponent {
   }
 
   onSelectedWeightChange(weight: any) {
-    if (weight.value) {
-      this.selectedWeight = weight.value;
-    }
+    this.selectedWeight = weight.value;
   }
 
   changeGroup(change: MultiSelectChangeEvent) {
@@ -60,6 +58,7 @@ export class TableMenuComponent {
   }
 
   onApplyChanges() {
+    console.log(this.selectedWeight);
     this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
       variableIDs: this.selectedVariables(),
       assignedWeight: this.selectedWeight,

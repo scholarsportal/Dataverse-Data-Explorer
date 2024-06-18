@@ -1,10 +1,6 @@
 import { DatasetState } from './dataset.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import {
-  selectDatasetProcessedVariables,
-  selectDatasetVariableGroups,
-  selectDatasetVariables
-} from '../xml/xml.selectors';
+import { selectDatasetProcessedVariables, selectDatasetVariables } from '../xml/xml.selectors';
 import { Variable } from '../xml/xml.interface';
 
 export const selectDatasetFeature =
@@ -58,9 +54,9 @@ export const selectDatasetWeights = createSelector(
 
     if (variables) {
       Object.values(variables).map((variable: Variable) => {
-        const wgtVar = variable['@_wgt-var'] as string | undefined;
-        if (wgtVar && variables[wgtVar]) {
-          weights[wgtVar] = variables[wgtVar].labl['#text'];
+        const wgtVar = variable['@_wgt'] as string | undefined;
+        if (wgtVar) {
+          weights[variable['@_ID']] = !!variable.labl?.['#text'] ? variable.labl['#text'] : `${variable['@_name']} - NO LABEL`;
         }
       });
     }

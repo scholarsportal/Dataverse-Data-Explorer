@@ -19,6 +19,7 @@ export class GroupButtonComponent {
   confirmAdd() {
     if (this.newGroupName) {
       this.emitConfirm.emit(this.newGroupName);
+      this.adding.set(false);
     }
   }
 
