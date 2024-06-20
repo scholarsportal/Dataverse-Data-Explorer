@@ -4,7 +4,7 @@
 </div>
 @if (hasCategories()) {
   <!-- CHART DATA -->
-  <table class="table-fixed w-full mt-10">
+  <table class="w-full mt-10">
     <thead class="table-header">
     <tr class="border-b">
       <th>Mark Invalid</th>
@@ -40,7 +40,7 @@
     </tbody>
   </table>
 } @else {
-  <div class="h-44 absolute z-20 top-96 mx-auto text-xl">This Variable Has No Categories</div>
+  <div class="md:absolute z-20 top-96 mx-auto text-xl">This Variable Has No Categories</div>
 }
 
 <h3 class="font-bold text-xl mt-10">Summary Statistics</h3>

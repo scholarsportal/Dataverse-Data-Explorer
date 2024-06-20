@@ -18,9 +18,9 @@
   </button>
   <h2 class="text-2xl">{{ modalMode() | titlecase }} Variable</h2>
 </div>
-<div class="flex flex-row justify-between pt-5">
+<div class="flex flex-row-reverse md:flex-row justify-between pt-5">
   @if (modalMode() === 'view') {
-    <button (click)="switchToEdit()" class="btn border border-slate-300 bg-transparent">
+    <button (click)="switchToEdit()" class="hidden md:flex btn border border-slate-300 bg-transparent">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
            class="w-5 h-5 mr-1">
         <path stroke-linecap="round" stroke-linejoin="round"
