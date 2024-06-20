@@ -88,13 +88,26 @@
     ></dct-cross-table>
 
     <div class="w-full text-3xl font-medium relative bottom-96">
-      <h3 class="text-center mx-auto">
-        @if (hasData() && !hasRowOrColumn()) {
-          One more step. Set your rows and/or columns.
-        } @else {
+      @if (!hasData() && (loadingStatus === '')) {
+        <h3 class="text-center mx-auto">
           No Data! Start adding variables to generate your table
+        </h3>
+      } @else if (hasData() && !hasRowOrColumn() && loadingStatus === '') {
+        <h3 class="text-center mx-auto">
+          One more step. Set your rows and/or columns.
+        </h3>
+      } @else {
+        @if (loadingStatus === 'init') {
+          <h3 class="preload-text">
+            Downloading data ...
+          </h3>
+        } @else if (loadingStatus === 'delayed') {
+          <h3 class="preload-text">
+            Still downloading ...
+          </h3>
+          <h4 class="text-base mx-auto text-center">Sorry for the delay</h4>
         }
-      </h3>
+      }
     </div>
   }
 </div>

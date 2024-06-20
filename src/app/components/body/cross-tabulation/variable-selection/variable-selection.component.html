@@ -1,20 +1,22 @@
 <h3 class="font-bold text-3xl">Variables</h3>
-@for (item of selection(); track $index) {
-  <dct-dropdown
-    class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-neutral"
-    [index]="$index"
-    [groups]="groups()"
-    [categories]="categories()"
-    [variableOrientation]="item.orientation"
-    [selectedVariableID]="item.variableID"
-    [missing]="missing()"
-    [variablesAlreadySelected]="variablesAlreadySelected()"
-    (emitChangeVariableOrientation)="onVariableOrientationChange($event)"
-    (emitRemoveVariable)="removeVariable($event)"
-    (emitChangeSelectedVariable)="changeVariableInGivenPosition($event)"
-  ></dct-dropdown>
-} @empty {
-  <div class="my-10">
-    Nothing here yet. Add a variable to start creating your table
-  </div>
+@if (selection()?.length) {
+  @for (item of selection(); track $index) {
+    <dct-dropdown
+      class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-neutral"
+      [index]="$index"
+      [groups]="groups()"
+      [categories]="categories()"
+      [variableOrientation]="item.orientation"
+      [selectedVariableID]="item.variableID"
+      [missing]="missing()"
+      [variablesAlreadySelected]="variablesAlreadySelected()"
+      (emitChangeVariableOrientation)="onVariableOrientationChange($event)"
+      (emitRemoveVariable)="removeVariable($event)"
+      (emitChangeSelectedVariable)="changeVariableInGivenPosition($event)"
+    ></dct-dropdown>
+  } @empty {
+    <div class="my-10">
+      Nothing here yet. Add a variable to start creating your table
+    </div>
+  }
 }

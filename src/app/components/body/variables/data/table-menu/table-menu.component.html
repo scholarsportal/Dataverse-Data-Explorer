@@ -72,7 +72,7 @@
       name="assign-weight"
     >
       <option disabled hidden selected value="">Assign Weight</option>
-      <option value="">Remove Weight</option>
+      <option [value]="'remove'">Remove Weight</option>
       @for (weightValue of weights() | keyvalue; track $index) {
         <option [value]="weightValue.key">
           {{ weightValue.value }}

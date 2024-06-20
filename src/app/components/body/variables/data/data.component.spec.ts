@@ -21,10 +21,15 @@ describe('DataComponent', () => {
 
     fixture = TestBed.createComponent(DataComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('groups', {});
     fixture.componentRef.setInput('variables', {});
     fixture.componentRef.setInput('openVariable', '');
     fixture.componentRef.setInput('selectedVariables', []);
     fixture.componentRef.setInput('categoriesInvalid', []);
+    fixture.componentRef.setInput('variablesInCrossTabSelection', []);
+    fixture.componentRef.setInput('isFetching', false);
+    fixture.componentRef.setInput('crossTabValuesFetched', []);
+    fixture.componentRef.setInput('weights', []);
     fixture.componentRef.setInput('groupChanged', 'ALL');
     fixture.detectChanges();
   });

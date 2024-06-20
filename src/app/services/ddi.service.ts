@@ -36,10 +36,15 @@ export class DdiService {
 
   fetchDatasetFromDataverse(
     fileID: number,
-    siteURL: string
+    siteURL: string,
+    metadataID: number | undefined
   ): Observable<ddiJSONStructure> {
+    let metadataParam = '';
+    if (metadataID) {
+      metadataParam = '?fileMetadataId=' + metadataID;
+    }
     return this.http
-      .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi`, {
+      .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi${metadataParam}`, {
         responseType: 'text'
       })
       .pipe(map((data) => {

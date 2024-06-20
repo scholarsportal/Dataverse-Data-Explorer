@@ -40,7 +40,12 @@ export interface Variable {
     '@_subject': string;
     '@_level': string;
     '@_type': string;
-  };
+  } | [{
+    '#text': string;
+    '@_subject': string;
+    '@_level': string;
+    '@_type': string;
+  }, string];
   '@_ID': string;
   '@_name': string;
   '@_intrvl': string;

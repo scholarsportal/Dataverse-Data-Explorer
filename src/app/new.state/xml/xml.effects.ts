@@ -15,13 +15,12 @@ export class XmlEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.startDDIFetch),
-        exhaustMap(({ fileID, siteURL, apiKey }) =>
-          ddiService.fetchDatasetFromDataverse(fileID, siteURL).pipe(
+        exhaustMap(({ fileID, siteURL, apiKey, metadataID, language }) =>
+          ddiService.fetchDatasetFromDataverse(fileID, siteURL, metadataID).pipe(
             map((data) =>
-              DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey })
+              DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey, metadataID, language })
             ),
             catchError((error) => {
-              console.log(error);
               return of(DataverseFetchActions.fetchDDIError(error));
             })
           )

@@ -35,7 +35,7 @@ export function createRowAndCategoryLabels(
   variablesInCrossTab: {
     variableID: string;
     orientation: 'rows' | 'cols' | '';
-  }[],
+  }[] = [],
   processedVariables: { [p: string]: Variable }
 ): {
   labels: { [variableID: string]: string };

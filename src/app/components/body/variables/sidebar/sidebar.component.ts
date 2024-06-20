@@ -62,6 +62,13 @@ export class SidebarComponent {
     }
   }
 
+  createGroup(label: string) {
+    this.store.dispatch(XmlManipulationActions.createGroup({
+      groupID: `NVG${Math.floor(Math.random() * 90000) + 10000}`,
+      label
+    }));
+  }
+
   changeGroup(groupID: string) {
     // NOTE: Is this related to DaisyUI
     // const elem = document.activeElement;

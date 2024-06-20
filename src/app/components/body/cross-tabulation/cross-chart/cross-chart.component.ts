@@ -58,18 +58,18 @@ export class CrossChartComponent implements OnInit {
     // });
     const light = 'black', dark = 'white', neutral = '#c8c5d0', theme = localStorage.getItem('theme');
 
-    if (theme === 'light') {
-      this.chartJS.options.scales.x.grid.color = neutral;
-      this.chartJS.options.scales.y.grid.color = neutral;
-      this.chartJS.options.scales.x.ticks.color = light;
-      this.chartJS.options.scales.y.ticks.color = light;
-    } else {
-      this.chartJS.options.scales.x.grid.color = dark;
-      this.chartJS.options.scales.y.grid.color = dark;
-      this.chartJS.options.scales.x.ticks.color = dark;
-      this.chartJS.options.scales.y.ticks.color = dark;
-      this.chartJS.options.plugins.legend.labels.color = dark;
-    }
+    // if (theme === 'light') {
+    //   this.chartJS.options.scales.x.grid.color = neutral;
+    //   this.chartJS.options.scales.y.grid.color = neutral;
+    //   this.chartJS.options.scales.x.ticks.color = light;
+    //   this.chartJS.options.scales.y.ticks.color = light;
+    // } else {
+    //   this.chartJS.options.scales.x.grid.color = dark;
+    //   this.chartJS.options.scales.y.grid.color = dark;
+    //   this.chartJS.options.scales.x.ticks.color = dark;
+    //   this.chartJS.options.scales.y.ticks.color = dark;
+    //   this.chartJS.options.plugins.legend.labels.color = dark;
+    // }
   }
 
   private redrawChart(data: any) {

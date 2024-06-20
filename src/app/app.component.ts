@@ -29,13 +29,18 @@ export class AppComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe((params: any) => {
       const siteURL = params['siteUrl'] as string;
-      const fileID = params['dfId'] as number;
+      const fileID = params['fileId'] as number || params['fileID'] as number || params['dfId'] as number;
       const apiKey = params['key'] as string;
+      // If a dataset is in French then we automatically set the language to French
+      const language = params['dvLocale'] as string;
+      // The identifier to specify the version of the dataset to load
+      const metadataID = params['metadataID'] as number;
+
       if (siteURL && fileID) {
         return this.store.dispatch(
-          DataverseFetchActions.startDDIFetch({ fileID: fileID, siteURL: siteURL, apiKey: apiKey })
+          DataverseFetchActions.startDDIFetch({ fileID, siteURL, apiKey, language, metadataID })
         );
       }
       if (localStorage.getItem('theme')) {

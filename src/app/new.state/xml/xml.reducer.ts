@@ -5,6 +5,7 @@ import {
   changeGroupsForMultipleVariables,
   changeGroupsForSingleVariable,
   changeMultipleVariables,
+  changeMultipleVariableWeights,
   changeSingleVariable,
   deleteVariableGroup,
   removeVariablesFromGroups,
@@ -129,7 +130,6 @@ export const xmlReducer = createReducer(
     };
   }),
   on(XmlManipulationActions.removeVariablesFromGroup, (state, { groupID, variableIDs }) => {
-    console.log(variableIDs);
     const duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
     const patchedVariableGroups = removeVariablesFromGroups(groupID, variableIDs, duplicateVariableGroups);
     return {
@@ -177,8 +177,10 @@ export const xmlReducer = createReducer(
       if (newVariableValue) {
         duplicateVariables = changeMultipleVariables(duplicateVariables, variableIDs, newVariableValue, assignedWeight);
       }
+      if (assignedWeight) {
+        duplicateVariables = changeMultipleVariableWeights(duplicateVariables, variableIDs, assignedWeight === 'remove' ? '' : assignedWeight);
+      }
       if (groups) {
-        console.log(groups);
         duplicateVariableGroups = changeGroupsForMultipleVariables(duplicateVariableGroups, variableIDs, groups);
       }
       return {

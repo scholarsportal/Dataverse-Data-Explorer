@@ -48,9 +48,7 @@ export class TableMenuComponent {
   }
 
   onSelectedWeightChange(weight: any) {
-    if (weight.value) {
-      this.selectedWeight = weight.value;
-    }
+    this.selectedWeight = weight.value;
   }
 
   changeGroup(change: MultiSelectChangeEvent) {

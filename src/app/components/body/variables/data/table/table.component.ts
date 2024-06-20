@@ -165,7 +165,7 @@ export class TableComponent {
   }
 
   removeFromCrossTab(value: string) {
-    console.log(value);
+    // console.log(value);
   }
 
   launchModal(value: { mode: 'view' | 'edit'; variableID: string }) {

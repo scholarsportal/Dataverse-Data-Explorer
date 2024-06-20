@@ -114,6 +114,7 @@
         >
         </p-menu>
         <button
+          (click)="handleUpload()"
           [disabled]="!hasApiKey()"
           class="hidden md:flex disabled:bg-base-100 btn btn-primary px-4 ml-1.5"
         >
