@@ -11,7 +11,7 @@ export const DataverseFetchActions =
         siteURL: string,
         fileID: number,
         apiKey?: string,
-        language: string,
+        language?: string,
         metadataID?: number
       }>(),
       // API call failed for a variety of reasons
