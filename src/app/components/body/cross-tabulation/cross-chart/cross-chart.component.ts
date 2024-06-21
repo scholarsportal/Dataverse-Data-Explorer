@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'dct-cross-chart',
@@ -14,11 +15,15 @@ import { NgClass } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrossChartComponent implements OnInit {
-  data = input.required<{ [id: string]: string }[]>();
-  rows = input.required<string[]>();
-  cols = input.required<string[]>();
+  data = input.required<{
+    labels: string[],
+    datasets: {
+      label: string,
+      data: number[],
+    }[],
+  }>();
   hasData = computed(() => {
-    return !!this.data().length;
+    return !!this.data().datasets.length;
   });
   public chartJS: any;
 
@@ -35,41 +40,44 @@ export class CrossChartComponent implements OnInit {
   }
 
   private createChart() {
-    // this.chartJS = new Chart('crossTabChart', {
-    //   type: 'bar',
-    //   data: this.data(),
-    //   options: {
-    //     plugins: {
-    //       title: {
-    //         display: true,
-    //         text: 'Dataset Chart'
-    //       }
-    //     },
-    //     responsive: true,
-    //     scales: {
-    //       x: {
-    //         stacked: true
-    //       },
-    //       y: {
-    //         stacked: true
-    //       }
-    //     }
-    //   }
-    // });
+    this.chartJS = new Chart('crossTabChart', {
+      type: 'bar',
+      data: {
+        datasets: this.data().datasets,
+        labels: this.data().labels
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Dataset Chart'
+          }
+        },
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            stacked: true
+          }
+        }
+      }
+    });
     const light = 'black', dark = 'white', neutral = '#c8c5d0', theme = localStorage.getItem('theme');
 
-    // if (theme === 'light') {
-    //   this.chartJS.options.scales.x.grid.color = neutral;
-    //   this.chartJS.options.scales.y.grid.color = neutral;
-    //   this.chartJS.options.scales.x.ticks.color = light;
-    //   this.chartJS.options.scales.y.ticks.color = light;
-    // } else {
-    //   this.chartJS.options.scales.x.grid.color = dark;
-    //   this.chartJS.options.scales.y.grid.color = dark;
-    //   this.chartJS.options.scales.x.ticks.color = dark;
-    //   this.chartJS.options.scales.y.ticks.color = dark;
-    //   this.chartJS.options.plugins.legend.labels.color = dark;
-    // }
+    if (theme === 'light') {
+      this.chartJS.options.scales.x.grid.color = neutral;
+      this.chartJS.options.scales.y.grid.color = neutral;
+      this.chartJS.options.scales.x.ticks.color = light;
+      this.chartJS.options.scales.y.ticks.color = light;
+    } else {
+      this.chartJS.options.scales.x.grid.color = dark;
+      this.chartJS.options.scales.y.grid.color = dark;
+      this.chartJS.options.scales.x.ticks.color = dark;
+      this.chartJS.options.scales.y.ticks.color = dark;
+      this.chartJS.options.plugins.legend.labels.color = dark;
+    }
   }
 
   private redrawChart(data: any) {
