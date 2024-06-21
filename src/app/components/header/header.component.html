@@ -10,7 +10,7 @@
             ngSrc="./assets/logo.svg"
             width="16"
           />
-          <span class="text-lg font-bold"> Data Explorer</span>
+          <span class="text-lg font-bold">Data Explorer</span>
         </div>
         <div class="flex flex-row justify-between">
           <div class="flex flex-row">
@@ -19,9 +19,9 @@
               <!-- this hidden checkbox controls the state -->
               <input
                 (change)="toggleTheme()"
+                [checked]="!currentThemeLight"
                 class="theme-controller"
                 type="checkbox"
-                [checked]="currentThemeLight == false"
               />
 
               <!-- sun icon -->

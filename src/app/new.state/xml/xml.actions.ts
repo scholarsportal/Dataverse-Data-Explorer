@@ -1,6 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { ApiResponse, ddiJSONStructure } from './xml.interface';
-import { ImportVariableFormData } from '../dataset/dataset.interface';
+import { ApiResponse, ddiJSONStructure, ImportVariableFormTemplate } from './xml.interface';
 
 export const DataverseFetchActions =
   createActionGroup({
@@ -52,13 +51,13 @@ export const XmlManipulationActions = createActionGroup({
   source: 'XML Action',
   events: {
     // User imports an XML file to merge data
-    'Start Import Metadata': props<{ importedXmlString: string }>(),
+    'Start Import Metadata': props<{ importedXmlString: string, variableTemplate: ImportVariableFormTemplate }>(),
     // XML file not compatible
     'Import Conversion Error': props<{ error: string }>(),
     // Metadata merged successfully
     'Import Conversion Success': props<{
       importDdiData: ddiJSONStructure,
-      variableTemplate: ImportVariableFormData
+      variableTemplate: ImportVariableFormTemplate
     }>(),
     'Rename Group': props<{ groupID: string, newLabel: string }>(),
     'Delete Group': props<{ groupID: string }>(),

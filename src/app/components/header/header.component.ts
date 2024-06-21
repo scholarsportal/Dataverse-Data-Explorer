@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
 
   downloadOptions = signal<MenuItem[]>([
     {
-      label: 'Download original file',
+      label: 'Download original file (.sav file)',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`
     },
     {
@@ -62,8 +62,11 @@ export class HeaderComponent implements OnInit {
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`
     },
     {
-      label: 'Download original DDI',
+      label: 'Download original DDI (.xml file)',
       url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`
+    },
+    {
+      label: 'Download this version (.xml file)'
     }
   ]);
 
@@ -114,5 +117,5 @@ export class HeaderComponent implements OnInit {
       this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
     }
   }
-  
+
 }

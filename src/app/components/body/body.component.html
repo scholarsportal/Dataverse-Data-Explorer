@@ -1,22 +1,21 @@
 @if (variablesTabOpen() && !crossTabulationTabOpen()) {
   <dct-sidebar class="sidebar md:grid md:border-r" />
   @if (importComponentState() === 'open') {
-    <dct-import class="data md:grid" />
-  } @else if (importComponentState() === 'close') {
-    <dct-data
-      class="data md:grid"
-      [isFetching]="crossTabIsFetching()"
-      [variables]="filteredByGroupID()"
-      [variablesInCrossTabSelection]="variablesInCrossTab()"
-      [crossTabValuesFetched]="crossTabValuesFetched()"
-      [selectedVariables]="selectedVariables()"
-      [weights]="allWeights()"
-      [groups]="groups()"
-      [openVariable]="openVariable()"
-      [groupChanged]="groupIDChanged()"
-      [categoriesInvalid]="categoriesMissing()"
-    />
+    <dct-import class="data md:grid z-20 bg-base-100" />
   }
+  <dct-data
+    class="data md:grid"
+    [isFetching]="crossTabIsFetching()"
+    [variables]="filteredByGroupID()"
+    [variablesInCrossTabSelection]="variablesInCrossTab()"
+    [crossTabValuesFetched]="crossTabValuesFetched()"
+    [selectedVariables]="selectedVariables()"
+    [weights]="allWeights()"
+    [groups]="groups()"
+    [openVariable]="openVariable()"
+    [groupChanged]="groupIDChanged()"
+    [categoriesInvalid]="categoriesMissing()"
+  />
 } @else {
   <dct-cross-tabulation class="cross-tab p-5 overflow-y-auto" />
 }

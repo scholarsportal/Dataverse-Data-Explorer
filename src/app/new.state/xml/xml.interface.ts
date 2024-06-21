@@ -25,6 +25,13 @@ export interface Category {
   catStat: SummaryStatistic[] | SummaryStatistic;
 }
 
+export interface MatchVariables {
+  [datasetID: string]: {
+    importedVariableID: string;
+    importedVariable: Variable;
+  };
+}
+
 export interface Variable {
   location: Location;
   labl: Label;
@@ -146,6 +153,17 @@ interface XML {
   };
 }
 
+export interface ImportVariableFormTemplate {
+  label: boolean;
+  literalQuestion: boolean;
+  interviewQuestion: boolean;
+  postQuestion: boolean;
+  universe: boolean;
+  notes: boolean;
+  weight: boolean;
+}
+
+
 export interface ddiJSONStructure {
   '?xml': XML['?xml'];
   codeBook: CodeBook;
@@ -161,6 +179,7 @@ export interface XmlState {
     siteURL: string,
     fileID: number,
     apiKey: string | undefined,
+    importedSuccess?: boolean
   } | null,
 }
 

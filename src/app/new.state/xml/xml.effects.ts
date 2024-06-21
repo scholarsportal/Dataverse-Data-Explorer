@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DataverseFetchActions } from './xml.actions';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
 
 @Injectable()
@@ -66,6 +66,7 @@ export class XmlEffects {
       );
     }
   );
+
   uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
@@ -86,4 +87,17 @@ export class XmlEffects {
       );
     }
   );
+  convertImportedDatasetToXML$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(XmlManipulationActions.startImportMetadata),
+        switchMap(({ importedXmlString, variableTemplate }) => {
+            const xml = ddiService.XMLtoJSON(importedXmlString);
+            return of(XmlManipulationActions.importConversionSuccess({ importDdiData: xml, variableTemplate }));
+          }
+        )
+      );
+    }
+  );
 }
+

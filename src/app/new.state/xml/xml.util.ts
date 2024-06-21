@@ -1,4 +1,4 @@
-import { Variable, VariableGroup } from './xml.interface';
+import { ImportVariableFormTemplate, MatchVariables, Variable, VariableGroup } from './xml.interface';
 
 interface VariableForm {
   label: string;
@@ -218,4 +218,145 @@ export function removeVariablesFromGroups(groupID: string, variableIDs: string[]
     }
   }
   return duplicateVariableGroups;
+}
+
+export function matchVariableIDs(importedVariables: Variable[], datasetVariables: Variable[]): MatchVariables {
+  const matchedVariables: MatchVariables = {};
+  // First we loop through the imported dataset
+  importedVariables.forEach((variableImported) => {
+    // For each dataset we go through our current dataset to find the matching name
+    for (let variableInCurrentDataset of datasetVariables) {
+      if (variableInCurrentDataset['@_name'] === variableImported['@_name']) {
+        matchedVariables[variableInCurrentDataset['@_ID']] = {
+          importedVariableID: variableImported['@_ID'],
+          importedVariable: variableImported
+        };
+      }
+    }
+  });
+  return matchedVariables;
+}
+
+export function updateGroups(groups: VariableGroup[]): VariableGroup[] {
+  const duplicateVariableGroups: VariableGroup[] = [];
+  groups.forEach(group => {
+    duplicateVariableGroups.push({
+      ...group,
+      '@_ID': `VG${Math.floor(Math.random() * 90000) + 10000}`
+    });
+  });
+  return duplicateVariableGroups;
+}
+
+export function createNewVariables(variablesMatched: MatchVariables, variables: Variable[], variableTemplate: ImportVariableFormTemplate): Variable[] {
+  const newVariables: Variable[] = [];
+  const reverseLookup: {
+    [importedVariableId: string]: {
+      currentDatasetVariableID: string,
+      importedVariable: Variable
+    }
+  } = {};
+
+  Object.keys(variablesMatched).forEach(key => {
+    reverseLookup[variablesMatched[key].importedVariableID] = {
+      currentDatasetVariableID: key,
+      importedVariable: variablesMatched[key].importedVariable
+    };
+  });
+
+  structuredClone(variables).forEach(variable => {
+    if (variablesMatched[variable['@_ID']]) {
+      const updatedVariable = editSingleVariable(variable, variableTemplate, variablesMatched[variable['@_ID']], reverseLookup);
+      // console.log(updatedVariable);
+      newVariables.push(updatedVariable);
+    } else {
+      newVariables.push(variable);
+    }
+  });
+  // console.log(newVariables);
+  return newVariables;
+}
+
+function editSingleVariable(currentVariable: Variable, variableTemplate: ImportVariableFormTemplate, importedVariablesMatched: {
+  importedVariable: Variable,
+  importedVariableID: string
+}, reverseLookup: {
+  [importedVariableID: string]: {
+    currentDatasetVariableID: string,
+    importedVariable: Variable
+  }
+}): Variable {
+  const currentVariableCloned = structuredClone(currentVariable);
+  if (variableTemplate.label) {
+    if (!currentVariableCloned.labl?.['#text']) {
+      currentVariableCloned.labl = {
+        '#text': '',
+        '@_level': 'variable'
+      };
+    }
+    currentVariableCloned.labl['#text'] = importedVariablesMatched.importedVariable.labl?.['#text'] || '';
+  }
+  if (variableTemplate.notes) {
+    // current var has no notes
+    if (!currentVariableCloned.notes) {
+      currentVariableCloned.notes = [{
+        '#text': '',
+        '@_type': '',
+        '@_level': '',
+        '@_subject': ''
+      }, ''];
+    }
+    // current var only has dataverse signature
+    if (currentVariableCloned.notes && !Array.isArray(currentVariableCloned.notes)) {
+      currentVariableCloned.notes = [currentVariableCloned.notes, ''];
+    }
+    if (Array.isArray(importedVariablesMatched.importedVariable.notes)) {
+      currentVariableCloned.notes = [currentVariableCloned.notes[0], importedVariablesMatched.importedVariable.notes[1]];
+    }
+  }
+  if (variableTemplate.weight) {
+    const importedVariable = importedVariablesMatched.importedVariable['@_wgt-var'];
+    currentVariableCloned['@_wgt-var'] = reverseLookup[importedVariable] ? reverseLookup[importedVariable]?.currentDatasetVariableID : '';
+    currentVariableCloned['@_wgt'] = !!importedVariablesMatched.importedVariable['@_wgt'] ? importedVariablesMatched.importedVariable['@_wgt'] : '';
+    // console.log(currentVariable);
+  }
+  if (!currentVariable.qstn) {
+    currentVariableCloned.qstn = {
+      ivuInstr: '',
+      qstnLit: '',
+      postQTxt: ''
+    };
+  }
+  if (variableTemplate.literalQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      qstnLit:
+        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
+        currentVariable.qstn?.qstnLit ||
+        ''
+    };
+  }
+  if (variableTemplate.interviewQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      ivuInstr:
+        importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
+        currentVariable.qstn?.ivuInstr ||
+        ''
+    };
+  }
+  if (variableTemplate.postQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      postQTxt:
+        importedVariablesMatched.importedVariable.qstn?.postQTxt ||
+        currentVariable.qstn?.postQTxt ||
+        ''
+    };
+  }
+  if (variableTemplate.universe) {
+    currentVariableCloned.universe = importedVariablesMatched.importedVariable.universe;
+  }
+  console.log(currentVariableCloned);
+  return currentVariableCloned;
 }
