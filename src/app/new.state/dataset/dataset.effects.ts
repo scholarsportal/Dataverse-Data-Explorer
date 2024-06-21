@@ -27,30 +27,6 @@ export class DatasetEffects {
     }
   );
 
-  // fetchCrossTabAndSetIndex$ = createEffect(
-  //   (ddiService: DdiService = inject(DdiService)) => {
-  //     return this.actions$.pipe(
-  //       ofType(
-  //         CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex
-  //       ),
-  //       exhaustMap(({ variableID, index, orientation }) =>
-  //         ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
-  //           map((data) =>
-  //             DatasetActions.updateCrossTabValues({
-  //               variableID,
-  //               data,
-  //               orientation,
-  //               index
-  //             })
-  //           ),
-  //           catchError((error) =>
-  //             of(DataverseFetchActions.fetchDDIError(error))
-  //           )
-  //         )
-  //       )
-  //     );
-  //   }
-  // );
   private ddiService: DdiService = inject(DdiService);
   fetchCrossTabAndSetIndex$ = createEffect(() =>
     this.actions$.pipe(
