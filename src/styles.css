@@ -82,10 +82,6 @@
     @apply border border-slate-300 bg-transparent;
   }
 
-  .tooltip {
-    z-index: 2 !important;
-  }
-
   .table :where(thead, tfoot) {
     @apply text-base-content;
   }

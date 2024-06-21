@@ -32,7 +32,7 @@
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "pivottable": "^2.23.0",
-    "primeng": "^17.15.0",
+    "primeng": "^17.18.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -70,7 +70,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.1",
-    "typescript": "~5.2.2"
+    "typescript": "~5.4.5"
   },
   "prettier": {
     "singleQuote": true
