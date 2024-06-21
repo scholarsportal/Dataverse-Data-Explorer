@@ -6,7 +6,14 @@ import {
   selectVariablesWithCorrespondingGroups
 } from '../xml/xml.selectors';
 import { selectDatasetAllVariableCategories, selectDatasetVariableCrossTabValues } from '../dataset/dataset.selectors';
-import { createRowAndCategoryLabels, createTable, matchCategoriesWithLabels, truncatedText } from './util';
+import {
+  buildTable,
+  createRowAndCategoryLabels,
+  createTable,
+  matchCategoriesWithLabels,
+  transformCombinationsToChartData,
+  truncatedText
+} from './util';
 
 export const selectUIFeature = createFeatureSelector<UIState>('ui');
 
@@ -272,7 +279,6 @@ export const selectMatchCategories = createSelector(
   }
 );
 
-/* istanbul ignore next */
 export const selectCrossTabulationTableData = createSelector(
   selectCrossTabSelection,
   selectMatchCategories,
@@ -292,68 +298,32 @@ export const selectCrossTabulationTableData = createSelector(
         removeEmptyValuesFromTable.push(item);
       }
     });
-    return { table: removeEmptyValuesFromTable, rows, cols };
+    const empty: { table: { [id: string]: string }[], rows: string[], cols: string[] } = {
+      table: [],
+      cols: [],
+      rows: []
+    };
+    return !!removeEmptyValuesFromTable.length ? { table: removeEmptyValuesFromTable, rows, cols } : empty;
   }
 );
 
 export const selectCrossCharts = createSelector(
-  selectDatasetProcessedVariables, selectCrossTabCategoriesMissing, selectCrossTabSelection, selectMatchCategories, (variables, missing, crossTabSelection, tableData) => {
+  selectCrossTabulationTableData, (crossTabData) => {
     const crossChart: {
+      labels: string[],
       datasets: {
         label: string,
-        data: {
-          [label: string]: number
-        },
+        data: number[],
       }[],
     } = {
+      labels: [],
       datasets: []
     };
-    const varReference: { [variableID: string]: { [labelID: string]: string } } = {};
 
-    const tempChart: { [label: string]: number } = {};
-    const first = Object.values(tableData)?.[0] || [];
-    const second = Object.values(tableData)?.[1] || [];
-    first?.map((value, index) => {
-      if (value !== '') {
-        let label = second.length ? value + ' - ' + second[index] : value;
-        if (Object.values(tableData).length > 1) {
-          let newVal = '';
-          Object.values(tableData).map((value, index) => {
-            newVal = newVal + ' - ' + value[index];
-          });
-          label = label + newVal;
-        }
-        if (tempChart[label]) {
-          tempChart[label] += 1;
-        } else {
-          tempChart[label] = 1;
-        }
-      }
-    });
+    const countedCombinations = buildTable(crossTabData);
+    const chartData = transformCombinationsToChartData(countedCombinations);
 
-
-    crossTabSelection.map((value) => {
-      if (!!value.variableID) {
-        const data: { [label: string]: number } = {};
-        variables[value.variableID]?.catgry?.map(cat => {
-          data[cat.catValu] = Array.isArray(cat.catStat) ? cat.catStat[0]['#text'] as number : cat.catStat['#text'] as number;
-          if (varReference[value.variableID]) {
-            varReference[cat.catValu] = {
-              ...varReference[cat.catValu],
-              [cat.catValu]: cat.labl['#text']
-            };
-          } else {
-            varReference[value.variableID] = {
-              [cat.catValu]: cat.labl['#text']
-            };
-          }
-        });
-        const label = variables[value.variableID]['@_name'] + ' - ' + variables[value.variableID].labl['#text'];
-        crossChart.datasets.push({ label, data });
-      }
-    });
-
-    return crossChart;
+    return chartData || crossChart;
   }
 );
 

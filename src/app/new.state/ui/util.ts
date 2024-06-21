@@ -90,3 +90,68 @@ export function createTable(
   });
   return data;
 }
+
+// Function to count combinations
+export function buildTable(crossTabData: { rows: string[], cols: string[], table: { [id: string]: string }[] }) {
+  const { rows, cols, table } = crossTabData;
+  const countDict: { [tuple: string]: number } = {};
+
+  const data: {
+    [rowKey: string]: {
+      [columnKey: string]: number
+    };
+  } = {};
+  const rowValues = new Set<string>();
+  const columnValues = new Set<string>();
+
+  for (const entry of table) {
+    const rowKey = rows.map(row => entry[row]).join('|');
+    const columnKey = cols.map(column => entry[column]).join('|');
+    rowValues.add(rowKey);
+    columnValues.add(columnKey);
+
+    if (!data[rowKey]) {
+      data[rowKey] = {};
+    }
+    if (!data[rowKey][columnKey]) {
+      data[rowKey][columnKey] = 0;
+    }
+    data[rowKey][columnKey]++;
+  }
+
+  return { table: data, rows: Array.from(rowValues), cols: Array.from(columnValues) };
+}
+
+export function transformCombinationsToChartData(crossTabData: {
+  rows: string[],
+  cols: string[],
+  table: {
+    [rowKey: string]: {
+      [columnKey: string]: number
+    };
+  }
+}): {
+  labels: string[],
+  datasets: { label: string, data: number[] }[]
+} {
+  const { table, rows, cols } = crossTabData;
+  const labels = rows;
+  const datasets: {
+    label: string, data: number[]
+  }[] = [];
+
+  cols.forEach((column, index) => {
+    const dataset: { label: string, data: number[] } = {
+      label: column,
+      data: []
+    };
+
+    rows.forEach(row => {
+      dataset.data.push(table[row][column] || 0);
+    });
+
+    datasets.push(dataset);
+  });
+
+  return { labels, datasets };
+}
