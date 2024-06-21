@@ -1,5 +1,5 @@
 <h3 class="font-bold text-3xl">Variables</h3>
-@if (selection()?.length) {
+@if (!!selection && selection().length) {
   @for (item of selection(); track $index) {
     <dct-dropdown
       class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-neutral"
