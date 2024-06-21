@@ -1,11 +1,20 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { ddiJSONStructure } from './xml.interface';
+import { ApiResponse, ddiJSONStructure } from './xml.interface';
 import { ImportVariableFormData } from '../dataset/dataset.interface';
 
 export const DataverseFetchActions =
   createActionGroup({
     source: 'Dataverse API Action',
     events: {
+      // signed url
+      'Decode URL and fetch': props<{
+        url: string
+      }>(),
+      'Decode and Fetch DDI Success': props<{
+        data: string,
+        xml: ddiJSONStructure
+      }>(),
+      'Decode success': props<{ data: ApiResponse }>(),
       // on site init if URL params are satisfied, this is called
       'Start DDI Fetch': props<{
         siteURL: string,

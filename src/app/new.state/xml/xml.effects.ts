@@ -29,6 +29,43 @@ export class XmlEffects {
     }
   );
 
+  decodeAndFetchSignedURL$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.decodeURLAndFetch),
+        exhaustMap(({ url }) =>
+          ddiService.fetchDecodedURL(url).pipe(
+            map((data) =>
+              DataverseFetchActions.decodeSuccess({ data })
+            ),
+            catchError((error) => {
+              return of(DataverseFetchActions.fetchDDIError(error));
+            })
+          )
+        )
+      );
+    }
+  );
+
+  querySignedURL$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.decodeSuccess),
+        exhaustMap(({ data }) =>
+          ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
+            map((xml) => {
+                console.log(xml);
+                return DataverseFetchActions.fetchDDISuccess({ data: xml, siteURL: '', fileID: 1, language: 'en' });
+              }
+            ),
+            catchError((error) => {
+              return of(DataverseFetchActions.fetchDDIError(error));
+            })
+          )
+        )
+      );
+    }
+  );
   uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(

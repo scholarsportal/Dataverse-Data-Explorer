@@ -207,3 +207,25 @@ export const globalInitialState = {
   }
 };
 
+export interface QueryParameters {
+  fileId: number;
+  fileMetadataId: number;
+  datasetPid: string;
+}
+
+export interface SignedUrl {
+  name: string;
+  httpMethod: string;
+  signedUrl: string;
+  timeOut: number;
+}
+
+export interface Data {
+  queryParameters: QueryParameters;
+  signedUrls: SignedUrl[];
+}
+
+export interface ApiResponse {
+  status: string;
+  data: Data;
+}
