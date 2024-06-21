@@ -84,27 +84,29 @@
       class="mx-auto my-auto graph-area"
     ></dct-cross-table>
 
-    <div class="w-full text-3xl font-medium relative bottom-96">
-      @if (!hasData() && (loadingStatus === '')) {
+  }
+  <div class="w-full text-3xl font-medium relative bottom-96">
+    @if (!isFetching()) {
+      @if (!hasData()) {
         <h3 class="text-center mx-auto">
           No Data! Start adding variables to generate your table
         </h3>
-      } @else if (hasData() && !hasRowOrColumn() && loadingStatus === '') {
+      } @else if (hasData() && !hasRowOrColumn()) {
         <h3 class="text-center mx-auto">
           One more step. Set your rows and/or columns.
         </h3>
-      } @else {
-        @if (loadingStatus === 'init') {
-          <h3 class="preload-text">
-            Loading dataset ...
-          </h3>
-        } @else if (loadingStatus === 'delayed') {
-          <h3 class="preload-text">
-            Still loading ...
-          </h3>
-          <h4 class="text-base mx-auto text-center">One moment please</h4>
-        }
       }
-    </div>
-  }
+    } @else if (isFetching()) {
+      @if (loadingStatus === 'init') {
+        <h3 class="preload-text">
+          Loading dataset ...
+        </h3>
+      } @else if (loadingStatus === 'delayed') {
+        <h3 class="preload-text">
+          Still loading ...
+        </h3>
+        <h4 class="text-base mx-auto text-center">One moment please</h4>
+      }
+    }
+  </div>
 </div>

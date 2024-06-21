@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
@@ -9,7 +9,6 @@ import {
 } from './new.state/dataset/dataset.selectors';
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'dct-root',
@@ -31,6 +30,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: any) => {
+      const callback = params['callback'] as string;
       const siteURL = params['siteUrl'] as string;
       const fileID = params['fileId'] as number || params['fileID'] as number || params['dfId'] as number;
       const apiKey = params['key'] as string;
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
           DataverseFetchActions.startDDIFetch({ fileID, siteURL, apiKey, language, metadataID })
         );
       }
-      const extractedData = this.extractUrlParams((signedURL));
+      const extractedData = this.extractUrlParams(callback);
       /*if (signedURL && extractedData) {
         console.log(this.extractUrlParams(atob(signedURL)));
         return this.store.dispatch(
