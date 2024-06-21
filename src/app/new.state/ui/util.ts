@@ -94,7 +94,6 @@ export function createTable(
 // Function to count combinations
 export function buildTable(crossTabData: { rows: string[], cols: string[], table: { [id: string]: string }[] }) {
   const { rows, cols, table } = crossTabData;
-  const countDict: { [tuple: string]: number } = {};
 
   const data: {
     [rowKey: string]: {
@@ -140,7 +139,7 @@ export function transformCombinationsToChartData(crossTabData: {
     label: string, data: number[]
   }[] = [];
 
-  cols.forEach((column, index) => {
+  cols.forEach((column) => {
     const dataset: { label: string, data: number[] } = {
       label: column,
       data: []
