@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadButtonComponent } from './file-upload-button/file-upload-button.component';
 import { FormsModule } from '@angular/forms';
@@ -6,11 +6,10 @@ import { Store } from '@ngrx/store';
 import {
   selectDatasetImportIdle,
   selectDatasetImportPending,
-  selectDatasetImportSuccess
+  selectDatasetImportSuccess,
 } from 'src/app/new.state/dataset/dataset.selectors';
 import { ImportVariableFormTemplate } from '../../new.state/xml/xml.interface';
 import { XmlManipulationActions } from '../../new.state/xml/xml.actions';
-import { DdiService } from '../../services/ddi.service';
 
 @Component({
   selector: 'dct-import',
@@ -18,13 +17,12 @@ import { DdiService } from '../../services/ddi.service';
   imports: [CommonModule, FormsModule, FileUploadButtonComponent],
   templateUrl: './import.component.html',
   styleUrl: './import.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImportComponent {
   importInProgress = this.store.selectSignal(selectDatasetImportPending);
   importNotStarted = this.store.selectSignal(selectDatasetImportIdle);
   importSucceeded = this.store.selectSignal(selectDatasetImportSuccess);
-  ddi = inject(DdiService);
   file: File | undefined = undefined;
   // variable options-button
   variableGroups = false;
@@ -36,8 +34,7 @@ export class ImportComponent {
   variableNotes = false;
   weights = false;
 
-  constructor(private store: Store) {
-  }
+  constructor(private store: Store) {}
 
   onFileSelected(file: File) {
     // Handle the selected file here
@@ -79,11 +76,14 @@ export class ImportComponent {
       postQuestion: this.postQuestion,
       notes: this.variableNotes,
       weight: this.weights,
-      universe: this.universe
+      universe: this.universe,
     };
     if (importedXmlString) {
       this.store.dispatch(
-        XmlManipulationActions.startImportMetadata({ importedXmlString, variableTemplate })
+        XmlManipulationActions.startImportMetadata({
+          importedXmlString,
+          variableTemplate,
+        }),
       );
     }
   }

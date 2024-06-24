@@ -12,7 +12,7 @@ export function matchCategoriesWithLabels(
     [variableID: string]: { [categoryID: string]: string };
   },
   crossTabValues: { [variableID: string]: string[] },
-  missingCategories: { [variableID: string]: string[] }
+  missingCategories: { [variableID: string]: string[] },
 ) {
   const matched: { [variableID: string]: string[] } = {};
   Object.keys(crossTabValues).map((key) => {
@@ -36,7 +36,7 @@ export function createRowAndCategoryLabels(
     variableID: string;
     orientation: 'rows' | 'cols' | '';
   }[] = [],
-  processedVariables: { [p: string]: Variable }
+  processedVariables: { [p: string]: Variable },
 ): {
   labels: { [variableID: string]: string };
   rows: string[];
@@ -62,7 +62,7 @@ export function createRowAndCategoryLabels(
 
 export function createTable(
   processedCategories: { [categoryID: string]: string[] },
-  rowAndColumnLabels: { [variableID: string]: string }
+  rowAndColumnLabels: { [variableID: string]: string },
 ) {
   const data: { [categoryLabel: string]: string }[] = [];
   Object.keys(processedCategories).map((categoryKeyAsVariableID: string) => {
@@ -74,11 +74,11 @@ export function createTable(
           if (data[index]) {
             data[index] = {
               ...data[index],
-              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel
+              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel,
             };
           } else {
             data[index] = {
-              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel
+              [rowAndColumnLabels[categoryKeyAsVariableID]]: categoryLabel,
             };
           }
         } else {
@@ -86,26 +86,43 @@ export function createTable(
         }
       });
     }
-
   });
   return data;
 }
 
 // Function to count combinations
-export function buildTable(crossTabData: { rows: string[], cols: string[], table: { [id: string]: string }[] }) {
+export function buildTable(crossTabData: {
+  rows: string[];
+  cols: string[];
+  table: { [id: string]: string }[];
+}) {
   const { rows, cols, table } = crossTabData;
 
   const data: {
     [rowKey: string]: {
-      [columnKey: string]: number
+      [columnKey: string]: number;
     };
   } = {};
   const rowValues = new Set<string>();
   const columnValues = new Set<string>();
 
   for (const entry of table) {
-    const rowKey = rows.map(row => entry[row]).join('|');
-    const columnKey = cols.map(column => entry[column]).join('|');
+    const rowArray: string[] = [];
+    const colArray: string[] = [];
+
+    rows.map((row) => {
+      if (!!entry[row]) {
+        rowArray.push(entry[row]);
+      }
+    });
+    cols.map((column) => {
+      if (!!entry[column]) {
+        colArray.push(entry[column]);
+      }
+    });
+
+    const rowKey = rowArray.join(' - ');
+    const columnKey = colArray.join(' - ');
     rowValues.add(rowKey);
     columnValues.add(columnKey);
 
@@ -118,34 +135,39 @@ export function buildTable(crossTabData: { rows: string[], cols: string[], table
     data[rowKey][columnKey]++;
   }
 
-  return { table: data, rows: Array.from(rowValues), cols: Array.from(columnValues) };
+  return {
+    table: data,
+    rows: Array.from(rowValues),
+    cols: Array.from(columnValues),
+  };
 }
 
 export function transformCombinationsToChartData(crossTabData: {
-  rows: string[],
-  cols: string[],
+  rows: string[];
+  cols: string[];
   table: {
     [rowKey: string]: {
-      [columnKey: string]: number
+      [columnKey: string]: number;
     };
-  }
+  };
 }): {
-  labels: string[],
-  datasets: { label: string, data: number[] }[]
+  labels: string[];
+  datasets: { label: string; data: number[] }[];
 } {
   const { table, rows, cols } = crossTabData;
   const labels = rows;
   const datasets: {
-    label: string, data: number[]
+    label: string;
+    data: number[];
   }[] = [];
 
   cols.forEach((column) => {
-    const dataset: { label: string, data: number[] } = {
+    const dataset: { label: string; data: number[] } = {
       label: column,
-      data: []
+      data: [],
     };
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
       dataset.data.push(table[row][column] || 0);
     });
 

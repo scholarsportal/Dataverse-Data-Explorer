@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "1.9.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,6 +12,7 @@
     "lint": "ng lint"
   },
   "private": true,
+  "license": "MPL-2.0",
   "dependencies": {
     "@angular/animations": "^17.3.1",
     "@angular/cdk": "^17.3.1",
