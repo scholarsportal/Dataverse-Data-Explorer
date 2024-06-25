@@ -61,8 +61,8 @@
   @if (hasData() && hasRowOrColumn() && !isFetching()) {
     @if (defaultDataView() === 'Table') {
       <dct-cross-table
-        [cols]="cols()"
         [data]="table()"
+        [cols]="cols()"
         [rows]="rows()"
         [hasData]="true"
         [selectedViewOption]="selectedOptionComputed()"
@@ -72,6 +72,8 @@
     } @else if (defaultDataView() === 'Chart') {
       <dct-cross-chart
         [data]="tableChart()"
+        [cols]="cols()"
+        [rows]="rows()"
       />
     }
   } @else {
