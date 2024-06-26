@@ -43,6 +43,10 @@
     @apply text-base-100;
   }
 
+  .btn-action {
+    @apply hover:bg-base-100 transition ease-in-out duration-300;
+  }
+
   .btn-outline {
     @apply border border-slate-300 bg-transparent;
   }
@@ -77,13 +81,18 @@
   .form-outline {
     @apply border border-slate-300 bg-transparent;
   }
+
+  .table :where(thead, tfoot) {
+    @apply text-base-content;
+  }
+  
 }
 
 @layer utilities {
 }
 
 .select {
-  @apply border border-slate-300 rounded;
+  @apply border-slate-300 rounded;
 }
 .p-multiselect-items-wrapper {
   @apply bg-base-100 rounded border border-slate-300;
@@ -91,7 +100,13 @@
 .p-multiselect-item {
   padding: 0.5rem 1rem;
 }
+.p-menuitem-link {
+  @apply leading-normal p-5 hover:bg-base-300 focus:bg-base-300;
+}
 .p-multiselect-item:hover, .p-multiselect-item:focus {
+  @apply bg-base-300
+}
+.p-focus {
   @apply bg-base-300
 }
 .p-checkbox {
@@ -101,7 +116,7 @@
   padding-top: .3rem;
 }
 .dropdownicon {
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: calc(100% - 20px) calc(1px + 50%), calc(100% - 16.1px) calc(1px + 50%);
   background-size: 4px 4px, 4px 4px;

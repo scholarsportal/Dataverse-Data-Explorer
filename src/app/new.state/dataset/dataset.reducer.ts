@@ -1,6 +1,6 @@
 import { ddiJSONStructure } from '../../old.state/interface';
 import { createReducer, on } from '@ngrx/store';
-import { DataverseFetchActions } from '../xml/xml.actions';
+import { DataverseFetchActions, XmlManipulationActions } from '../xml/xml.actions';
 import { DatasetActions } from './dataset.actions';
 import { CrossTabulationUIActions } from '../ui/ui.actions';
 
@@ -94,6 +94,40 @@ export const datasetReducer = createReducer(
       operationStatus: {
         ...state.operationStatus,
         variableDownload: 'success' as const
+      }
+    };
+  }),
+  on(DataverseFetchActions.startDatasetUpload, (state) => ({
+    ...state,
+    operationStatus: {
+      ...state.operationStatus,
+      upload: 'pending' as const
+    }
+  })),
+  on(DataverseFetchActions.datasetUploadSuccess, (state, data) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        upload: 'success' as const
+      }
+    };
+  }),
+  on(XmlManipulationActions.startImportMetadata, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        import: 'pending' as const
+      }
+    };
+  }),
+  on(XmlManipulationActions.importConversionSuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        import: 'success' as const
       }
     };
   })

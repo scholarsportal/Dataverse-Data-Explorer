@@ -1,14 +1,18 @@
-import { XmlState } from './xml.interface';
+import { MatchVariables, XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 import {
   changeGroupsForMultipleVariables,
   changeGroupsForSingleVariable,
   changeMultipleVariables,
+  changeMultipleVariableWeights,
   changeSingleVariable,
+  createNewVariables,
   deleteVariableGroup,
+  matchVariableIDs,
   removeVariablesFromGroups,
-  renameVariableGroup
+  renameVariableGroup,
+  updateGroups
 } from './xml.util';
 
 export const initialState: XmlState = {
@@ -44,32 +48,22 @@ export const xmlReducer = createReducer(
       const variableGroups =
         duplicateState.dataset?.codeBook.dataDscr.varGrp || [];
       if (duplicateState.dataset && variables.length && variableGroups.length) {
-        // First match the incoming groups with the groups in the dataset
-        // const groupMatched: MatchGroups = matchGroups(
-        //   importDdiData.codeBook.dataDscr.varGrp,
-        //   variableGroups
-        // );
-        // Then match the incoming variables with the variables in the datas
-        // const variablesMatched: MatchVariables = matchVariableIDs(
-        //   importDdiData.codeBook.dataDscr.var,
-        //   variables
-        // );
-        // Change the groups in the current dataset to match incoming
-        // const newGroups: VariableGroup[] = createNewVarGroups(
-        //   groupMatched,
-        //   variablesMatched,
-        //   variableGroups
-        // );
-        // Match variables metadata based on variableTemplate
-        // const newVariables: { variables: Variable[]; count: number } =
-        // createNewVariables(variablesMatched, variables, variableTemplate);
-        // Change current dataset variables and groups
-        // newState.dataset.codeBook.dataDscr.var = newVariables.variables;
-        // newState.dataset.codeBook.dataDscr.varGrp = newGroups;
-        // newState.import.rejected = variables.length - newVariables.count;
+        const variablesMatched: MatchVariables = matchVariableIDs(
+          importDdiData.codeBook.dataDscr.var,
+          variables
+        );
+        duplicateState.dataset.codeBook.dataDscr.var = createNewVariables(variablesMatched, variables, variableTemplate);
+        duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(importDdiData.codeBook.dataDscr.varGrp);
+        // console.log(createNewVariables(variablesMatched, variables, variableTemplate));
+        duplicateState.info ? duplicateState.info.importedSuccess = true : {
+          siteURL: '',
+          fileID: '',
+          apiKey: '',
+          importedSuccess: true
+        };
       }
       return {
-        ...state
+        ...duplicateState
       };
     }
   ),
@@ -129,7 +123,6 @@ export const xmlReducer = createReducer(
     };
   }),
   on(XmlManipulationActions.removeVariablesFromGroup, (state, { groupID, variableIDs }) => {
-    console.log(variableIDs);
     const duplicateVariableGroups = structuredClone(state.dataset?.codeBook.dataDscr.varGrp || []);
     const patchedVariableGroups = removeVariablesFromGroups(groupID, variableIDs, duplicateVariableGroups);
     return {
@@ -177,8 +170,10 @@ export const xmlReducer = createReducer(
       if (newVariableValue) {
         duplicateVariables = changeMultipleVariables(duplicateVariables, variableIDs, newVariableValue, assignedWeight);
       }
+      if (assignedWeight) {
+        duplicateVariables = changeMultipleVariableWeights(duplicateVariables, variableIDs, assignedWeight === 'remove' ? '' : assignedWeight);
+      }
       if (groups) {
-        console.log(groups);
         duplicateVariableGroups = changeGroupsForMultipleVariables(duplicateVariableGroups, variableIDs, groups);
       }
       return {

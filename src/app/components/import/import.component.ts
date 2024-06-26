@@ -6,8 +6,10 @@ import { Store } from '@ngrx/store';
 import {
   selectDatasetImportIdle,
   selectDatasetImportPending,
-  selectDatasetImportSuccess
+  selectDatasetImportSuccess,
 } from 'src/app/new.state/dataset/dataset.selectors';
+import { ImportVariableFormTemplate } from '../../new.state/xml/xml.interface';
+import { XmlManipulationActions } from '../../new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-import',
@@ -15,7 +17,7 @@ import {
   imports: [CommonModule, FormsModule, FileUploadButtonComponent],
   templateUrl: './import.component.html',
   styleUrl: './import.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImportComponent {
   importInProgress = this.store.selectSignal(selectDatasetImportPending);
@@ -32,8 +34,7 @@ export class ImportComponent {
   variableNotes = false;
   weights = false;
 
-  constructor(private store: Store) {
-  }
+  constructor(private store: Store) {}
 
   onFileSelected(file: File) {
     // Handle the selected file here
@@ -67,20 +68,23 @@ export class ImportComponent {
   }
 
   async onImportButtonClick() {
-    const fileText = await this.file?.text();
-    /* const variableTemplate: VariableFormTemplate = {
-       label: this.labels,
-       interviewQuestion: this.interviewerQuestion,
-       literalQuestion: this.literalQuestion,
-       postQuestion: this.postQuestion,
-       notes: this.variableNotes,
-       weight: this.weights,
-       universe: this.universe
-     };
-     if (fileText) {
-       this.store.dispatch(
-         datasetImportMetadataStart({ file: fileText, variableTemplate })
-       );
-     }*/
+    const importedXmlString = await this.file?.text();
+    const variableTemplate: ImportVariableFormTemplate = {
+      label: this.labels,
+      interviewQuestion: this.interviewerQuestion,
+      literalQuestion: this.literalQuestion,
+      postQuestion: this.postQuestion,
+      notes: this.variableNotes,
+      weight: this.weights,
+      universe: this.universe,
+    };
+    if (importedXmlString) {
+      this.store.dispatch(
+        XmlManipulationActions.startImportMetadata({
+          importedXmlString,
+          variableTemplate,
+        }),
+      );
+    }
   }
 }

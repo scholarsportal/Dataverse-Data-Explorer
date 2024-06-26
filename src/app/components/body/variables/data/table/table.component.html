@@ -10,16 +10,104 @@
   [itemsPerPage]="itemsPerPage()"
   [total]="variablesLength()"
   [variablesList]="variables()"
-  class="flex flex-row w-full justify-between px-5"
+  class="md:hidden md:flex md:flex-row w-full md:justify-between md:px-5"
 />
 
+<p-table
+  [first]="currentPage"
+  [paginator]="false"
+  [scrollable]="true"
+  [value]="searchResultVariables()"
+  class="md:hidden w-full overflow-y-auto"
+  paginatorStyleClass="hidden"
+  scrollHeight="flex"
+  styleClass="p-datatable-striped"
+  responsiveLayout="stack"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr class="bg-base-100 border-b-2 z-20">
+      <th pSortableColumn="variableID">ID</th>
+      <th pSortableColumn="name">Name</th>
+      <th pSortableColumn="label">Label</th>
+      <th pSortableColumn="weight">Weight</th>
+      <th>
+        <span class="invisible">Options</span>
+        <dct-bulk-edit-modal
+          [selectedVariables]="selectedVariables()"
+          ngClass="{{
+            selectedVariables().length > 1 ? 'visible' : 'invisible'
+          }}"
+        />
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template let-variable pTemplate="body" let-columns="columns">
+    <tr
+      class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-base-300"
+    >
+      <td class="px-5 pt-5 pb-2">
+        <div class="p-column-title font-bold w-1/4">ID</div>
+        <div class="w-3/4">{{ variable.variableID }}</div>
+      </td>
+      <td class="px-5 py-2">
+        <div class="p-column-title font-bold w-1/4">Name</div>
+        <div class="w-3/4">{{ variable.name }}</div>
+      </td>
+      <td class="px-5 py-2">
+        <div class="p-column-title font-bold w-1/4">Label</div>
+        <div class="w-3/4">{{ variable.label }}</div>
+      </td>
+      <td class="px-5 py-2">
+        <div class="p-column-title font-bold w-1/4">Weight</div>
+        @if (variable.weight.length) {
+          <div class="w-3/4">{{ variable.weight }}</div>
+        } @else if (variable.isWeight) {
+          <div class="w-3/4">
+            <span class="rounded px-2 bg-success text-base-100">Weight</span>
+          </div>
+        } @else {
+          <div class="w-3/4">
+            <span class="rounded px-2 border">No Weight</span>
+          </div>
+        }
+      </td>
+      <td class="flex flex-row-reverse">
+        <div class="mt-0.5">
+          <dct-variable-options-button
+            (emitLaunchModal)="launchModal($event)"
+            [crossTabValuesFetched]="crossTabValuesFetched()"
+            [isFetching]="isFetching()"
+            [variableID]="variable.variableID"
+            [variablesInCrossTab]="variablesInCrossTab()"
+            class="flex flex-row"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<dct-table-nav
+  (emitItemsPerPageChange)="setItemsPerPage($event)"
+  (emitSearchResultList)="setSearchResultList($event)"
+  (pageNextClick)="next()"
+  (pagePreviousClick)="prev()"
+  [currentPage]="currentPage"
+  [groupChanged]="groupChanged()"
+  [isFirstPage]="isFirstPage()"
+  [isLastPage]="isLastPage()"
+  [itemsPerPage]="itemsPerPage()"
+  [total]="variablesLength()"
+  [variablesList]="variables()"
+  class="hidden md:flex flex-row w-full justify-between px-5"
+/>
 <p-table
   [first]="currentPage"
   [paginator]="true"
   [rows]="itemsPerPage()"
   [scrollable]="true"
   [value]="searchResultVariables()"
-  class="w-full pl-5 overflow-y-auto"
+  class="hidden md:block w-full pl-5 overflow-y-auto"
   paginatorStyleClass="hidden"
   scrollHeight="flex"
 >
@@ -54,7 +142,7 @@
   </ng-template>
   <ng-template let-variable pTemplate="body">
     <tr
-      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300 cursor-pointer"
+      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300"
     >
       <td>
         <label>
@@ -75,14 +163,14 @@
         @if (variable.weight.length) {
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
-          <span class="rounded px-2 bg-success text-success-content"
-          >Weight</span
+          <span class="rounded px-2 bg-success text-base-100"
+            >Weight</span
           >
         } @else {
           <span class="rounded px-2 border">No Weight</span>
         }
       </td>
-      <td class="invisible group-hover:visible flex flex-row">
+      <td class="invisible group-hover:visible flex flex-row float-right">
         <div class="mt-0.5">
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
@@ -97,6 +185,7 @@
     </tr>
   </ng-template>
 </p-table>
+
 @if (selectedVariables().length > 1) {
   <dct-table-menu
     [allGroups]="groups()"

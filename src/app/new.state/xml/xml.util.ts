@@ -1,4 +1,4 @@
-import { Variable, VariableGroup } from './xml.interface';
+import { ImportVariableFormTemplate, MatchVariables, Variable, VariableGroup } from './xml.interface';
 
 interface VariableForm {
   label: string;
@@ -24,13 +24,31 @@ function updateGivenVariable(
   variable: Variable,
   newVariableValue: VariableForm
 ): Variable {
-  const updatedVariable = structuredClone(variable);
-  updatedVariable.labl['#text'] = newVariableValue.label;
-  updatedVariable.notes['#text'] = newVariableValue.notes;
-  updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
-  updatedVariable['@_wgt-var'] = newVariableValue.isWeight
-    ? ''
-    : newVariableValue.assignedWeight;
+  let updatedVariable = structuredClone(variable);
+  if (updatedVariable.labl?.['#text']) {
+    updatedVariable.labl = { '#text': newVariableValue.label, '@_level': 'variable' };
+  } else {
+    updatedVariable.labl = {
+      ...updatedVariable.labl,
+      '#text': newVariableValue.label
+    };
+  }
+  if (!!updatedVariable['@_wgt']) {
+    updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
+  } else {
+    updatedVariable = { ...updatedVariable, '@_wgt': newVariableValue.isWeight ? 'wgt' : '' };
+  }
+  if (!!updatedVariable['@_wgt-var']) {
+    updatedVariable['@_wgt-var'] = newVariableValue.isWeight ? '' : newVariableValue.assignedWeight;
+  } else {
+    updatedVariable = {
+      ...updatedVariable,
+      '@_wgt-var': newVariableValue.isWeight ? '' : newVariableValue.assignedWeight
+    };
+  }
+  if (Array.isArray(updatedVariable.notes)) {
+    updatedVariable.notes[1] = newVariableValue.notes;
+  }
   if (!updatedVariable.qstn) {
     updatedVariable.qstn = {
       qstnLit: newVariableValue.literalQuestion,
@@ -55,6 +73,33 @@ export function changeMultipleVariables(
         ...newVariableValue,
         isWeight: !!variable['@_wgt'],
         assignedWeight: assignedWeight || variable['@_wgt-var']
+      };
+      tempVar = updateGivenVariable(variable, patchedVariable);
+    }
+    updatedVariableList.push(tempVar);
+  });
+
+  return updatedVariableList;
+}
+
+export function changeMultipleVariableWeights(
+  variableArray: Variable[],
+  variableID: string[],
+  assignedWeight: string
+) {
+  const updatedVariableList: Variable[] = [];
+  structuredClone(variableArray).forEach((variable) => {
+    let tempVar: Variable = variable;
+    if (variableID.includes(variable['@_ID'])) {
+      const patchedVariable: VariableForm = {
+        label: variable.labl?.['#text'] ? variable.labl['#text'] : '',
+        literalQuestion: variable.qstn?.qstnLit ? variable.qstn.qstnLit : '',
+        interviewQuestion: variable.qstn?.ivuInstr ? variable.qstn.ivuInstr : '',
+        postQuestion: variable.qstn?.postQTxt ? variable.qstn.postQTxt : '',
+        universe: variable.universe || '',
+        notes: Array.isArray(variable.notes) ? variable.notes[1] : '',
+        isWeight: !!variable['@_wgt'],
+        assignedWeight: assignedWeight
       };
       tempVar = updateGivenVariable(variable, patchedVariable);
     }
@@ -129,8 +174,8 @@ export function changeGroupsForMultipleVariables(
 }
 
 export function renameVariableGroup(duplicateVariableGroups: VariableGroup[], groupID: string, newLabel: string) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
-  for (let i = 0; i < variableGroupArrayLength; i++) {
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
+  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
       currentVariableGroup.labl = newLabel;
@@ -141,9 +186,9 @@ export function renameVariableGroup(duplicateVariableGroups: VariableGroup[], gr
 }
 
 export function deleteVariableGroup(duplicateVariableGroups: VariableGroup[], groupID: string) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
   let index = -1;
-  for (let i = 0; i < variableGroupArrayLength; i++) {
+  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
       index = i;
@@ -157,8 +202,7 @@ export function deleteVariableGroup(duplicateVariableGroups: VariableGroup[], gr
 }
 
 export function removeVariablesFromGroups(groupID: string, variableIDs: string[], duplicateVariableGroups: VariableGroup[]) {
-
-  const variableGroupArrayLength: number = duplicateVariableGroups.length - 1;
+  const variableGroupArrayLength: number = duplicateVariableGroups.length;
   for (let i = 0; i < variableGroupArrayLength; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
@@ -174,4 +218,145 @@ export function removeVariablesFromGroups(groupID: string, variableIDs: string[]
     }
   }
   return duplicateVariableGroups;
+}
+
+export function matchVariableIDs(importedVariables: Variable[], datasetVariables: Variable[]): MatchVariables {
+  const matchedVariables: MatchVariables = {};
+  // First we loop through the imported dataset
+  importedVariables.forEach((variableImported) => {
+    // For each dataset we go through our current dataset to find the matching name
+    for (let variableInCurrentDataset of datasetVariables) {
+      if (variableInCurrentDataset['@_name'] === variableImported['@_name']) {
+        matchedVariables[variableInCurrentDataset['@_ID']] = {
+          importedVariableID: variableImported['@_ID'],
+          importedVariable: variableImported
+        };
+      }
+    }
+  });
+  return matchedVariables;
+}
+
+export function updateGroups(groups: VariableGroup[]): VariableGroup[] {
+  const duplicateVariableGroups: VariableGroup[] = [];
+  groups.forEach(group => {
+    duplicateVariableGroups.push({
+      ...group,
+      '@_ID': `VG${Math.floor(Math.random() * 90000) + 10000}`
+    });
+  });
+  return duplicateVariableGroups;
+}
+
+export function createNewVariables(variablesMatched: MatchVariables, variables: Variable[], variableTemplate: ImportVariableFormTemplate): Variable[] {
+  const newVariables: Variable[] = [];
+  const reverseLookup: {
+    [importedVariableId: string]: {
+      currentDatasetVariableID: string,
+      importedVariable: Variable
+    }
+  } = {};
+
+  Object.keys(variablesMatched).forEach(key => {
+    reverseLookup[variablesMatched[key].importedVariableID] = {
+      currentDatasetVariableID: key,
+      importedVariable: variablesMatched[key].importedVariable
+    };
+  });
+
+  structuredClone(variables).forEach(variable => {
+    if (variablesMatched[variable['@_ID']]) {
+      const updatedVariable = editSingleVariable(variable, variableTemplate, variablesMatched[variable['@_ID']], reverseLookup);
+      // console.log(updatedVariable);
+      newVariables.push(updatedVariable);
+    } else {
+      newVariables.push(variable);
+    }
+  });
+  // console.log(newVariables);
+  return newVariables;
+}
+
+function editSingleVariable(currentVariable: Variable, variableTemplate: ImportVariableFormTemplate, importedVariablesMatched: {
+  importedVariable: Variable,
+  importedVariableID: string
+}, reverseLookup: {
+  [importedVariableID: string]: {
+    currentDatasetVariableID: string,
+    importedVariable: Variable
+  }
+}): Variable {
+  const currentVariableCloned = structuredClone(currentVariable);
+  if (variableTemplate.label) {
+    if (!currentVariableCloned.labl?.['#text']) {
+      currentVariableCloned.labl = {
+        '#text': '',
+        '@_level': 'variable'
+      };
+    }
+    currentVariableCloned.labl['#text'] = importedVariablesMatched.importedVariable.labl?.['#text'] || '';
+  }
+  if (variableTemplate.notes) {
+    // current var has no notes
+    if (!currentVariableCloned.notes) {
+      currentVariableCloned.notes = [{
+        '#text': '',
+        '@_type': '',
+        '@_level': '',
+        '@_subject': ''
+      }, ''];
+    }
+    // current var only has dataverse signature
+    if (currentVariableCloned.notes && !Array.isArray(currentVariableCloned.notes)) {
+      currentVariableCloned.notes = [currentVariableCloned.notes, ''];
+    }
+    if (Array.isArray(importedVariablesMatched.importedVariable.notes)) {
+      currentVariableCloned.notes = [currentVariableCloned.notes[0], importedVariablesMatched.importedVariable.notes[1]];
+    }
+  }
+  if (variableTemplate.weight) {
+    const importedVariable = importedVariablesMatched.importedVariable['@_wgt-var'];
+    currentVariableCloned['@_wgt-var'] = reverseLookup[importedVariable] ? reverseLookup[importedVariable]?.currentDatasetVariableID : '';
+    currentVariableCloned['@_wgt'] = !!importedVariablesMatched.importedVariable['@_wgt'] ? importedVariablesMatched.importedVariable['@_wgt'] : '';
+    // console.log(currentVariable);
+  }
+  if (!currentVariable.qstn) {
+    currentVariableCloned.qstn = {
+      ivuInstr: '',
+      qstnLit: '',
+      postQTxt: ''
+    };
+  }
+  if (variableTemplate.literalQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      qstnLit:
+        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
+        currentVariable.qstn?.qstnLit ||
+        ''
+    };
+  }
+  if (variableTemplate.interviewQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      ivuInstr:
+        importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
+        currentVariable.qstn?.ivuInstr ||
+        ''
+    };
+  }
+  if (variableTemplate.postQuestion) {
+    currentVariableCloned.qstn = {
+      ...currentVariable.qstn,
+      postQTxt:
+        importedVariablesMatched.importedVariable.qstn?.postQTxt ||
+        currentVariable.qstn?.postQTxt ||
+        ''
+    };
+  }
+  if (variableTemplate.universe) {
+    currentVariableCloned.universe = importedVariablesMatched.importedVariable.universe;
+  }
+  console.log(currentVariableCloned);
+  return currentVariableCloned;
 }

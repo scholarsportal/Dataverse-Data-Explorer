@@ -3,7 +3,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ddiJSONStructure } from '../new.state/xml/xml.interface';
+import { ApiResponse, ddiJSONStructure } from '../new.state/xml/xml.interface';
 import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 
 @Injectable({
@@ -34,15 +34,41 @@ export class DdiService {
       attributeNamePrefix: '@_'
     };
 
+  fetchDecodedURL(url: string) {
+    return this.http.get(url, { responseType: 'json' }).pipe(
+      map((data) => {
+        return data as ApiResponse;
+      })
+    );
+  }
+
   fetchDatasetFromDataverse(
     fileID: number,
-    siteURL: string
+    siteURL: string,
+    metadataID: number | undefined
   ): Observable<ddiJSONStructure> {
+    let metadataParam = '';
+    if (metadataID) {
+      metadataParam = '?fileMetadataId=' + metadataID;
+    }
     return this.http
-      .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi`, {
+      .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi${metadataParam}`, {
         responseType: 'text'
       })
       .pipe(map((data) => {
+        return this.XMLtoJSON(data);
+      }));
+  }
+
+  fetchSignedURL(
+    url: string
+  ): Observable<ddiJSONStructure> {
+    return this.http
+      .get(url, {
+        responseType: 'text'
+      })
+      .pipe(map((data) => {
+        console.log(this.XMLtoJSON(data));
         return this.XMLtoJSON(data);
       }));
   }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DataverseFetchActions } from './xml.actions';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
 
 @Injectable()
@@ -15,13 +15,50 @@ export class XmlEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.startDDIFetch),
-        exhaustMap(({ fileID, siteURL, apiKey }) =>
-          ddiService.fetchDatasetFromDataverse(fileID, siteURL).pipe(
+        exhaustMap(({ fileID, siteURL, apiKey, metadataID, language }) =>
+          ddiService.fetchDatasetFromDataverse(fileID, siteURL, metadataID).pipe(
             map((data) =>
-              DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey })
+              DataverseFetchActions.fetchDDISuccess({ data, fileID, siteURL, apiKey, metadataID, language })
             ),
             catchError((error) => {
-              console.log(error);
+              return of(DataverseFetchActions.fetchDDIError(error));
+            })
+          )
+        )
+      );
+    }
+  );
+
+  decodeAndFetchSignedURL$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.decodeURLAndFetch),
+        exhaustMap(({ url }) =>
+          ddiService.fetchDecodedURL(url).pipe(
+            map((data) =>
+              DataverseFetchActions.decodeSuccess({ data })
+            ),
+            catchError((error) => {
+              return of(DataverseFetchActions.fetchDDIError(error));
+            })
+          )
+        )
+      );
+    }
+  );
+
+  querySignedURL$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.decodeSuccess),
+        exhaustMap(({ data }) =>
+          ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
+            map((xml) => {
+                console.log(xml);
+                return DataverseFetchActions.fetchDDISuccess({ data: xml, siteURL: '', fileID: 1, language: 'en' });
+              }
+            ),
+            catchError((error) => {
               return of(DataverseFetchActions.fetchDDIError(error));
             })
           )
@@ -50,4 +87,17 @@ export class XmlEffects {
       );
     }
   );
+  convertImportedDatasetToXML$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(XmlManipulationActions.startImportMetadata),
+        switchMap(({ importedXmlString, variableTemplate }) => {
+            const xml = ddiService.XMLtoJSON(importedXmlString);
+            return of(XmlManipulationActions.importConversionSuccess({ importDdiData: xml, variableTemplate }));
+          }
+        )
+      );
+    }
+  );
 }
+

@@ -221,7 +221,6 @@ export const uiReducer = createReducer(
           changedSelection.push(value);
         }
       });
-      console.log(newSelection);
       return {
         ...state,
         bodyState: {

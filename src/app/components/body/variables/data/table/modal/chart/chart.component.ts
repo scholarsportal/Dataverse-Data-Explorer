@@ -58,6 +58,7 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.createChart();
+    
   }
 
   toggleCheckbox(value: string) {
@@ -106,12 +107,13 @@ export class ChartComponent implements OnInit {
     const dark = 'white';
     const neutral = '#c8c5d0';
     const theme = localStorage.getItem('theme');
-
+    
     if (theme === 'light') {
       this.chartJS.options.scales.x.grid.color = neutral;
       this.chartJS.options.scales.y.grid.color = neutral;
       this.chartJS.options.scales.x.ticks.color = light;
       this.chartJS.options.scales.y.ticks.color = light;
+      this.chartJS.options.plugins.legend.labels.color = light;
     } else {
       this.chartJS.options.scales.x.grid.color = dark;
       this.chartJS.options.scales.y.grid.color = dark;
@@ -124,11 +126,32 @@ export class ChartComponent implements OnInit {
   private redrawChart(chart: { x: number; y: string }[]) {
     // Update chart data and redraw
     if (this.chartJS) {
+      const light = 'black';
+      const dark = 'white';
+      const neutral = '#c8c5d0';
+      const theme = localStorage.getItem('theme');
       this.chartJS.data.datasets[0].data = chart;
+
       if (this.chartJS.data?.options?.scales?.y?.ticks) {
         this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
       }
-      this.chartJS.update();
+
+      if (theme === 'light') {
+        this.chartJS.options.scales.x.grid.color = neutral;
+        this.chartJS.options.scales.y.grid.color = neutral;
+        this.chartJS.options.scales.x.ticks.color = light;
+        this.chartJS.options.scales.y.ticks.color = light;
+        this.chartJS.options.plugins.legend.labels.color = light;
+        this.chartJS.update();
+      } else {
+        this.chartJS.options.scales.x.grid.color = dark;
+        this.chartJS.options.scales.y.grid.color = dark;
+        this.chartJS.options.scales.x.ticks.color = dark;
+        this.chartJS.options.scales.y.ticks.color = dark;
+        this.chartJS.options.plugins.legend.labels.color = dark;
+        this.chartJS.update();
+      }
+      
     }
   }
 }

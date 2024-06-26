@@ -53,7 +53,6 @@ export const selectOpenVariableSelectedGroups = createSelector(
   (openVariableID, variablesWithGroups) => {
     const groupIDs: { [id: string]: string } = {};
     if (openVariableID && variablesWithGroups) {
-      console.log(variablesWithGroups[openVariableID]);
       variablesWithGroups[openVariableID]?.groups.map((value) => {
         groupIDs[value['@_ID']] = value.labl;
       });

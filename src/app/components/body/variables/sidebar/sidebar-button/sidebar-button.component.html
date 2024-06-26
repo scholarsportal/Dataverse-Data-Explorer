@@ -19,7 +19,7 @@
     @if (selected() && label() !== 'All Variables') {
       <div class="flex flex-row px-5 py-5">
         <button
-          class="group rounded mx-2.5 transition-all duration-75"
+          class="btn-action rounded mx-2.5 transition-all duration-75"
           (click)="rename()"
         >
           <span class="sr-only">rename</span>
@@ -29,7 +29,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="group-hover:scale-75 transition-all duration-75 m-0.5 w-5 h-5"
+            class="m-0.5 w-5 h-5"
           >
             <path
               stroke-linecap="round"
@@ -39,7 +39,7 @@
           </svg>
         </button>
         <button
-          class="group rounded"
+          class="btn-action rounded"
           (click)="delete()"
         >
           <span class="sr-only">delete</span>
@@ -49,7 +49,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="group-hover:scale-75 transition-all duration-75 m-0.5 w-5 h-5"
+            class="m-0.5 w-5 h-5"
           >
             <path
               stroke-linecap="round"

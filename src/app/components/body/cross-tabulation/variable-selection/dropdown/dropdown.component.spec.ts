@@ -20,7 +20,7 @@ describe('DropdownComponent', () => {
     fixture = TestBed.createComponent(DropdownComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('index', 0);
-    fixture.componentRef.setInput('variables', []);
+    // fixture.componentRef.setInput('variables', []);
     fixture.componentRef.setInput('groups', []);
     fixture.componentRef.setInput('variableOrientation', 'row');
     fixture.componentRef.setInput('selectedVariableID', '');

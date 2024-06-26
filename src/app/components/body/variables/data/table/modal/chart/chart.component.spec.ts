@@ -32,9 +32,12 @@ describe('ChartComponent', () => {
     fixture = TestBed.createComponent(ChartComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('variableID', '');
+    fixture.componentRef.setInput('hasCategories', false);
+    fixture.componentRef.setInput('weights', {});
     fixture.componentRef.setInput('chart', []);
     fixture.componentRef.setInput('chartTable', {});
     fixture.componentRef.setInput('categoriesInvalid', []);
+    fixture.componentRef.setInput('groups', []);
     fixture.componentRef.setInput('form', formInit);
     fixture.componentRef.setInput('sumStat', sumStatInit);
     fixture.detectChanges();

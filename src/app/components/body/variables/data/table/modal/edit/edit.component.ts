@@ -34,7 +34,7 @@ export class EditComponent {
     return Object.keys(this.allGroups());
   });
   decodedVariableGroups = computed(() => {
-    console.log(this.variableGroups());
+    // console.log(this.variableGroups());
     const varGroups: string[] = [];
     Object.values(this.allGroups()).map(group => {
       varGroups.push(group.labl);

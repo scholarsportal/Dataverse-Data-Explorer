@@ -19,6 +19,7 @@ describe('BulkEditModalComponent', () => {
 
     fixture = TestBed.createComponent(BulkEditModalComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('selectedVariables', []);
     fixture.detectChanges();
   });
 

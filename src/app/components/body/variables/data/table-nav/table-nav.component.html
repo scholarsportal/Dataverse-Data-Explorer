@@ -1,5 +1,5 @@
-<label class="input input-bordered border-base-200 mx-3 my-auto flex items-center gap-2 w-1/5">
-  <input (input)="search()" [(ngModel)]="searchTerm" class="grow" placeholder="Search" type="text" />
+<label class="input input-bordered border-base-300 mx-5 md:mx-0 my-0 md:my-4 flex flex-row items-center md:gap-2">
+  <input (input)="search()" [(ngModel)]="searchTerm" class="grow" placeholder="Search table" type="text" />
   <svg class="w-4 h-4 opacity-70"
        fill="currentColor"
        viewBox="0 0 16 16"
@@ -9,9 +9,9 @@
           fill-rule="evenodd" />
   </svg>
 </label>
-<div class="block md:flex md:flex-row">
-  <div class="align-middle justify-end hidden md:flex flex-row">
-    <label class="mx-5 my-auto" for="items-per-page">
+<div class="lg:flex lg:flex-row">
+  <div class="align-middle justify-end hidden md:flex mt-5 lg:mt-0 flex-row">
+    <label class="lg:mx-5 my-auto" for="items-per-page">
       <span class="mx-1.5"> Items Per Page: </span>
       <select
         (change)="onItemsPerPageChange($event)"
@@ -27,11 +27,11 @@
       </select>
     </label>
   </div>
-  <div class="flex flex-row align-middle justify-between">
+  <div class="flex flex-row md:align-middle md:justify-between">
     @if (total()) {
       @if (total() > itemsPerPage()) {
-        <span class="mr-4 my-auto">{{ indexRange() }}</span>
-        <div>
+        <span class="hidden md:block mr-4 my-auto">{{ indexRange() }}</span>
+        <div class="hidden md:block">
           <button [disabled]="isFirstPage()" (click)="pagePrevious()"
                   class="btn border border-slate-300 bg-transparent my-3 mt-4 mr-1  table-nav-button">
             <span class="sr-only">Go To Previous Variable Page</span>
@@ -52,8 +52,10 @@
           </button>
         </div>
       } @else {
-        <span class="mr-4 py-5 my-auto">{{ total() }} variables</span>
+        <span class="hidden md:block mr-4 py-5 my-auto">{{ total() }} variables</span>
       }
+      <span class="mx-5 md:hidden mr-4 py-5 my-auto">{{ total() }} variables</span>
     }
+    
   </div>
 </div>

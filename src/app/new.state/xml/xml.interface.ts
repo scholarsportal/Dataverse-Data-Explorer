@@ -25,6 +25,13 @@ export interface Category {
   catStat: SummaryStatistic[] | SummaryStatistic;
 }
 
+export interface MatchVariables {
+  [datasetID: string]: {
+    importedVariableID: string;
+    importedVariable: Variable;
+  };
+}
+
 export interface Variable {
   location: Location;
   labl: Label;
@@ -40,7 +47,12 @@ export interface Variable {
     '@_subject': string;
     '@_level': string;
     '@_type': string;
-  };
+  } | [{
+    '#text': string;
+    '@_subject': string;
+    '@_level': string;
+    '@_type': string;
+  }, string];
   '@_ID': string;
   '@_name': string;
   '@_intrvl': string;
@@ -141,6 +153,17 @@ interface XML {
   };
 }
 
+export interface ImportVariableFormTemplate {
+  label: boolean;
+  literalQuestion: boolean;
+  interviewQuestion: boolean;
+  postQuestion: boolean;
+  universe: boolean;
+  notes: boolean;
+  weight: boolean;
+}
+
+
 export interface ddiJSONStructure {
   '?xml': XML['?xml'];
   codeBook: CodeBook;
@@ -156,6 +179,7 @@ export interface XmlState {
     siteURL: string,
     fileID: number,
     apiKey: string | undefined,
+    importedSuccess?: boolean
   } | null,
 }
 
@@ -202,3 +226,25 @@ export const globalInitialState = {
   }
 };
 
+export interface QueryParameters {
+  fileId: number;
+  fileMetadataId: number;
+  datasetPid: string;
+}
+
+export interface SignedUrl {
+  name: string;
+  httpMethod: string;
+  signedUrl: string;
+  timeOut: number;
+}
+
+export interface Data {
+  queryParameters: QueryParameters;
+  signedUrls: SignedUrl[];
+}
+
+export interface ApiResponse {
+  status: string;
+  data: Data;
+}
