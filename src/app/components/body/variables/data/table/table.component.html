@@ -63,11 +63,11 @@
           <div class="w-3/4">{{ variable.weight }}</div>
         } @else if (variable.isWeight) {
           <div class="w-3/4">
-            <span class="rounded px-2 bg-success text-base-100">Weight</span>
+            <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">Weight</span>
           </div>
         } @else {
           <div class="w-3/4">
-            <span class="rounded px-2 border">No Weight</span>
+            <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">No Weight</span>
           </div>
         }
       </td>
@@ -163,11 +163,10 @@
         @if (variable.weight.length) {
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
-          <span class="rounded px-2 bg-success text-base-100"
-            >Weight</span
+          <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">Weight</span
           >
         } @else {
-          <span class="rounded px-2 border">No Weight</span>
+          <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">No Weight</span>
         }
       </td>
       <td class="invisible group-hover:visible flex flex-row float-right">

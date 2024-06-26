@@ -1,13 +1,10 @@
 <div class="min-h-screen">
-  <div class="py-52 mx-3 text-center md:hidden">
-    The Cross Tabulation Calculator is optimized for larger screens. Open this
-    page on a device such as a tablet, or computer to use the tool.
-  </div>
+
   <dct-variable-selection class="" />
 
   <div class="flex flex-row justify-between mb-10 crosstab">
     <div class="flex flex-row">
-      <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5">
+      <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5 ml-5 md:ml-0">
         <svg
           class="w-5 h-5"
           fill="none"
@@ -24,23 +21,25 @@
         </svg>
         <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
       </button>
-      <p-dropdown
-        [(ngModel)]="selectedOption"
-        [options]="options()"
-        panelStyleClass="rounded-b border w-full h-full mt-0.5 py-2"
-        styleClass="rounded border h-fit mt-3 w-44 px-2 py-2 mx-5"
-      >
-        <ng-template let-value pTemplate="item">
-        <span
-          [ngClass]="{
-            'bg-base-300 hover:bg-base-100': selectedOption() === value
-          }"
-          class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
+      <div [ngClass]="{'hidden': !hasData()}">
+        <p-dropdown
+          [(ngModel)]="selectedOption"
+          [options]="options()"
+          panelStyleClass="rounded border w-full h-full bg-base-100"
+          styleClass="select rounded border mt-2 py-1.5"
         >
-          {{ value }}
-        </span>
-        </ng-template>
-      </p-dropdown>
+          <ng-template let-value pTemplate="item">
+          <span
+            [ngClass]="{
+              'bg-base-300 hover:bg-base-100': selectedOption() === value
+            }"
+            class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
+          >
+            {{ value }}
+          </span>
+          </ng-template>
+        </p-dropdown>
+      </div>
     </div>
     <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row">
       <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
