@@ -23,4 +23,3 @@
 .preload-text {
   @apply transition-all duration-75 mx-auto text-center animate-pulse;
 }
-

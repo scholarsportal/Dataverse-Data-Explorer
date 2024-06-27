@@ -128,6 +128,8 @@ module.exports = {
         dark: {
           primary: '#DBCCFF',
           secondary: '#FFC7E0',
+          'primary-content': '#38383f',
+          'secondary-content': '#38383f',
           accent: '#ffffff',
           neutral: '#323236',
           'base-100': '#3F3F46',

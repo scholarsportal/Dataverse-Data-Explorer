@@ -2,7 +2,7 @@
 @if (!!selection && selection().length) {
   @for (item of selection(); track $index) {
     <dct-dropdown
-      class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-neutral"
+      class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-base-200"
       [index]="$index"
       [groups]="groups()"
       [categories]="categories()"

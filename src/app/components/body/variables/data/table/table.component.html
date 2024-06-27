@@ -25,7 +25,7 @@
   responsiveLayout="stack"
 >
   <ng-template pTemplate="header" let-columns>
-    <tr class="bg-base-100 border-b-2 z-20">
+    <tr class="bg-base-100 border-b-2 z-20 border-slate-300">
       <th pSortableColumn="variableID">ID</th>
       <th pSortableColumn="name">Name</th>
       <th pSortableColumn="label">Label</th>
@@ -43,7 +43,7 @@
   </ng-template>
   <ng-template let-variable pTemplate="body" let-columns="columns">
     <tr
-      class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-base-300"
+      class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
       <td class="px-5 pt-5 pb-2">
         <div class="p-column-title font-bold w-1/4">ID</div>
@@ -112,7 +112,7 @@
   scrollHeight="flex"
 >
   <ng-template pTemplate="header">
-    <tr class="bg-base-100 border-b-2 z-20">
+    <tr class="bg-base-100 border-b-2 border-slate-300 z-20">
       <th>
         <label>
           <span class="sr-only">Select All Variable</span>
@@ -142,7 +142,7 @@
   </ng-template>
   <ng-template let-variable pTemplate="body">
     <tr
-      class="group h-14 border-y hover:bg-base-200 hover:border-y border-base-300"
+      class="group h-14 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
       <td>
         <label>

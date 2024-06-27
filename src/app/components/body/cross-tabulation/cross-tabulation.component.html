@@ -2,7 +2,7 @@
 
   <dct-variable-selection class="" />
 
-  <div class="flex flex-row justify-between mb-10 crosstab">
+  <div class="flex flex-row justify-between crosstab">
     <div class="flex flex-row">
       <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5 ml-5 md:ml-0">
         <svg
@@ -21,12 +21,27 @@
         </svg>
         <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
       </button>
-      <div [ngClass]="{'hidden': !hasData()}">
+      
+    </div>
+    <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row mr-5 md:mr-0">
+      <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
+                      styleClass="bg-base-200 rounded mt-3 px-2 py-2">
+        <ng-template let-item pTemplate>
+              <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"
+                    class="px-1.5 py-0.5 rounded">{{ item }}</span>
+        </ng-template>
+      </p-selectButton>
+      
+    </div>
+  </div>
+  @if (hasData() && hasRowOrColumn() && !isFetching()) {
+    @if (defaultDataView() === 'Table') {
+      <div [ngClass]="{'hidden': !hasData()}" class="ml-5 md:ml-0">
         <p-dropdown
           [(ngModel)]="selectedOption"
           [options]="options()"
           panelStyleClass="rounded border w-full h-full bg-base-100"
-          styleClass="select rounded border mt-2 py-1.5"
+          styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
         >
           <ng-template let-value pTemplate="item">
           <span
@@ -39,26 +54,13 @@
           </span>
           </ng-template>
         </p-dropdown>
-      </div>
-    </div>
-    <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row">
-      <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
-                      styleClass="bg-base-200 rounded mt-3 px-2 py-2">
-        <ng-template let-item pTemplate>
-              <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"
-                    class="px-1.5 py-0.5 rounded">{{ item }}</span>
-        </ng-template>
-      </p-selectButton>
-      <button
+        <button
         (click)="exportTable()"
-        class="text-primary mx-2.5 mb-2.5 mt-3 hover:underline"
-      >
-        <span>Export Table As .csv</span>
-      </button>
-    </div>
-  </div>
-  @if (hasData() && hasRowOrColumn() && !isFetching()) {
-    @if (defaultDataView() === 'Table') {
+        class="text-primary mb-2.5 mt-5 mr-5 md:mr-0 hover:underline float-right"
+        >
+        <span>Export table as CSV</span>
+        </button>
+      </div>
       <dct-cross-table
         [data]="table()"
         [cols]="cols()"
@@ -66,7 +68,7 @@
         [hasData]="true"
         [selectedViewOption]="selectedOptionComputed()"
         [exportClicked]="exportTable"
-        class="mx-auto my-auto graph-area"
+        class="my-auto graph-area"
       ></dct-cross-table>
     } @else if (defaultDataView() === 'Chart') {
       <dct-cross-chart
@@ -86,7 +88,7 @@
     ></dct-cross-table>
 
   }
-  <div class="w-full text-3xl font-medium relative bottom-96">
+  <div class="w-full text-3xl font-medium relative bottom-96 px-5 md:px-0">
     @if (!isFetching()) {
       @if (!hasData()) {
         <h3 class="text-center mx-auto">
