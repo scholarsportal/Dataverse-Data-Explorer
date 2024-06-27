@@ -6,6 +6,10 @@ th {
   @apply border;
 }
 
+.pvtUi {
+  @apply mx-5 md:mx-0;
+}
+
 .pvtRowLabel {
   @apply font-semibold bg-primary-content border;
 }
@@ -15,7 +19,7 @@ th {
 }
 
 .pvtAxisLabel {
-  @apply border bg-base-100;
+  @apply border text-base-content bg-base-100;
 }
 
 .pvtTotalLabel {
@@ -23,7 +27,7 @@ th {
 }
 
 .pvtRowTotalLabel {
-  @apply border;
+  @apply border text-base-content;
 }
 
 .pvtTotal {
