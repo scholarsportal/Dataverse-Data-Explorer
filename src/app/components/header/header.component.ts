@@ -11,7 +11,11 @@ import {
   selectDatasetTitle
 } from '../../new.state/xml/xml.selectors';
 import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
-import { selectDatasetUploadedSuccessfully, selectDatasetUploadError } from '../../new.state/dataset/dataset.selectors';
+import { 
+  selectDatasetUploadedSuccessfully,
+  selectDatasetUploadError,
+  selectDatasetImportPending
+} from '../../new.state/dataset/dataset.selectors';
 import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
 import { CrossTabulationUIActions, VariableTabUIAction } from '../../new.state/ui/ui.actions';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -25,7 +29,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage, SplitButtonModule, MenuModule, ButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   store = inject(Store);
@@ -33,12 +37,17 @@ export class HeaderComponent implements OnInit {
   currentThemeLight: boolean = true;
   showToggle: boolean = false;
 
+  pending: boolean = false;
+  success: boolean = false;
+  fail: boolean = false;
+  
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
 
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
+  uploadPending = this.store.selectSignal(selectDatasetImportPending);
   hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
   siteURL = computed(() => {
@@ -108,6 +117,9 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
+    this.pending = true;
+    this.success = false;
+    this.fail = false;
     const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
     const siteURL = datasetInfo()?.info?.siteURL;
@@ -116,6 +128,33 @@ export class HeaderComponent implements OnInit {
     if (siteURL && fileID && apiKey && ddiData) {
       this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
     }
+    this.store.subscribe(state => {
+      const status = state.dataset.operationStatus.upload;
+      if (status === "success") {
+        setTimeout(()=>{
+          this.closeLoadingToast();
+          this.success = true;
+          setTimeout(()=>{
+            this.closeLoadedToast();
+          }, 4000);
+        }, 1000);
+      } else if (status === "error") {
+        this.closeLoadingToast();
+        this.fail = true;
+      }
+    });
+  }
+
+  closeLoadingToast() {
+    this.pending = false;
+  }
+
+  closeLoadedToast() {
+    this.success = false;
+  }
+
+  closeErrToast() {
+    this.fail = false;
   }
 
 }
