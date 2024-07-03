@@ -81,7 +81,7 @@
           </div>
         </div>
       
-        <div [ngClass]="{'hide-toast': !success, 'show-toast': success}" class="toast toast-top toast-end">
+        <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
           <div class="alert rounded alert-success">
             <span class="text-base-100">Dataset uploaded to Borealis!</span>
             <button (click)="closeLoadedToast()">

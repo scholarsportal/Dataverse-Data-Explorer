@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
   showToggle: boolean = false;
 
   pending: boolean = false;
-  success: boolean = false;
+  saved: boolean = false;
   fail: boolean = false;
   
   citation = this.store.selectSignal(selectDatasetCitation);
@@ -117,8 +117,9 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
+    console.log("HERE");
     this.pending = true;
-    this.success = false;
+    this.saved = false;
     this.fail = false;
     const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
@@ -128,17 +129,20 @@ export class HeaderComponent implements OnInit {
     if (siteURL && fileID && apiKey && ddiData) {
       this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
     }
-    this.store.subscribe(state => {
+    const stateStatus = this.store.subscribe(state => {
+      console.log("HERE");
       const status = state.dataset.operationStatus.upload;
       if (status === "success") {
+        stateStatus.unsubscribe();
         setTimeout(()=>{
           this.closeLoadingToast();
-          this.success = true;
+          this.saved = true;
           setTimeout(()=>{
             this.closeLoadedToast();
-          }, 4000);
+          }, 3500);
         }, 1000);
       } else if (status === "error") {
+        stateStatus.unsubscribe();
         this.closeLoadingToast();
         this.fail = true;
       }
@@ -150,7 +154,7 @@ export class HeaderComponent implements OnInit {
   }
 
   closeLoadedToast() {
-    this.success = false;
+    this.saved = false;
   }
 
   closeErrToast() {
