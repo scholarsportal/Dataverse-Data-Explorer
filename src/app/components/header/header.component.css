@@ -1,0 +1,6 @@
+.hide-toast {
+  @apply scale-50 opacity-0 duration-200 invisible;
+}
+.show-toast {
+  @apply scale-100 opacity-100 duration-200 visible;
+}

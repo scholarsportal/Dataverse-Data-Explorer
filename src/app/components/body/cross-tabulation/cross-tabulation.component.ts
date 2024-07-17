@@ -1,11 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CrossTableComponent } from './cross-table/cross-table.component';
 
 import { VariableSelectionComponent } from './variable-selection/variable-selection.component';
 import { CrossTabulationUIActions } from '../../../new.state/ui/ui.actions';
-import { selectCrossCharts, selectCrossTabulationTableData } from '../../../new.state/ui/ui.selectors';
+import {
+  selectCrossCharts,
+  selectCrossTabulationTableData,
+} from '../../../new.state/ui/ui.selectors';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { defaultCols, defaultRows, defaultTable } from './default-table';
@@ -25,11 +35,11 @@ import { selectVariableCrossTabIsFetching } from '../../../new.state/dataset/dat
     DropdownModule,
     FormsModule,
     CrossChartComponent,
-    SelectButtonModule
+    SelectButtonModule,
   ],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CrossTabulationComponent {
   loadingStatus: 'init' | 'delayed' | '' = '';
@@ -60,10 +70,10 @@ export class CrossTabulationComponent {
   });
   options = signal([
     'Show Value',
-    'Weighted Value',
+    // 'Weighted Value',
     'Row Percentage',
     'Column Percentage',
-    'Total Percentage'
+    'Total Percentage',
   ]);
   selectedOption = signal('Show Value');
   selectedOptionComputed = computed(() => {
@@ -102,11 +112,10 @@ export class CrossTabulationComponent {
     this.store.dispatch(
       CrossTabulationUIActions.addToSelection({
         variableID: '',
-        orientation: ''
-      })
+        orientation: '',
+      }),
     );
   }
 
-  exportTable = () => {
-  };
+  exportTable = () => {};
 }

@@ -17,9 +17,9 @@
       {{ label() }}
     </button>
     @if (selected() && label() !== 'All Variables') {
-      <div class="flex flex-row px-5 py-5">
+      <div class="flex flex-row px-3 py-3">
         <button
-          class="btn-action rounded mx-2.5 transition-all duration-75"
+          class="btn-action transition-all duration-75 p-2"
           (click)="rename()"
         >
           <span class="sr-only">rename</span>
@@ -29,7 +29,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="m-0.5 w-5 h-5"
+            class="w-5 h-5"
           >
             <path
               stroke-linecap="round"
@@ -39,7 +39,7 @@
           </svg>
         </button>
         <button
-          class="btn-action rounded"
+          class="btn-action p-2"
           (click)="delete()"
         >
           <span class="sr-only">delete</span>
@@ -49,7 +49,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="m-0.5 w-5 h-5"
+            class="w-5 h-5"
           >
             <path
               stroke-linecap="round"

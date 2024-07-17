@@ -1,74 +1,88 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Variable, VariableGroup, XmlState } from './xml.interface';
 
-export const selectXmlFeature =
-  createFeatureSelector<XmlState>('xml');
+export const selectXmlFeature = createFeatureSelector<XmlState>('xml');
 
 export const selectDatasetState = createSelector(
-  selectXmlFeature, state => state);
+  selectXmlFeature,
+  (state) => state,
+);
 
 export const selectDatasetHasApiKey = createSelector(
-  selectXmlFeature, (state) => !!state.info?.apiKey
+  selectXmlFeature,
+  (state) => !!state.info?.apiKey,
 );
 
 export const selectDatasetInfo = createSelector(
-  selectXmlFeature, state => state.info
+  selectXmlFeature,
+  (state) => state.info,
 );
 
 export const selectDatasetCitationData = createSelector(
-  selectXmlFeature, state => state.header
+  selectXmlFeature,
+  (state) => state.header,
 );
 
 export const selectDatasetTitle = createSelector(
-  selectDatasetCitationData, (citationData => {
+  selectDatasetCitationData,
+  (citationData) => {
     if (citationData) {
       return citationData.title;
     }
     return null;
-  })
+  },
 );
 
 export const selectDatasetCitation = createSelector(
-  selectDatasetCitationData, (citationData => {
+  selectDatasetCitationData,
+  (citationData) => {
     if (citationData) {
       return citationData.citation;
     }
     return null;
-  })
+  },
 );
 
-export const selectDatasetVariables =
-  createSelector(selectXmlFeature, (state): Variable[] =>
-    state.dataset?.codeBook.dataDscr.var ?? []);
+export const selectDatasetVariables = createSelector(
+  selectXmlFeature,
+  (state): Variable[] => {
+    return state.dataset?.codeBook.dataDscr?.var ?? [];
+  },
+);
 
 export const selectDatasetProcessedVariables = createSelector(
-  selectDatasetVariables, (variables) => {
+  selectDatasetVariables,
+  (variables) => {
     const processedVariables: { [variableID: string]: Variable } = {};
     variables?.forEach((variable) => {
       processedVariables[variable['@_ID']] = variable;
     });
     return processedVariables;
-  }
+  },
 );
 
-export const selectDatasetVariableGroups =
-  createSelector(selectXmlFeature, (state): VariableGroup[] =>
-    state.dataset?.codeBook.dataDscr.varGrp ?? []);
+export const selectDatasetVariableGroups = createSelector(
+  selectXmlFeature,
+  (state): VariableGroup[] => state.dataset?.codeBook.dataDscr.varGrp ?? [],
+);
 
 export const selectDatasetProcessedGroups = createSelector(
-  selectDatasetVariableGroups, (groups) => {
+  selectDatasetVariableGroups,
+  (groups) => {
     const processedGroups: { [groupID: string]: VariableGroup } = {};
     groups?.forEach((group) => {
       processedGroups[group['@_ID']] = group;
     });
     return processedGroups;
-  }
+  },
 );
 
 export const selectVariablesWithCorrespondingGroups = createSelector(
-  selectDatasetVariables, selectDatasetVariableGroups, (variables, groups) => {
+  selectDatasetVariables,
+  selectDatasetVariableGroups,
+  (variables, groups) => {
     const variablesWithCorrespondingGroups: {
-      [variableID: string]: string[]
+      [variableID: string]: string[];
     } = {};
     if (variables && groups) {
       // Loop through groups
@@ -79,11 +93,15 @@ export const selectVariablesWithCorrespondingGroups = createSelector(
           // If the variable is already in the variablesWithCorrespondingGroups
           // group, we push this to list, if not, we create a new entry for it
           variablesWithCorrespondingGroups[variableID]
-            ? variablesWithCorrespondingGroups[variableID].push(variableGroup['@_ID'])
-            : (variablesWithCorrespondingGroups[variableID] = [variableGroup['@_ID']]);
+            ? variablesWithCorrespondingGroups[variableID].push(
+                variableGroup['@_ID'],
+              )
+            : (variablesWithCorrespondingGroups[variableID] = [
+                variableGroup['@_ID'],
+              ]);
         });
       });
     }
     return variablesWithCorrespondingGroups;
-  }
+  },
 );

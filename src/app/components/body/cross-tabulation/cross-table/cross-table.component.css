@@ -6,16 +6,20 @@ th {
   @apply border;
 }
 
+.pvtUi {
+  @apply mx-5 md:mx-0;
+}
+
 .pvtRowLabel {
-  @apply font-semibold bg-neutral border;
+  @apply font-semibold bg-primary-content border;
 }
 
 .pvtColLabel {
-  @apply font-semibold bg-neutral border;
+  @apply font-semibold bg-secondary-content border;
 }
 
 .pvtAxisLabel {
-  @apply border bg-neutral;
+  @apply border text-base-content bg-base-100;
 }
 
 .pvtTotalLabel {
@@ -23,7 +27,7 @@ th {
 }
 
 .pvtRowTotalLabel {
-  @apply border;
+  @apply border text-base-content;
 }
 
 .pvtTotal {
@@ -39,5 +43,9 @@ th {
 }
 
 .pvtGrandTotal {
-  @apply bg-neutral border;
+  @apply bg-base-200 border;
+}
+
+.pvtRendererArea {
+  @apply px-0;
 }

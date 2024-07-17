@@ -1,8 +1,9 @@
-<h3 class="font-bold text-3xl">Variables</h3>
+<h3 class="font-bold text-xl pl-5 md:pl-0 pb-2">Variables</h3>
 @if (!!selection && selection().length) {
   @for (item of selection(); track $index) {
     <dct-dropdown
-      class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-neutral"
+      class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-base-200"
+      [ngClass]="{'border border-error': item.orientation === ''}"
       [index]="$index"
       [groups]="groups()"
       [categories]="categories()"
