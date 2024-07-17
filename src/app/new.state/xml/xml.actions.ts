@@ -10,11 +10,6 @@ export const DataverseFetchActions = createActionGroup({
   events: {
     // signed url
     'Decode URL and fetch': props<{
-      fileID: number;
-      metadataID: number;
-      until: string;
-      user: string;
-      token: string;
       url: string;
     }>(),
     'Decode and Fetch DDI Success': props<{
