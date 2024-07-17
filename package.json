@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path docs --base-href /Dataverse-Data-Curation-Tool/",
+    "build": "ng build --output-path docs --base-href /Dataverse-Data-Explorer/",
     "build:docker": "ng build --output-path docs --base-href /index.html",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
