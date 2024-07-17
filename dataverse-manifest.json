@@ -25,7 +25,7 @@
     {
       "name": "retrieveDataFile",
       "httpMethod": "GET",
-      "urlTemplate": "/api/v1/access/datafile/{fileId}",
+      "urlTemplate": "/api/v1/access/datafile/{fileId}/metadata/ddi",
       "timeOut": 270
     },
     {
