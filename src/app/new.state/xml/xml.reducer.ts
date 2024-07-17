@@ -32,14 +32,14 @@ export const xmlReducer = createReducer(
         info: {
           siteURL,
           apiKey,
-          fileID
+          fileID,
         },
         header: {
-          citation: data.codeBook.stdyDscr.citation.biblCit,
-          title: data.codeBook.stdyDscr.citation.titlStmt.titl
-        }
+          citation: data.codeBook.stdyDscr?.citation.biblCit,
+          title: data.codeBook.stdyDscr?.citation.titlStmt.titl,
+        },
       };
-    }
+    },
   ),
   on(
     XmlManipulationActions.importConversionSuccess,
