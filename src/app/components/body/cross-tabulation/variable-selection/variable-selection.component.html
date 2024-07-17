@@ -3,6 +3,7 @@
   @for (item of selection(); track $index) {
     <dct-dropdown
       class="flex flex-row w-full px-5 py-2 my-2.5 justify-between rounded bg-base-200"
+      [ngClass]="{'border border-error': item.orientation === ''}"
       [index]="$index"
       [groups]="groups()"
       [categories]="categories()"

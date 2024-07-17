@@ -1,21 +1,27 @@
 import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { KeyValuePipe } from '@angular/common';
-import { selectDatasetProcessedGroups, selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
+import { KeyValuePipe, NgClass } from '@angular/common';
+import {
+  selectDatasetProcessedGroups,
+  selectDatasetProcessedVariables,
+} from 'src/app/new.state/xml/xml.selectors';
 import { DropdownComponent } from './dropdown/dropdown.component';
-import { selectCrossTabCategoriesMissing, selectCrossTabSelection } from '../../../../new.state/ui/ui.selectors';
+import {
+  selectCrossTabCategoriesMissing,
+  selectCrossTabSelection,
+} from '../../../../new.state/ui/ui.selectors';
 import {
   selectDatasetAllVariableCategories,
-  selectDatasetVariableCrossTabValues
+  selectDatasetVariableCrossTabValues,
 } from '../../../../new.state/dataset/dataset.selectors';
 import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [KeyValuePipe, DropdownComponent],
+  imports: [KeyValuePipe, DropdownComponent, NgClass],
   templateUrl: './variable-selection.component.html',
-  styleUrl: './variable-selection.component.css'
+  styleUrl: './variable-selection.component.css',
 })
 export class VariableSelectionComponent {
   /** This is a smart component. It handles all communication with the store,
@@ -36,7 +42,7 @@ export class VariableSelectionComponent {
   selection = this.store.selectSignal(selectCrossTabSelection);
   // Current values in cross tab
   variablesMetadata = this.store.selectSignal(
-    selectDatasetVariableCrossTabValues
+    selectDatasetVariableCrossTabValues,
   );
 
   variablesAlreadySelected = computed(() => {
@@ -57,8 +63,8 @@ export class VariableSelectionComponent {
       CrossTabulationUIActions.changeValueInGivenIndex({
         orientation: newOrientation,
         index,
-        variableID
-      })
+        variableID,
+      }),
     );
   }
 
@@ -73,14 +79,14 @@ export class VariableSelectionComponent {
         CrossTabulationUIActions.changeValueInGivenIndex({
           index,
           variableID,
-          orientation
-        })
+          orientation,
+        }),
       );
     } else {
       this.store.dispatch(
         CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex({
-          ...value
-        })
+          ...value,
+        }),
       );
     }
   }
@@ -88,7 +94,7 @@ export class VariableSelectionComponent {
   removeVariable(value: { index: number }) {
     const { index } = value;
     this.store.dispatch(
-      CrossTabulationUIActions.removeVariablesUsingIndex({ index })
+      CrossTabulationUIActions.removeVariablesUsingIndex({ index }),
     );
     // this.store.dispatch(removeVariableFromCrossTabulation({ index }));
   }

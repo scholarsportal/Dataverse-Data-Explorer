@@ -7,7 +7,7 @@ import { ApiResponse, ddiJSONStructure } from '../new.state/xml/xml.interface';
 import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DdiService {
   store = inject(Store);
@@ -31,59 +31,66 @@ export class DdiService {
   private parseOptions: { ignoreAttributes: false; attributeNamePrefix: '@_' } =
     {
       ignoreAttributes: false,
-      attributeNamePrefix: '@_'
+      attributeNamePrefix: '@_',
     };
 
   fetchDecodedURL(url: string) {
     return this.http.get(url, { responseType: 'json' }).pipe(
       map((data) => {
         return data as ApiResponse;
-      })
+      }),
     );
   }
 
   fetchDatasetFromDataverse(
     fileID: number,
     siteURL: string,
-    metadataID: number | undefined
+    metadataID: number | undefined,
   ): Observable<ddiJSONStructure> {
     let metadataParam = '';
     if (metadataID) {
       metadataParam = '?fileMetadataId=' + metadataID;
     }
     return this.http
-      .get(`${siteURL}/api/access/datafile/${fileID}/metadata/ddi${metadataParam}`, {
-        responseType: 'text'
-      })
-      .pipe(map((data) => {
-        return this.XMLtoJSON(data);
-      }));
+      .get(
+        `${siteURL}/api/access/datafile/${fileID}/metadata/ddi${metadataParam}`,
+        {
+          responseType: 'text',
+        },
+      )
+      .pipe(
+        map((data) => {
+          return this.XMLtoJSON(data);
+        }),
+      );
   }
 
-  fetchSignedURL(
-    url: string
-  ): Observable<ddiJSONStructure> {
+  fetchSignedURL(url: string): Observable<any> {
+    console.log(url);
     return this.http
       .get(url, {
-        responseType: 'text'
+        responseType: 'text',
       })
-      .pipe(map((data) => {
-        console.log(this.XMLtoJSON(data));
-        return this.XMLtoJSON(data);
-      }));
+      .pipe(
+        map((data) => {
+          console.log(data);
+          console.log(this.XMLtoJSON(data));
+          return this.XMLtoJSON(data);
+        }),
+      );
   }
 
   uploadDatasetToDataverse(
     siteURL: string,
     fileID: number,
     jsonData: ddiJSONStructure,
-    apiKey: string
+    apiKey: string,
   ): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml',
-        'X-Dataverse-key': apiKey
-      })
+        'X-Dataverse-key': apiKey,
+      }),
     };
     const xml = this.JSONtoXML(jsonData);
     return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
@@ -94,7 +101,7 @@ export class DdiService {
       return this.http
         .get(
           `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
-          { responseType: 'text' }
+          { responseType: 'text' },
         )
         .pipe(map((data) => this.splitLines(data).slice(1)));
     } else {

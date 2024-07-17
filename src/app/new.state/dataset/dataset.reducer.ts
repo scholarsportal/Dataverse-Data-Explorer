@@ -1,8 +1,14 @@
 import { ddiJSONStructure } from '../../old.state/interface';
 import { createReducer, on } from '@ngrx/store';
-import { DataverseFetchActions, XmlManipulationActions } from '../xml/xml.actions';
+import {
+  DataverseFetchActions,
+  XmlManipulationActions,
+} from '../xml/xml.actions';
 import { DatasetActions } from './dataset.actions';
-import { CrossTabulationUIActions } from '../ui/ui.actions';
+import {
+  CrossTabulationUIActions,
+  VariableTabUIAction,
+} from '../ui/ui.actions';
 
 export interface DatasetState {
   operationStatus: {
@@ -10,6 +16,7 @@ export interface DatasetState {
     upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled';
     variableDownload: 'idle' | 'pending' | 'error' | 'success';
     import: 'idle' | 'pending' | 'error' | 'success';
+    openVariableEdit: 'idle' | 'changes' | 'saved';
   };
   variables: {
     importedDataset: ddiJSONStructure | null;
@@ -25,13 +32,14 @@ const initialState: DatasetState = {
     download: 'idle',
     upload: 'idle',
     variableDownload: 'idle',
-    import: 'idle'
+    import: 'idle',
+    openVariableEdit: 'idle',
   },
   variables: {
     importedDataset: null,
-    importedResult: null
+    importedResult: null,
   },
-  crossTabulation: {}
+  crossTabulation: {},
 };
 
 export const datasetReducer = createReducer(
@@ -41,8 +49,8 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'pending' as const
-      }
+        download: 'pending' as const,
+      },
     };
   }),
   on(DataverseFetchActions.fetchDDIError, (state, { error }) => {
@@ -50,24 +58,24 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        download: 'error' as const
-      }
+        download: 'error' as const,
+      },
     };
   }),
   on(DataverseFetchActions.fetchDDISuccess, (state) => ({
     ...state,
     operationStatus: {
       ...state.operationStatus,
-      download: 'success' as const
-    }
+      download: 'success' as const,
+    },
   })),
   on(DatasetActions.updateCrossTabValues, (state, { data, variableID }) => {
     return {
       ...state,
       crossTabulation: {
         ...state.crossTabulation,
-        [variableID]: data
-      }
+        [variableID]: data,
+      },
     };
   }),
   on(CrossTabulationUIActions.fetchCrossTabAndAddToSelection, (state) => {
@@ -75,42 +83,54 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        variableDownload: 'pending' as const
-      }
+        variableDownload: 'pending' as const,
+      },
     };
   }),
-  on(CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex, (state) => {
+  on(VariableTabUIAction.changeOpenVariable, (state) => {
     return {
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        variableDownload: 'pending' as const
-      }
+        openVariableEdit: 'idle' as const,
+      },
     };
   }),
+  on(
+    CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex,
+    (state) => {
+      return {
+        ...state,
+        operationStatus: {
+          ...state.operationStatus,
+          variableDownload: 'pending' as const,
+        },
+      };
+    },
+  ),
   on(DatasetActions.updateCrossTabValues, (state) => {
     return {
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        variableDownload: 'success' as const
-      }
+        variableDownload: 'success' as const,
+      },
     };
   }),
   on(DataverseFetchActions.startDatasetUpload, (state) => ({
     ...state,
     operationStatus: {
       ...state.operationStatus,
-      upload: 'pending' as const
-    }
+      upload: 'pending' as const,
+    },
   })),
   on(DataverseFetchActions.datasetUploadSuccess, (state, data) => {
     return {
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        upload: 'success' as const
-      }
+        upload: 'success' as const,
+      },
     };
   }),
   on(XmlManipulationActions.startImportMetadata, (state) => {
@@ -118,8 +138,8 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        import: 'pending' as const
-      }
+        import: 'pending' as const,
+      },
     };
   }),
   on(XmlManipulationActions.importConversionSuccess, (state) => {
@@ -127,8 +147,8 @@ export const datasetReducer = createReducer(
       ...state,
       operationStatus: {
         ...state.operationStatus,
-        import: 'success' as const
-      }
+        import: 'success' as const,
+      },
     };
-  })
+  }),
 );

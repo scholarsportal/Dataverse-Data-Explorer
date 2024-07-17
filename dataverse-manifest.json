@@ -1,6 +1,6 @@
 {
-  "displayName": "DataFlex",
-  "description": "DataFlex for curation of variables",
+  "displayName": "Data Explorer",
+  "description": "Odesi Data Explorer for viewing, configuring and editing variables",
   "scope": "file",
   "type": "configure",
   "contentType": "text/tab-separated-values",
