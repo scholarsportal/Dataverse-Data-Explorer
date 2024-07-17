@@ -1,0 +1,32 @@
+{
+  "displayName": "Data Explorer",
+  "description": "Odesi Data Explorer for viewing, and configuring variables",
+  "scope": "file",
+  "type": "explore",
+  "contentType": "text/tab-separated-values",
+  "toolUrl": "http://localhost:4200",
+  "toolParameters": {
+    "queryParameters": [
+      {
+        "fileId": "{fileId}"
+      },
+      {
+        "fileMetadataId": "{fileMetadataId}"
+      },
+      {
+        "datasetPid": "{datasetPid}"
+      },
+      {
+        "dvLocale": "{localeCode}"
+      }
+    ]
+  },
+  "allowedApiCalls": [
+    {
+      "name": "retrieveDataFile",
+      "httpMethod": "GET",
+      "urlTemplate": "/api/v1/access/datafile/{fileId}/metadata/ddi",
+      "timeOut": 270
+    }
+  ]
+}
