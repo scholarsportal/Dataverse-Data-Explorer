@@ -24,6 +24,23 @@ export const initialState: XmlState = {
 export const xmlReducer = createReducer(
   initialState,
   on(
+    DataverseFetchActions.decodeAndFetchDDISuccess,
+    (state, { data, apiResponse }) => {
+      let info = {
+        secureUploadUrl: apiResponse.data.signedUrls[1].signedUrl,
+      };
+      return {
+        ...state,
+        dataset: data,
+        info,
+        header: {
+          citation: data.codeBook.stdyDscr?.citation.biblCit,
+          title: data.codeBook.stdyDscr?.citation.titlStmt.titl,
+        },
+      };
+    },
+  ),
+  on(
     DataverseFetchActions.fetchDDISuccess,
     (state, { data, fileID, siteURL, apiKey }) => {
       return {
@@ -58,9 +75,11 @@ export const xmlReducer = createReducer(
           variables,
           variableTemplate,
         );
-        duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
-          importDdiData.codeBook.dataDscr.varGrp,
-        );
+        if (variableTemplate.groups) {
+          duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
+            importDdiData.codeBook.dataDscr.varGrp,
+          );
+        }
         // console.log(createNewVariables(variablesMatched, variables, variableTemplate));
         duplicateState.info
           ? (duplicateState.info.importedSuccess = true)

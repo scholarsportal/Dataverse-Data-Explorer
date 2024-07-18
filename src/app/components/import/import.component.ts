@@ -10,6 +10,7 @@ import {
 } from 'src/app/new.state/dataset/dataset.selectors';
 import { ImportVariableFormTemplate } from '../../new.state/xml/xml.interface';
 import { XmlManipulationActions } from '../../new.state/xml/xml.actions';
+import { VariableTabUIAction } from '../../new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-import',
@@ -67,9 +68,14 @@ export class ImportComponent {
     }
   }
 
+  closeImportComponentState() {
+    this.store.dispatch(VariableTabUIAction.closeVariableImportMenu());
+  }
+
   async onImportButtonClick() {
     const importedXmlString = await this.file?.text();
     const variableTemplate: ImportVariableFormTemplate = {
+      groups: this.variableGroups,
       label: this.labels,
       interviewQuestion: this.interviewerQuestion,
       literalQuestion: this.literalQuestion,

@@ -10,7 +10,7 @@ export const selectDatasetState = createSelector(
 
 export const selectDatasetHasApiKey = createSelector(
   selectXmlFeature,
-  (state) => !!state.info?.apiKey,
+  (state) => !!state.info?.apiKey || !!state.info?.secureUploadUrl,
 );
 
 export const selectDatasetInfo = createSelector(

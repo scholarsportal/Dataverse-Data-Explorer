@@ -42,17 +42,22 @@ export interface Variable {
   varFormat: {
     '@_type': string;
   };
-  notes: {
-    '#text': string;
-    '@_subject': string;
-    '@_level': string;
-    '@_type': string;
-  } | [{
-    '#text': string;
-    '@_subject': string;
-    '@_level': string;
-    '@_type': string;
-  }, string];
+  notes:
+    | {
+        '#text': string;
+        '@_subject': string;
+        '@_level': string;
+        '@_type': string;
+      }
+    | [
+        {
+          '#text': string;
+          '@_subject': string;
+          '@_level': string;
+          '@_type': string;
+        },
+        string,
+      ];
   '@_ID': string;
   '@_name': string;
   '@_intrvl': string;
@@ -61,12 +66,12 @@ export interface Variable {
 }
 
 export interface VariablesSimplified {
-  variableID: string,
-  name: string,
-  label: string,
-  weight: string,
-  isWeight: boolean,
-  selected: boolean
+  variableID: string;
+  name: string;
+  label: string;
+  weight: string;
+  isWeight: boolean;
+  selected: boolean;
 }
 
 export interface NesstarVariable {
@@ -154,6 +159,7 @@ interface XML {
 }
 
 export interface ImportVariableFormTemplate {
+  groups: boolean;
   label: boolean;
   literalQuestion: boolean;
   interviewQuestion: boolean;
@@ -163,24 +169,24 @@ export interface ImportVariableFormTemplate {
   weight: boolean;
 }
 
-
 export interface ddiJSONStructure {
   '?xml': XML['?xml'];
   codeBook: CodeBook;
 }
 
 export interface XmlState {
-  dataset: ddiJSONStructure | null,
+  dataset: ddiJSONStructure | null;
   header: {
     citation: string;
     title: string;
-  } | null,
+  } | null;
   info: {
-    siteURL: string,
-    fileID: number,
-    apiKey: string | undefined,
-    importedSuccess?: boolean
-  } | null,
+    siteURL?: string;
+    fileID?: number;
+    apiKey?: string | undefined;
+    importedSuccess?: boolean;
+    secureUploadUrl?: string;
+  } | null;
 }
 
 export const globalInitialState = {
@@ -194,36 +200,36 @@ export const globalInitialState = {
         variableSelectionContext: {},
         openVariable: {
           variableID: '',
-          mode: 'view'
-        }
+          mode: 'view',
+        },
       },
       crossTab: {
-        selection: {}
-      }
-    }
+        selection: {},
+      },
+    },
   },
   xml: {
     dataset: null,
     header: {
       citation: '',
       title: null,
-      info: null
-    }
+      info: null,
+    },
   },
   dataset: {
     operationStatus: {
       download: 'idle',
       upload: 'idle',
-      import: 'idle'
+      import: 'idle',
     },
     variables: {
       importedDataset: null,
-      importedResult: null
+      importedResult: null,
     },
     crossTabulation: {
-      variableMetadata: {}
-    }
-  }
+      variableMetadata: {},
+    },
+  },
 };
 
 export interface QueryParameters {

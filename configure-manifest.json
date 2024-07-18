@@ -31,8 +31,7 @@
     {
       "name": "uploadDataFile",
       "httpMethod": "POST",
-      "urlTemplate": "/api/v1/edit/{fileId}",
-      "timeOut": 270
+      "urlTemplate": "/api/v1/edit/{fileId}"
     }
   ]
 }

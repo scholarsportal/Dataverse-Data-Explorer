@@ -12,11 +12,12 @@ export const DataverseFetchActions = createActionGroup({
     'Decode URL and fetch': props<{
       url: string;
     }>(),
-    'Decode and Fetch DDI Success': props<{
-      data: string;
-      xml: ddiJSONStructure;
-    }>(),
     'Decode success': props<{ data: ApiResponse }>(),
+    'Decode and Fetch DDI Success': props<{
+      data: ddiJSONStructure;
+      apiResponse: ApiResponse;
+      language?: string;
+    }>(),
     // on site init if URL params are satisfied, this is called
     'Start DDI Fetch': props<{
       siteURL: string;
@@ -41,6 +42,10 @@ export const DataverseFetchActions = createActionGroup({
       siteURL: string;
       fileID: number;
       apiKey: string;
+      ddiData: ddiJSONStructure;
+    }>(),
+    'Start Secure Dataset Upload': props<{
+      secureUploadURL: string;
       ddiData: ddiJSONStructure;
     }>(),
     // Upload failed for some reason
