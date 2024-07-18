@@ -1,4 +1,4 @@
-<div class="min-h-screen">
+<div class="min-h-3/4">
 
   <dct-variable-selection class="" />
 
@@ -21,7 +21,7 @@
         </svg>
         <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
       </button>
-      
+
     </div>
     <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row mr-5 md:mr-0">
       <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
@@ -31,7 +31,7 @@
                     class="px-1.5 py-0.5 rounded">{{ item }}</span>
         </ng-template>
       </p-selectButton>
-      
+
     </div>
   </div>
   @if (hasData() && hasRowOrColumn() && !isFetching()) {
@@ -55,10 +55,10 @@
           </ng-template>
         </p-dropdown>
         <button
-        (click)="exportTable()"
-        class="text-primary mb-2.5 mt-5 mr-5 md:mr-0 hover:underline float-right"
+          (click)="exportTable()"
+          class="text-primary mb-2.5 mt-5 mr-5 md:mr-0 hover:underline float-right"
         >
-        <span>Export table as CSV</span>
+          <span>Export table as CSV</span>
         </button>
       </div>
       <dct-cross-table
@@ -78,38 +78,32 @@
       />
     }
   } @else {
-    <dct-cross-table
-      [cols]="defaultColumns"
-      [data]="defaultTable"
-      [rows]="defaultRows"
-      [hasData]="false"
-      [exportClicked]="exportTable"
-      class="mx-auto my-auto graph-area"
-    ></dct-cross-table>
+    <div
+      class="h-full mx-auto my-auto"
+    >
 
+      @if (!isFetching()) {
+        @if (!hasData()) {
+          <h3 class="text-center mx-auto">
+            No Data! Start adding variables to generate your table
+          </h3>
+        } @else if (hasData() && !hasRowOrColumn()) {
+          <h3 class="text-center mx-auto">
+            One more step. Set your rows and/or columns.
+          </h3>
+        }
+      } @else if (isFetching()) {
+        @if (loadingStatus === 'init') {
+          <h3 class="preload-text">
+            Loading dataset ...
+          </h3>
+        } @else if (loadingStatus === 'delayed') {
+          <h3 class="preload-text">
+            Still loading ...
+          </h3>
+          <h4 class="text-base mx-auto text-center">One moment please</h4>
+        }
+      }
+    </div>
   }
-  <div class="w-full text-3xl font-medium relative bottom-96 px-5 md:px-0">
-    @if (!isFetching()) {
-      @if (!hasData()) {
-        <h3 class="text-center mx-auto">
-          No Data! Start adding variables to generate your table
-        </h3>
-      } @else if (hasData() && !hasRowOrColumn()) {
-        <h3 class="text-center mx-auto">
-          One more step. Set your rows and/or columns.
-        </h3>
-      }
-    } @else if (isFetching()) {
-      @if (loadingStatus === 'init') {
-        <h3 class="preload-text">
-          Loading dataset ...
-        </h3>
-      } @else if (loadingStatus === 'delayed') {
-        <h3 class="preload-text">
-          Still loading ...
-        </h3>
-        <h4 class="text-base mx-auto text-center">One moment please</h4>
-      }
-    }
-  </div>
 </div>

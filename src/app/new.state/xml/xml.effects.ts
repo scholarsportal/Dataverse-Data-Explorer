@@ -61,12 +61,10 @@ export class XmlEffects {
         exhaustMap(({ data }) =>
           ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
             map((xml) => {
-              console.log(xml);
-              return DataverseFetchActions.fetchDDISuccess({
+              console.log(data);
+              return DataverseFetchActions.decodeAndFetchDDISuccess({
                 data: xml,
-                siteURL: '',
-                fileID: 1,
-                language: 'en',
+                apiResponse: data,
               });
             }),
             catchError((error) => {
@@ -85,6 +83,33 @@ export class XmlEffects {
         exhaustMap(({ ddiData, siteURL, fileID, apiKey }) =>
           ddiService
             .uploadDatasetToDataverse(siteURL, fileID, ddiData, apiKey)
+            .pipe(
+              map((data) => {
+                if (data?.error) {
+                  return DataverseFetchActions.datasetUploadError({
+                    error: data.error,
+                  });
+                }
+                return DataverseFetchActions.datasetUploadSuccess({
+                  response: data,
+                });
+              }),
+              catchError((error) =>
+                of(DataverseFetchActions.datasetUploadError({ error })),
+              ),
+            ),
+        ),
+      );
+    },
+  );
+
+  secureUploadData$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.startSecureDatasetUpload),
+        exhaustMap(({ ddiData, secureUploadURL }) =>
+          ddiService
+            .uploadWithSecurityDatasetToDataverse(ddiData, secureUploadURL)
             .pipe(
               map((data) => {
                 if (data?.error) {

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -12,6 +12,7 @@ import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 export class DdiService {
   store = inject(Store);
   http = inject(HttpClient);
+  signedUploadLink = signal('');
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
   fileID = computed(() => {
     if (this.datasetInfo()?.fileID) {
@@ -94,6 +95,19 @@ export class DdiService {
     };
     const xml = this.JSONtoXML(jsonData);
     return this.http.put(`${siteURL}/api/edit/${fileID}`, xml, httpOptions);
+  }
+
+  uploadWithSecurityDatasetToDataverse(
+    jsonData: ddiJSONStructure,
+    secureUploadURL: string,
+  ): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml',
+      }),
+    };
+    const xml = this.JSONtoXML(jsonData);
+    return this.http.put(secureUploadURL, xml, httpOptions);
   }
 
   fetchCrossTabulationFromVariables(variable: string) {

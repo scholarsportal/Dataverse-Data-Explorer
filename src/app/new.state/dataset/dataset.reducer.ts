@@ -62,6 +62,15 @@ export const datasetReducer = createReducer(
       },
     };
   }),
+  on(DataverseFetchActions.decodeAndFetchDDISuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        download: 'success' as const,
+      },
+    };
+  }),
   on(DataverseFetchActions.fetchDDIError, (state, { error }) => {
     return {
       ...state,
