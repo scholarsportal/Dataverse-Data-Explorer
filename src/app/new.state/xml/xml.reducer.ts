@@ -9,6 +9,7 @@ import {
   changeSingleVariable,
   createNewVariables,
   deleteVariableGroup,
+  extractUrlAndToken,
   matchVariableIDs,
   removeVariablesFromGroups,
   renameVariableGroup,
@@ -26,9 +27,27 @@ export const xmlReducer = createReducer(
   on(
     DataverseFetchActions.decodeAndFetchDDISuccess,
     (state, { data, apiResponse }) => {
-      let info = {
-        secureUploadUrl: apiResponse.data.signedUrls[1].signedUrl,
+      let info: {
+        siteURL?: string;
+        apiKey: string | null;
+        fileID: number;
+        secureUploadUrl: string | null;
+      } = {
+        apiKey: null,
+        fileID: apiResponse.data.queryParameters.fileId,
+        secureUploadUrl: null,
       };
+      const extractedData = extractUrlAndToken(
+        apiResponse.data.signedUrls[0].signedUrl,
+      );
+      if (extractedData) {
+        info = {
+          ...info,
+          siteURL: extractedData.siteURL,
+          apiKey: extractedData.apiKey ? extractedData.apiKey : null,
+          secureUploadUrl: apiResponse.data.signedUrls[1]?.signedUrl || null,
+        };
+      }
       return {
         ...state,
         dataset: data,
@@ -48,8 +67,9 @@ export const xmlReducer = createReducer(
         dataset: data,
         info: {
           siteURL,
-          apiKey,
+          apiKey: apiKey ? apiKey : null,
           fileID,
+          secureUploadUrl: null,
         },
         header: {
           citation: data.codeBook.stdyDscr?.citation.biblCit,

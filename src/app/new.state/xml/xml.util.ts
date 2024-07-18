@@ -442,3 +442,17 @@ function editSingleVariable(
   console.log(currentVariableCloned);
   return currentVariableCloned;
 }
+
+export function extractUrlAndToken(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    const siteURL = `${parsedUrl.protocol}//${parsedUrl.host}`;
+    const apiKey = parsedUrl.searchParams.get('token');
+    return {
+      siteURL: siteURL,
+      apiKey: apiKey,
+    };
+  } catch (e) {
+    return null;
+  }
+}

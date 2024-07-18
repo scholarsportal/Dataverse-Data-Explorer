@@ -143,21 +143,20 @@ export class HeaderComponent implements OnInit {
     const fileID = datasetInfo()?.info?.fileID;
     const apiKey = datasetInfo()?.info?.apiKey;
     const secureUploadURL = datasetInfo()?.info?.secureUploadUrl || '';
-    if (siteURL && fileID && apiKey && ddiData) {
+    if (ddiData && !!secureUploadURL) {
+      this.store.dispatch(
+        DataverseFetchActions.startSecureDatasetUpload({
+          ddiData,
+          secureUploadURL,
+        }),
+      );
+    } else if (siteURL && fileID && apiKey && ddiData) {
       this.store.dispatch(
         DataverseFetchActions.startDatasetUpload({
           ddiData,
           siteURL,
           fileID,
           apiKey,
-        }),
-      );
-    }
-    if (ddiData && !!secureUploadURL) {
-      this.store.dispatch(
-        DataverseFetchActions.startSecureDatasetUpload({
-          ddiData,
-          secureUploadURL,
         }),
       );
     }
