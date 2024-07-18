@@ -107,7 +107,7 @@ export class DdiService {
       }),
     };
     const xml = this.JSONtoXML(jsonData);
-    return this.http.put(secureUploadURL, xml, httpOptions);
+    return this.http.post(secureUploadURL, xml, httpOptions);
   }
 
   fetchCrossTabulationFromVariables(variable: string) {

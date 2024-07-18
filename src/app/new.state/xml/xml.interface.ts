@@ -183,9 +183,9 @@ export interface XmlState {
   info: {
     siteURL?: string;
     fileID?: number;
-    apiKey?: string | undefined;
+    apiKey: string | null;
     importedSuccess?: boolean;
-    secureUploadUrl?: string;
+    secureUploadUrl: string | null;
   } | null;
 }
 

@@ -4,7 +4,7 @@
   "scope": "file",
   "type": "configure",
   "contentType": "text/tab-separated-values",
-  "toolUrl": "http://localhost:4200",
+  "toolUrl": "http://localhost:4200/",
   "toolParameters": {
     "queryParameters": [
       {
