@@ -439,7 +439,6 @@ function editSingleVariable(
     currentVariableCloned.universe =
       importedVariablesMatched.importedVariable.universe;
   }
-  console.log(currentVariableCloned);
   return currentVariableCloned;
 }
 

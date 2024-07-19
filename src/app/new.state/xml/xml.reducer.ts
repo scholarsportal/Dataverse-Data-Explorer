@@ -85,7 +85,7 @@ export const xmlReducer = createReducer(
       const variables = duplicateState.dataset?.codeBook.dataDscr.var || [];
       const variableGroups =
         duplicateState.dataset?.codeBook.dataDscr.varGrp || [];
-      if (duplicateState.dataset && variables.length && variableGroups.length) {
+      if (duplicateState.dataset && variables.length) {
         const variablesMatched: MatchVariables = matchVariableIDs(
           importDdiData.codeBook.dataDscr.var,
           variables,
