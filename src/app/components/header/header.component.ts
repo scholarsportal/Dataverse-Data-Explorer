@@ -133,7 +133,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
-    console.log('HERE');
     this.pending = true;
     this.saved = false;
     this.fail = false;
@@ -161,7 +160,6 @@ export class HeaderComponent implements OnInit {
       );
     }
     const stateStatus = this.store.subscribe((state) => {
-      console.log('HERE');
       const status = state.dataset.operationStatus.upload;
       if (status === 'success') {
         stateStatus.unsubscribe();
