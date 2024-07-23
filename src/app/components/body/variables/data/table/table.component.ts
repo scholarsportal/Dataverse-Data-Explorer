@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
-import { BulkEditModalComponent } from './bulk-edit-modal/bulk-edit-modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import { VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
@@ -19,7 +18,6 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    BulkEditModalComponent,
     VariableOptionsButtonComponent,
     KeyValuePipe,
     TableModule,

@@ -9,6 +9,7 @@ import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/mult
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions';
+import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal.component';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -18,7 +19,7 @@ import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
-  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule],
+  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule, BulkEditModalComponent],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css'
 })

@@ -32,12 +32,6 @@
       <th pSortableColumn="weight">Weight</th>
       <th>
         <span class="invisible">Options</span>
-        <dct-bulk-edit-modal
-          [selectedVariables]="selectedVariables()"
-          ngClass="{{
-            selectedVariables().length > 1 ? 'visible' : 'invisible'
-          }}"
-        />
       </th>
     </tr>
   </ng-template>
@@ -131,12 +125,6 @@
       <th pSortableColumn="weight">Weight</th>
       <th>
         <span class="invisible">Options</span>
-        <dct-bulk-edit-modal
-          [selectedVariables]="selectedVariables()"
-          ngClass="{{
-            selectedVariables().length > 1 ? 'visible' : 'invisible'
-          }}"
-        />
       </th>
     </tr>
   </ng-template>
@@ -185,7 +173,7 @@
   </ng-template>
 </p-table>
 
-@if (selectedVariables().length > 1) {
+@if (selectedVariables().length > 0) {
   <dct-table-menu
     [allGroups]="groups()"
     [groupID]="groupChanged()"

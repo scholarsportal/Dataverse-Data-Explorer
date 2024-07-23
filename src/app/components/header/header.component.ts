@@ -117,7 +117,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
-    console.log("HERE");
     this.pending = true;
     this.saved = false;
     this.fail = false;
@@ -130,7 +129,6 @@ export class HeaderComponent implements OnInit {
       this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
     }
     const stateStatus = this.store.subscribe(state => {
-      console.log("HERE");
       const status = state.dataset.operationStatus.upload;
       if (status === "success") {
         stateStatus.unsubscribe();
