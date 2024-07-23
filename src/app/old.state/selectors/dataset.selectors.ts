@@ -6,26 +6,29 @@ export const selectDatasetFeature = createFeatureSelector<DatasetState>('data');
 
 export const selectDatasetState = createSelector(
   selectDatasetFeature,
-  (state) => state
+  (state) => state,
 );
 
 export const selectDataset = createSelector(
   selectDatasetFeature,
-  (state) => state.dataset
+  (state) => state.dataset,
 );
 
 export const selectDatasetHasAPIKey = createSelector(
   selectDatasetFeature,
-  (state) => state.datasetInfo.apiKey !== undefined
+  (state) => state.datasetInfo.apiKey !== undefined,
 );
 
-export const selectDatasetInfo = createSelector(selectDatasetFeature, (dataset) => {
-  const { fileID, siteURL, apiKey } = dataset.datasetInfo;
-  if (fileID && siteURL) {
-    return { fileID, siteURL, apiKey };
-  }
-  return null;
-});
+export const selectDatasetInfo = createSelector(
+  selectDatasetFeature,
+  (dataset) => {
+    const { fileID, siteURL, apiKey } = dataset.datasetInfo;
+    if (fileID && siteURL) {
+      return { fileID, siteURL, apiKey };
+    }
+    return null;
+  },
+);
 
 export const selectFileID = createSelector(selectDatasetInfo, (info) => {
   return info?.fileID;
@@ -46,46 +49,47 @@ export const selectDatasetForUpload = createSelector(
       dataset: state.dataset,
       fileID: state.datasetInfo.fileID,
       siteURL: state.datasetInfo.siteURL,
-      apiKey: state.datasetInfo.apiKey
+      apiKey: state.datasetInfo.apiKey,
     };
-  }
+  },
 );
 
 export const selectDatasetLoading = createSelector(
   selectDatasetFeature,
-  (state) => state.download.status
+  (state) => state.download.status,
 );
 
 export const selectDatasetUploadFailed = createSelector(
   selectDatasetState,
-  (state) => state.upload.status === 'error'
+  (state) => state.upload.status === 'error',
 );
 
 export const selectDatasetUploadSuccess = createSelector(
   selectDatasetState,
-  (state) => state.upload.status === 'success'
+  (state) => state.upload.status === 'success',
 );
 
 export const selectDatasetTitle = createSelector(
   selectDatasetState,
   (state) => {
+    console.log(state);
     return state.dataset?.codeBook.stdyDscr.citation.titlStmt.titl;
-  }
+  },
 );
 
 export const selectDatasetCitation = createSelector(
   selectDatasetState,
-  (state) => state.dataset?.codeBook.stdyDscr.citation.biblCit
+  (state) => state.dataset?.codeBook.stdyDscr.citation.biblCit,
 );
 
 export const selectDatasetVariableGroups = createSelector(
   selectDatasetState,
-  (state) => state.dataset?.codeBook?.dataDscr.varGrp ?? []
+  (state) => state.dataset?.codeBook?.dataDscr.varGrp ?? [],
 );
 
 export const selectDatasetVariables = createSelector(
   selectDatasetState,
-  (state) => state.dataset?.codeBook.dataDscr.var
+  (state) => state.dataset?.codeBook.dataDscr.var,
 );
 
 export const selectDatasetProcessedVariables = createSelector(
@@ -96,12 +100,15 @@ export const selectDatasetProcessedVariables = createSelector(
       processedVariables[value['@_ID']] = value;
     });
     return processedVariables;
-  }
+  },
 );
 
 export const selectDatasetProcessedCategories = createSelector(
-  selectDatasetVariables, (variables) => {
-    const processedCategories: { [variableID: string]: { [categoryID: string]: string } } = {};
+  selectDatasetVariables,
+  (variables) => {
+    const processedCategories: {
+      [variableID: string]: { [categoryID: string]: string };
+    } = {};
     variables?.map((value) => {
       if (value.catgry && Array.isArray(value.catgry)) {
         const category: { [categoryID: string]: string } = {};
@@ -116,20 +123,20 @@ export const selectDatasetProcessedCategories = createSelector(
       }
     });
     return processedCategories;
-  }
+  },
 );
 
 export const selectDatasetImportInProgress = createSelector(
   selectDatasetState,
-  (state) => state.import.status === 'pending'
+  (state) => state.import.status === 'pending',
 );
 
 export const selectDatasetImportNotStarted = createSelector(
   selectDatasetState,
-  (state) => state.import.status === 'idle'
+  (state) => state.import.status === 'idle',
 );
 
 export const selectDatasetImportSuccess = createSelector(
   selectDatasetState,
-  (state) => state.import.status === 'success'
+  (state) => state.import.status === 'success',
 );

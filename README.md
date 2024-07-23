@@ -1,4 +1,4 @@
-# Dataverse-Data-Curation-Tool
+# Dataverse Data Explorer
 
 [![Data Explorer Deploy](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml)
 [![Lint/Test](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml)
@@ -7,7 +7,7 @@ The Data Curation Tool (DCT) allows data owners and curators to view summary sta
 
 The DCT is an Angular application.
 
-A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?dfId=127759&siteUrl=https://borealisdata.ca](https://scholarsportal.github.io/Dataverse-Data-Curation-Tool/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
+A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?dfId=127759&siteUrl=https://borealisdata.ca](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
 
 ## Installation
 
@@ -33,18 +33,17 @@ ng serve
 
 When a user selects a variables, navigates to another group, and makes another selection, the app holds the selection information for both contexts in which the selection in made. In simple terms the user does not have to worry about losing their selection when they change groups.
 
-
 ## App State
 
 ![Data Explorer State Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/150d423b-b520-41b8-a908-6586d7aa1084)
 
-The tool has a state divided into three distinct state groups. 
+The tool has a state divided into three distinct state groups.
 
 The XML State is the final DDI file that will be uploaded to Dataverse.
 
 The Dataset State contains information about operations being operated on the dataset (upload and download status), any extra information gained from an API call (variable cross tab data), as well as imported file information.
 
-The UI state represents any UI changes, including any temporary visual changes to the dataset (invalid values in the chart modal). 
+The UI state represents any UI changes, including any temporary visual changes to the dataset (invalid values in the chart modal).
 
 ## Actions
 

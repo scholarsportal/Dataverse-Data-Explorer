@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { BodyToggleComponent } from './body-toggle/body-toggle.component';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -8,16 +8,19 @@ import {
   selectDatasetHasApiKey,
   selectDatasetInfo,
   selectDatasetState,
-  selectDatasetTitle
+  selectDatasetTitle,
 } from '../../new.state/xml/xml.selectors';
 import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
-import { 
+import {
+  selectDatasetImportPending,
   selectDatasetUploadedSuccessfully,
   selectDatasetUploadError,
-  selectDatasetImportPending
 } from '../../new.state/dataset/dataset.selectors';
 import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
-import { CrossTabulationUIActions, VariableTabUIAction } from '../../new.state/ui/ui.actions';
+import {
+  CrossTabulationUIActions,
+  VariableTabUIAction,
+} from '../../new.state/ui/ui.actions';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
@@ -28,7 +31,16 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [BodyToggleComponent, FormsModule, NgClass, AsyncPipe, NgOptimizedImage, SplitButtonModule, MenuModule, ButtonModule],
+  imports: [
+    BodyToggleComponent,
+    FormsModule,
+    NgClass,
+    AsyncPipe,
+    NgOptimizedImage,
+    SplitButtonModule,
+    MenuModule,
+    ButtonModule,
+  ],
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
@@ -40,7 +52,7 @@ export class HeaderComponent implements OnInit {
   pending: boolean = false;
   saved: boolean = false;
   fail: boolean = false;
-  
+
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
@@ -60,23 +72,23 @@ export class HeaderComponent implements OnInit {
   downloadOptions = signal<MenuItem[]>([
     {
       label: 'Download original file (.sav file)',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
     },
     {
       label: 'Download tab-delimited',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
     },
     {
       label: 'Download RData format file',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
     },
     {
       label: 'Download original DDI (.xml file)',
-      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`
+      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
     },
     {
-      label: 'Download this version (.xml file)'
-    }
+      label: 'Download this version (.xml file)',
+    },
   ]);
 
   ngOnInit(): void {
@@ -88,7 +100,9 @@ export class HeaderComponent implements OnInit {
 
   handleToggle($event: 'cross-tab' | 'variables') {
     if ($event === 'cross-tab') {
-      return this.store.dispatch(CrossTabulationUIActions.navigateToCrossTabulationTab());
+      return this.store.dispatch(
+        CrossTabulationUIActions.navigateToCrossTabulationTab(),
+      );
     }
     if ($event === 'variables') {
       return this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
@@ -96,7 +110,9 @@ export class HeaderComponent implements OnInit {
   }
 
   openCrossTab() {
-    this.store.dispatch(CrossTabulationUIActions.navigateToCrossTabulationTab());
+    this.store.dispatch(
+      CrossTabulationUIActions.navigateToCrossTabulationTab(),
+    );
   }
 
   closeCrossTab() {
@@ -117,6 +133,7 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
+    console.log('HERE');
     this.pending = true;
     this.saved = false;
     this.fail = false;
@@ -125,21 +142,37 @@ export class HeaderComponent implements OnInit {
     const siteURL = datasetInfo()?.info?.siteURL;
     const fileID = datasetInfo()?.info?.fileID;
     const apiKey = datasetInfo()?.info?.apiKey;
-    if (siteURL && fileID && apiKey && ddiData) {
-      this.store.dispatch(DataverseFetchActions.startDatasetUpload({ ddiData, siteURL, fileID, apiKey }));
+    const secureUploadURL = datasetInfo()?.info?.secureUploadUrl || '';
+    if (ddiData && !!secureUploadURL) {
+      this.store.dispatch(
+        DataverseFetchActions.startSecureDatasetUpload({
+          ddiData,
+          secureUploadURL,
+        }),
+      );
+    } else if (siteURL && fileID && apiKey && ddiData) {
+      this.store.dispatch(
+        DataverseFetchActions.startDatasetUpload({
+          ddiData,
+          siteURL,
+          fileID,
+          apiKey,
+        }),
+      );
     }
-    const stateStatus = this.store.subscribe(state => {
+    const stateStatus = this.store.subscribe((state) => {
+      console.log('HERE');
       const status = state.dataset.operationStatus.upload;
-      if (status === "success") {
+      if (status === 'success') {
         stateStatus.unsubscribe();
-        setTimeout(()=>{
+        setTimeout(() => {
           this.closeLoadingToast();
           this.saved = true;
-          setTimeout(()=>{
+          setTimeout(() => {
             this.closeLoadedToast();
           }, 3500);
         }, 1000);
-      } else if (status === "error") {
+      } else if (status === 'error') {
         stateStatus.unsubscribe();
         this.closeLoadingToast();
         this.fail = true;
@@ -158,5 +191,4 @@ export class HeaderComponent implements OnInit {
   closeErrToast() {
     this.fail = false;
   }
-
 }

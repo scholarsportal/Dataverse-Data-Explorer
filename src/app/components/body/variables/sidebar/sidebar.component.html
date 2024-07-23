@@ -32,11 +32,13 @@
           (emitDeleteGroup)="deleteGroup($event)"
           (emitRenameGroup)="renameGroup($event)"
         />
+      } @empty {
+        <div class="mx-auto w-full text-center py-5 font-medium">No groups!</div>
       }
     </div>
   </div>
   <button (click)="toggleImportComponentState()" [ngClass]="{'bg-base-200': importButtonSelected()}"
-            class="hidden md:flex justify-between w-full px-5 py-5 items-center hover:bg-base-200 border-t rounded-none import max-h-16">
+          class="hidden md:flex justify-between w-full px-5 py-5 items-center hover:bg-base-200 border-t rounded-none import max-h-16">
       <span [ngClass]="{'font-bold': importButtonSelected()}" class="metadata-lbl">
       Import Metadata
       </span>

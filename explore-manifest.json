@@ -1,8 +1,8 @@
 {
-  "displayName": "DataFlex",
-  "description": "DataFlex for curation of variables",
+  "displayName": "Data Explorer",
+  "description": "Odesi Data Explorer for viewing, and configuring variables",
   "scope": "file",
-  "type": "configure",
+  "type": "explore",
   "contentType": "text/tab-separated-values",
   "toolUrl": "http://localhost:4200",
   "toolParameters": {
@@ -25,13 +25,7 @@
     {
       "name": "retrieveDataFile",
       "httpMethod": "GET",
-      "urlTemplate": "/api/v1/access/datafile/{fileId}",
-      "timeOut": 270
-    },
-    {
-      "name": "uploadDataFile",
-      "httpMethod": "POST",
-      "urlTemplate": "/api/v1/edit/{fileId}",
+      "urlTemplate": "/api/v1/access/datafile/{fileId}/metadata/ddi",
       "timeOut": 270
     }
   ]
