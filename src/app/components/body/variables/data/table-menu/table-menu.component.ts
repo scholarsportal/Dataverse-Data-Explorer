@@ -34,6 +34,8 @@ export class TableMenuComponent {
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
   });
+  saved: boolean = false;
+  error: boolean = false;
 
   constructor() {
     effect(() => {
@@ -57,12 +59,30 @@ export class TableMenuComponent {
       this.selectedGroups = change.value;
     }
   }
-
+    
   onApplyChanges() {
-    this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
-      variableIDs: this.selectedVariables(),
-      assignedWeight: this.selectedWeight,
-      groups: this.selectedGroups
-    }));
+    if (this.selectedGroups.length > 0 || this.selectedWeight) 
+      {
+        this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
+          variableIDs: this.selectedVariables(),
+          assignedWeight: this.selectedWeight,
+          groups: this.selectedGroups
+        }));
+        this.saved = true;
+        setTimeout(() => {
+          this.closeLoadedToast();
+        }, 3000);
+      } else {
+        this.error = true;
+        setTimeout(() => {
+          this.closeLoadedToast();
+        }, 3000);
+      }
   }
+
+  closeLoadedToast() {
+    this.saved = false;
+    this.error = false;
+  }
+  
 }

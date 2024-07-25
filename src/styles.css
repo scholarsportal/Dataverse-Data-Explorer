@@ -70,6 +70,7 @@
     height: 2.5rem;
     min-height: 2.5rem;
     border-radius: 4px;
+    font-size: 0.75rem;
   }
 
   input,
@@ -84,6 +85,13 @@
 
   .table :where(thead, tfoot) {
     @apply text-base-content;
+  }
+
+  .hide-toast {
+    @apply scale-50 opacity-0 duration-200 invisible;
+  }
+  .show-toast {
+    @apply scale-100 opacity-100 duration-200 visible;
   }
   
 }
@@ -116,7 +124,7 @@
   display: none !important;
 }
 .p-multiselect-label {
-  padding-top: .3rem;
+  padding-top: .45rem;
 }
 .select-cats .p-multiselect-label {
   padding-top: 0rem;

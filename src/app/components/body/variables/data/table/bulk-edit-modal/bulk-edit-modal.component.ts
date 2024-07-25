@@ -14,7 +14,7 @@ import { XmlManipulationActions } from '../../../../../../new.state/xml/xml.acti
 export class BulkEditModalComponent {
   @ViewChild('bulkEdit') bulkEditModalElement?: ElementRef;
   selectedVariables = input.required<string[]>();
-
+  saved: boolean = false;
   // @Input() selected!: Variable[];
   variableForm = new FormGroup({
     label: new FormControl(''),
@@ -53,6 +53,20 @@ export class BulkEditModalComponent {
       variableIDs: this.selectedVariables(),
       newVariableValue
     }));
+    
+    setTimeout(() => {
+      this.handleCancel();
+      this.saved = true;
+      setTimeout(() => {
+        this.closeLoadedToast();
+      }, 3000);
+    }, 500);
+
+   
+  }
+
+  closeLoadedToast() {
+    this.saved = false;
   }
 
   handleCancel() {

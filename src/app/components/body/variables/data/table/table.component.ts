@@ -16,7 +16,7 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     VariableOptionsButtonComponent,
     KeyValuePipe,

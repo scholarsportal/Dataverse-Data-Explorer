@@ -1,4 +1,4 @@
-<div class="min-h-3/4">
+<div class="h-dvh">
 
   <dct-variable-selection class="" />
 
@@ -79,29 +79,33 @@
     }
   } @else {
     <div
-      class="h-full mx-auto my-auto"
+      class="h-full mx-5 md:mx-auto my-auto"
     >
 
       @if (!isFetching()) {
         @if (!hasData()) {
-          <h3 class="text-center mx-auto">
-            No Data! Start adding variables to generate your table
+          <h3 class="mx-auto text-base">
+            No Data! Start adding variables to generate your table.
           </h3>
+       
         } @else if (hasData() && !hasRowOrColumn()) {
-          <h3 class="text-center mx-auto">
+          <h3 class="mx-auto text-base">
             One more step. Set your rows and/or columns.
           </h3>
+         
         }
       } @else if (isFetching()) {
         @if (loadingStatus === 'init') {
           <h3 class="preload-text">
             Loading dataset ...
           </h3>
+         
         } @else if (loadingStatus === 'delayed') {
           <h3 class="preload-text">
             Still loading ...
           </h3>
-          <h4 class="text-base mx-auto text-center">One moment please</h4>
+          <h4 class="text-base mx-auto">One moment please</h4>
+         
         }
       }
     </div>

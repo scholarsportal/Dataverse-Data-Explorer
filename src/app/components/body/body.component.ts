@@ -34,7 +34,7 @@ import { TableComponent } from './variables/data/table/table.component';
   ],
   templateUrl: './body.component.html',
   styleUrl: './body.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BodyComponent {
   store = inject(Store);
