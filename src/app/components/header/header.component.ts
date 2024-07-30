@@ -25,6 +25,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { DdiService } from '../../services/ddi.service';
 
 @Component({
   selector: 'dct-header',
@@ -45,6 +46,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class HeaderComponent implements OnInit {
   store = inject(Store);
+  ddi = inject(DdiService);
 
   currentThemeLight: boolean = true;
   showToggle: boolean = false;
@@ -60,6 +62,7 @@ export class HeaderComponent implements OnInit {
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
   uploadPending = this.store.selectSignal(selectDatasetImportPending);
+  datasetState = this.store.selectSignal(selectDatasetState);
   hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
   siteURL = computed(() => {
@@ -88,6 +91,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'Download this version (.xml file)',
+      command: (event) => this.handleDownload(),
     },
   ]);
 
@@ -109,14 +113,29 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openCrossTab() {
-    this.store.dispatch(
-      CrossTabulationUIActions.navigateToCrossTabulationTab(),
-    );
-  }
+  handleDownload() {
+    console.log('Downloaded');
+    const state = this.datasetState().dataset;
+    if (state) {
+      const title =
+        this.datasetState().header?.title || 'New Data Explorer File';
+      const content = this.ddi.JSONtoXML(state);
 
-  closeCrossTab() {
-    this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
+      const file = new Blob([content], { type: 'text/xml' });
+      const url = window.URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title}.xml`;
+
+      // Append the link to the body
+      document.body.appendChild(a);
+
+      // Programmatically click the link to trigger the download
+      a.click();
+
+      // Remove the link from the document
+      document.body.removeChild(a);
+    }
   }
 
   toggleTheme() {
