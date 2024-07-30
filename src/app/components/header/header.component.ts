@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'Download this version (.xml file)',
-      command: (event) => this.handleDownload(),
+      command: () => this.handleDownload(),
     },
   ]);
 
@@ -114,7 +114,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleDownload() {
-    console.log('Downloaded');
     const state = this.datasetState().dataset;
     if (state) {
       const title =
@@ -127,13 +126,8 @@ export class HeaderComponent implements OnInit {
       a.href = url;
       a.download = `${title}.xml`;
 
-      // Append the link to the body
       document.body.appendChild(a);
-
-      // Programmatically click the link to trigger the download
       a.click();
-
-      // Remove the link from the document
       document.body.removeChild(a);
     }
   }
