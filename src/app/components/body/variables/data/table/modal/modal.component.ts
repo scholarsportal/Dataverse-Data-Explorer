@@ -58,6 +58,7 @@ export class ModalComponent {
   chart = this.store.selectSignal(selectOpenVariableChart);
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
+  saved: boolean = false;
 
   open() {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
@@ -68,6 +69,17 @@ export class ModalComponent {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.close();
     // this.store.dispatch(closeVariableModal());
+  }
+
+  closeLoadedToast() {
+    this.saved = false;
+  }
+
+  showToast() {
+    this.saved = true;
+    setTimeout(() => {
+      this.closeLoadedToast();
+    }, 3000);
   }
 
   // Listen for escape and dispatch close action

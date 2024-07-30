@@ -54,6 +54,8 @@ export class EditComponent {
     isWeight: new FormControl(false),
     assignedWeight: new FormControl('')
   });
+  saved: boolean = false;
+  emitToast = output();
 
   constructor() {
     effect(() => {
@@ -93,5 +95,10 @@ export class EditComponent {
       groups: this.variableGroupsPlaceholder,
       newVariableValue
     }));
+    this.emitToast.emit();
+  }
+
+  closeLoadedToast() {
+    this.saved = false;
   }
 }

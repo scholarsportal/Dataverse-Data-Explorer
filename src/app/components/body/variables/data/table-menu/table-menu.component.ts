@@ -9,6 +9,7 @@ import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/mult
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions';
+import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal.component';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -18,7 +19,7 @@ import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
-  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule],
+  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule, BulkEditModalComponent],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css'
 })
@@ -33,6 +34,8 @@ export class TableMenuComponent {
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
   });
+  saved: boolean = false;
+  error: boolean = false;
 
   constructor() {
     effect(() => {
@@ -56,12 +59,30 @@ export class TableMenuComponent {
       this.selectedGroups = change.value;
     }
   }
-
+    
   onApplyChanges() {
-    this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
-      variableIDs: this.selectedVariables(),
-      assignedWeight: this.selectedWeight,
-      groups: this.selectedGroups
-    }));
+    if (this.selectedGroups.length > 0 || this.selectedWeight) 
+      {
+        this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
+          variableIDs: this.selectedVariables(),
+          assignedWeight: this.selectedWeight,
+          groups: this.selectedGroups
+        }));
+        this.saved = true;
+        setTimeout(() => {
+          this.closeLoadedToast();
+        }, 3000);
+      } else {
+        this.error = true;
+        setTimeout(() => {
+          this.closeLoadedToast();
+        }, 3000);
+      }
   }
+
+  closeLoadedToast() {
+    this.saved = false;
+    this.error = false;
+  }
+  
 }

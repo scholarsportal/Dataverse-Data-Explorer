@@ -16,7 +16,7 @@ import { TableComponent } from './table/table.component';
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
