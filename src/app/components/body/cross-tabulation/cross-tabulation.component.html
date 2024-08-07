@@ -55,13 +55,14 @@
           </ng-template>
         </p-dropdown>
         <button
-          (click)="exportTable()"
+          (click)="crossTableComponent.downloadDivAsCSV()"
           class="text-primary mb-2.5 mt-5 mr-5 md:mr-0 hover:underline float-right"
         >
           <span>Export table as CSV</span>
         </button>
       </div>
       <dct-cross-table
+        #crossTableComponent
         [data]="table()"
         [cols]="cols()"
         [rows]="rows()"
@@ -87,25 +88,25 @@
           <h3 class="mx-auto text-base">
             No Data! Start adding variables to generate your table.
           </h3>
-       
+
         } @else if (hasData() && !hasRowOrColumn()) {
           <h3 class="mx-auto text-base">
             One more step. Set your rows and/or columns.
           </h3>
-         
+
         }
       } @else if (isFetching()) {
         @if (loadingStatus === 'init') {
           <h3 class="preload-text">
             Loading dataset ...
           </h3>
-         
+
         } @else if (loadingStatus === 'delayed') {
           <h3 class="preload-text">
             Still loading ...
           </h3>
           <h4 class="text-base mx-auto">One moment please</h4>
-         
+
         }
       }
     </div>
