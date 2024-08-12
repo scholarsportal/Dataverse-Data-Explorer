@@ -20,8 +20,6 @@ A demo of the tool is available here; note that this Github pages demo is **not 
 
   ```npm install -g @angular/cli```
 
-Integrating Data Explorer in your institution? See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
-
 Now to start development.
 
 ```sh
@@ -29,9 +27,25 @@ npm install
 ng serve
 ```
 
-### Variable Selection Context
+## Customization
 
-When a user selects a variables, navigates to another group, and makes another selection, the app holds the selection information for both contexts in which the selection in made. In simple terms the user does not have to worry about losing their selection when they change groups.
+### Dataverse Instance Name
+
+You can customize the dataverse instance name in the en.json.
+
+## Building
+
+### Into Dataverse Instance
+
+Integrating Data Explorer in your institution? See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
+
+### Serve as web app
+
+You can serve the Data Explorer app like you would any other website.
+Use ```ng build``` to get the `dist` directory, and serve the dist directly using Apache, Nginx, or whatever server you use.
+
+> [!NOTE]
+> You can also deploy this via docker.
 
 ## App State
 
