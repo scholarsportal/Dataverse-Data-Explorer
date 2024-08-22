@@ -4,6 +4,7 @@ import { FileUploadButtonComponent } from './file-upload-button/file-upload-butt
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
+  selectDatasetImportError,
   selectDatasetImportIdle,
   selectDatasetImportPending,
   selectDatasetImportSuccess,
@@ -24,19 +25,21 @@ export class ImportComponent {
   importInProgress = this.store.selectSignal(selectDatasetImportPending);
   importNotStarted = this.store.selectSignal(selectDatasetImportIdle);
   importSucceeded = this.store.selectSignal(selectDatasetImportSuccess);
+  importError = this.store.selectSignal(selectDatasetImportError);
+
   file: File | undefined = undefined;
   // variable options-button
-  variableGroups = false;
-  labels = false;
-  literalQuestion = false;
-  interviewerQuestion = false;
-  postQuestion = false;
-  universe = false;
-  variableNotes = false;
-  weights = false;
-  success = false;
+  variableGroups = true;
+  labels = true;
+  literalQuestion = true;
+  interviewerQuestion = true;
+  postQuestion = true;
+  universe = true;
+  variableNotes = true;
+  weights = true;
+  success = true;
   importing = true;
-  error = false;
+  error = true;
   loading = false;
 
   constructor(private store: Store) {}
@@ -73,15 +76,10 @@ export class ImportComponent {
   }
 
   closeImportComponentState() {
-    this.error = false;
-    this.success = false;
-    this.importing = false;
     this.store.dispatch(VariableTabUIAction.closeVariableImportMenu());
   }
 
   async onImportButtonClick() {
-    this.error = false;
-    this.importing = true;
     const importedXmlString = await this.file?.text();
     const variableTemplate: ImportVariableFormTemplate = {
       groups: this.variableGroups,
@@ -101,13 +99,5 @@ export class ImportComponent {
         }),
       );
     }
-    if (this.importSucceeded()) {
-      this.importing = false;
-      this.success = true;
-    } else {
-      this.importing = false;
-      this.error = true;
-    };
-    
   }
 }

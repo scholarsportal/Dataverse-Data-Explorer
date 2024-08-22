@@ -2,7 +2,10 @@ import { Component, computed, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 // import { selectCurrentGroup, selectVariableWeights } from 'src/app/state/selectors/var-groups.selectors';
-import { VariableGroup } from '../../../../../new.state/xml/xml.interface';
+import {
+  Variable,
+  VariableGroup,
+} from '../../../../../new.state/xml/xml.interface';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import { ChipModule } from 'primeng/chip';
 import { MultiselectDropdownComponent } from '../table/multiselect-dropdown/multiselect-dropdown.component';
@@ -19,9 +22,17 @@ import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal
 @Component({
   selector: 'dct-table-menu',
   standalone: true,
-  imports: [CommonModule, MultiselectDropdownComponent, MultiSelectModule, DropdownModule, ChipModule, FormsModule, BulkEditModalComponent],
+  imports: [
+    CommonModule,
+    MultiselectDropdownComponent,
+    MultiSelectModule,
+    DropdownModule,
+    ChipModule,
+    FormsModule,
+    BulkEditModalComponent,
+  ],
   templateUrl: './table-menu.component.html',
-  styleUrl: './table-menu.component.css'
+  styleUrl: './table-menu.component.css',
 })
 export class TableMenuComponent {
   store = inject(Store);
@@ -29,6 +40,10 @@ export class TableMenuComponent {
   groupID = input.required<string>();
   selectedWeight: string = '';
   selectedGroups: string[] = [];
+  allVariables = input.required<{ [variableID: string]: Variable }>();
+  variablesWithCrossTabMetadata = input.required<{
+    [variableID: string]: string[];
+  }>();
   weights = input.required<{ [weightID: string]: string }>();
   allGroups = input.required<{ [id: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
@@ -38,16 +53,16 @@ export class TableMenuComponent {
   error: boolean = false;
 
   constructor() {
-    effect(() => {
-
-    });
+    effect(() => {});
   }
 
   onRemoveFromGroup(groupID: string) {
-    this.store.dispatch(XmlManipulationActions.removeVariablesFromGroup({
-      groupID,
-      variableIDs: this.selectedVariables()
-    }));
+    this.store.dispatch(
+      XmlManipulationActions.removeVariablesFromGroup({
+        groupID,
+        variableIDs: this.selectedVariables(),
+      }),
+    );
   }
 
   onSelectedWeightChange(weight: any) {
@@ -59,30 +74,32 @@ export class TableMenuComponent {
       this.selectedGroups = change.value;
     }
   }
-    
+
   onApplyChanges() {
-    if (this.selectedGroups.length > 0 || this.selectedWeight) 
-      {
-        this.store.dispatch(XmlManipulationActions.bulkSaveVariableInfo({
+    if (this.selectedGroups.length > 0 || this.selectedWeight) {
+      this.store.dispatch(
+        XmlManipulationActions.bulkSaveVariableInfo({
           variableIDs: this.selectedVariables(),
           assignedWeight: this.selectedWeight,
-          groups: this.selectedGroups
-        }));
-        this.saved = true;
-        setTimeout(() => {
-          this.closeLoadedToast();
-        }, 3000);
-      } else {
-        this.error = true;
-        setTimeout(() => {
-          this.closeLoadedToast();
-        }, 3000);
-      }
+          groups: this.selectedGroups,
+          allVariables: this.allVariables(),
+          variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
+        }),
+      );
+      this.saved = true;
+      setTimeout(() => {
+        this.closeLoadedToast();
+      }, 3000);
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.closeLoadedToast();
+      }, 3000);
+    }
   }
 
   closeLoadedToast() {
     this.saved = false;
     this.error = false;
   }
-  
 }

@@ -1,4 +1,12 @@
-import { Component, computed, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent } from './chart/chart.component';
 import { EditComponent } from './edit/edit.component';
@@ -14,13 +22,17 @@ import {
   selectOpenVariableID,
   selectOpenVariableMode,
   selectOpenVariableName,
-  selectOpenVariableSummaryStatistics
+  selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
   selectDatasetProcessedGroups,
-  selectVariablesWithCorrespondingGroups
+  selectDatasetProcessedVariables,
+  selectVariablesWithCorrespondingGroups,
 } from 'src/app/new.state/xml/xml.selectors';
-import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectDatasetWeights,
+} from 'src/app/new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-modal',
@@ -30,10 +42,10 @@ import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selector
     ChartComponent,
     EditComponent,
     ModalHeaderComponent,
-    ModalFooterComponent
+    ModalFooterComponent,
   ],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.css'
+  styleUrl: './modal.component.css',
 })
 export class ModalComponent {
   store = inject(Store);
@@ -48,13 +60,21 @@ export class ModalComponent {
   variableName = this.store.selectSignal(selectOpenVariableName);
   variableID = this.store.selectSignal(selectOpenVariableID);
   allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
-  variablesAndTheirGroups = this.store.selectSignal(selectVariablesWithCorrespondingGroups);
+  variablesAndTheirGroups = this.store.selectSignal(
+    selectVariablesWithCorrespondingGroups,
+  );
   variableGroups = computed(() => {
     return this.variablesAndTheirGroups()[this.variableID()] || [];
   });
   allWeights = this.store.selectSignal(selectDatasetWeights);
+  allVariables = this.store.selectSignal(selectDatasetProcessedVariables);
+  variablesWithCrossTabMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
   // chart data
-  categoriesInvalid = this.store.selectSignal(selectOpenVariableCategoriesMissing);
+  categoriesInvalid = this.store.selectSignal(
+    selectOpenVariableCategoriesMissing,
+  );
   chart = this.store.selectSignal(selectOpenVariableChart);
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);

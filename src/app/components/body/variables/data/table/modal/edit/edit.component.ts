@@ -1,10 +1,23 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiselectDropdownComponent } from '../../multiselect-dropdown/multiselect-dropdown.component';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { VariableForm } from 'src/app/new.state/ui/ui.interface';
-import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
+import { Variable, VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import { ChipModule } from 'primeng/chip';
 import { XmlManipulationActions } from '../../../../../../../new.state/xml/xml.actions';
@@ -18,17 +31,22 @@ import { XmlManipulationActions } from '../../../../../../../new.state/xml/xml.a
     FormsModule,
     ReactiveFormsModule,
     MultiSelectModule,
-    ChipModule
+    ChipModule,
   ],
   templateUrl: './edit.component.html',
-  styleUrl: './edit.component.css'
+  styleUrl: './edit.component.css',
 })
 export class EditComponent {
   store = inject(Store);
+
   form = input.required<VariableForm>();
+  allVariables = input.required<{ [variableID: string]: Variable }>();
   variableGroups = input.required<string[]>();
   variableGroupsPlaceholder: string[] = [];
   variableID = input.required<string>();
+  variablesWithCrossTabMetadata = input.required<{
+    [variableID: string]: string[];
+  }>();
   allGroups = input.required<{ [groupID: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
     return Object.keys(this.allGroups());
@@ -36,7 +54,7 @@ export class EditComponent {
   decodedVariableGroups = computed(() => {
     // console.log(this.variableGroups());
     const varGroups: string[] = [];
-    Object.values(this.allGroups()).map(group => {
+    Object.values(this.allGroups()).map((group) => {
       varGroups.push(group.labl);
     });
     return varGroups;
@@ -52,7 +70,7 @@ export class EditComponent {
     universe: new FormControl(''),
     notes: new FormControl(''),
     isWeight: new FormControl(false),
-    assignedWeight: new FormControl('')
+    assignedWeight: new FormControl(''),
   });
   saved: boolean = false;
   emitToast = output();
@@ -68,7 +86,7 @@ export class EditComponent {
         universe: this.form().universe,
         isWeight: this.form().isWeight,
         assignedWeight: this.form().assignedWeight,
-        notes: this.form().notes
+        notes: this.form().notes,
       });
     });
   }
@@ -88,13 +106,17 @@ export class EditComponent {
       universe: this.variableForm.value.universe || '',
       notes: this.variableForm.value.notes || '',
       assignedWeight: this.variableForm.value.assignedWeight || '',
-      isWeight: this.variableForm.value.isWeight || false
+      isWeight: this.variableForm.value.isWeight || false,
     };
-    this.store.dispatch(XmlManipulationActions.saveVariableInfo({
-      variableID: this.variableID(),
-      groups: this.variableGroupsPlaceholder,
-      newVariableValue
-    }));
+    this.store.dispatch(
+      XmlManipulationActions.saveVariableInfo({
+        variableID: this.variableID(),
+        groups: this.variableGroupsPlaceholder,
+        newVariableValue,
+        allVariables: this.allVariables(),
+        variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
+      }),
+    );
     this.emitToast.emit();
   }
 

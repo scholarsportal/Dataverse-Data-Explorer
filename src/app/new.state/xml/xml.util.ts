@@ -103,6 +103,9 @@ export function changeMultipleVariables(
     if (variableID.includes(variable['@_ID'])) {
       const patchedVariable: VariableForm = {
         ...newVariableValue,
+        label: newVariableValue.label.length
+          ? newVariableValue.label
+          : variable.labl['#text'],
         isWeight: !!variable['@_wgt'],
         assignedWeight: assignedWeight || variable['@_wgt-var'],
       };

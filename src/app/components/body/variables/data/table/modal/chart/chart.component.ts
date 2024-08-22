@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto';
-import { shuffleColours } from './chart.interface';
 import { Store } from '@ngrx/store';
 import { SummaryStatisticsComponent } from './summary-statistics/summary-statistics.component';
 import {
@@ -49,6 +48,7 @@ export class ChartComponent implements OnInit {
   // Reason: ChartJS works better with an any definition
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public chartJS: any;
+  private fullNames: string[] = [];
 
   constructor() {
     effect(() => {
@@ -58,7 +58,6 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.createChart();
-    
   }
 
   toggleCheckbox(value: string) {
@@ -86,72 +85,114 @@ export class ChartComponent implements OnInit {
     this.chartJS = new Chart('variableChart', {
       type: 'bar',
       data: {
+        labels: this.chart().map((item) => item.y), // Use the truncated category names
         datasets: [
           {
-            data: this.chart(),
-            backgroundColor: shuffleColours(),
+            data: this.chart().map((item) => item.x), // Use the count values
+            backgroundColor: this.shuffleColours(),
           },
         ],
       },
       options: {
-        indexAxis: 'y',
+        indexAxis: 'y', // Horizontal bar chart
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            callbacks: {
+              label: (tooltipItem: any) => {
+                // Display the full name on hover
+                return `${this.fullNames[tooltipItem.dataIndex]}: ${tooltipItem.raw}`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: {
+              color: this.getGridColor(),
+            },
+            ticks: {
+              color: this.getTickColor(),
+            },
+          },
+          y: {
+            grid: {
+              color: this.getGridColor(),
+            },
+            ticks: {
+              color: this.getTickColor(),
+              autoSkip: false,
+            },
           },
         },
       },
     });
 
-    const light = 'black';
-    const dark = 'white';
-    const neutral = '#c8c5d0';
-    const theme = localStorage.getItem('theme');
-    
-    if (theme === 'light') {
-      this.chartJS.options.scales.x.grid.color = neutral;
-      this.chartJS.options.scales.y.grid.color = neutral;
-      this.chartJS.options.scales.x.ticks.color = light;
-      this.chartJS.options.scales.y.ticks.color = light;
-      this.chartJS.options.plugins.legend.labels.color = light;
-    } else {
-      this.chartJS.options.scales.x.grid.color = dark;
-      this.chartJS.options.scales.y.grid.color = dark;
-      this.chartJS.options.scales.x.ticks.color = dark;
-      this.chartJS.options.scales.y.ticks.color = dark;
-      this.chartJS.options.plugins.legend.labels.color = dark;
-    }
+    // const light = 'black';
+    // const dark = 'white';
+    // const neutral = '#c8c5d0';
+    // const theme = localStorage.getItem('theme');
+
+    // if (theme === 'light') {
+    //   this.chartJS.options.scales.x.grid.color = neutral;
+    //   this.chartJS.options.scales.y.grid.color = neutral;
+    //   this.chartJS.options.scales.x.ticks.color = light;
+    //   this.chartJS.options.scales.y.ticks.color = light;
+    //   this.chartJS.options.plugins.legend.labels.color = light;
+    // } else {
+    //   this.chartJS.options.scales.x.grid.color = dark;
+    //   this.chartJS.options.scales.y.grid.color = dark;
+    //   this.chartJS.options.scales.x.ticks.color = dark;
+    //   this.chartJS.options.scales.y.ticks.color = dark;
+    //   this.chartJS.options.plugins.legend.labels.color = dark;
+    // }
   }
 
   private redrawChart(chart: { x: number; y: string }[]) {
     // Update chart data and redraw
     if (this.chartJS) {
-      const light = 'black';
-      const dark = 'white';
-      const neutral = '#c8c5d0';
-      const theme = localStorage.getItem('theme');
-      this.chartJS.data.datasets[0].data = chart;
-
-      if (this.chartJS.data?.options?.scales?.y?.ticks) {
-        this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
-      }
-
-      if (theme === 'light') {
-        this.chartJS.options.scales.x.grid.color = neutral;
-        this.chartJS.options.scales.y.grid.color = neutral;
-        this.chartJS.options.scales.x.ticks.color = light;
-        this.chartJS.options.scales.y.ticks.color = light;
-        this.chartJS.options.plugins.legend.labels.color = light;
-        this.chartJS.update();
-      } else {
-        this.chartJS.options.scales.x.grid.color = dark;
-        this.chartJS.options.scales.y.grid.color = dark;
-        this.chartJS.options.scales.x.ticks.color = dark;
-        this.chartJS.options.scales.y.ticks.color = dark;
-        this.chartJS.options.plugins.legend.labels.color = dark;
-        this.chartJS.update();
-      }
-      
+      this.chartJS.data.labels = chart.map((item) => item.y); // Update labels
+      this.chartJS.data.datasets[0].data = chart.map((item) => item.x); // Update data
+      this.chartJS.update();
+      //
+      // const light = 'black';
+      // const dark = 'white';
+      // const neutral = '#c8c5d0';
+      // const theme = localStorage.getItem('theme');
+      //
+      // if (theme === 'light') {
+      //   this.chartJS.options.scales.x.grid.color = neutral;
+      //   this.chartJS.options.scales.y.grid.color = neutral;
+      //   this.chartJS.options.scales.x.ticks.color = light;
+      //   this.chartJS.options.scales.y.ticks.color = light;
+      //   this.chartJS.options.plugins.legend.labels.color = light;
+      //   this.chartJS.update();
+      // } else {
+      //   this.chartJS.options.scales.x.grid.color = dark;
+      //   this.chartJS.options.scales.y.grid.color = dark;
+      //   this.chartJS.options.scales.x.ticks.color = dark;
+      //   this.chartJS.options.scales.y.ticks.color = dark;
+      //   this.chartJS.options.plugins.legend.labels.color = dark;
+      //   this.chartJS.update();
+      // }
     }
+  }
+
+  private getGridColor(): string {
+    const theme = localStorage.getItem('theme');
+    return theme === 'light' ? '#c8c5d0' : 'white';
+  }
+
+  private getTickColor(): string {
+    const theme = localStorage.getItem('theme');
+    return theme === 'light' ? 'black' : 'white';
+  }
+
+  private shuffleColours(): string[] {
+    // Implement your color shuffling logic here
+    return ['#FF6384', '#36A2EB', '#FFCE56'];
   }
 }

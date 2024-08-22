@@ -1,4 +1,5 @@
 import { Variable } from '../xml/xml.interface';
+import { ChartData } from './ui.interface';
 
 export const truncatedText = (text: string) => {
   if (text.length > 15) {
@@ -6,6 +7,23 @@ export const truncatedText = (text: string) => {
   }
   return text;
 };
+
+export function createVariableViewChartTable(
+  variableID: string,
+  allVariables: {
+    [variableID: string]: Variable;
+  },
+  crossTabValues: { [variableID: string]: number[] },
+): ChartData {
+  const chart: ChartData = {};
+  allVariables[variableID]?.catgry?.map((value) => {
+    let count = Number.NEGATIVE_INFINITY;
+    let weightedCount = Number.NEGATIVE_INFINITY;
+    if (Array.isArray(value.catStat)) {
+    }
+  });
+  return chart;
+}
 
 export function matchCategoriesWithLabels(
   processedCategories: {
@@ -17,7 +35,7 @@ export function matchCategoriesWithLabels(
   const matched: { [variableID: string]: string[] } = {};
   Object.keys(crossTabValues).map((key) => {
     const values: string[] = [];
-    if (processedCategories[key]) {
+    if (processedCategories[key] && crossTabValues[key]) {
       crossTabValues[key].map((value) => {
         let toPush = processedCategories[key][value] || '';
         if (missingCategories[key]?.includes(value)) {

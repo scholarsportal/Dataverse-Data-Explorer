@@ -3,6 +3,8 @@ import {
   ApiResponse,
   ddiJSONStructure,
   ImportVariableFormTemplate,
+  ParsedCrossTabData,
+  Variable,
 } from './xml.interface';
 
 export const DataverseFetchActions = createActionGroup({
@@ -37,6 +39,9 @@ export const DataverseFetchActions = createActionGroup({
       metadataID?: number;
       language?: string;
     }>(),
+    'Start Weight Search': props<{ variableIDs: string[] }>(),
+    'Fetch Weights Success': props<{ data: ParsedCrossTabData }>(),
+    'Fetch Weights Error': props<{ error: Error }>(),
     // User starts upload
     'Start Dataset Upload': props<{
       siteURL: string;
@@ -92,7 +97,7 @@ export const XmlManipulationActions = createActionGroup({
       groups: string[];
     }>(),
     'Save Variable Info': props<{
-      variableID: string | string[];
+      variableID: string;
       newVariableValue: {
         label: string;
         literalQuestion: string;
@@ -104,9 +109,11 @@ export const XmlManipulationActions = createActionGroup({
         isWeight: boolean;
       };
       groups: string[];
+      allVariables: { [variableID: string]: Variable };
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
     }>(),
     'Save Variable Info Success': emptyProps,
-    'Save Variable Info Failed': props<{
+    'Save Variable Info Fail': props<{
       error: string;
       newVariableValue: {
         label: string;
@@ -131,6 +138,26 @@ export const XmlManipulationActions = createActionGroup({
         universe: string;
         notes: string;
       };
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+      allVariables: { [variableID: string]: Variable };
     }>(),
+    'Start Weight Process': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      weightID: string;
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Fetch Missing Values and Start Weight Process': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      weightID: string;
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Weight Process Success': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Weight Process Error': props<{ error: Error }>(),
   },
 });

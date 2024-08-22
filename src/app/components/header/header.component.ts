@@ -26,6 +26,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'dct-header',
@@ -41,6 +42,7 @@ import { DdiService } from '../../services/ddi.service';
     SplitButtonModule,
     MenuModule,
     ButtonModule,
+    MessagesModule,
   ],
   //changeDetection: ChangeDetectionStrategy.OnPush
 })

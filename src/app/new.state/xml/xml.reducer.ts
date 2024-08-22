@@ -306,4 +306,36 @@ export const xmlReducer = createReducer(
       };
     },
   ),
+  on(
+    XmlManipulationActions.weightProcessSuccess,
+    (
+      state,
+      { selectedVariables, allVariables, variablesWithCrossTabMetadata },
+    ) => {
+      const duplicateVariables =
+        structuredClone(state.dataset?.codeBook.dataDscr.var) || [];
+      if (duplicateVariables) {
+        duplicateVariables.forEach((variable) => {
+          if (selectedVariables.includes(variable['@_ID'])) {
+            variable.catgry = allVariables[variable['@_ID']].catgry;
+          }
+        });
+      }
+      return {
+        ...state,
+        dataset: !state.dataset
+          ? null
+          : {
+              ...state.dataset,
+              codeBook: {
+                ...state.dataset?.codeBook,
+                dataDscr: {
+                  ...state.dataset?.codeBook.dataDscr,
+                  var: duplicateVariables,
+                },
+              },
+            },
+      };
+    },
+  ),
 );

@@ -1,4 +1,5 @@
 <dct-table
+  [allVariables]="variables()"
   [categoriesInvalid]="categoriesInvalid()"
   [crossTabValuesFetched]="crossTabValuesFetched()"
   [groupChanged]="groupChanged()"
@@ -7,6 +8,7 @@
   [openVariable]="openVariable()"
   [selectedVariables]="selectedVariables()"
   [variablesInCrossTab]="variablesInCrossTabSelection()"
+  [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
   [variables]="variablesSimplified()"
   [weights]="weights()"
   class="md:flex flex-col w-full table"

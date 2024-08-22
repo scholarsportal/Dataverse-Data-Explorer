@@ -92,6 +92,9 @@ export class CrossTableComponent {
     for (let i = 2; i < table.rows.length; i++) {
       let row = table.rows[i];
       let rowData = [];
+      if (i === 2) {
+        rowData.push(''); // Add an empty cell at the beginning
+      }
       for (let cell of row.cells) {
         rowData.push(cell.innerText.replace(/,/g, ''));
       }

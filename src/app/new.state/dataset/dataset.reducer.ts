@@ -1,4 +1,3 @@
-import { ddiJSONStructure } from '../../old.state/interface';
 import { createReducer, on } from '@ngrx/store';
 import {
   DataverseFetchActions,
@@ -9,6 +8,7 @@ import {
   CrossTabulationUIActions,
   VariableTabUIAction,
 } from '../ui/ui.actions';
+import { ddiJSONStructure } from '../xml/xml.interface';
 
 export interface DatasetState {
   operationStatus: {
@@ -25,6 +25,11 @@ export interface DatasetState {
   crossTabulation: {
     [variableID: string]: string[];
   };
+  weightedFrequencies: {
+    [variableID: string]: {
+      [weightVariableID: string]: { [categoryID: string]: string };
+    };
+  };
 }
 
 const initialState: DatasetState = {
@@ -40,6 +45,7 @@ const initialState: DatasetState = {
     importedResult: null,
   },
   crossTabulation: {},
+  weightedFrequencies: {},
 };
 
 export const datasetReducer = createReducer(
@@ -92,7 +98,7 @@ export const datasetReducer = createReducer(
       ...state,
       crossTabulation: {
         ...state.crossTabulation,
-        [variableID]: data,
+        [variableID]: data[variableID],
       },
     };
   }),
@@ -102,6 +108,15 @@ export const datasetReducer = createReducer(
       operationStatus: {
         ...state.operationStatus,
         variableDownload: 'pending' as const,
+      },
+    };
+  }),
+  on(DataverseFetchActions.fetchWeightsSuccess, (state, { data }) => {
+    return {
+      ...state,
+      crossTabulation: {
+        ...state.crossTabulation,
+        ...data,
       },
     };
   }),

@@ -5,6 +5,7 @@
   }
   <dct-data
     class="data md:grid"
+    [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
     [isFetching]="crossTabIsFetching()"
     [variables]="filteredByGroupID()"
     [variablesInCrossTabSelection]="variablesInCrossTab()"
