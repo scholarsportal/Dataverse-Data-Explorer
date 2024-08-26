@@ -92,7 +92,7 @@
         ></dct-file-upload-button>
       }
 
-      <div *ngIf="importing">
+      @if (importing && importNotStarted()) {
         <button
           (click)="onImportButtonClick()"
           [disabled]="!file"
@@ -106,7 +106,7 @@
             </span>
           }
         </button>
-      </div>
+      }
       <div *ngIf="importInProgress()">
         <button
           class="btn btn-primary mt-5"
@@ -151,6 +151,10 @@
         <button class=" rounded border border-base-300 py-2.5 px-5 my-5 "
                 (click)="closeImportComponentState()">
           Go Back to Variables
+        </button>
+        <button class=" rounded border border-error text-error py-2.5 px-5 my-5 "
+                (click)="resetImportComponentState()">
+          Reset Import
         </button>
       } @else if (importError()) {
         <div role="alert" class="alert alert-error rounded mt-5">

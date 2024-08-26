@@ -75,6 +75,7 @@ export const XmlManipulationActions = createActionGroup({
       importDdiData: ddiJSONStructure;
       variableTemplate: ImportVariableFormTemplate;
     }>(),
+    'Reset Import': emptyProps,
     'Rename Group': props<{ groupID: string; newLabel: string }>(),
     'Delete Group': props<{ groupID: string }>(),
     'Create Group': props<{ groupID: string; label: string }>(),

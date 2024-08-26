@@ -79,6 +79,11 @@ export class ImportComponent {
     this.store.dispatch(VariableTabUIAction.closeVariableImportMenu());
   }
 
+  resetImportComponentState() {
+    this.file = undefined;
+    this.store.dispatch(XmlManipulationActions.resetImport());
+  }
+
   async onImportButtonClick() {
     const importedXmlString = await this.file?.text();
     const variableTemplate: ImportVariableFormTemplate = {

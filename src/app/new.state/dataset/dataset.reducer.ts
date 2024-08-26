@@ -204,6 +204,15 @@ export const datasetReducer = createReducer(
       },
     };
   }),
+  on(XmlManipulationActions.resetImport, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        import: 'idle' as const,
+      },
+    };
+  }),
   on(
     XmlManipulationActions.weightProcessStart,
     XmlManipulationActions.weightProcessFetchMissingValuesAndStart,

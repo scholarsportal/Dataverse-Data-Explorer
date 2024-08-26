@@ -98,6 +98,7 @@ export const xmlReducer = createReducer(
         if (variableTemplate.groups) {
           duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
             importDdiData.codeBook.dataDscr.varGrp,
+            variablesMatched,
           );
         }
         // console.log(createNewVariables(variablesMatched, variables, variableTemplate));
