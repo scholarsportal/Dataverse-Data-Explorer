@@ -103,6 +103,9 @@ export function changeMultipleVariables(
     if (variableID.includes(variable['@_ID'])) {
       const patchedVariable: VariableForm = {
         ...newVariableValue,
+        label: newVariableValue.label.length
+          ? newVariableValue.label
+          : variable.labl['#text'],
         isWeight: !!variable['@_wgt'],
         assignedWeight: assignedWeight || variable['@_wgt-var'],
       };
@@ -288,11 +291,26 @@ export function matchVariableIDs(
   return matchedVariables;
 }
 
-export function updateGroups(groups: VariableGroup[]): VariableGroup[] {
+export function updateGroups(
+  groups: VariableGroup[],
+  matchedVariableIDs: MatchVariables,
+): VariableGroup[] {
   const duplicateVariableGroups: VariableGroup[] = [];
   groups.forEach((group) => {
+    const flipMatched: { [oldVariableID: string]: string } = {};
+    Object.keys(matchedVariableIDs).map((id) => {
+      flipMatched[matchedVariableIDs[id].importedVariableID] = id;
+    });
+    const groupVariables = group['@_var']?.split(' ') || [];
+    const newVars: string[] = [];
+    if (!!groupVariables.length) {
+      groupVariables.forEach((variable) => {
+        newVars.push(flipMatched[variable]);
+      });
+    }
     duplicateVariableGroups.push({
       ...group,
+      '@_var': newVars.length ? newVars.join(' ') : group['@_var'],
       '@_ID': `VG${Math.floor(Math.random() * 90000) + 10000}`,
     });
   });
@@ -353,27 +371,16 @@ function editSingleVariable(
 ): Variable {
   const currentVariableCloned = structuredClone(currentVariable);
   if (variableTemplate.label) {
-    if (!currentVariableCloned.labl?.['#text']) {
-      currentVariableCloned.labl = {
-        '#text': '',
-        '@_level': 'variable',
-      };
+    if (currentVariableCloned.labl?.['#text']) {
+      currentVariableCloned.labl['#text'] =
+        importedVariablesMatched.importedVariable.labl?.['#text'] || '';
     }
-    currentVariableCloned.labl['#text'] =
-      importedVariablesMatched.importedVariable.labl?.['#text'] || '';
   }
   if (variableTemplate.notes) {
     // current var has no notes
     if (!currentVariableCloned.notes) {
-      currentVariableCloned.notes = [
-        {
-          '#text': '',
-          '@_type': '',
-          '@_level': '',
-          '@_subject': '',
-        },
-        '',
-      ];
+      currentVariableCloned.notes =
+        importedVariablesMatched.importedVariable.notes;
     }
     // current var only has dataverse signature
     if (
@@ -399,7 +406,6 @@ function editSingleVariable(
       .importedVariable['@_wgt']
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';
-    // console.log(currentVariable);
   }
   if (!currentVariable.qstn) {
     currentVariableCloned.qstn = {

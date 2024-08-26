@@ -1,4 +1,11 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { BodyToggleComponent } from './body-toggle/body-toggle.component';
 import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -15,6 +22,7 @@ import {
   selectDatasetImportPending,
   selectDatasetUploadedSuccessfully,
   selectDatasetUploadError,
+  selectDatasetWeightFetchStatus,
 } from '../../new.state/dataset/dataset.selectors';
 import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
 import {
@@ -26,6 +34,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'dct-header',
@@ -41,6 +50,7 @@ import { DdiService } from '../../services/ddi.service';
     SplitButtonModule,
     MenuModule,
     ButtonModule,
+    MessagesModule,
   ],
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -55,16 +65,37 @@ export class HeaderComponent implements OnInit {
   saved: boolean = false;
   fail: boolean = false;
 
+  weightIdle: boolean = true;
+  weightPending: boolean = false;
+  weightSuccess: boolean = false;
+  weightFail: boolean = false;
+
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
 
+  weightFetchStatus = this.store.selectSignal(selectDatasetWeightFetchStatus);
+  weightFetchIdle = computed(
+    () => this.weightFetchStatus() === ('idle' as const),
+  );
+  weightFetchSuccess = computed(
+    () => this.weightFetchStatus() === ('success' as const),
+  );
+  weightFetchPending = computed(
+    () => this.weightFetchStatus() === ('pending' as const),
+  );
+  weightFetchFail = computed(
+    () => this.weightFetchStatus() === ('error' as const),
+  );
+
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
   uploadPending = this.store.selectSignal(selectDatasetImportPending);
+
   datasetState = this.store.selectSignal(selectDatasetState);
   hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
+
   siteURL = computed(() => {
     return this.datasetInfo()?.siteURL || '';
   });
@@ -94,6 +125,19 @@ export class HeaderComponent implements OnInit {
       command: () => this.handleDownload(),
     },
   ]);
+
+  constructor() {
+    effect(() => {
+      this.pending = this.uploadPending();
+      this.saved = this.uploadSuccess();
+      this.fail = this.uploadFail();
+
+      this.weightIdle = this.weightFetchIdle();
+      this.weightPending = this.weightFetchPending();
+      this.weightSuccess = this.weightFetchSuccess();
+      this.weightFail = this.weightFetchFail();
+    });
+  }
 
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {
@@ -164,7 +208,7 @@ export class HeaderComponent implements OnInit {
       );
     } else if (siteURL && fileID && apiKey && ddiData) {
       this.store.dispatch(
-        DataverseFetchActions.startDatasetUpload({
+        DataverseFetchActions.datasetUploadStart({
           ddiData,
           siteURL,
           fileID,
@@ -172,23 +216,10 @@ export class HeaderComponent implements OnInit {
         }),
       );
     }
-    const stateStatus = this.store.subscribe((state) => {
-      const status = state.dataset.operationStatus.upload;
-      if (status === 'success') {
-        stateStatus.unsubscribe();
-        setTimeout(() => {
-          this.closeLoadingToast();
-          this.saved = true;
-          setTimeout(() => {
-            this.closeLoadedToast();
-          }, 3500);
-        }, 1000);
-      } else if (status === 'error') {
-        stateStatus.unsubscribe();
-        this.closeLoadingToast();
-        this.fail = true;
-      }
-    });
+  }
+
+  closeWeightToast() {
+    this.weightIdle = true;
   }
 
   closeLoadingToast() {

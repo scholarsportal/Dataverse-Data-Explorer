@@ -1,8 +1,8 @@
 <div class="import-body flex flex-col mx-5">
-    <div class="flex flex-row w-full">
+  <div class="flex flex-row w-full">
     <h2 class="import-heading w-full py-6 font-bold">Import XML</h2>
-    </div>
-    <div class="flex flex-row w-full">
+  </div>
+  <div class="flex flex-row w-full">
     <div class="flex flex-col border-r pr-10 mr-5">
       <p class="w-full mb-5 text-base">Select DDI sections and texts to include:</p>
       <label class="input-label" for="variable-groups">
@@ -81,21 +81,21 @@
         Weights
       </label>
     </div>
- 
-  <div class="flex flex-col px-5">
-    @if (file) {
-      <span class="text-base">{{ file.name }}</span>
-    } @else {
-      <dct-file-upload-button
-        class=""
-        (fileSelected)="onFileSelected($event)"
-      ></dct-file-upload-button>
-    }
 
-      <div *ngIf="importing">
+    <div class="flex flex-col px-5">
+      @if (file) {
+        <span class="text-base">{{ file.name }}</span>
+      } @else {
+        <dct-file-upload-button
+          class=""
+          (fileSelected)="onFileSelected($event)"
+        ></dct-file-upload-button>
+      }
+
+      @if (importing && importNotStarted()) {
         <button
-          [disabled]="!file"
           (click)="onImportButtonClick()"
+          [disabled]="!file"
           class="btn btn-primary my-5"
         >
           @if (!file) {
@@ -106,19 +106,19 @@
             </span>
           }
         </button>
-      </div>
+      }
       <div *ngIf="importInProgress()">
         <button
+          class="btn btn-primary mt-5"
           disabled
           type="button"
-          class="btn btn-primary mt-5"
         >
           <svg
             aria-hidden="true"
-            role="status"
             class="inline w-4 h-4 me-3 text-white animate-spin"
-            viewBox="0 0 100 101"
             fill="none"
+            role="status"
+            viewBox="0 0 100 101"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -133,7 +133,7 @@
           Importing...
         </button>
       </div>
-      <div *ngIf="success">
+      @if (importSucceeded()) {
         <div role="alert" class="alert alert-success rounded mt-5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -152,8 +152,11 @@
                 (click)="closeImportComponentState()">
           Go Back to Variables
         </button>
-      </div>
-      <div *ngIf="error">
+        <button class=" rounded border border-error text-error py-2.5 px-5 my-5 "
+                (click)="resetImportComponentState()">
+          Reset Import
+        </button>
+      } @else if (importError()) {
         <div role="alert" class="alert alert-error rounded mt-5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +171,7 @@
           </svg>
           <span>There was a problem with your XML.</span>
         </div>
-      </div>
+      }
+    </div>
   </div>
-</div>
 </div>

@@ -3,7 +3,11 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ApiResponse, ddiJSONStructure } from '../new.state/xml/xml.interface';
+import {
+  ApiResponse,
+  ddiJSONStructure,
+  ParsedCrossTabData,
+} from '../new.state/xml/xml.interface';
 import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 
 @Injectable({
@@ -67,7 +71,6 @@ export class DdiService {
   }
 
   fetchSignedURL(url: string): Observable<any> {
-    console.log(url);
     return this.http
       .get(url, {
         responseType: 'text',
@@ -117,7 +120,7 @@ export class DdiService {
           `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
           { responseType: 'text' },
         )
-        .pipe(map((data) => this.splitLines(data).slice(1)));
+        .pipe(map((data) => this.splitLines(data, variable)));
     } else {
       throw Error('No Site URL, File ID');
     }
@@ -134,7 +137,39 @@ export class DdiService {
   }
 
   // From: https://stackoverflow.com/a/52947649
-  splitLines(t: string): string[] {
-    return t.split(/\r\n|\r|\n/);
+  splitLines(input: string, variableString: string): ParsedCrossTabData {
+    // Split the input into lines
+    const lines = input.trim().split('\n');
+
+    // Extract headers from the first line (not used, but useful for clarity)
+    const headers = lines[0].split('\t');
+
+    // Split the keys string into an array
+    const keys = variableString.split(',');
+
+    // Ensure the number of keys matches the number of columns
+    if (keys.length !== headers.length) {
+      throw new Error(
+        'The number of keys does not match the number of columns.',
+      );
+    }
+
+    // Initialize the result object with empty arrays for each key
+    const parsedData: ParsedCrossTabData = keys.reduce((acc, key) => {
+      acc[key] = [];
+      return acc;
+    }, {} as ParsedCrossTabData);
+
+    // Process each subsequent line
+    lines.slice(1).forEach((line) => {
+      const values = line.split('\t');
+      values.forEach((value, index) => {
+        parsedData[keys[index]].push(value);
+      });
+    });
+
+    console.log(parsedData);
+
+    return parsedData;
   }
 }

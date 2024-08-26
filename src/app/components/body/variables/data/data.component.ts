@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { Variable, VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import { Component, computed, input } from '@angular/core';
+import {
+  Variable,
+  VariableGroup,
+  VariablesSimplified,
+} from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
 import { TableNavComponent } from './table-nav/table-nav.component';
 import { TableMenuComponent } from './table-menu/table-menu.component';
@@ -12,7 +16,7 @@ import { TableComponent } from './table/table.component';
     KeyValuePipe,
     TableComponent,
     TableNavComponent,
-    TableMenuComponent
+    TableMenuComponent,
   ],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
@@ -21,9 +25,13 @@ import { TableComponent } from './table/table.component';
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
   variables = input.required<{ [variableID: string]: Variable }>();
+  hasApiKey = input.required<boolean>();
   openVariable = input.required<string>();
   selectedVariables = input.required<string[]>();
   categoriesInvalid = input.required<string[]>();
+  variablesWithCrossTabMetadata = input.required<{
+    [variableID: string]: string[];
+  }>();
   variablesInCrossTabSelection = input.required<
     {
       variableID: string;
@@ -43,7 +51,7 @@ export class DataComponent {
           label: value.labl?.['#text'] || '',
           weight: value['@_wgt-var'] || '',
           isWeight: !!value['@_wgt'],
-          selected: this.selectedVariables().includes(value['@_ID'])
+          selected: this.selectedVariables().includes(value['@_ID']),
         };
         simplified.push(newObj);
       }

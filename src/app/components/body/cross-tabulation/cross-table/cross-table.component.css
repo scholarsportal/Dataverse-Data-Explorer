@@ -11,11 +11,11 @@ th {
 }
 
 .pvtRowLabel {
-  @apply font-semibold bg-primary-content border;
+  @apply font-semibold bg-primary-content border border-base-300;
 }
 
 .pvtColLabel {
-  @apply font-semibold bg-secondary-content border;
+  @apply font-semibold bg-secondary-content border-base-300;
 }
 
 .pvtAxisLabel {

@@ -10,7 +10,7 @@
   [itemsPerPage]="itemsPerPage()"
   [total]="variablesLength()"
   [variablesList]="variables()"
-  class="md:hidden md:flex md:flex-row w-full md:justify-between md:px-5"
+  class="md:hidden flex md:flex-row w-full md:justify-between md:px-5"
 />
 
 <p-table
@@ -20,11 +20,11 @@
   [value]="searchResultVariables()"
   class="md:hidden w-full overflow-y-auto"
   paginatorStyleClass="hidden"
+  responsiveLayout="stack"
   scrollHeight="flex"
   styleClass="p-datatable-striped"
-  responsiveLayout="stack"
 >
-  <ng-template pTemplate="header" let-columns>
+  <ng-template let-columns pTemplate="header">
     <tr class="bg-base-100 border-b-2 z-20 border-slate-300">
       <th pSortableColumn="variableID">ID</th>
       <th pSortableColumn="name">Name</th>
@@ -35,7 +35,7 @@
       </th>
     </tr>
   </ng-template>
-  <ng-template let-variable pTemplate="body" let-columns="columns">
+  <ng-template let-columns="columns" let-variable pTemplate="body">
     <tr
       class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
@@ -70,6 +70,7 @@
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
             [crossTabValuesFetched]="crossTabValuesFetched()"
+            [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
             [variablesInCrossTab]="variablesInCrossTab()"
@@ -162,6 +163,7 @@
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
             [crossTabValuesFetched]="crossTabValuesFetched()"
+            [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
             [variablesInCrossTab]="variablesInCrossTab()"
@@ -175,6 +177,8 @@
 
 @if (selectedVariables().length > 0) {
   <dct-table-menu
+    [allVariables]="allVariables()"
+    [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
     [allGroups]="groups()"
     [groupID]="groupChanged()"
     [selectedVariables]="selectedVariables()"

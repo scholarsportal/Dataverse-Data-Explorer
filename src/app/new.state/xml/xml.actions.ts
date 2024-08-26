@@ -3,6 +3,8 @@ import {
   ApiResponse,
   ddiJSONStructure,
   ImportVariableFormTemplate,
+  ParsedCrossTabData,
+  Variable,
 } from './xml.interface';
 
 export const DataverseFetchActions = createActionGroup({
@@ -19,7 +21,7 @@ export const DataverseFetchActions = createActionGroup({
       language?: string;
     }>(),
     // on site init if URL params are satisfied, this is called
-    'Start DDI Fetch': props<{
+    'Fetch DDI Start': props<{
       siteURL: string;
       fileID: number;
       apiKey?: string;
@@ -37,8 +39,11 @@ export const DataverseFetchActions = createActionGroup({
       metadataID?: number;
       language?: string;
     }>(),
+    'Weight Search Start': props<{ variableIDs: string[] }>(),
+    'Weights Fetch Success': props<{ data: ParsedCrossTabData }>(),
+    'Weights Fetch Error': props<{ error: Error }>(),
     // User starts upload
-    'Start Dataset Upload': props<{
+    'Dataset Upload Start': props<{
       siteURL: string;
       fileID: number;
       apiKey: string;
@@ -70,6 +75,7 @@ export const XmlManipulationActions = createActionGroup({
       importDdiData: ddiJSONStructure;
       variableTemplate: ImportVariableFormTemplate;
     }>(),
+    'Reset Import': emptyProps,
     'Rename Group': props<{ groupID: string; newLabel: string }>(),
     'Delete Group': props<{ groupID: string }>(),
     'Create Group': props<{ groupID: string; label: string }>(),
@@ -92,7 +98,7 @@ export const XmlManipulationActions = createActionGroup({
       groups: string[];
     }>(),
     'Save Variable Info': props<{
-      variableID: string | string[];
+      variableID: string;
       newVariableValue: {
         label: string;
         literalQuestion: string;
@@ -104,9 +110,11 @@ export const XmlManipulationActions = createActionGroup({
         isWeight: boolean;
       };
       groups: string[];
+      allVariables: { [variableID: string]: Variable };
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
     }>(),
     'Save Variable Info Success': emptyProps,
-    'Save Variable Info Failed': props<{
+    'Save Variable Info Fail': props<{
       error: string;
       newVariableValue: {
         label: string;
@@ -131,6 +139,26 @@ export const XmlManipulationActions = createActionGroup({
         universe: string;
         notes: string;
       };
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+      allVariables: { [variableID: string]: Variable };
     }>(),
+    'Weight Process Start': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      weightID: string;
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Weight Process Fetch Missing Values and Start': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      weightID: string;
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Weight Process Success': props<{
+      allVariables: { [variableID: string]: Variable };
+      selectedVariables: string[];
+      variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    'Weight Process Error': props<{ error: Error }>(),
   },
 });

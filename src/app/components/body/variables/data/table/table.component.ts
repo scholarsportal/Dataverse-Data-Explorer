@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { VariableGroup, VariablesSimplified } from 'src/app/new.state/xml/xml.interface';
+import {
+  Variable,
+  VariableGroup,
+  VariablesSimplified,
+} from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
@@ -26,18 +38,23 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
     TableMenuComponent,
     ModalComponent,
     NgClass,
-    ChipsModule
-  ]
+    ChipsModule,
+  ],
 })
 export class TableComponent {
   store = inject(Store);
   ModalComponent = viewChild(ModalComponent);
+  hasApiKey = input.required<boolean>();
   groupChanged = input.required<string>();
   variables = input.required<VariablesSimplified[]>();
+  allVariables = input.required<{ [variableID: string]: Variable }>();
   groups = input.required<{ [variableID: string]: VariableGroup }>();
   weights = input.required<{ [weightID: string]: string }>();
   categoriesInvalid = input.required<string[]>();
   openVariable = input.required<string>();
+  variablesWithCrossTabMetadata = input.required<{
+    [variableID: string]: string[];
+  }>();
   variablesInCrossTab =
     input.required<
       { variableID: string; orientation: 'rows' | 'cols' | '' }[]
@@ -99,8 +116,8 @@ export class TableComponent {
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: []
-        })
+          variableIDs: [],
+        }),
       );
     } else {
       const values: string[] = [];
@@ -110,8 +127,8 @@ export class TableComponent {
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: values
-        })
+          variableIDs: values,
+        }),
       );
     }
   }
@@ -143,21 +160,21 @@ export class TableComponent {
   setSelected(selection: string) {
     if (this.selectedVariables().includes(selection)) {
       const totalSelection = this.selectedVariables().filter(
-        (variableID) => variableID !== selection
+        (variableID) => variableID !== selection,
       );
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: totalSelection
-        })
+          variableIDs: totalSelection,
+        }),
       );
     } else {
       const totalSelection = [selection, ...this.selectedVariables()];
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
           selectedGroup: this.groupChanged(),
-          variableIDs: totalSelection
-        })
+          variableIDs: totalSelection,
+        }),
       );
     }
   }

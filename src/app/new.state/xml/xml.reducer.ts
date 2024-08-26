@@ -98,6 +98,7 @@ export const xmlReducer = createReducer(
         if (variableTemplate.groups) {
           duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
             importDdiData.codeBook.dataDscr.varGrp,
+            variablesMatched,
           );
         }
         // console.log(createNewVariables(variablesMatched, variables, variableTemplate));
@@ -300,6 +301,38 @@ export const xmlReducer = createReducer(
                   ...state.dataset?.codeBook.dataDscr,
                   var: duplicateVariables,
                   varGrp: duplicateVariableGroups,
+                },
+              },
+            },
+      };
+    },
+  ),
+  on(
+    XmlManipulationActions.weightProcessSuccess,
+    (
+      state,
+      { selectedVariables, allVariables, variablesWithCrossTabMetadata },
+    ) => {
+      const duplicateVariables =
+        structuredClone(state.dataset?.codeBook.dataDscr.var) || [];
+      if (duplicateVariables) {
+        duplicateVariables.forEach((variable) => {
+          if (selectedVariables.includes(variable['@_ID'])) {
+            variable.catgry = allVariables[variable['@_ID']].catgry;
+          }
+        });
+      }
+      return {
+        ...state,
+        dataset: !state.dataset
+          ? null
+          : {
+              ...state.dataset,
+              codeBook: {
+                ...state.dataset?.codeBook,
+                dataDscr: {
+                  ...state.dataset?.codeBook.dataDscr,
+                  var: duplicateVariables,
                 },
               },
             },

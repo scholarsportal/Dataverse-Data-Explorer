@@ -16,7 +16,8 @@ interface Question {
 interface SummaryStatistic {
   '#text': string | number;
   '@_type': string;
-  '@_wgtd'?: string; // Optional property
+  '@_wgtd'?: string;
+  '@_wgt-var'?: string;
 }
 
 export interface Category {
@@ -254,3 +255,5 @@ export interface ApiResponse {
   status: string;
   data: Data;
 }
+
+export type ParsedCrossTabData = { [variableName: string]: string[] };

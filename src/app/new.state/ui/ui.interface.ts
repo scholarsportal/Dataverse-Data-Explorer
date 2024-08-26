@@ -43,9 +43,9 @@ export const variableFormInit: VariableForm = {
 export interface ChartData {
   [value: string]: {
     category: string;
-    count: number;
+    count: string;
     countPercent: number;
-    weightedCount: number;
+    weightedCount: string;
     weightedCountPercent: number;
     invalid: boolean;
   };

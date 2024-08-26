@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectDatasetProcessedGroups, selectDatasetProcessedVariables } from '../../new.state/xml/xml.selectors';
+import {
+  selectDatasetHasApiKey,
+  selectDatasetProcessedGroups,
+  selectDatasetProcessedVariables,
+} from '../../new.state/xml/xml.selectors';
 import {
   selectBodyToggleState,
   selectCrossTabSelection,
@@ -8,7 +12,7 @@ import {
   selectImportComponentState,
   selectOpenVariableCategoriesMissing,
   selectOpenVariableID,
-  selectVariableSelectionContext
+  selectVariableSelectionContext,
 } from '../../new.state/ui/ui.selectors';
 import { Variable } from '../../new.state/xml/xml.interface';
 import { SidebarComponent } from './variables/sidebar/sidebar.component';
@@ -18,7 +22,7 @@ import { ImportComponent } from '../import/import.component';
 import {
   selectDatasetVariableCrossTabValues,
   selectDatasetWeights,
-  selectVariableCrossTabIsFetching
+  selectVariableCrossTabIsFetching,
 } from '../../new.state/dataset/dataset.selectors';
 import { TableComponent } from './variables/data/table/table.component';
 
@@ -30,7 +34,7 @@ import { TableComponent } from './variables/data/table/table.component';
     DataComponent,
     CrossTabulationComponent,
     ImportComponent,
-    TableComponent
+    TableComponent,
   ],
   templateUrl: './body.component.html',
   styleUrl: './body.component.css',
@@ -39,11 +43,14 @@ import { TableComponent } from './variables/data/table/table.component';
 export class BodyComponent {
   store = inject(Store);
 
+  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
   crossTabValuesFetched = this.store.selectSignal(
-    selectDatasetVariableCrossTabValues
+    selectDatasetVariableCrossTabValues,
   );
-  crossTabIsFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
+  crossTabIsFetching = this.store.selectSignal(
+    selectVariableCrossTabIsFetching,
+  );
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   crossTabulationTabOpen = computed(() => {
     return this.bodyToggleState() === 'cross-tab';
@@ -51,6 +58,10 @@ export class BodyComponent {
   variablesTabOpen = computed(() => {
     return this.bodyToggleState() === 'variables';
   });
+
+  variablesWithCrossTabMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
 
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   allWeights = this.store.selectSignal(selectDatasetWeights);
@@ -60,13 +71,13 @@ export class BodyComponent {
     return this.selectedGroupID();
   });
   selectedVariableContext = this.store.selectSignal(
-    selectVariableSelectionContext
+    selectVariableSelectionContext,
   );
   selectedVariables = computed(() => {
     return this.selectedVariableContext()[this.selectedGroupID()] || [];
   });
   categoriesMissing = this.store.selectSignal(
-    selectOpenVariableCategoriesMissing
+    selectOpenVariableCategoriesMissing,
   );
   openVariable = this.store.selectSignal(selectOpenVariableID);
   importComponentState = this.store.selectSignal(selectImportComponentState);
@@ -79,7 +90,8 @@ export class BodyComponent {
       const filteredVariables: { [variableID: string]: Variable } = {};
       if (this.groups()[this.selectedGroupID()]) {
         if (!!this.groups()[this.selectedGroupID()]['@_var']) {
-          const selectedGroupVariableArray = this.groups()[this.selectedGroupID()]['@_var']?.split(' ') || [];
+          const selectedGroupVariableArray =
+            this.groups()[this.selectedGroupID()]['@_var']?.split(' ') || [];
           selectedGroupVariableArray.map((variableID) => {
             filteredVariables[variableID] = this.variables()[variableID];
           });

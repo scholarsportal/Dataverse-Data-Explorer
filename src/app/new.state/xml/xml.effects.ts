@@ -14,7 +14,7 @@ export class XmlEffects {
   fetchDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(DataverseFetchActions.startDDIFetch),
+        ofType(DataverseFetchActions.fetchDDIStart),
         exhaustMap(({ fileID, siteURL, apiKey, metadataID, language }) =>
           ddiService
             .fetchDatasetFromDataverse(fileID, siteURL, metadataID)
@@ -61,7 +61,7 @@ export class XmlEffects {
         exhaustMap(({ data }) =>
           ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
             map((xml) => {
-              console.log(data);
+              // console.log(data);
               return DataverseFetchActions.decodeAndFetchDDISuccess({
                 data: xml,
                 apiResponse: data,
@@ -79,7 +79,7 @@ export class XmlEffects {
   uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
-        ofType(DataverseFetchActions.startDatasetUpload),
+        ofType(DataverseFetchActions.datasetUploadStart),
         exhaustMap(({ ddiData, siteURL, fileID, apiKey }) =>
           ddiService
             .uploadDatasetToDataverse(siteURL, fileID, ddiData, apiKey)

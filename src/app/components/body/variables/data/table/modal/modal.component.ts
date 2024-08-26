@@ -1,4 +1,12 @@
-import { Component, computed, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent } from './chart/chart.component';
 import { EditComponent } from './edit/edit.component';
@@ -8,19 +16,25 @@ import { Store } from '@ngrx/store';
 import {
   selectOpenVariableCategoriesMissing,
   selectOpenVariableChart,
+  selectOpenVariableChartReference,
   selectOpenVariableChartTable,
   selectOpenVariableFormState,
   selectOpenVariableHasCategories,
   selectOpenVariableID,
   selectOpenVariableMode,
   selectOpenVariableName,
-  selectOpenVariableSummaryStatistics
+  selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
+  selectDatasetHasApiKey,
   selectDatasetProcessedGroups,
-  selectVariablesWithCorrespondingGroups
+  selectDatasetProcessedVariables,
+  selectVariablesWithCorrespondingGroups,
 } from 'src/app/new.state/xml/xml.selectors';
-import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectDatasetWeights,
+} from 'src/app/new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-modal',
@@ -30,10 +44,10 @@ import { selectDatasetWeights } from 'src/app/new.state/dataset/dataset.selector
     ChartComponent,
     EditComponent,
     ModalHeaderComponent,
-    ModalFooterComponent
+    ModalFooterComponent,
   ],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.css'
+  styleUrl: './modal.component.css',
 })
 export class ModalComponent {
   store = inject(Store);
@@ -42,20 +56,30 @@ export class ModalComponent {
   nextVar = input.required<string>();
   previousVar = input.required<string>();
   // form data
+  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   hasCategories = this.store.selectSignal(selectOpenVariableHasCategories);
   modalMode = this.store.selectSignal(selectOpenVariableMode);
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
   variableName = this.store.selectSignal(selectOpenVariableName);
   variableID = this.store.selectSignal(selectOpenVariableID);
   allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
-  variablesAndTheirGroups = this.store.selectSignal(selectVariablesWithCorrespondingGroups);
+  variablesAndTheirGroups = this.store.selectSignal(
+    selectVariablesWithCorrespondingGroups,
+  );
   variableGroups = computed(() => {
     return this.variablesAndTheirGroups()[this.variableID()] || [];
   });
   allWeights = this.store.selectSignal(selectDatasetWeights);
+  allVariables = this.store.selectSignal(selectDatasetProcessedVariables);
+  variablesWithCrossTabMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
   // chart data
-  categoriesInvalid = this.store.selectSignal(selectOpenVariableCategoriesMissing);
+  categoriesInvalid = this.store.selectSignal(
+    selectOpenVariableCategoriesMissing,
+  );
   chart = this.store.selectSignal(selectOpenVariableChart);
+  chartReference = this.store.selectSignal(selectOpenVariableChartReference);
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
   saved: boolean = false;
@@ -68,7 +92,6 @@ export class ModalComponent {
   close() {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.close();
-    // this.store.dispatch(closeVariableModal());
   }
 
   closeLoadedToast() {

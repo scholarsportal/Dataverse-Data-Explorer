@@ -1,4 +1,13 @@
-import { Component, computed, effect, ElementRef, inject, input, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +20,7 @@ declare const jQuery: any; // Declare jQuery
   imports: [CommonModule],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './cross-table.component.html',
-  styleUrl: './cross-table.component.css'
+  styleUrl: './cross-table.component.css',
 })
 export class CrossTableComponent {
   @ViewChild('output') outputElement?: ElementRef;
@@ -68,9 +77,36 @@ export class CrossTableComponent {
         cols: this.cols(),
         aggregatorName: this.selectedViewOption(),
         showUI: false,
-        rendererName: 'Horizontal Stacked Bar Chart'
+        rendererName: 'Horizontal Stacked Bar Chart',
       },
-      true
+      true,
     );
+  }
+
+  downloadDivAsCSV() {
+    const div = this.outputElement?.nativeElement;
+    const table = div.querySelector('table');
+    let csvContent = '';
+
+    // Skip the first two rows by iterating from index 2
+    for (let i = 2; i < table.rows.length; i++) {
+      let row = table.rows[i];
+      let rowData = [];
+      if (i === 2) {
+        rowData.push(''); // Add an empty cell at the beginning
+      }
+      for (let cell of row.cells) {
+        rowData.push(cell.innerText.replace(/,/g, ''));
+      }
+      csvContent += rowData.join(',') + '\n';
+    }
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'table.csv');
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 }
