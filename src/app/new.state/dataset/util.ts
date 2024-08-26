@@ -15,16 +15,18 @@ export function changeWeightForSelectedVariables(
     const selectedVariableCrossTab = variablesWithCrossTabMetadata[variableID];
     const weightVariableCrossTab = variablesWithCrossTabMetadata[weightID];
     const frequencyTable: { [categoryID: string]: number } = {};
-
-    weightVariableCrossTab.forEach((weightValue, index) => {
-      const currentFrequencyTableValue =
-        frequencyTable[selectedVariableCrossTab[index]];
-      if (currentFrequencyTableValue) {
-        frequencyTable[selectedVariableCrossTab[index]] += Number(weightValue);
-      } else {
-        frequencyTable[selectedVariableCrossTab[index]] = Number(weightValue);
-      }
-    });
+    if (weightVariableCrossTab && Array.isArray(weightVariableCrossTab)) {
+      weightVariableCrossTab.forEach((weightValue, index) => {
+        const currentFrequencyTableValue =
+          frequencyTable[selectedVariableCrossTab[index]];
+        if (currentFrequencyTableValue) {
+          frequencyTable[selectedVariableCrossTab[index]] +=
+            Number(weightValue);
+        } else {
+          frequencyTable[selectedVariableCrossTab[index]] = Number(weightValue);
+        }
+      });
+    }
 
     frequencyTableForSelectedVariables[variableID] = frequencyTable;
   });
@@ -32,22 +34,24 @@ export function changeWeightForSelectedVariables(
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
-      currentCategories.map((category) => {
-        if (Array.isArray(category.catStat)) {
-          category.catStat = [
-            category.catStat[0],
-            {
-              '#text':
-                frequencyTableForSelectedVariables[variableID][
-                  category.catValu
-                ],
-              '@_type': 'freq',
-              '@_wgtd': 'wgtd',
-              '@_wgt-var': weightID,
-            },
-          ];
-        }
-      });
+      if (currentCategories && Array.isArray(currentCategories)) {
+        currentCategories.map((category) => {
+          if (Array.isArray(category.catStat)) {
+            category.catStat = [
+              category.catStat[0],
+              {
+                '#text':
+                  frequencyTableForSelectedVariables[variableID][
+                    category.catValu
+                  ],
+                '@_type': 'freq',
+                '@_wgtd': 'wgtd',
+                '@_wgt-var': weightID,
+              },
+            ];
+          }
+        });
+      }
     }
   });
 

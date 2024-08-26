@@ -229,7 +229,6 @@ export const datasetReducer = createReducer(
   on(
     XmlManipulationActions.weightProcessSuccess,
     (state, { variablesWithCrossTabMetadata }) => {
-      console.log(variablesWithCrossTabMetadata);
       return {
         ...state,
         operationStatus: {

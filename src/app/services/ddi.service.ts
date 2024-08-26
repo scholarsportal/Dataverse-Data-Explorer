@@ -168,8 +168,6 @@ export class DdiService {
       });
     });
 
-    console.log(parsedData);
-
     return parsedData;
   }
 }
