@@ -76,6 +76,7 @@ export class TableMenuComponent {
   }
 
   onApplyChanges() {
+    console.log(this.variablesWithCrossTabMetadata());
     if (this.selectedGroups.length > 0 || this.selectedWeight) {
       this.store.dispatch(
         XmlManipulationActions.bulkSaveVariableInfo({

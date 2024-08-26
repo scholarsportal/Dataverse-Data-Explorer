@@ -5,7 +5,7 @@ import {
   CrossTabulationUIActions,
   VariableTabUIAction,
 } from '../ui/ui.actions';
-import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import {
   DataverseFetchActions,
   XmlManipulationActions,
@@ -16,35 +16,34 @@ import { changeWeightForSelectedVariables } from './util';
 @Injectable()
 export class DatasetEffects {
   private actions$ = inject(Actions);
-  startWeightProcessing$ = createEffect(
-    (ddiService: DdiService = inject(DdiService)) => {
-      return this.actions$.pipe(
-        ofType(XmlManipulationActions.saveVariableInfo),
-        switchMap((props) => {
-          const {
-            variableID,
-            variablesWithCrossTabMetadata,
-            allVariables,
-            newVariableValue,
-          } = props;
+  startWeightProcessing$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.saveVariableInfo),
+      switchMap((props) => {
+        const {
+          variableID,
+          variablesWithCrossTabMetadata,
+          allVariables,
+          newVariableValue,
+        } = props;
+        if (
+          newVariableValue.assignedWeight !==
+          allVariables[variableID]['@_wgt-var']
+        ) {
           if (
-            newVariableValue.assignedWeight !==
-            allVariables[variableID]['@_wgt-var']
+            !Object.keys(variablesWithCrossTabMetadata).includes(variableID)
           ) {
-            if (
-              !Object.keys(variablesWithCrossTabMetadata).includes(variableID)
-            ) {
-              return of(
-                XmlManipulationActions.fetchMissingValuesAndStartWeightProcess({
-                  allVariables,
-                  selectedVariables: [variableID],
-                  weightID: newVariableValue.assignedWeight,
-                  variablesWithCrossTabMetadata,
-                }),
-              );
-            }
             return of(
-              XmlManipulationActions.startWeightProcess({
+              XmlManipulationActions.weightProcessFetchMissingValuesAndStart({
+                allVariables,
+                selectedVariables: [variableID],
+                weightID: newVariableValue.assignedWeight,
+                variablesWithCrossTabMetadata,
+              }),
+            );
+          } else {
+            return of(
+              XmlManipulationActions.weightProcessStart({
                 allVariables,
                 selectedVariables: [variableID],
                 weightID: newVariableValue.assignedWeight,
@@ -52,52 +51,50 @@ export class DatasetEffects {
               }),
             );
           }
-          return of(
-            XmlManipulationActions.weightProcessSuccess({
-              selectedVariables: [],
-              allVariables,
-              variablesWithCrossTabMetadata,
-            }),
-          );
-        }),
-      );
-    },
-  );
-  startBulkWeightProcessing$ = createEffect(
-    (ddiService: DdiService = inject(DdiService)) => {
-      return this.actions$.pipe(
-        ofType(XmlManipulationActions.bulkSaveVariableInfo),
-        switchMap((props) => {
-          const {
-            variableIDs,
-            variablesWithCrossTabMetadata,
+        }
+        return of(
+          XmlManipulationActions.weightProcessSuccess({
+            selectedVariables: [],
             allVariables,
-            assignedWeight,
-          } = props;
-          if (assignedWeight) {
-            return of(
-              XmlManipulationActions.fetchMissingValuesAndStartWeightProcess({
-                allVariables,
-                selectedVariables: variableIDs,
-                weightID: assignedWeight,
-                variablesWithCrossTabMetadata,
-              }),
-            );
-          }
+            variablesWithCrossTabMetadata,
+          }),
+        );
+      }),
+    );
+  });
+  startBulkWeightProcessing$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.bulkSaveVariableInfo),
+      switchMap((props) => {
+        const {
+          variableIDs,
+          variablesWithCrossTabMetadata,
+          allVariables,
+          assignedWeight,
+        } = props;
+        if (assignedWeight) {
           return of(
-            XmlManipulationActions.weightProcessSuccess({
-              selectedVariables: [],
+            XmlManipulationActions.weightProcessFetchMissingValuesAndStart({
               allVariables,
+              selectedVariables: variableIDs,
+              weightID: assignedWeight,
               variablesWithCrossTabMetadata,
             }),
           );
-        }),
-      );
-    },
-  );
+        }
+        return of(
+          XmlManipulationActions.weightProcessSuccess({
+            selectedVariables: [],
+            allVariables,
+            variablesWithCrossTabMetadata,
+          }),
+        );
+      }),
+    );
+  });
   processNewVariableWeight$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(XmlManipulationActions.startWeightProcess),
+      ofType(XmlManipulationActions.weightProcessStart),
       switchMap((props) => {
         const {
           allVariables,
@@ -143,7 +140,7 @@ export class DatasetEffects {
   private ddiService: DdiService = inject(DdiService);
   fetchMissingCrossTabValuesAndProcessNewVariableWeight$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(XmlManipulationActions.fetchMissingValuesAndStartWeightProcess),
+      ofType(XmlManipulationActions.weightProcessFetchMissingValuesAndStart),
       switchMap((props) => {
         const {
           allVariables,
@@ -160,12 +157,23 @@ export class DatasetEffects {
         if (!variablesWithCrossTabMetadata[weightID]) {
           missingCrossTabMetadata.push(weightID);
         }
+        console.log(missingCrossTabMetadata);
+        if (missingCrossTabMetadata.length === 0) {
+          return of(
+            XmlManipulationActions.weightProcessStart({
+              allVariables,
+              selectedVariables,
+              weightID,
+              variablesWithCrossTabMetadata,
+            }),
+          );
+        }
 
         return this.ddiService
           .fetchCrossTabulationFromVariables(missingCrossTabMetadata.join(','))
           .pipe(
             map((crossTabData) =>
-              XmlManipulationActions.startWeightProcess({
+              XmlManipulationActions.weightProcessStart({
                 allVariables,
                 selectedVariables,
                 weightID,
@@ -187,9 +195,9 @@ export class DatasetEffects {
         return this.ddiService
           .fetchCrossTabulationFromVariables(variableID)
           .pipe(
-            map((data) => DataverseFetchActions.fetchWeightsSuccess({ data })),
+            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
             catchError((error) =>
-              of(DataverseFetchActions.fetchWeightsError(error)),
+              of(DataverseFetchActions.weightsFetchError(error)),
             ),
           );
       }),
@@ -215,10 +223,9 @@ export class DatasetEffects {
         return this.ddiService
           .fetchCrossTabulationFromVariables(weightedValues.join(','))
           .pipe(
-            tap((data) => console.log(data)),
-            map((data) => DataverseFetchActions.fetchWeightsSuccess({ data })),
+            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
             catchError((error) =>
-              of(DataverseFetchActions.fetchWeightsError(error)),
+              of(DataverseFetchActions.weightsFetchError(error)),
             ),
           );
       }),
@@ -226,14 +233,14 @@ export class DatasetEffects {
   );
   startNewWeightSearch$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DataverseFetchActions.startWeightSearch),
+      ofType(DataverseFetchActions.weightSearchStart),
       mergeMap(({ variableIDs }) => {
         return this.ddiService
           .fetchCrossTabulationFromVariables(variableIDs.join(','))
           .pipe(
-            map((data) => DataverseFetchActions.fetchWeightsSuccess({ data })),
+            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
             catchError((error) =>
-              of(DataverseFetchActions.fetchWeightsError(error)),
+              of(DataverseFetchActions.weightsFetchError(error)),
             ),
           );
       }),

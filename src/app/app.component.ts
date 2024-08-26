@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
         );
       } else if (siteURL && fileID) {
         return this.store.dispatch(
-          DataverseFetchActions.startDDIFetch({
+          DataverseFetchActions.fetchDDIStart({
             fileID,
             siteURL,
             apiKey,

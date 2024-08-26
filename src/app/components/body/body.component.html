@@ -5,6 +5,7 @@
   }
   <dct-data
     class="data md:grid"
+    [hasApiKey]="hasApiKey()"
     [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
     [isFetching]="crossTabIsFetching()"
     [variables]="filteredByGroupID()"

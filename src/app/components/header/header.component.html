@@ -69,8 +69,27 @@
 
     <div class="md:flex md:flex-row md:justify-between pt-4">
 
-      <p-messages severity="warning" />
-      <div [ngClass]="{'hide-toast': !pending, 'show-toast': pending}" class="toast toast-top toast-end">
+      <div [ngClass]="{'hide-toast': weightIdle, 'show-toast': !weightIdle}"
+           class="toast toast-top toast-end">
+        <div [ngClass]="{'alert-info': weightPending, 'alert-error': weightFail}"
+             class="alert rounded">
+          @if (weightFetchPending()) {
+            <span class="loading loading-spinner loading-md"></span>
+            <span>Fetching Weight Data from Dataverse</span>
+          } @else if (weightFetchFail()) {
+            <span>Weight Fetch Failed</span>
+          }
+          <button (click)="closeWeightToast()">
+            <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div [ngClass]="{'hide-toast': !pending, 'show-toast': pending}"
+           class="toast toast-top toast-end">
         <div class="alert rounded alert-info">
           <span class="loading loading-spinner loading-md"></span>
           <span>Dataset uploading to Dataverse</span>

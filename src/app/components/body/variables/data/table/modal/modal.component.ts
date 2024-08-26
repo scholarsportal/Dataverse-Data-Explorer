@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import {
   selectOpenVariableCategoriesMissing,
   selectOpenVariableChart,
+  selectOpenVariableChartReference,
   selectOpenVariableChartTable,
   selectOpenVariableFormState,
   selectOpenVariableHasCategories,
@@ -25,6 +26,7 @@ import {
   selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
+  selectDatasetHasApiKey,
   selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
   selectVariablesWithCorrespondingGroups,
@@ -54,6 +56,7 @@ export class ModalComponent {
   nextVar = input.required<string>();
   previousVar = input.required<string>();
   // form data
+  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
   hasCategories = this.store.selectSignal(selectOpenVariableHasCategories);
   modalMode = this.store.selectSignal(selectOpenVariableMode);
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
@@ -76,6 +79,7 @@ export class ModalComponent {
     selectOpenVariableCategoriesMissing,
   );
   chart = this.store.selectSignal(selectOpenVariableChart);
+  chartReference = this.store.selectSignal(selectOpenVariableChartReference);
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
   saved: boolean = false;
@@ -88,7 +92,6 @@ export class ModalComponent {
   close() {
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.close();
-    // this.store.dispatch(closeVariableModal());
   }
 
   closeLoadedToast() {

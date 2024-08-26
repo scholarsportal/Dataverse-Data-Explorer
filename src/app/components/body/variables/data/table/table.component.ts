@@ -44,6 +44,7 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
 export class TableComponent {
   store = inject(Store);
   ModalComponent = viewChild(ModalComponent);
+  hasApiKey = input.required<boolean>();
   groupChanged = input.required<string>();
   variables = input.required<VariablesSimplified[]>();
   allVariables = input.required<{ [variableID: string]: Variable }>();

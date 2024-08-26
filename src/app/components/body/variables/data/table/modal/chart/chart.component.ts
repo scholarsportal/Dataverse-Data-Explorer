@@ -18,6 +18,7 @@ import {
 } from 'src/app/new.state/ui/ui.interface';
 import { VariableInformationComponent } from './variable-information/variable-information.component';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
+import { shuffleColours } from './chart.interface';
 
 @Component({
   selector: 'dct-chart',
@@ -38,6 +39,7 @@ export class ChartComponent implements OnInit {
   hasCategories = input.required<boolean>();
   weights = input.required<{ [variableID: string]: string }>();
   chart = input.required<{ x: number; y: string }[]>();
+  chartReference = input.required<string[]>();
   chartTable = input.required<ChartData>();
   form = input.required<VariableForm>();
   groups = input.required<string[]>();
@@ -48,7 +50,6 @@ export class ChartComponent implements OnInit {
   // Reason: ChartJS works better with an any definition
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public chartJS: any;
-  private fullNames: string[] = [];
 
   constructor() {
     effect(() => {
@@ -89,7 +90,7 @@ export class ChartComponent implements OnInit {
         datasets: [
           {
             data: this.chart().map((item) => item.x), // Use the count values
-            backgroundColor: this.shuffleColours(),
+            backgroundColor: shuffleColours(),
           },
         ],
       },
@@ -103,7 +104,7 @@ export class ChartComponent implements OnInit {
             callbacks: {
               label: (tooltipItem: any) => {
                 // Display the full name on hover
-                return `${this.fullNames[tooltipItem.dataIndex]}: ${tooltipItem.raw}`;
+                return `${this.chartReference()[tooltipItem.dataIndex]}: ${tooltipItem.raw}`;
               },
             },
           },
@@ -111,19 +112,9 @@ export class ChartComponent implements OnInit {
         scales: {
           x: {
             beginAtZero: true,
-            grid: {
-              color: this.getGridColor(),
-            },
-            ticks: {
-              color: this.getTickColor(),
-            },
           },
           y: {
-            grid: {
-              color: this.getGridColor(),
-            },
             ticks: {
-              color: this.getTickColor(),
               autoSkip: false,
             },
           },
@@ -189,10 +180,5 @@ export class ChartComponent implements OnInit {
   private getTickColor(): string {
     const theme = localStorage.getItem('theme');
     return theme === 'light' ? 'black' : 'white';
-  }
-
-  private shuffleColours(): string[] {
-    // Implement your color shuffling logic here
-    return ['#FF6384', '#36A2EB', '#FFCE56'];
   }
 }

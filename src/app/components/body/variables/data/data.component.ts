@@ -25,6 +25,7 @@ import { TableComponent } from './table/table.component';
 export class DataComponent {
   groups = input.required<{ [variableID: string]: VariableGroup }>();
   variables = input.required<{ [variableID: string]: Variable }>();
+  hasApiKey = input.required<boolean>();
   openVariable = input.required<string>();
   selectedVariables = input.required<string[]>();
   categoriesInvalid = input.required<string[]>();

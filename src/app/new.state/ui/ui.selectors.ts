@@ -193,6 +193,20 @@ export const selectOpenVariableChart = createSelector(
   },
 );
 
+export const selectOpenVariableChartReference = createSelector(
+  selectOpenVariableChart,
+  selectOpenVariableChartTable,
+  (chart, table) => {
+    const emptyValue: string[] = [];
+    if (chart) {
+      Object.values(table).map(({ category }) => {
+        emptyValue.push(category);
+      });
+    }
+    return emptyValue;
+  },
+);
+
 export const selectOpenVariableFormState = createSelector(
   selectOpenVariableID,
   selectDatasetProcessedVariables,

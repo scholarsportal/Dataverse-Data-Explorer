@@ -21,7 +21,7 @@ export const DataverseFetchActions = createActionGroup({
       language?: string;
     }>(),
     // on site init if URL params are satisfied, this is called
-    'Start DDI Fetch': props<{
+    'Fetch DDI Start': props<{
       siteURL: string;
       fileID: number;
       apiKey?: string;
@@ -39,11 +39,11 @@ export const DataverseFetchActions = createActionGroup({
       metadataID?: number;
       language?: string;
     }>(),
-    'Start Weight Search': props<{ variableIDs: string[] }>(),
-    'Fetch Weights Success': props<{ data: ParsedCrossTabData }>(),
-    'Fetch Weights Error': props<{ error: Error }>(),
+    'Weight Search Start': props<{ variableIDs: string[] }>(),
+    'Weights Fetch Success': props<{ data: ParsedCrossTabData }>(),
+    'Weights Fetch Error': props<{ error: Error }>(),
     // User starts upload
-    'Start Dataset Upload': props<{
+    'Dataset Upload Start': props<{
       siteURL: string;
       fileID: number;
       apiKey: string;
@@ -141,13 +141,13 @@ export const XmlManipulationActions = createActionGroup({
       variablesWithCrossTabMetadata: { [variableID: string]: string[] };
       allVariables: { [variableID: string]: Variable };
     }>(),
-    'Start Weight Process': props<{
+    'Weight Process Start': props<{
       allVariables: { [variableID: string]: Variable };
       selectedVariables: string[];
       weightID: string;
       variablesWithCrossTabMetadata: { [variableID: string]: string[] };
     }>(),
-    'Fetch Missing Values and Start Weight Process': props<{
+    'Weight Process Fetch Missing Values and Start': props<{
       allVariables: { [variableID: string]: Variable };
       selectedVariables: string[];
       weightID: string;

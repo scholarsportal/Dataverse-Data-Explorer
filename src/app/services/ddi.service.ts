@@ -71,7 +71,6 @@ export class DdiService {
   }
 
   fetchSignedURL(url: string): Observable<any> {
-    console.log(url);
     return this.http
       .get(url, {
         responseType: 'text',
@@ -168,6 +167,8 @@ export class DdiService {
         parsedData[keys[index]].push(value);
       });
     });
+
+    console.log(parsedData);
 
     return parsedData;
   }

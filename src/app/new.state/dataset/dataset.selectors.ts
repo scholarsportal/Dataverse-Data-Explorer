@@ -107,3 +107,8 @@ export const selectDatasetAllVariableCategories = createSelector(
     return categories;
   },
 );
+
+export const selectDatasetWeightFetchStatus = createSelector(
+  selectDatasetFeature,
+  (dataset) => dataset.operationStatus.weightProcess,
+);

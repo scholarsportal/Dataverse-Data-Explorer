@@ -18,6 +18,7 @@
     <dct-modal-header
       (closeVariableModal)="close()"
       (emitCloseModal)="close()"
+      [hasApiKey]="hasApiKey()"
       [id]="variableID()"
       [modalMode]="modalMode()"
       [name]="variableName()"
@@ -32,6 +33,7 @@
           [categoriesInvalid]="categoriesInvalid()"
           [hasCategories]="hasCategories()"
           [chart]="chart()"
+          [chartReference]="chartReference()"
           [chartTable]="chartTable()"
           [form]="variableFormData()"
           [sumStat]="sumStats()"

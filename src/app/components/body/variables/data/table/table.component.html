@@ -10,7 +10,7 @@
   [itemsPerPage]="itemsPerPage()"
   [total]="variablesLength()"
   [variablesList]="variables()"
-  class="md:hidden md:flex md:flex-row w-full md:justify-between md:px-5"
+  class="md:hidden flex md:flex-row w-full md:justify-between md:px-5"
 />
 
 <p-table
@@ -70,6 +70,7 @@
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
             [crossTabValuesFetched]="crossTabValuesFetched()"
+            [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
             [variablesInCrossTab]="variablesInCrossTab()"
@@ -162,6 +163,7 @@
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
             [crossTabValuesFetched]="crossTabValuesFetched()"
+            [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
             [variablesInCrossTab]="variablesInCrossTab()"
