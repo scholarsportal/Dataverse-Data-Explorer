@@ -154,10 +154,9 @@ export class DatasetEffects {
             missingCrossTabMetadata.push(variableID);
           }
         });
-        if (!variablesWithCrossTabMetadata[weightID]) {
+        if (!variablesWithCrossTabMetadata[weightID] && weightID !== 'remove') {
           missingCrossTabMetadata.push(weightID);
         }
-        console.log(missingCrossTabMetadata);
         if (missingCrossTabMetadata.length === 0) {
           return of(
             XmlManipulationActions.weightProcessStart({
