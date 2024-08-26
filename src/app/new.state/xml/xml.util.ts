@@ -406,6 +406,8 @@ function editSingleVariable(
       .importedVariable['@_wgt']
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';
+    currentVariableCloned.catgry =
+      importedVariablesMatched.importedVariable.catgry;
   }
   if (!currentVariable.qstn) {
     currentVariableCloned.qstn = {
