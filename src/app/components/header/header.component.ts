@@ -80,17 +80,17 @@ export class HeaderComponent implements OnInit {
   selectedVariables = this.store.selectSignal(selectVariableSelectionContext);
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
   selection = computed(() => {
-    if (this.selectedGroupID() === 'ALL') {
-      return this.selectedVariables()['ALL'].length > 0;
-    }
+    // if (this.selectedGroupID() === 'ALL') {
+    //   return this.selectedVariables()['ALL'].length > 0;
+    // }
     return this.selectedVariables()[this.selectedGroupID()]
       ? this.selectedVariables()[this.selectedGroupID()].length > 0
       : false;
   });
   currentSelectionAsString = computed(() => {
-    if (this.selectedGroupID() === 'ALL') {
-      return this.selectedVariables()['ALL'].join(',') || '';
-    }
+    // if (this.selectedGroupID() === 'ALL') {
+    //   return this.selectedVariables()['ALL'].join(',') || '';
+    // }
     return this.selectedVariables()[this.selectedGroupID()]
       ? this.selectedVariables()[this.selectedGroupID()].join(',')
       : '';
