@@ -83,13 +83,17 @@ export class HeaderComponent implements OnInit {
     if (this.selectedGroupID() === 'ALL') {
       return this.selectedVariables()['ALL'].length > 0;
     }
-    return this.selectedVariables()[this.selectedGroupID()].length > 0;
+    return this.selectedVariables()[this.selectedGroupID()]
+      ? this.selectedVariables()[this.selectedGroupID()].length > 0
+      : false;
   });
   currentSelectionAsString = computed(() => {
     if (this.selectedGroupID() === 'ALL') {
       return this.selectedVariables()['ALL'].join(',') || '';
     }
-    return this.selectedVariables()[this.selectedGroupID()].join(',') || '';
+    return this.selectedVariables()[this.selectedGroupID()]
+      ? this.selectedVariables()[this.selectedGroupID()].join(',')
+      : '';
   });
 
   weightFetchStatus = this.store.selectSignal(selectDatasetWeightFetchStatus);
