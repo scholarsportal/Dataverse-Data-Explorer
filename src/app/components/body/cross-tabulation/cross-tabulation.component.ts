@@ -63,7 +63,7 @@ export class CrossTabulationComponent {
     return this.tableData().cols;
   });
   hasData = computed(() => {
-    return this.table()?.length > 0;
+    return !!this.tableData()?.rawTable.length;
   });
   hasRowOrColumn = computed(() => {
     return this.tableData()?.cols?.length || this.tableData()?.rows?.length;

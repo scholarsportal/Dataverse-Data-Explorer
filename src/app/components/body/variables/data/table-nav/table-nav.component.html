@@ -24,6 +24,9 @@
             {{ option.value }}
           </option>
         }
+        <option [selected]="itemsPerPage() === variablesList().length - 1" [value]="variablesList().length - 1">
+          ALL
+        </option>
       </select>
     </label>
   </div>
@@ -56,6 +59,6 @@
       }
       <span class="mx-5 md:hidden mr-4 py-5 my-auto">{{ total() }} variables</span>
     }
-    
+
   </div>
 </div>

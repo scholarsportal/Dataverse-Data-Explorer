@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { RenamingSidebarButtonComponent } from './renaming-button/renaming-sidebar-button.component';
@@ -7,10 +15,14 @@ import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sideb
 @Component({
   selector: 'dct-sidebar-button',
   standalone: true,
-  imports: [CommonModule, RenamingSidebarButtonComponent, DeletingSidebarButtonComponent],
+  imports: [
+    CommonModule,
+    RenamingSidebarButtonComponent,
+    DeletingSidebarButtonComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar-button.component.html',
-  styleUrl: './sidebar-button.component.css'
+  styleUrl: './sidebar-button.component.css',
 })
 export class SidebarButtonComponent {
   store = inject(Store);
@@ -18,10 +30,11 @@ export class SidebarButtonComponent {
   groupID = input.required<string>();
   label = input.required<string>();
   selected = input.required<boolean>();
+  disabledOptions = input<boolean>(false);
 
   changeSelectedGroupID = output<string>();
   emitDeleteGroup = output<string>();
-  emitRenameGroup = output<{ groupID: string, newLabel: string }>();
+  emitRenameGroup = output<{ groupID: string; newLabel: string }>();
 
   renaming = signal(false);
   renamingActive = computed(() => {

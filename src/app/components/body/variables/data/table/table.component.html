@@ -175,7 +175,7 @@
   </ng-template>
 </p-table>
 
-@if (selectedVariables().length > 0) {
+@if (selectedVariables().length > 0 && hasApiKey()) {
   <dct-table-menu
     [allVariables]="allVariables()"
     [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"

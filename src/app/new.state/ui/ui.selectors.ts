@@ -319,7 +319,10 @@ export const selectCrossTabulationTableData = createSelector(
     const table = createTable(processedAndMatchedCategories, labels);
     const removeEmptyValuesFromTable: { [id: string]: string }[] = [];
     table.map((item) => {
-      if (Object.keys(item).length) {
+      if (
+        Object.keys(item).length &&
+        Object.keys(item).length === Object.keys(labels).length
+      ) {
         removeEmptyValuesFromTable.push(item);
       }
     });
@@ -327,13 +330,15 @@ export const selectCrossTabulationTableData = createSelector(
       table: { [id: string]: string }[];
       rows: string[];
       cols: string[];
+      rawTable: string[];
     } = {
       table: [],
       cols: [],
       rows: [],
+      rawTable: [],
     };
     return !!removeEmptyValuesFromTable.length
-      ? { table: removeEmptyValuesFromTable, rows, cols }
+      ? { table: removeEmptyValuesFromTable, rows, cols, rawTable: table }
       : empty;
   },
 );

@@ -234,7 +234,7 @@ export function deleteVariableGroup(
 ) {
   const variableGroupArrayLength: number = duplicateVariableGroups.length;
   let index = -1;
-  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
+  for (let i = 0; i < variableGroupArrayLength; i++) {
     const currentVariableGroup = duplicateVariableGroups[i];
     if (currentVariableGroup['@_ID'] === groupID) {
       index = i;

@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './table-nav.component.html',
-  styleUrl: './table-nav.component.css'
+  styleUrl: './table-nav.component.css',
 })
 export class TableNavComponent {
   searchTerm = '';
@@ -36,11 +36,7 @@ export class TableNavComponent {
 
   emitSearchResultList = output<VariablesSimplified[]>();
 
-  pageLimitOptions = [
-    { value: 10 },
-    { value: 25 },
-    { value: 50 }
-  ];
+  pageLimitOptions = [{ value: 10 }, { value: 25 }, { value: 50 }];
 
   constructor() {
     effect(() => {
@@ -52,9 +48,16 @@ export class TableNavComponent {
   }
 
   search() {
-    const newList = this.variablesList().filter(e => {
+    const newList = this.variablesList().filter((e) => {
       const entries = Object.entries(e);
-      return entries.some(entry => entry[1] ? entry[1].toString().toLowerCase().includes(this.searchTerm.toLowerCase()) : false);
+      return entries.some((entry) =>
+        entry[1]
+          ? entry[1]
+              .toString()
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase())
+          : false,
+      );
     });
 
     this.emitSearchResultList.emit(newList);
