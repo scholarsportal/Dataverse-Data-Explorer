@@ -92,21 +92,43 @@ export class CrossTableComponent {
     for (let i = 2; i < table.rows.length; i++) {
       let row = table.rows[i];
       let rowData = [];
-      if (i === 2) {
-        rowData.push(''); // Add an empty cell at the beginning
-      }
       for (let cell of row.cells) {
         rowData.push(cell.innerText.replace(/,/g, ''));
       }
       csvContent += rowData.join(',') + '\n';
     }
+    const finalCsv = this.modifyCsv(
+      csvContent,
+      this.rows().length,
+      this.cols().length,
+    );
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([finalCsv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.setAttribute('href', url);
     a.setAttribute('download', 'table.csv');
     a.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  modifyCsv(csvText: string, rows: number, cols: number): string {
+    // Split the CSV into rows
+    const lines = csvText.split('\n');
+
+    // Loop through each row starting from rows + 1
+    for (let i = cols + 1; i < lines.length; i++) {
+      // Split the row into columns
+      const columns = lines[i].split('\t');
+
+      // Insert an empty cell at the y + 1 position (cols + 1)
+      columns.splice(rows, 0, ' ');
+
+      // Join the columns back together and update the row
+      lines[i] = columns.join('\t');
+    }
+
+    // Join the rows back together and return the modified CSV text
+    return lines.join('\n');
   }
 }

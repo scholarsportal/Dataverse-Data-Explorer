@@ -150,6 +150,7 @@ export class TableComponent {
   }
 
   setItemsPerPage(itemsPerPage: number) {
+    console.log(itemsPerPage);
     this.itemsPerPage.set(itemsPerPage);
   }
 
@@ -177,10 +178,6 @@ export class TableComponent {
         }),
       );
     }
-  }
-
-  removeFromCrossTab(value: string) {
-    // console.log(value);
   }
 
   launchModal(value: { mode: 'view' | 'edit'; variableID: string }) {

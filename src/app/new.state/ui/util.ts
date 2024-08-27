@@ -1,5 +1,4 @@
 import { Variable } from '../xml/xml.interface';
-import { ChartData } from './ui.interface';
 
 export const truncatedText = (text: string) => {
   if (text.length > 15) {
@@ -7,23 +6,6 @@ export const truncatedText = (text: string) => {
   }
   return text;
 };
-
-export function createVariableViewChartTable(
-  variableID: string,
-  allVariables: {
-    [variableID: string]: Variable;
-  },
-  crossTabValues: { [variableID: string]: number[] },
-): ChartData {
-  const chart: ChartData = {};
-  allVariables[variableID]?.catgry?.map((value) => {
-    let count = Number.NEGATIVE_INFINITY;
-    let weightedCount = Number.NEGATIVE_INFINITY;
-    if (Array.isArray(value.catStat)) {
-    }
-  });
-  return chart;
-}
 
 export function matchCategoriesWithLabels(
   processedCategories: {
@@ -68,11 +50,13 @@ export function createRowAndCategoryLabels(
     const newLabel = processed
       ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
       : 'var-not-found';
-    labels[item.variableID] = newLabel;
-    if (item.orientation === 'cols') {
-      cols.push(newLabel);
-    } else if (item.orientation === 'rows') {
-      rows.push(newLabel);
+    if (item.variableID) {
+      labels[item.variableID] = newLabel;
+      if (item.orientation === 'cols') {
+        cols.push(newLabel);
+      } else if (item.orientation === 'rows') {
+        rows.push(newLabel);
+      }
     }
   });
   return { labels, rows, cols };
