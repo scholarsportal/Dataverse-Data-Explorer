@@ -4,6 +4,7 @@
       Groups
     </h2>
     <button
+      [disabled]="disabled()"
       class="btn btn-primary mx-5 my-4"
       (click)="adding.set(true)"
     >

@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './group-button.component.html',
-  styleUrl: './group-button.component.css'
+  styleUrl: './group-button.component.css',
 })
 export class GroupButtonComponent {
   newGroupName: string = '';
 
+  disabled = input<boolean>(false);
   emitConfirm = output<string>();
 
   adding = signal(false);

@@ -15,7 +15,7 @@
   </div>
   <!--  Web Sidebar-->
   <div class="hidden nav md:grid">
-    <dct-group-button (emitConfirm)="createGroup($event)" class="group-add" />
+    <dct-group-button (emitConfirm)="createGroup($event)" [disabled]="!hasApiKey()" class="group-add" />
     <div class="all-groups">
       <dct-sidebar-button
         (changeSelectedGroupID)="changeGroup($event)"
@@ -25,6 +25,7 @@
       />
       @for (group of (simplifiedGroups() | keyvalue); track $index) {
         <dct-sidebar-button
+          [disabledOptions]="!hasApiKey()"
           [groupID]="group.key"
           [label]="group.value"
           [selected]="group.key === selectedGroupID()"

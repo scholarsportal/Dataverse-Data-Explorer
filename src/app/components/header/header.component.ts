@@ -24,7 +24,11 @@ import {
   selectDatasetUploadError,
   selectDatasetWeightFetchStatus,
 } from '../../new.state/dataset/dataset.selectors';
-import { selectBodyToggleState } from '../../new.state/ui/ui.selectors';
+import {
+  selectBodyToggleState,
+  selectCurrentGroupID,
+  selectVariableSelectionContext,
+} from '../../new.state/ui/ui.selectors';
 import {
   CrossTabulationUIActions,
   VariableTabUIAction,
@@ -73,6 +77,20 @@ export class HeaderComponent implements OnInit {
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
+  selectedVariables = this.store.selectSignal(selectVariableSelectionContext);
+  selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
+  selection = computed(() => {
+    if (this.selectedGroupID() === 'ALL') {
+      return this.selectedVariables()['ALL'].length > 0;
+    }
+    return this.selectedVariables()[this.selectedGroupID()].length > 0;
+  });
+  currentSelectionAsString = computed(() => {
+    if (this.selectedGroupID() === 'ALL') {
+      return this.selectedVariables()['ALL'].join(',') || '';
+    }
+    return this.selectedVariables()[this.selectedGroupID()].join(',') || '';
+  });
 
   weightFetchStatus = this.store.selectSignal(selectDatasetWeightFetchStatus);
   weightFetchIdle = computed(
@@ -125,6 +143,37 @@ export class HeaderComponent implements OnInit {
       command: () => this.handleDownload(),
     },
   ]);
+  downloadWithSubsetOption = computed(() => [
+    {
+      label: 'Download original file (.sav file)',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
+    },
+    {
+      label: 'Download tab-delimited',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
+    },
+    {
+      label: 'Download selected variables as subset',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${this.currentSelectionAsString()}`,
+    },
+    {
+      label: 'Download RData format file',
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
+    },
+    {
+      label: 'Download original DDI (.xml file)',
+      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
+    },
+    {
+      label: 'Download this version (.xml file)',
+      command: () => this.handleDownload(),
+    },
+  ]);
+  computedDownloadOptions = computed(() => {
+    return this.selection()
+      ? this.downloadWithSubsetOption()
+      : this.downloadOptions();
+  });
 
   constructor() {
     effect(() => {
@@ -156,6 +205,8 @@ export class HeaderComponent implements OnInit {
       return this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
     }
   }
+
+  handleSubsetDownload() {}
 
   handleDownload() {
     const state = this.datasetState().dataset;
