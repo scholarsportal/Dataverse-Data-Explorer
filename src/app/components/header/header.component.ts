@@ -80,7 +80,9 @@ export class HeaderComponent implements OnInit {
   selectedVariables = this.store.selectSignal(selectVariableSelectionContext);
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
   selection = computed(() => {
+    // putting this here to trigger github change
     if (this.selectedGroupID() === 'ALL') {
+      console.log(this.selectedVariables()['ALL'].length);
       return this.selectedVariables()['ALL'].length > 0;
     }
     return this.selectedVariables()[this.selectedGroupID()]
