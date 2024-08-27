@@ -108,20 +108,18 @@
 >
   <ng-template pTemplate="header">
     <tr class="bg-base-100 border-b-2 border-slate-300 z-20">
-      @if (hasApiKey()) {
-        <th>
-          <label>
-            <span class="sr-only">Select All Variable</span>
-            <input
-              (change)="toggleAll()"
-              [checked]="allVariablesSelected()"
-              class="h-3.5 w-3.5"
-              id="ALL"
-              type="checkbox"
-            />
-          </label>
-        </th>
-      }
+      <th>
+        <label>
+          <span class="sr-only">Select All Variable</span>
+          <input
+            (change)="toggleAll()"
+            [checked]="allVariablesSelected()"
+            class="h-3.5 w-3.5"
+            id="ALL"
+            type="checkbox"
+          />
+        </label>
+      </th>
       <th pSortableColumn="variableID">ID</th>
       <th pSortableColumn="name">Name</th>
       <th pSortableColumn="label">Label</th>
@@ -135,20 +133,18 @@
     <tr
       class="group h-14 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
-      @if (hasApiKey()) {
-        <td>
-          <label>
-            <span class="sr-only">{{ variable.name }}</span>
-            <input
-              (change)="setSelected(variable.variableID)"
-              [checked]="variable.selected"
-              [id]="variable.variableID"
-              class="h-3.5 w-3.5"
-              type="checkbox"
-            />
-          </label>
-        </td>
-      }
+      <td>
+        <label>
+          <span class="sr-only">{{ variable.name }}</span>
+          <input
+            (change)="setSelected(variable.variableID)"
+            [checked]="variable.selected"
+            [id]="variable.variableID"
+            class="h-3.5 w-3.5"
+            type="checkbox"
+          />
+        </label>
+      </td>
       <td>{{ variable.variableID }}</td>
       <td>{{ variable.name }}</td>
       <td>{{ variable.label }}</td>
@@ -179,7 +175,7 @@
   </ng-template>
 </p-table>
 
-@if (selectedVariables().length > 0) {
+@if (selectedVariables().length > 0 && hasApiKey()) {
   <dct-table-menu
     [allVariables]="allVariables()"
     [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
