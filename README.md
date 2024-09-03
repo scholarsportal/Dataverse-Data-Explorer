@@ -3,9 +3,9 @@
 [![Data Explorer Deploy](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml)
 [![Lint/Test](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml)
 
-The Data Curation Tool (DCT) allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a data set. This stand-alone component is built to complement [The Dataverse Project](http://dataverse.org/). The Data Curation tool is integrated into dataverse for .tab files under the configure button.
+The Data Explorer combines the previous Data Curation Tool and Data Explorer, built for use with the open-source Dataverse data repository. Data Explorer connects to Dataverse repository tabular data files and enables open metadata discovery and exploration of data such as visualizing charts, statistical analysis and cross tabulations, as well as authorized curation and permission controls for editing and curation of variable metadata such as labels, questions, universe, notes, weights, plus. Any DDI compliant metadata can be adapted for use with this tool, and any stand-alone component is built to complement [The Dataverse Project](http://dataverse.org/). The Data Curation tool options, now built into Data Explorer, are integrated into Dataverse for .tab files under the configure button.
 
-The DCT is an Angular application.
+Data Explorer is an Angular application.
 
 A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?dfId=127759&siteUrl=https://borealisdata.ca](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
 
