@@ -10,7 +10,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
   imports: [CommonModule, ModalComponent],
   template: `
     <div class="tooltip tooltip-left tooltip-primary" data-tip="View variable">
-      <button (click)="launchView()" class="p-2 btn-action">
+      <button (click)="launchView()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
         <svg
           class="w-6 h-6 md:w-5 md:h-5"
           fill="none"
@@ -32,7 +32,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
         class="hidden md:block tooltip tooltip-left tooltip-primary mr-1"
         data-tip="Edit variable"
       >
-        <button (click)="launchEdit()" class="p-2 btn-action">
+        <button (click)="launchEdit()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
           <svg
             class="w-5 h-5"
             fill="none"
@@ -64,7 +64,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
           class="tooltip tooltip-left tooltip-primary"
           data-tip="Add to cross tabulation"
         >
-          <button (click)="addToCrossTab()" class="p-2 btn-action">
+          <button (click)="addToCrossTab()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

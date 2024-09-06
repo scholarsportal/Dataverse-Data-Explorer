@@ -178,6 +178,7 @@ export class TableComponent {
         }),
       );
     }
+    setTimeout(() => document.getElementById(selection)?.focus(), 200);
   }
 
   launchModal(value: { mode: 'view' | 'edit'; variableID: string }) {

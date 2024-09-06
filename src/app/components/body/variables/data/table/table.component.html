@@ -131,7 +131,7 @@
   </ng-template>
   <ng-template let-variable pTemplate="body">
     <tr
-      class="group h-14 border-y hover:bg-base-200 hover:border-y border-slate-300"
+      class="group h-14 border-y hover:bg-base-200 focus-within:bg-base-200 hover:border-y border-slate-300"
     >
       <td>
         <label>
@@ -158,7 +158,7 @@
           <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">No Weight</span>
         }
       </td>
-      <td class="invisible group-hover:visible flex flex-row float-right">
+      <td class="flex flex-row float-right">
         <div class="mt-0.5">
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
