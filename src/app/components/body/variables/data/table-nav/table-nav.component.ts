@@ -2,6 +2,7 @@ import { Component, computed, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariablesSimplified } from '../../../../../new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'dct-table-nav',
@@ -38,7 +39,7 @@ export class TableNavComponent {
 
   pageLimitOptions = [{ value: 10 }, { value: 25 }, { value: 50 }];
 
-  constructor() {
+  constructor(private liveAnnouncer: LiveAnnouncer) {
     effect(() => {
       if (this.groupChanged().length) {
         this.searchTerm = '';
@@ -59,8 +60,9 @@ export class TableNavComponent {
           : false,
       );
     });
-
+    
     this.emitSearchResultList.emit(newList);
+    
   }
 
   onItemsPerPageChange(event: any) {
@@ -70,9 +72,13 @@ export class TableNavComponent {
 
   pagePrevious() {
     this.pagePreviousClick.emit();
+    let range = this.indexRange();
+    this.liveAnnouncer.announce("Showing" + range);
   }
 
   pageNext() {
     this.pageNextClick.emit();
+    let range = this.indexRange();
+    this.liveAnnouncer.announce("Showing" + range);
   }
 }

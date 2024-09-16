@@ -5,7 +5,7 @@ import {
   inject,
   input,
   output,
-  signal,
+  signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -25,6 +25,7 @@ import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sideb
   styleUrl: './sidebar-button.component.css',
 })
 export class SidebarButtonComponent {
+
   store = inject(Store);
 
   groupID = input.required<string>();
@@ -45,14 +46,20 @@ export class SidebarButtonComponent {
   deletingActive = computed(() => {
     return this.selected() && this.deleting();
   });
-
+  
   handleClick() {
     this.resetUI();
     this.changeSelectedGroupID.emit(this.groupID());
     const elem = document.activeElement;
-    if (elem instanceof HTMLElement) {
-      elem?.blur();
-    }
+    //if (elem instanceof HTMLElement) {
+      //elem?.blur();
+    //}
+    setTimeout(()=>{
+      let heading = document.querySelector('#tableHeading');
+      if (heading) {
+        (heading as HTMLElement)?.focus();
+      }
+    },1000)
   }
 
   delete() {

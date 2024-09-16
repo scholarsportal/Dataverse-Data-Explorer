@@ -37,6 +37,15 @@ import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal
 export class TableMenuComponent {
   store = inject(Store);
   selectedVariables = input.required<string[]>();
+  
+  variablesSelected =  computed(() => {
+    if (this.selectedVariables().length > 0) {
+      return false
+    } else {
+      return true
+    }
+  });
+  
   groupID = input.required<string>();
   selectedWeight: string = '';
   selectedGroups: string[] = [];
@@ -63,6 +72,10 @@ export class TableMenuComponent {
         variableIDs: this.selectedVariables(),
       }),
     );
+    this.saved = true;
+    setTimeout(() => {
+      this.closeLoadedToast();
+    }, 5000);
   }
 
   onSelectedWeightChange(weight: any) {
@@ -89,12 +102,12 @@ export class TableMenuComponent {
       this.saved = true;
       setTimeout(() => {
         this.closeLoadedToast();
-      }, 3000);
+      }, 5000);
     } else {
       this.error = true;
       setTimeout(() => {
         this.closeLoadedToast();
-      }, 3000);
+      }, 5000);
     }
   }
 

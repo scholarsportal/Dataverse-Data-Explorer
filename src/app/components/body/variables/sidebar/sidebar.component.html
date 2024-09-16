@@ -2,11 +2,10 @@
   <!--  Mobile Menu-->
   <div class="md:hidden m-5">
     <label>
-      <span class="sr-only">Language Selection</span>
       <select class="select select-bordered w-full">
-        <option (click)="changeGroup('ALL')">All Variables</option>
+        <option (click)="changeGroup('ALL', 'ALL')">All Variables</option>
         @for (item of (simplifiedGroups() | keyvalue); track $index) {
-          <option (click)="changeGroup(item.key)">
+          <option (click)="changeGroup(item.key, item.value)">
             {{ item.value }}
           </option>
         }
@@ -18,7 +17,7 @@
     <dct-group-button (emitConfirm)="createGroup($event)" [disabled]="!hasApiKey()" class="group-add" />
     <div class="all-groups">
       <dct-sidebar-button
-        (changeSelectedGroupID)="changeGroup($event)"
+        (changeSelectedGroupID)="changeGroup($event, $event)"
         [selected]="selectedGroupID() === 'ALL'"
         groupID="ALL"
         label="All Variables"
@@ -29,7 +28,7 @@
           [groupID]="group.key"
           [label]="group.value"
           [selected]="group.key === selectedGroupID()"
-          (changeSelectedGroupID)="changeGroup($event)"
+          (changeSelectedGroupID)="changeGroup($event, group.value)"
           (emitDeleteGroup)="deleteGroup($event)"
           (emitRenameGroup)="renameGroup($event)"
         />

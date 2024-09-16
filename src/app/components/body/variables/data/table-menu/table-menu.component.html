@@ -1,7 +1,7 @@
 <div class="flex w-full px-5">
 
   <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-success">
+    <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
       <span class="text-base-100">Changes applied!</span>
       <button (click)="closeLoadedToast()">
         <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
@@ -13,7 +13,7 @@
   </div>
 
   <div [ngClass]="{'hide-toast': !error, 'show-toast': error}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-error">
+    <div class="alert rounded alert-error" role="alert" aria-atomic="true" aria-live="polite">
       <span class="text-base-100">No group or weight option selected</span>
       <button (click)="closeLoadedToast()">
         <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
@@ -42,8 +42,9 @@
     </svg>
   </div>
   <div class="flex-none self-center">
+    <h2 class="sr-only">Variable table options</h2>
     <label class="multiselect ml-1" for="multiselect-nav">
-      <span class="sr-only">Add to group</span>
+      <span class="sr-only">Add variables to group</span>
       <p-multiSelect
         (onChange)="changeGroup($event)"
         [ngModelOptions]="{standalone: true}"
@@ -54,6 +55,8 @@
         placeholder="Add Variable to Group"
         showHeader="false"
         styleClass="select select-bordered border-slate-300 max-w-64"
+        optionLabel="value"
+        [disabled]="variablesSelected()"
       >
         <ng-template let-value pTemplate="selectedItems">
             <span *ngIf="selectedGroups.length > 0;
@@ -73,14 +76,16 @@
             <ng-template [ngIfElse]="defaultTemplate" [ngIf]="value?.length ?? 0 > 0"
             >{{ value?.length ?? 0 }} selected
             </ng-template>
-            <ng-template #defaultTemplate>Add to Group</ng-template>
+            <ng-template #defaultTemplate [disabled]="variablesSelected()">Add to Group</ng-template>
           </ng-template>
         </ng-template>
-        <ng-template let-value pTemplate="item">
+        <ng-template let-value pTemplate="item" aria-label="TEST">
           <div class="">
-            <input *ngIf="!selectedGroups.includes(allGroups()[value]['@_ID'])" type="checkbox" />
-            <input *ngIf="selectedGroups.includes(allGroups()[value]['@_ID'])" checked type="checkbox" />
-            {{ allGroups()[value].labl || 'no label' }}
+            <input id="{{allGroups()[value]['@_ID']}}" *ngIf="!selectedGroups.includes(allGroups()[value]['@_ID'])" type="checkbox" />
+            <input id="{{allGroups()[value]['@_ID']}}" *ngIf="selectedGroups.includes(allGroups()[value]['@_ID'])" checked type="checkbox" />
+            <label for="{{allGroups()[value]['@_ID']}}">
+              {{ allGroups()[value].labl || 'no label' }}
+            </label>
           </div>
         </ng-template>
         <ng-template pTemplate="dropdownicon"></ng-template>
@@ -97,6 +102,7 @@
         class="select select-bordered border-slate-300"
         id="assign-weight"
         name="assign-weight"
+        [disabled]="variablesSelected()"
       >
         <option disabled hidden selected value="">Assign Weight</option>
         <option [value]="'remove'">Remove Weight</option>
@@ -109,7 +115,7 @@
     </label>
   </div>
   <div class="flex-none self-center">
-    <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center">
+    <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center" [disabled]="variablesSelected()">
       Apply
     </button>
   </div>
@@ -118,6 +124,7 @@
       <button
         (click)="onRemoveFromGroup(groupID())"
         class="btn btn-outline justify-end self-center mx-3"
+        [disabled]="variablesSelected()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

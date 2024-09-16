@@ -83,13 +83,16 @@ export class ModalComponent {
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
   saved: boolean = false;
+  opened: boolean = false;
 
   open() {
+    this.opened = true;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.showModal();
   }
 
   close() {
+    this.opened = false;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.close();
   }

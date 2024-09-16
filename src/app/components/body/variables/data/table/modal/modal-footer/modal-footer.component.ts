@@ -13,9 +13,9 @@ import { selectOpenVariableMode } from 'src/app/new.state/ui/ui.selectors';
 export class ModalFooterComponent {
   store = inject(Store);
   modalMode$ = this.store.select(selectOpenVariableMode);
-  closeVariableModal = output();
+  emitCloseModal = output();
 
   handleClose() {
-    this.closeVariableModal.emit();
+    this.emitCloseModal.emit();
   }
 }

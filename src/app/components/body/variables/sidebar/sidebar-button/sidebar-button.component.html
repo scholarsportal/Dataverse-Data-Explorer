@@ -3,6 +3,8 @@
   <li [ngClass]="{ selected: selected() }" class="md:hidden">
     <button
       (click)="handleClick()"
+      [attr.aria-selected]="selected()"
+      role="tab"
       class="md:h-16 md:px-5 w-full items-center text-start">
       {{ label() }}
     </button>
@@ -13,6 +15,8 @@
     class="hidden md:flex flex-row justify-between w-full hover:bg-base-200"
   >
     <button
+      [attr.aria-selected]="selected()"
+      role="tab"
       class="h-16 px-5 w-full items-center text-start">
       {{ label() }}
     </button>

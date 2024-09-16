@@ -122,24 +122,24 @@ export class ChartComponent implements OnInit {
       },
     });
 
-    // const light = 'black';
-    // const dark = 'white';
-    // const neutral = '#c8c5d0';
-    // const theme = localStorage.getItem('theme');
+    const light = 'black';
+    const dark = 'white';
+    const neutral = '#c8c5d0';
+    const theme = localStorage.getItem('theme');
 
-    // if (theme === 'light') {
-    //   this.chartJS.options.scales.x.grid.color = neutral;
-    //   this.chartJS.options.scales.y.grid.color = neutral;
-    //   this.chartJS.options.scales.x.ticks.color = light;
-    //   this.chartJS.options.scales.y.ticks.color = light;
-    //   this.chartJS.options.plugins.legend.labels.color = light;
-    // } else {
-    //   this.chartJS.options.scales.x.grid.color = dark;
-    //   this.chartJS.options.scales.y.grid.color = dark;
-    //   this.chartJS.options.scales.x.ticks.color = dark;
-    //   this.chartJS.options.scales.y.ticks.color = dark;
-    //   this.chartJS.options.plugins.legend.labels.color = dark;
-    // }
+    if (theme === 'light') {
+      this.chartJS.options.scales.x.grid.color = neutral;
+      this.chartJS.options.scales.y.grid.color = neutral;
+      this.chartJS.options.scales.x.ticks.color = light;
+      this.chartJS.options.scales.y.ticks.color = light;
+      this.chartJS.options.plugins.legend.labels.color = light;
+    } else {
+      this.chartJS.options.scales.x.grid.color = dark;
+      this.chartJS.options.scales.y.grid.color = dark;
+      this.chartJS.options.scales.x.ticks.color = dark;
+      this.chartJS.options.scales.y.ticks.color = dark;
+      this.chartJS.options.plugins.legend.labels.color = dark;
+    }
   }
 
   private redrawChart(chart: { x: number; y: string }[]) {
@@ -148,27 +148,27 @@ export class ChartComponent implements OnInit {
       this.chartJS.data.labels = chart.map((item) => item.y); // Update labels
       this.chartJS.data.datasets[0].data = chart.map((item) => item.x); // Update data
       this.chartJS.update();
-      //
-      // const light = 'black';
-      // const dark = 'white';
-      // const neutral = '#c8c5d0';
-      // const theme = localStorage.getItem('theme');
-      //
-      // if (theme === 'light') {
-      //   this.chartJS.options.scales.x.grid.color = neutral;
-      //   this.chartJS.options.scales.y.grid.color = neutral;
-      //   this.chartJS.options.scales.x.ticks.color = light;
-      //   this.chartJS.options.scales.y.ticks.color = light;
-      //   this.chartJS.options.plugins.legend.labels.color = light;
-      //   this.chartJS.update();
-      // } else {
-      //   this.chartJS.options.scales.x.grid.color = dark;
-      //   this.chartJS.options.scales.y.grid.color = dark;
-      //   this.chartJS.options.scales.x.ticks.color = dark;
-      //   this.chartJS.options.scales.y.ticks.color = dark;
-      //   this.chartJS.options.plugins.legend.labels.color = dark;
-      //   this.chartJS.update();
-      // }
+      
+      const light = 'black';
+      const dark = 'white';
+      const neutral = '#c8c5d0';
+      const theme = localStorage.getItem('theme');
+      
+      if (theme === 'light') {
+        this.chartJS.options.scales.x.grid.color = neutral;
+        this.chartJS.options.scales.y.grid.color = neutral;
+        this.chartJS.options.scales.x.ticks.color = light;
+        this.chartJS.options.scales.y.ticks.color = light;
+        this.chartJS.options.plugins.legend.labels.color = light;
+        this.chartJS.update();
+      } else {
+        this.chartJS.options.scales.x.grid.color = dark;
+        this.chartJS.options.scales.y.grid.color = dark;
+        this.chartJS.options.scales.x.ticks.color = dark;
+        this.chartJS.options.scales.y.ticks.color = dark;
+        this.chartJS.options.plugins.legend.labels.color = dark;
+        this.chartJS.update();
+      }
     }
   }
 
