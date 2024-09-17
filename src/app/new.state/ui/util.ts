@@ -45,20 +45,22 @@ export function createRowAndCategoryLabels(
   const rows: string[] = [];
   const cols: string[] = [];
   const labels: { [variableID: string]: string } = {};
-  variablesInCrossTab.map((item) => {
-    const processed = processedVariables[item.variableID] || null;
-    const newLabel = processed
-      ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
-      : 'var-not-found';
-    if (item.variableID) {
-      labels[item.variableID] = newLabel;
-      if (item.orientation === 'cols') {
-        cols.push(newLabel);
-      } else if (item.orientation === 'rows') {
-        rows.push(newLabel);
+  if(Array.isArray(variablesInCrossTab)) {
+    variablesInCrossTab.map((item) => {
+      const processed = processedVariables[item.variableID] || null;
+      const newLabel = processed
+        ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
+        : 'var-not-found';
+      if (item.variableID) {
+        labels[item.variableID] = newLabel;
+        if (item.orientation === 'cols') {
+          cols.push(newLabel);
+        } else if (item.orientation === 'rows') {
+          rows.push(newLabel);
+        }
       }
-    }
-  });
+    });
+  }
   return { labels, rows, cols };
 }
 

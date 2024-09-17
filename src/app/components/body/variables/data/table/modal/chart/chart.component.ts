@@ -36,6 +36,7 @@ export class ChartComponent implements OnInit {
   store = inject(Store);
   // $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
   variableID = input.required<string>();
+  variableLabel = input.required<string>();
   hasCategories = input.required<boolean>();
   weights = input.required<{ [variableID: string]: string }>();
   chart = input.required<{ x: number; y: string }[]>();

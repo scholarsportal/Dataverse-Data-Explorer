@@ -1,3 +1,6 @@
+<h3 class="pb-2.5 text-lg font-bold">
+  Label: {{ variableLabel() }}
+</h3>
 <!-- CHART -->
 <div [ngClass]="{ 'blur': !hasCategories() }" class="flex h-full w-full mt-4">
   <canvas id="variableChart"> {{ chartJS }}</canvas>

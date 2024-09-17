@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'dct-variable-options-button',
@@ -128,6 +129,8 @@ export class VariableOptionsButtonComponent {
     return variables;
   });
 
+  constructor(private liveAnnouncer: LiveAnnouncer) {}
+
   launchView() {
     this.emitLaunchModal.emit({ mode: 'view', variableID: this.variableID() });
   }
@@ -151,6 +154,7 @@ export class VariableOptionsButtonComponent {
         }),
       );
     }
+    this.liveAnnouncer.announce("Variable added to cross tabulations.");
   }
 
   removeFromCrossTab() {
@@ -159,5 +163,6 @@ export class VariableOptionsButtonComponent {
         variableID: this.variableID(),
       }),
     );
+    this.liveAnnouncer.announce("Variable removed from cross tabulations.");
   }
 }

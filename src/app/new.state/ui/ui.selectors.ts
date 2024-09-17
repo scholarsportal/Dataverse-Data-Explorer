@@ -43,6 +43,14 @@ export const selectOpenVariableName = createSelector(
   },
 );
 
+export const selectOpenVariableLabel = createSelector(
+  selectOpenVariableID,
+  selectDatasetProcessedVariables,
+  (id, variables) => {
+    return variables[id]?.['labl']['#text'] || '';
+  },
+);
+
 export const selectOpenVariableMode = createSelector(
   selectUIFeature,
   (state) => state.bodyState.variables.openVariable.mode,

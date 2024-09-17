@@ -23,6 +23,7 @@ import {
   selectOpenVariableID,
   selectOpenVariableMode,
   selectOpenVariableName,
+  selectOpenVariableLabel,
   selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
@@ -62,6 +63,7 @@ export class ModalComponent {
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
   variableName = this.store.selectSignal(selectOpenVariableName);
   variableID = this.store.selectSignal(selectOpenVariableID);
+  variableLabel = this.store.selectSignal(selectOpenVariableLabel);
   allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
   variablesAndTheirGroups = this.store.selectSignal(
     selectVariablesWithCorrespondingGroups,
@@ -89,6 +91,7 @@ export class ModalComponent {
     this.opened = true;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.showModal();
+    console.log(this.variableLabel());
   }
 
   close() {

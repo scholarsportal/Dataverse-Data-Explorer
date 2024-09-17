@@ -32,6 +32,7 @@ describe('ChartComponent', () => {
     fixture = TestBed.createComponent(ChartComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('variableID', '');
+    fixture.componentRef.setInput('variableLabel', '');
     fixture.componentRef.setInput('hasCategories', false);
     fixture.componentRef.setInput('weights', {});
     fixture.componentRef.setInput('chart', []);

@@ -14,6 +14,7 @@ import { Chart } from 'chart.js/auto';
   standalone: true,
   imports: [NgClass],
   template: `
+    <h3 class="sr-only">Chart</h3>
     <div [ngClass]="{ blur: !hasData() }" class="flex h-full w2/3 mt-4">
       <canvas id="crossTabChart"> {{ chartJS }}</canvas>
     </div>
