@@ -4,14 +4,12 @@ import { DataComponent } from './data.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { globalInitialState } from '../../../../new.state/xml/xml.interface';
 
-// @ts-ignore
 describe('DataComponent', () => {
   let component: DataComponent;
   let fixture: ComponentFixture<DataComponent>;
   let store: MockStore;
   const initialState = globalInitialState;
 
-  // @ts-ignore
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DataComponent],
@@ -23,9 +21,11 @@ describe('DataComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('groups', {});
     fixture.componentRef.setInput('variables', {});
+    fixture.componentRef.setInput('hasApiKey', true);
     fixture.componentRef.setInput('openVariable', '');
     fixture.componentRef.setInput('selectedVariables', []);
     fixture.componentRef.setInput('categoriesInvalid', []);
+    fixture.componentRef.setInput('variablesWithCrossTabMetadata', []);
     fixture.componentRef.setInput('variablesInCrossTabSelection', []);
     fixture.componentRef.setInput('isFetching', false);
     fixture.componentRef.setInput('crossTabValuesFetched', []);
@@ -34,9 +34,7 @@ describe('DataComponent', () => {
     fixture.detectChanges();
   });
 
-  // @ts-ignore
   it('should create', () => {
-    // @ts-ignore
     expect(component).toBeTruthy();
   });
 });

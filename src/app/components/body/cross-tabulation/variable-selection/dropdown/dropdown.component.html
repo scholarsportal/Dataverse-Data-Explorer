@@ -118,7 +118,7 @@
           } @else {
             
               @for (item of items; track $index) {
-                <span *ngIf="$index == 0" class="">
+                <span *ngIf="$index === 0" class="">
                   {{ item.value }}
                 </span>
                 <span *ngIf="$index > 0" class="-ml-1">

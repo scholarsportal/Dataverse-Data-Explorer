@@ -81,7 +81,7 @@ export class TableComponent {
   });
   groupLbl = computed(() => {
     let label = 'ALL'
-    let currentGroup = this.groups()[this.groupChanged()]
+    const currentGroup = this.groups()[this.groupChanged()]
     if (currentGroup) { label = currentGroup.labl }
     return label
   });
@@ -113,11 +113,7 @@ export class TableComponent {
       }
     });
   }
-
-  ngOnInit() {
-
-  }
-
+  
   isFirstPage = () => {
     return this.currentPage === 0;
   };

@@ -108,12 +108,4 @@ export class ModalComponent {
     }, 3000);
   }
 
-  // Listen for escape and dispatch close action
-  @HostListener('document:keydown.escape', ['$event'])
-  onKeyDownHandler(event: KeyboardEvent) {
-    const modal = this.variableModal?.nativeElement as HTMLDialogElement;
-    // if (modal?.open && event.key === 'Escape') {
-    //   this.store.dispatch(closeVariableModal());
-    // }
-  }
 }

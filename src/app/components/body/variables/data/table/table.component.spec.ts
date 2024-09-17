@@ -18,10 +18,15 @@ describe('TableComponent', () => {
     });
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('hasApiKey', true);
     fixture.componentRef.setInput('variables', []);
     fixture.componentRef.setInput('openVariable', '');
+    fixture.componentRef.setInput('allVariables', []);
+    fixture.componentRef.setInput('groups', []);
+    fixture.componentRef.setInput('weights', []);
     fixture.componentRef.setInput('selectedVariables', []);
     fixture.componentRef.setInput('categoriesInvalid', []);
+    fixture.componentRef.setInput('variablesWithCrossTabMetadata', []);
     fixture.componentRef.setInput('groupChanged', 'ALL');
     fixture.detectChanges();
   });

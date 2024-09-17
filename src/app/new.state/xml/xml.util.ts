@@ -41,7 +41,7 @@ function updateGivenVariable(
       '#text': newVariableValue.label,
     };
   }
-  if (!!updatedVariable['@_wgt']) {
+  if (updatedVariable['@_wgt']) {
     updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
   } else {
     updatedVariable = {
@@ -49,7 +49,7 @@ function updateGivenVariable(
       '@_wgt': newVariableValue.isWeight ? 'wgt' : '',
     };
   }
-  if (!!updatedVariable['@_wgt-var']) {
+  if (updatedVariable['@_wgt-var']) {
     updatedVariable['@_wgt-var'] = newVariableValue.isWeight
       ? ''
       : newVariableValue.assignedWeight;
@@ -201,7 +201,7 @@ export function changeGroupsForMultipleVariables(
   const updatedGroupArray: VariableGroup[] = [];
   variableGroups.forEach((variableGroup) => {
     if (newGroups.includes(variableGroup['@_ID'])) {
-      const variablesAsArray = !!variableGroup['@_var']?.length
+      const variablesAsArray = variableGroup['@_var']?.length
         ? variableGroup['@_var']?.split(' ') || []
         : [];
       variablesAsArray.push(...variableIDs);
@@ -279,7 +279,7 @@ export function matchVariableIDs(
   // First we loop through the imported dataset
   importedVariables.forEach((variableImported) => {
     // For each dataset we go through our current dataset to find the matching name
-    for (let variableInCurrentDataset of datasetVariables) {
+    for (const variableInCurrentDataset of datasetVariables) {
       if (variableInCurrentDataset['@_name'] === variableImported['@_name']) {
         matchedVariables[variableInCurrentDataset['@_ID']] = {
           importedVariableID: variableImported['@_ID'],
@@ -303,7 +303,7 @@ export function updateGroups(
     });
     const groupVariables = group['@_var']?.split(' ') || [];
     const newVars: string[] = [];
-    if (!!groupVariables.length) {
+    if (groupVariables.length) {
       groupVariables.forEach((variable) => {
         newVars.push(flipMatched[variable]);
       });
@@ -402,7 +402,7 @@ function editSingleVariable(
     currentVariableCloned['@_wgt-var'] = reverseLookup[importedVariable]
       ? reverseLookup[importedVariable]?.currentDatasetVariableID
       : '';
-    currentVariableCloned['@_wgt'] = !!importedVariablesMatched
+    currentVariableCloned['@_wgt'] = importedVariablesMatched
       .importedVariable['@_wgt']
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';

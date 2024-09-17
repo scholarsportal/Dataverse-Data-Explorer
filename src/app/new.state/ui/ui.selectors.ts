@@ -337,7 +337,7 @@ export const selectCrossTabulationTableData = createSelector(
       rows: [],
       rawTable: [],
     };
-    return !!removeEmptyValuesFromTable.length
+    return removeEmptyValuesFromTable.length
       ? { table: removeEmptyValuesFromTable, rows, cols, rawTable: table }
       : empty;
   },

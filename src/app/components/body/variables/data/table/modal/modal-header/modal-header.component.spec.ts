@@ -21,6 +21,7 @@ describe('ModalHeaderComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('nextVar', '');
     fixture.componentRef.setInput('previousVar', '');
+    fixture.componentRef.setInput('hasApiKey', true);
     fixture.componentRef.setInput('modalMode', 'view');
     fixture.componentRef.setInput('id', 'TESTID');
     fixture.componentRef.setInput('name', 'TESTNAME');

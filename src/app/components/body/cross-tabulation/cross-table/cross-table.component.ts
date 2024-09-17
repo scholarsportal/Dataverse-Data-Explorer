@@ -90,9 +90,9 @@ export class CrossTableComponent {
 
     // Skip the first two rows by iterating from index 2
     for (let i = 2; i < table.rows.length; i++) {
-      let row = table.rows[i];
-      let rowData = [];
-      for (let cell of row.cells) {
+      const row = table.rows[i];
+      const rowData = [];
+      for (const cell of row.cells) {
         rowData.push(cell.innerText.replace(/,/g, ''));
       }
       csvContent += rowData.join(',') + '\n';

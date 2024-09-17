@@ -113,12 +113,12 @@ export function buildTable(crossTabData: {
     const colArray: string[] = [];
 
     rows.map((row) => {
-      if (!!entry[row]) {
+      if (entry[row]) {
         rowArray.push(entry[row]);
       }
     });
     cols.map((column) => {
-      if (!!entry[column]) {
+      if (entry[column]) {
         colArray.push(entry[column]);
       }
     });

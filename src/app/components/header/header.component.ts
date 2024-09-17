@@ -82,8 +82,7 @@ export class HeaderComponent implements OnInit {
   selection = computed(() => {
     // putting this here to trigger github change
     if (this.selectedGroupID() === 'ALL') {
-      console.log(this.selectedVariables()['ALL'].length);
-      return this.selectedVariables()['ALL'].length > 0;
+      return this.selectedVariables()['ALL']?.length > 0;
     }
     return this.selectedVariables()[this.selectedGroupID()]
       ? this.selectedVariables()[this.selectedGroupID()].length > 0

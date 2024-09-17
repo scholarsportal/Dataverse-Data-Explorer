@@ -41,7 +41,7 @@ export class SidebarComponent {
 
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   simplifiedGroups = computed(() => {
-    let simple: { [groupID: string]: string } = {};
+    const simple: { [groupID: string]: string } = {};
     Object.values(this.groups()).map((variableGroup) => {
       simple[variableGroup['@_ID']] = variableGroup.labl;
     });

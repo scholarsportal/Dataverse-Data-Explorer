@@ -64,7 +64,7 @@
               else elseTemplate"></span>
           <ng-template #allSelectedTemplate>
             @for (option of selectedGroups; track $index) {
-              <span *ngIf="$index == 0" class="">
+              <span *ngIf="$index === 0" class="">
                   {{ allGroups()[option].labl || 'no label' }}
                 </span>
               <span *ngIf="$index > 0" class="-ml-1">
@@ -76,10 +76,10 @@
             <ng-template [ngIfElse]="defaultTemplate" [ngIf]="value?.length ?? 0 > 0"
             >{{ value?.length ?? 0 }} selected
             </ng-template>
-            <ng-template #defaultTemplate [disabled]="variablesSelected()">Add to Group</ng-template>
+            <ng-template #defaultTemplate>Add to Group</ng-template>
           </ng-template>
         </ng-template>
-        <ng-template let-value pTemplate="item" aria-label="TEST">
+        <ng-template let-value pTemplate="item">
           <div class="">
             <input id="{{allGroups()[value]['@_ID']}}" *ngIf="!selectedGroups.includes(allGroups()[value]['@_ID'])" type="checkbox" />
             <input id="{{allGroups()[value]['@_ID']}}" *ngIf="selectedGroups.includes(allGroups()[value]['@_ID'])" checked type="checkbox" />

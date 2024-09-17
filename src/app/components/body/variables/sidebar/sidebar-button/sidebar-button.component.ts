@@ -55,7 +55,7 @@ export class SidebarButtonComponent {
       //elem?.blur();
     //}
     setTimeout(()=>{
-      let heading = document.querySelector('#tableHeading');
+      const heading = document.querySelector('#tableHeading');
       if (heading) {
         (heading as HTMLElement)?.focus();
       }

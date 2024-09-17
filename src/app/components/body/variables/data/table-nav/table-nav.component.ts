@@ -72,13 +72,13 @@ export class TableNavComponent {
 
   pagePrevious() {
     this.pagePreviousClick.emit();
-    let range = this.indexRange();
+    const range = this.indexRange();
     this.liveAnnouncer.announce("Showing" + range);
   }
 
   pageNext() {
     this.pageNextClick.emit();
-    let range = this.indexRange();
+    const range = this.indexRange();
     this.liveAnnouncer.announce("Showing" + range);
   }
 }
