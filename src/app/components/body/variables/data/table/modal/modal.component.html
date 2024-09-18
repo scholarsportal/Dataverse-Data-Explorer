@@ -5,7 +5,7 @@
   id="variableModal"
 >
   <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-success">
+    <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
       <span class="text-base-100">Changes applied!</span>
       <button (click)="closeLoadedToast()">
         <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"

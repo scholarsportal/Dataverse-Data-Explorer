@@ -138,7 +138,7 @@
   </div>
 </dialog>
 <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
-  <div class="alert rounded alert-success">
+  <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
     <span class="text-base-100">Changes applied!</span>
     <button (click)="closeLoadedToast()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

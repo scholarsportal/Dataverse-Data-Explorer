@@ -7,6 +7,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -48,6 +49,12 @@ export class DropdownComponent {
   emitRemoveVariable = output<{ index: number }>();
   // Component Values
   selectedGroup = signal<string | null>(null);
+  
+  selectedVariableLabel = computed(() => {
+    const label = this.variables()[this.selectedVariableID()]?.labl['#text'];
+    return label
+  })
+  
 
   filteredVariables = computed(() => {
     const newVariables: {
@@ -109,6 +116,8 @@ export class DropdownComponent {
   });
   filterValue: string = '';
 
+  constructor(private liveAnnouncer: LiveAnnouncer) {}
+
   onChangeVariableOrientation(value: string) {
     if (value === 'rows') {
       this.emitChangeVariableOrientation.emit({
@@ -163,5 +172,6 @@ export class DropdownComponent {
 
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
+    this.liveAnnouncer.announce("This row has been removed.");
   }
 }
