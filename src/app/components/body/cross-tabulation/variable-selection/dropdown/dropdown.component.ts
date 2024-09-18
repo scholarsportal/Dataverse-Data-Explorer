@@ -55,7 +55,6 @@ export class DropdownComponent {
     return label
   })
   
-
   filteredVariables = computed(() => {
     const newVariables: {
       variableID: string;
