@@ -24,6 +24,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 
 import 'node_modules/primeng/';
 import { selectVariableCrossTabIsFetching } from '../../../new.state/dataset/dataset.selectors';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -91,7 +92,7 @@ export class CrossTabulationComponent {
     }
   });
 
-  constructor() {
+  constructor(private liveAnnouncer: LiveAnnouncer) {
     effect(() => {
       if (this.isFetching()) {
         this.fetchingCheck();
@@ -115,6 +116,7 @@ export class CrossTabulationComponent {
         orientation: '',
       }),
     );
+    this.liveAnnouncer.announce("New row added above.");
   }
 
   exportTable = () => {};

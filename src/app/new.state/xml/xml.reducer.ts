@@ -166,7 +166,7 @@ export const xmlReducer = createReducer(
     };
   }),
   on(XmlManipulationActions.createGroup, (state, { groupID, label }) => {
-    let duplicateVariableGroups = structuredClone(
+    const duplicateVariableGroups = structuredClone(
       state.dataset?.codeBook.dataDscr.varGrp || [],
     );
     duplicateVariableGroups.push({
@@ -227,8 +227,7 @@ export const xmlReducer = createReducer(
       let duplicateVariableGroups = structuredClone(
         state.dataset?.codeBook.dataDscr.varGrp || [],
       );
-      if (Array.isArray(variableID)) {
-      } else {
+      if (!Array.isArray(variableID)) {
         duplicateVariables = changeSingleVariable(
           duplicateVariables,
           variableID,

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: any) => {
+    this.route.queryParams.subscribe((params) => {
       const callback = (params['callback'] as string) || null;
       const siteURL = params['siteUrl'] as string;
       const fileID =

@@ -1,8 +1,7 @@
 <div class="h-full flex flew-row" role="tablist">
   <button
     role="tab"
-    aria-selected="true"
-    aria-controls="tabpanel-id"
+    [attr.aria-selected]="variablesOpen()"
     id="variables"
     [ngClass]="{ 'tab-active': variablesOpen() }"
     (click)="openVariables()"
@@ -27,8 +26,7 @@
 
   <button
     role="tab"
-    aria-selected="true"
-    aria-controls="tabpanel-id"
+    [attr.aria-selected]="crossTabOpen()"
     id="cross-tab"
     class="h-full flex flex-row px-5 my-auto pb-4"
     (click)="openCrossTab()"

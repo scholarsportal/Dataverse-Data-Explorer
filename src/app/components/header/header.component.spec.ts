@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideHttpClient } from '@angular/common/http';
 import { HeaderComponent } from './header.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { globalInitialState } from '../../new.state/xml/xml.interface';
@@ -13,7 +13,10 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HeaderComponent],
-      providers: [provideMockStore({ initialState })]
+      providers: [
+        provideMockStore({ initialState }),
+        provideHttpClient(),
+      ]
     });
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;

@@ -14,6 +14,7 @@ import { Chart } from 'chart.js/auto';
   standalone: true,
   imports: [NgClass],
   template: `
+    <h3 class="sr-only">Chart</h3>
     <div [ngClass]="{ blur: !hasData() }" class="flex h-full w2/3 mt-4">
       <canvas id="crossTabChart"> {{ chartJS }}</canvas>
     </div>
@@ -98,11 +99,18 @@ export class CrossChartComponent implements OnInit {
       this.chartJS.options.scales.y.grid.color = neutral;
       this.chartJS.options.scales.x.ticks.color = light;
       this.chartJS.options.scales.y.ticks.color = light;
+      this.chartJS.options.scales.x.title.color = light;
+      this.chartJS.options.scales.y.title.color = light;
+      this.chartJS.options.plugins.title.color = light;
+      this.chartJS.options.plugins.legend.labels.color = light;
     } else {
       this.chartJS.options.scales.x.grid.color = dark;
       this.chartJS.options.scales.y.grid.color = dark;
       this.chartJS.options.scales.x.ticks.color = dark;
       this.chartJS.options.scales.y.ticks.color = dark;
+      this.chartJS.options.scales.x.title.color = dark;
+      this.chartJS.options.scales.y.title.color = dark;
+      this.chartJS.options.plugins.title.color = dark;
       this.chartJS.options.plugins.legend.labels.color = dark;
     }
   }
@@ -115,6 +123,30 @@ export class CrossChartComponent implements OnInit {
       //   this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
       // }
       this.chartJS.update();
+      const light = 'black',
+        dark = 'white',
+        neutral = '#c8c5d0',
+        theme = localStorage.getItem('theme');
+
+      if (theme === 'light') {
+        this.chartJS.options.scales.x.grid.color = neutral;
+        this.chartJS.options.scales.y.grid.color = neutral;
+        this.chartJS.options.scales.x.ticks.color = light;
+        this.chartJS.options.scales.y.ticks.color = light;
+        this.chartJS.options.scales.x.title.color = light;
+        this.chartJS.options.scales.y.title.color = light;
+        this.chartJS.options.plugins.legend.labels.color = light;
+        this.chartJS.update();
+      } else {
+        this.chartJS.options.scales.x.grid.color = dark;
+        this.chartJS.options.scales.y.grid.color = dark;
+        this.chartJS.options.scales.x.ticks.color = dark;
+        this.chartJS.options.scales.y.ticks.color = dark;
+        this.chartJS.options.scales.x.title.color = dark;
+        this.chartJS.options.scales.y.title.color = dark;
+        this.chartJS.options.plugins.legend.labels.color = dark;
+        this.chartJS.update();
+      }
     }
   }
 }

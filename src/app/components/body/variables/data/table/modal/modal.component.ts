@@ -23,6 +23,7 @@ import {
   selectOpenVariableID,
   selectOpenVariableMode,
   selectOpenVariableName,
+  selectOpenVariableLabel,
   selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
@@ -62,6 +63,7 @@ export class ModalComponent {
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
   variableName = this.store.selectSignal(selectOpenVariableName);
   variableID = this.store.selectSignal(selectOpenVariableID);
+  variableLabel = this.store.selectSignal(selectOpenVariableLabel);
   allGroups = this.store.selectSignal(selectDatasetProcessedGroups);
   variablesAndTheirGroups = this.store.selectSignal(
     selectVariablesWithCorrespondingGroups,
@@ -83,13 +85,17 @@ export class ModalComponent {
   chartTable = this.store.selectSignal(selectOpenVariableChartTable);
   sumStats = this.store.selectSignal(selectOpenVariableSummaryStatistics);
   saved: boolean = false;
+  opened: boolean = false;
 
   open() {
+    this.opened = true;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.showModal();
+    console.log(this.variableLabel());
   }
 
   close() {
+    this.opened = false;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.close();
   }
@@ -105,12 +111,4 @@ export class ModalComponent {
     }, 3000);
   }
 
-  // Listen for escape and dispatch close action
-  @HostListener('document:keydown.escape', ['$event'])
-  onKeyDownHandler(event: KeyboardEvent) {
-    const modal = this.variableModal?.nativeElement as HTMLDialogElement;
-    // if (modal?.open && event.key === 'Escape') {
-    //   this.store.dispatch(closeVariableModal());
-    // }
-  }
 }

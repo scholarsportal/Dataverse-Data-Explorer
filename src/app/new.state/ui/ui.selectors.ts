@@ -43,6 +43,14 @@ export const selectOpenVariableName = createSelector(
   },
 );
 
+export const selectOpenVariableLabel = createSelector(
+  selectOpenVariableID,
+  selectDatasetProcessedVariables,
+  (id, variables) => {
+    return variables[id]?.['labl']['#text'] || '';
+  },
+);
+
 export const selectOpenVariableMode = createSelector(
   selectUIFeature,
   (state) => state.bodyState.variables.openVariable.mode,
@@ -337,7 +345,7 @@ export const selectCrossTabulationTableData = createSelector(
       rows: [],
       rawTable: [],
     };
-    return !!removeEmptyValuesFromTable.length
+    return removeEmptyValuesFromTable.length
       ? { table: removeEmptyValuesFromTable, rows, cols, rawTable: table }
       : empty;
   },

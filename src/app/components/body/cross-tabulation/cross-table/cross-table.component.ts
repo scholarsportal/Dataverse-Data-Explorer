@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const jQuery: any; // Declare jQuery
 // declare const $: any; // Declare jQuery
@@ -42,7 +42,7 @@ export class CrossTableComponent {
     }
   });
 
-  constructor() {
+  constructor(private liveAnnouncer: LiveAnnouncer) {
     effect(() => {
       if (this.data() && (this.rows() || this.cols())) {
         this.createTable();
@@ -81,6 +81,7 @@ export class CrossTableComponent {
       },
       true,
     );
+    this.liveAnnouncer.announce("Your table is ready below.");
   }
 
   downloadDivAsCSV() {
@@ -90,9 +91,9 @@ export class CrossTableComponent {
 
     // Skip the first two rows by iterating from index 2
     for (let i = 2; i < table.rows.length; i++) {
-      let row = table.rows[i];
-      let rowData = [];
-      for (let cell of row.cells) {
+      const row = table.rows[i];
+      const rowData = [];
+      for (const cell of row.cells) {
         rowData.push(cell.innerText.replace(/,/g, ''));
       }
       csvContent += rowData.join(',') + '\n';

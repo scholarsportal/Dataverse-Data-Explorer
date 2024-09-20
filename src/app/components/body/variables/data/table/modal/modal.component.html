@@ -1,10 +1,11 @@
 <dialog
   #variableModal
+  [ngClass]="{'hidden': !opened, '': opened}"
   class="modal modal-bottom sm:modal-middle"
   id="variableModal"
 >
   <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-success">
+    <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
       <span class="text-base-100">Changes applied!</span>
       <button (click)="closeLoadedToast()">
         <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
@@ -16,7 +17,6 @@
   </div>
   <div class="modal-box">
     <dct-modal-header
-      (closeVariableModal)="close()"
       (emitCloseModal)="close()"
       [hasApiKey]="hasApiKey()"
       [id]="variableID()"
@@ -33,6 +33,7 @@
           [categoriesInvalid]="categoriesInvalid()"
           [hasCategories]="hasCategories()"
           [chart]="chart()"
+          [variableLabel]="variableLabel()"
           [chartReference]="chartReference()"
           [chartTable]="chartTable()"
           [form]="variableFormData()"
@@ -55,7 +56,7 @@
       }
     </div>
     <dct-modal-footer
-      (closeVariableModal)="close()"
+      (emitCloseModal)="close()"
       class="flex flex-col w-full pt-2"
     ></dct-modal-footer>
   </div>

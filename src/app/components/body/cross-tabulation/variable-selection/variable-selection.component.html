@@ -1,4 +1,4 @@
-<h3 class="font-bold text-xl pl-5 md:pl-0 pb-2">Variables</h3>
+<h2 class="font-bold text-xl pl-5 md:pl-0 pb-2">Variables</h2>
 @if (!!selection && selection().length) {
   @for (item of selection(); track $index) {
     <dct-dropdown
@@ -17,7 +17,7 @@
     ></dct-dropdown>
   } @empty {
     <div class="my-10">
-      Nothing here yet. Add a variable to start creating your table
+      Nothing here yet. Add a variable to start creating your table.
     </div>
   }
 }

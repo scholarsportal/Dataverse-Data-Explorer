@@ -1,12 +1,17 @@
+<h3 class="pb-2.5 text-lg font-bold">
+  Label: {{ variableLabel() }}
+</h3>
 <!-- CHART -->
+<h3 class="sr-only">Chart</h3>
 <div [ngClass]="{ 'blur': !hasCategories() }" class="flex h-full w-full mt-4">
   <canvas id="variableChart"> {{ chartJS }}</canvas>
 </div>
 @if (hasCategories()) {
+  <h3 class="font-bold text-xl mt-10">Chart Data</h3>
   <!-- CHART DATA -->
-  <table class="w-full mt-10">
+  <table class="w-full mt-2">
     <thead class="table-header">
-    <tr class="border-b">
+    <tr class="border-gray-200 border-b">
       <th>Show In Graph</th>
       <th>Values</th>
       <th>Categories</th>
@@ -18,8 +23,9 @@
     </thead>
     <tbody>
       @for (item of chartTable() | keyvalue; track $index) {
-        <tr class="border-y">
+        <tr class="border-gray-200 border-b">
           <td class="w-full justify-between">
+            <label class="sr-only" for="{{ $index }}">Chart variable</label>
             <input
               class="mx-auto"
               type="checkbox"

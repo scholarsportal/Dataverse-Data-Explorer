@@ -63,7 +63,7 @@ export const selectDatasetWeights = createSelector(
       Object.values(variables).map((variable: Variable) => {
         const wgtVar = variable['@_wgt'] as string | undefined;
         if (wgtVar) {
-          weights[variable['@_ID']] = !!variable.labl?.['#text']
+          weights[variable['@_ID']] = variable.labl?.['#text']
             ? variable.labl['#text']
             : `${variable['@_name']} - NO LABEL`;
         }

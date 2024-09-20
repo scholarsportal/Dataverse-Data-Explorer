@@ -45,20 +45,22 @@ export function createRowAndCategoryLabels(
   const rows: string[] = [];
   const cols: string[] = [];
   const labels: { [variableID: string]: string } = {};
-  variablesInCrossTab.map((item) => {
-    const processed = processedVariables[item.variableID] || null;
-    const newLabel = processed
-      ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
-      : 'var-not-found';
-    if (item.variableID) {
-      labels[item.variableID] = newLabel;
-      if (item.orientation === 'cols') {
-        cols.push(newLabel);
-      } else if (item.orientation === 'rows') {
-        rows.push(newLabel);
+  if(Array.isArray(variablesInCrossTab)) {
+    variablesInCrossTab.map((item) => {
+      const processed = processedVariables[item.variableID] || null;
+      const newLabel = processed
+        ? `${processed['@_name']} - ${processed.labl?.['#text'] || 'no-label'}`
+        : 'var-not-found';
+      if (item.variableID) {
+        labels[item.variableID] = newLabel;
+        if (item.orientation === 'cols') {
+          cols.push(newLabel);
+        } else if (item.orientation === 'rows') {
+          rows.push(newLabel);
+        }
       }
-    }
-  });
+    });
+  }
   return { labels, rows, cols };
 }
 
@@ -113,12 +115,12 @@ export function buildTable(crossTabData: {
     const colArray: string[] = [];
 
     rows.map((row) => {
-      if (!!entry[row]) {
+      if (entry[row]) {
         rowArray.push(entry[row]);
       }
     });
     cols.map((column) => {
-      if (!!entry[column]) {
+      if (entry[column]) {
         colArray.push(entry[column]);
       }
     });

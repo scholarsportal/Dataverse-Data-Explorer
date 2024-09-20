@@ -20,7 +20,7 @@
         name="items-per-page"
       >
         @for (option of pageLimitOptions; track $index) {
-          <option [value]="option.value" [selected]="option.value == itemsPerPage()">
+          <option [value]="option.value" [selected]="option.value === itemsPerPage()">
             {{ option.value }}
           </option>
         }

@@ -44,7 +44,7 @@ export class VariableSelectionComponent {
   variablesMetadata = this.store.selectSignal(
     selectDatasetVariableCrossTabValues,
   );
-
+  selectedVariable: string = '';
   variablesAlreadySelected = computed(() => {
     const variables: string[] = [];
     Object.values(this.selection()).map((value) => {

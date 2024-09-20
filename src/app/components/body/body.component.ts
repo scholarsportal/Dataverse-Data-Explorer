@@ -89,7 +89,7 @@ export class BodyComponent {
     } else {
       const filteredVariables: { [variableID: string]: Variable } = {};
       if (this.groups()[this.selectedGroupID()]) {
-        if (!!this.groups()[this.selectedGroupID()]['@_var']) {
+        if (this.groups()[this.selectedGroupID()]['@_var']) {
           const selectedGroupVariableArray =
             this.groups()[this.selectedGroupID()]['@_var']?.split(' ') || [];
           selectedGroupVariableArray.map((variableID) => {

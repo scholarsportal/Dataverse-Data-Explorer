@@ -5,7 +5,7 @@ import {
   inject,
   input,
   signal,
-  viewChild,
+  viewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
@@ -22,6 +22,7 @@ import { VariableOptionsButtonComponent } from './variable-options-button.compon
 import { TableNavComponent } from '../table-nav/table-nav.component';
 import { ChipsModule } from 'primeng/chips';
 import { TableMenuComponent } from '../table-menu/table-menu.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'dct-table',
@@ -78,13 +79,25 @@ export class TableComponent {
   allVariablesSelected = computed(() => {
     return this.selectedVariables().length === this.variables().length;
   });
+  groupLbl = computed(() => {
+    let label = 'ALL'
+    const currentGroup = this.groups()[this.groupChanged()]
+    if (currentGroup) { label = currentGroup.labl }
+    return label
+  });
   searchResult = signal<VariablesSimplified[]>([]);
   searchResultVariables = computed(() => {
+    if (this.searchResult().length > 0) { 
+      if (this.searchResult().length < this.variables().length) {
+        this.liveAnnouncer.announce("Showing " + this.searchResult().length + " variables below.");
+      }
+    }
     if (this.searchResult().length) {
       return this.searchResult();
     } else {
       return this.variables();
     }
+    
   });
   variablesLength = computed(() => {
     return this.searchResultVariables().length;
@@ -93,14 +106,14 @@ export class TableComponent {
   currentPage = 0;
   itemsPerPage = signal(10);
 
-  constructor() {
+  constructor(private liveAnnouncer: LiveAnnouncer) {
     effect(() => {
       if (this.groupChanged()) {
         this.start();
       }
     });
   }
-
+  
   isFirstPage = () => {
     return this.currentPage === 0;
   };
@@ -156,6 +169,7 @@ export class TableComponent {
 
   setSearchResultList(value: VariablesSimplified[]) {
     this.searchResult.set(value);
+    
   }
 
   setSelected(selection: string) {
@@ -178,6 +192,7 @@ export class TableComponent {
         }),
       );
     }
+    setTimeout(() => document.getElementById(selection)?.focus(), 200);
   }
 
   launchModal(value: { mode: 'view' | 'edit'; variableID: string }) {

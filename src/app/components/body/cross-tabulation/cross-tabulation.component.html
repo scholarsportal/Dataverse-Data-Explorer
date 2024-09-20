@@ -24,6 +24,10 @@
 
     </div>
     <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row mr-5 md:mr-0">
+      <div class="sr-only">
+        Select whether to generate a table or a chart.
+        Charts display the table data in a bar graph and are not screen reader compatible.
+      </div>
       <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
                       styleClass="bg-base-200 rounded mt-3 px-2 py-2">
         <ng-template let-item pTemplate>
@@ -37,6 +41,9 @@
   @if (hasData() && hasRowOrColumn() && !isFetching()) {
     @if (defaultDataView() === 'Table') {
       <div [ngClass]="{'hidden': !hasData()}" class="ml-5 md:ml-0">
+        <div class="sr-only">
+          How would you like to display the values in the table?
+        </div>
         <p-dropdown
           [(ngModel)]="selectedOption"
           [options]="options()"
@@ -56,7 +63,7 @@
         </p-dropdown>
         <button
           (click)="crossTableComponent.downloadDivAsCSV()"
-          class="mb-2.5 mt-5 mr-5 md:mr-0 px-2 py-1.5 rounded bg-secondary text-white float-right"
+          class="btn btn-secondary float-right mt-2"
         >
           <span>Export table as CSV</span>
         </button>
@@ -77,6 +84,9 @@
         [cols]="cols()"
         [rows]="rows()"
       />
+      <div class="sr-only" role="alert" aria-atomic="true" aria-live="polite">
+        Your chart has been generated below.
+      </div>
     }
   } @else {
     <div
@@ -85,27 +95,27 @@
 
       @if (!isFetching()) {
         @if (!hasData()) {
-          <h3 class="mx-auto text-base">
-            No Data! Start adding variables to generate your table.
-          </h3>
+          <div class="mx-auto text-base" role="alert" aria-atomic="true" aria-live="polite">
+            No Data yet. Start adding variables to generate your table.
+          </div>
 
         } @else if (hasData() && !hasRowOrColumn()) {
-          <h3 class="mx-auto text-base">
+          <div class="mx-auto text-base" role="alert" aria-atomic="true" aria-live="polite">
             One more step. Set your rows and/or columns.
-          </h3>
+          </div>
 
         }
       } @else if (isFetching()) {
         @if (loadingStatus === 'init') {
-          <h3 class="preload-text">
+          <div class="mx-auto" role="alert" aria-atomic="true" aria-live="polite">
             Loading dataset ...
-          </h3>
+          </div>
 
         } @else if (loadingStatus === 'delayed') {
-          <h3 class="preload-text">
-            Still loading ...
-          </h3>
-          <h4 class="text-base mx-auto">One moment please</h4>
+          <div class="mx-auto" role="alert" aria-atomic="true" aria-live="polite">
+            Still loading... One moment please
+          </div>
+          
 
         }
       }

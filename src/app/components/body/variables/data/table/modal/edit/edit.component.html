@@ -81,7 +81,7 @@
             else elseTemplate"></span>
           <ng-template #allSelectedTemplate>
             @for (option of variableGroupsPlaceholder; track $index) {
-              <span *ngIf="$index == 0" class="">
+              <span *ngIf="$index === 0" class="">
                 {{ allGroups()[option].labl || 'no label' }}
               </span>
               <span *ngIf="$index > 0" class="-ml-1">

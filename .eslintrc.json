@@ -30,8 +30,12 @@
             "prefix": "dct",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-explicit-any": ["off"],
+        "no-unused-vars": ["off", { "varsIgnorePattern": "store"}],
+        "@typescript-eslint/no-unused-vars": ["off", { "varsIgnorePattern": "store"}]
       }
+     
     },
     {
       "files": [

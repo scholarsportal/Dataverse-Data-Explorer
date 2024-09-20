@@ -1,3 +1,15 @@
+<div class="sr-only">
+  <h3>
+    Variable: {{ selectedVariableLabel() || 'None selected' }}
+    @if (variableOrientation() === 'cols') {
+      [COLUMN]
+    } @else if (variableOrientation() === 'rows') {
+      [ROW]
+    } @else {
+      [select a row or column]
+    }
+  </h3>
+</div>
 <div class="w-full md:flex md:flex-row">
   <div class="w-full md:w-2/12 md:pr-1">
     <label class="my-2 flex flex-col" for="rowColumnSelect">
@@ -118,7 +130,7 @@
           } @else {
             
               @for (item of items; track $index) {
-                <span *ngIf="$index == 0" class="">
+                <span *ngIf="$index === 0" class="">
                   {{ item.value }}
                 </span>
                 <span *ngIf="$index > 0" class="-ml-1">
@@ -169,6 +181,7 @@
             stroke-linejoin="round"
           />
         </svg>
+        <span class="sr-only">Remove this row</span>
       </button>
     </div>
   </div>

@@ -61,6 +61,7 @@
       </div>
       <div class="py-2 md:h-full">
         <h1 class="flex flex-row pb-4">{{ title() }}</h1>
+        <h2 class="sr-only">Dataset Citation</h2>
         <p class="flex flex-row text-xs md:text-sm lg:text-base">
           {{ citation() }}
         </p>
@@ -177,7 +178,6 @@
           </svg>
           Save to Dataverse
         </button>
-
       </div>
       <dct-body-toggle
         (changeToggleState)="handleToggle($event)"
