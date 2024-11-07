@@ -8,6 +8,11 @@ export const selectDatasetState = createSelector(
   (state) => state,
 );
 
+export const selectDatasetError = createSelector(
+  selectXmlFeature,
+  (state) => state.error,
+);
+
 export const selectDatasetHasApiKey = createSelector(
   selectXmlFeature,
   (state) => !!state.info?.apiKey,
@@ -31,6 +36,12 @@ export const selectDatasetTitle = createSelector(
     }
     return null;
   },
+);
+
+export const selectDatasetDoi = createSelector(
+  selectXmlFeature,
+  (xml) =>
+    xml.dataset?.codeBook.stdyDscr.citation.titlStmt.IDNo['#text'] ?? null,
 );
 
 export const selectDatasetCitation = createSelector(

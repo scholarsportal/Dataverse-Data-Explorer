@@ -20,6 +20,10 @@ export const initialState: XmlState = {
   dataset: null,
   info: null,
   header: null,
+  error: {
+    type: null,
+    message: null,
+  },
 };
 
 export const xmlReducer = createReducer(
@@ -59,6 +63,20 @@ export const xmlReducer = createReducer(
       };
     },
   ),
+  on(DataverseFetchActions.fetchDDIError, (state, { error }) => ({
+    ...state,
+    error: {
+      type: 'fetch' as const,
+      message: error.message || 'An error occurred while fetching the dataset',
+    },
+  })),
+  on(DataverseFetchActions.datasetUploadError, (state, { error }) => ({
+    ...state,
+    error: {
+      type: 'upload' as const,
+      message: error.message || 'An error occurred while uploading the dataset',
+    },
+  })),
   on(
     DataverseFetchActions.fetchDDISuccess,
     (state, { data, fileID, siteURL, apiKey }) => {

@@ -1,0 +1,137 @@
+{
+  "COMMON": {
+    "ALL": "All",
+    "LOADING_DATASET": "Loading dataset",
+    "VARIABLE": "Variable",
+    "VARIABLES": "Variables",
+    "ALL_VARIABLES": "All Variables",
+    "WEIGHT": "Weight",
+    "NO_WEIGHT": "No Weight",
+    "VALUE": "Value",
+    "ID": "ID",
+    "NAME": "Name",
+    "LABEL": "Label",
+    "GROUP": "Group",
+    "GROUPS": "Groups",
+    "OPTIONS": "Options",
+    "SELECT_SR": "Select All Variables. Selecting this or any of the rows below will toggle options at the end of the table",
+    "SUMMARY_STATISTICS": "Summary Statistics",
+    "VARIABLE_INFORMATION": "Variable Information",
+    "MODE": "Mode",
+    "MINIMUM": "Minimum",
+    "STANDARD_DEVIATION": "Standard Deviation",
+    "TOTAL_VALID_COUNT": "Total Valid Count",
+    "TOTAL_INVALID_COUNT": "Total Invalid Count",
+    "MEAN": "Mean",
+    "CLOSE": "Close",
+    "CANCEL": "Cancel",
+    "LITQST": "Literal Question",
+    "INTVQST": "Interviewer Question",
+    "POSTQST": "Post Question",
+    "UNIVERSE": "Universe",
+    "NOTES": "Notes",
+    "UPDATE": "Update",
+    "CHANGES_APPLIED": "Changes applied",
+    "VIEW": "VIEW",
+    "CHART": "Chart",
+    "TABLE": "Table",
+    "FILTER": "Filter",
+    "CATEGORIES": "Categories",
+    "DATA_EXPLORER": "Data Explorer",
+    "NO_CATEGORIES": "This variable has no categories"
+  },
+  "APP": {
+    "LOADING": "Loading dataset ...",
+    "ERROR": "An Error Occurred",
+    "ERROR_FETCH": "Error fetching dataset: ",
+    "ERROR_UNEXPECTED": "An unexpected error occurred. Please try again later.",
+    "WELCOME": "Welcome Data Curators",
+    "WELCOME_MESSAGE": "The Data Explorer allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a dataset.",
+    "WELCOME_MESSAGE_EXPIRED": "If you are seeing this page, your link has expired. Please go back to your Dataverse instance for a new link to your dataset."
+  },
+  "HEADER": {
+    "THEME_TOGGLE": "Theme Toggle",
+    "LANGUAGE_TOGGLE": "Language Selection",
+    "DATASET_CITATION": "Dataset Citation",
+    "FETCHING_WEIGHT": "Fetching weight data from Dataverse",
+    "FETCHING_WEIGHT_FAILED": "Failed to fetch weight data from Dataverse",
+    "DATASET_UPLOADING": "Dataset uploading to Dataverse",
+    "DATASET_UPLOADED": "Dataset uploaded to Dataverse",
+    "DATASET_UPLOAD_FAILED": "Dataset upload failed",
+    "DOWNLOAD": "Download",
+    "SAVE_TO_DATAVERSE": "Save to Dataverse"
+  },
+  "SIDEBAR": {
+    "NO_GROUPS": "No Groups",
+    "IMPORT_METADATA": "Import Metadata"
+  },
+  "SIDEBAR_BUTTON": {
+    "RENAME": "Rename",
+    "DELETE": "Delete"
+  },
+  "RENAMING_BUTTON": {
+    "CONFIRM": "Confirm Rename",
+    "CANCEL": "Cancel Rename"
+  },
+  "DELETING_BUTTON": {
+    "DOUBLE_CHECK": "Are you sure",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel"
+  },
+  "GROUP_BUTTON": {
+    "ADD_GROUP": "Add",
+    "ADD_GROUP_SR": "a new variables group",
+    "CONFIRM_ADD": "Confirm Add Group",
+    "CANCEL_ADD": "Cancel Add Group"
+  },
+  "IMPORT": {
+    "IMPORT_XML": "Import XML",
+    "SELECT_DDI_SECTIONS": "Select DDI sections and texts to include:",
+    "START_IMPORT": "Start Import",
+    "IMPORT": "Import",
+    "IMPORTING": "Importing...",
+    "IMPORT_SUCCESS": "Imported Metadata Successfully!",
+    "GO_BACK": "Go Back to Variables",
+    "IMPORT_ERROR": "There was a problem with your XML.",
+    "SELECT_FILE": "Select XML file"
+  },
+  "BULK_EDIT_MODAL": {
+    "BULK_EDIT": "Bulk Edit",
+    "BULK_EDIT_VARIABLES": "Bulk Edit Variables",
+    "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}"
+  },
+  "EDIT": {
+    "ADD_TO_GROUP": "Add Variable to Group",
+    "WEIGHT_VARIABLE": "Weight Variable",
+    "IS_WEIGHT": "Is Weight",
+    "UPDATE": "UPDATE VARIABLES"
+  },
+  "MODAL_HEADER": {
+    "VARIABLE_NAVIGATE_LEFT": "Variable Navigate left",
+    "VARIABLE_NAVIGATE_RIGHT": "Variable Navigate right"
+  },
+  "TABLE_MENU": {
+    "ASSIGN_WEIGHT": "Assign Weight"
+  },
+  "TABLE_NAV": {
+    "ITEMS_PER_PAGE": "Items per page",
+    "PREVIOUS_PAGE": "Go to Previous Variable Page",
+    "NEXT_PAGE": "Go to Next Variable Page",
+    "RANGE": "{{startIndex}} - {{endIndex}} of {{length}}"
+  },
+  "CROSS_TABULATION": {
+    "ADD_VARIABLE": "ADD VARIABLE",
+    "CHART_OR_TABLE": "Select whether to generate a table or a chart. Charts display the table data in a bar graph and are not screen reader compatible.",
+    "SELECT_WEIGHT": "Select a value to use as a weight for your data.",
+    "SELECT_DISPLAY": "How would you like to display the values in the table?",
+    "EXPORT_TABLE": "Export table as CSV",
+    "CHART_MESSAGE": "Your chart has been generated below.",
+    "NO_DATA_YET": "No Data yet. Start adding variables to generate your table.",
+    "NO_DATA": "Your dataset does not contain any data.",
+    "ONE_MORE_STEP": "One more step. Set your rows and/or columns.",
+    "STILL_LOADING": "Still loading... One moment please",
+    "NOTHING_HERE_YET": "Nothing here yet. Add a variable to start creating your table.",
+    "ROW_COLUMN": "Row or Column",
+    "REMOVE_VARIABLE": "Remove this variable"
+  }
+}
