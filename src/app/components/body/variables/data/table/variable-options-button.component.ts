@@ -11,7 +11,10 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   imports: [CommonModule, ModalComponent],
   template: `
     <div class="tooltip tooltip-left tooltip-primary" data-tip="View variable">
-      <button (click)="launchView()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
+      <button
+        (click)="launchView()"
+        class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100"
+      >
         <svg
           class="w-6 h-6 md:w-5 md:h-5"
           fill="none"
@@ -26,7 +29,6 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
             stroke-linejoin="round"
           />
         </svg>
-        <span class="sr-only">View variable</span>
       </button>
     </div>
     @if (hasApiKey()) {
@@ -34,7 +36,10 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
         class="hidden md:block tooltip tooltip-left tooltip-primary mr-1"
         data-tip="Edit variable"
       >
-        <button (click)="launchEdit()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
+        <button
+          (click)="launchEdit()"
+          class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100"
+        >
           <svg
             class="w-5 h-5"
             fill="none"
@@ -67,7 +72,10 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
           class="tooltip tooltip-left tooltip-primary"
           data-tip="Add to cross tabulation"
         >
-          <button (click)="addToCrossTab()" class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100">
+          <button
+            (click)="addToCrossTab()"
+            class="p-2 btn-action opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -154,7 +162,7 @@ export class VariableOptionsButtonComponent {
         }),
       );
     }
-    this.liveAnnouncer.announce("Variable added to cross tabulations.");
+    this.liveAnnouncer.announce('Variable added to cross tabulations.');
   }
 
   removeFromCrossTab() {
@@ -163,6 +171,6 @@ export class VariableOptionsButtonComponent {
         variableID: this.variableID(),
       }),
     );
-    this.liveAnnouncer.announce("Variable removed from cross tabulations.");
+    this.liveAnnouncer.announce('Variable removed from cross tabulations.');
   }
 }

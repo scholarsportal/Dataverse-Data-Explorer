@@ -14,17 +14,23 @@ import { VariableSelectionComponent } from './variable-selection/variable-select
 import { CrossTabulationUIActions } from '../../../new.state/ui/ui.actions';
 import {
   selectCrossCharts,
-  selectCrossTabulationTableData,
+  selectCrossTabulationData,
+  selectSelectedWeightVariable,
 } from '../../../new.state/ui/ui.selectors';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { defaultCols, defaultRows, defaultTable } from './default-table';
 import { CrossChartComponent } from './cross-chart/cross-chart.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
 import 'node_modules/primeng/';
-import { selectVariableCrossTabIsFetching } from '../../../new.state/dataset/dataset.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectVariableCrossTabIsFetching,
+} from '../../../new.state/dataset/dataset.selectors';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
+import { Variable } from 'src/app/new.state/xml/xml.interface';
+import { generateCrossTabCSV } from '../../../new.state/ui/util';
 
 @Component({
   selector: 'dct-cross-tabulation',
@@ -45,30 +51,39 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 export class CrossTabulationComponent {
   loadingStatus: 'init' | 'delayed' | '' = '';
   store = inject(Store);
-  defaultColumns = defaultCols;
-  defaultRows = defaultRows;
-  defaultTable = defaultTable;
-  tableData = this.store.selectSignal(selectCrossTabulationTableData);
+  variables = this.store.selectSignal(selectDatasetProcessedVariables);
+  crossTabVariables = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
+  selectedWeightVariable = this.store.selectSignal(
+    selectSelectedWeightVariable,
+  );
+  tableData = this.store.selectSignal(selectCrossTabulationData);
   tableChart = this.store.selectSignal(selectCrossCharts);
   isFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
-  chartOrTable = signal(['Chart', 'Table']);
-  defaultDataView = signal('Table');
-  table = computed(() => {
-    const empty: { [key: string]: string }[] = [];
-    return this.tableData()?.table || empty;
-  });
-  rows = computed(() => {
-    return this.tableData().rows;
-  });
+  rows = computed(() => this.tableData().rows);
   cols = computed(() => {
+    console.log(this.tableData());
     return this.tableData().cols;
   });
-  hasData = computed(() => {
-    return !!this.tableData()?.rawTable.length;
+  hasData = computed(() => this.tableData().hasData);
+  variablesWithWeightedOnTop = computed(() => {
+    const newVariables: any[] = [];
+    Object.values(this.variables()).forEach((variable) => {
+      if (variable['@_wgt'] === 'wgt') {
+        // move the variable to the beginning of the array
+        newVariables.unshift(variable);
+      } else {
+        newVariables.push(variable);
+      }
+    });
+    return newVariables.length > 0
+      ? newVariables
+      : Object.values(this.variables());
   });
-  hasRowOrColumn = computed(() => {
-    return this.tableData()?.cols?.length || this.tableData()?.rows?.length;
-  });
+  chartOrTable = signal(['Chart', 'Table']);
+  defaultDataView = signal('Table');
+  table = computed(() => this.tableData().pivotData);
   options = signal([
     'Show Value',
     // 'Weighted Value',
@@ -116,8 +131,47 @@ export class CrossTabulationComponent {
         orientation: '',
       }),
     );
-    this.liveAnnouncer.announce("New row added above.");
+    this.liveAnnouncer.announce('New row added above.');
   }
 
-  exportTable = () => {};
+  onWeightChange(event: { value: Variable }) {
+    const variable: Variable = event.value;
+    const variableID = variable['@_ID'];
+    const crossTabValues = this.crossTabVariables();
+    this.store.dispatch(
+      CrossTabulationUIActions.startVariableWeightSelection({
+        variableID,
+        crossTabValues,
+      }),
+    );
+  }
+
+  exportTableAsCSV() {
+    const csvData = generateCrossTabCSV({
+      rows: this.rows(),
+      cols: this.cols(),
+      table: this.table() as { [id: string]: string; value: string }[],
+    });
+
+    // Add BOM for proper UTF-8 encoding in Excel
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvData], {
+      type: 'text/csv;charset=utf-8;',
+    });
+
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    // Get current date for filename
+    const date = new Date().toISOString().split('T')[0];
+    const filename = `cross-tabulation-${date}.csv`;
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url); // Clean up the URL object
+  }
 }

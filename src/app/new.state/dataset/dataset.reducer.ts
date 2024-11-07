@@ -242,4 +242,13 @@ export const datasetReducer = createReducer(
       };
     },
   ),
+  on(CrossTabulationUIActions.addWeightVariableToSelection, (state, { variableID, crossTabValues }) => {
+    return {
+      ...state,
+      crossTabulation: {
+        ...state.crossTabulation,
+        ...crossTabValues,
+      },
+    };
+  }),
 );

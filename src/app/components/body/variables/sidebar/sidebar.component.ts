@@ -67,14 +67,18 @@ export class SidebarComponent {
   }
 
   createGroup(label: string) {
+    const existingGroupIDs = Object.keys(this.groups());
+    let newGroupID: string;
+    do {
+      newGroupID = `VG${Math.floor(Math.random() * 90000) + 10000}`;
+    } while (existingGroupIDs.includes(newGroupID));
     this.store.dispatch(
       XmlManipulationActions.createGroup({
-        groupID: `NVG${Math.floor(Math.random() * 90000) + 10000}`,
+        groupID: newGroupID,
         label,
       }),
     );
   }
-
 
   changeGroup(groupID: string, label: string) {
     // NOTE: Is this related to DaisyUI

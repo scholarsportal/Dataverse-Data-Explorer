@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 import {
   selectDatasetCitation,
+  selectDatasetDoi,
   selectDatasetHasApiKey,
   selectDatasetInfo,
   selectDatasetState,
@@ -39,6 +40,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
 import { MessagesModule } from 'primeng/messages';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-header',
@@ -46,6 +48,7 @@ import { MessagesModule } from 'primeng/messages';
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [
+    TranslateModule,
     BodyToggleComponent,
     FormsModule,
     NgClass,
@@ -76,6 +79,7 @@ export class HeaderComponent implements OnInit {
 
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
+  doi = this.store.selectSignal(selectDatasetDoi);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   selectedVariables = this.store.selectSignal(selectVariableSelectionContext);
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
@@ -140,7 +144,11 @@ export class HeaderComponent implements OnInit {
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
     },
     {
-      label: 'Download original DDI (.xml file)',
+      label: 'Download HTML format file',
+      url: `${this.siteURL()}/api/datasets/export?exporter=html&persistentId=doi:${this.doi()}`,
+    },
+    {
+      label: 'Download variable metadata (.xml file)',
       url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
     },
     {
@@ -149,29 +157,11 @@ export class HeaderComponent implements OnInit {
     },
   ]);
   downloadWithSubsetOption = computed(() => [
-    {
-      label: 'Download original file (.sav file)',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
-    },
-    {
-      label: 'Download tab-delimited',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
-    },
+    ...this.downloadOptions(),
     {
       label: 'Download selected variables as subset',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${this.currentSelectionAsString()}`,
-    },
-    {
-      label: 'Download RData format file',
-      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
-    },
-    {
-      label: 'Download original DDI (.xml file)',
-      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
-    },
-    {
-      label: 'Download this version (.xml file)',
-      command: () => this.handleDownload(),
+      styleClass: 'bg-primary text-primary-content hover:text-neutral-content',
     },
   ]);
   computedDownloadOptions = computed(() => {

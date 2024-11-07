@@ -183,11 +183,17 @@ export interface XmlState {
   } | null;
   info: {
     siteURL?: string;
+    doi?: string;
     fileID?: number;
     apiKey: string | null;
     importedSuccess?: boolean;
     secureUploadUrl: string | null;
   } | null;
+  // ... existing properties ...
+  error: {
+    type: 'fetch' | 'upload' | null;
+    message: string | null;
+  };
 }
 
 export const globalInitialState = {

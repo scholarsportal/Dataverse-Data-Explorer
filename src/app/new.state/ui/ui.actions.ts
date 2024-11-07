@@ -32,6 +32,18 @@ export const CrossTabulationUIActions = createActionGroup({
       variableID: string;
       missing: string[];
     }>(),
+    'Start Variable Weight Selection': props<{
+      variableID: string;
+      crossTabValues: { [variableID: string]: string[] };
+    }>(),
+    'Search Weight Variable Cross Tab and Add To Selection': props<{
+      variableID: string;
+      crossTabValues: { [variableID: string]: string[] };
+    }>(),
+    'Add Weight Variable To Selection': props<{
+      variableID: string;
+      crossTabValues: { [variableID: string]: string[] };
+    }>(),
   },
 });
 

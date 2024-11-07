@@ -1,10 +1,12 @@
 <div class="h-dvh">
-
   <dct-variable-selection class="" />
 
   <div class="flex flex-row justify-between crosstab">
     <div class="flex flex-row">
-      <button (click)="addNewEmptyRow()" class="flex flex-row text-primary my-5 ml-5 md:ml-0">
+      <button
+        (click)="addNewEmptyRow()"
+        class="flex flex-row text-primary my-5 ml-5 md:ml-0"
+      >
         <svg
           class="w-5 h-5"
           fill="none"
@@ -21,102 +23,125 @@
         </svg>
         <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
       </button>
-
     </div>
-    <div [ngClass]="{'hidden': !hasData()}" class="flex flex-row mr-5 md:mr-0">
+    <div [ngClass]="{ hidden: !hasData() }" class="flex flex-row mr-5 md:mr-0">
       <div class="sr-only">
-        Select whether to generate a table or a chart.
-        Charts display the table data in a bar graph and are not screen reader compatible.
+        Select whether to generate a table or a chart. Charts display the table
+        data in a bar graph and are not screen reader compatible.
       </div>
-      <p-selectButton [(ngModel)]="defaultDataView" [allowEmpty]="false" [options]="chartOrTable()"
-                      styleClass="bg-base-200 rounded mt-3 px-2 py-2">
+      <p-selectButton
+        [(ngModel)]="defaultDataView"
+        [allowEmpty]="false"
+        [options]="chartOrTable()"
+        styleClass="bg-base-200 rounded mt-3 px-2 py-2"
+      >
         <ng-template let-item pTemplate>
-              <span [ngClass]="{'bg-base-100 font-semibold': defaultDataView() === item}"
-                    class="px-1.5 py-0.5 rounded">{{ item }}</span>
-        </ng-template>
-      </p-selectButton>
-
-    </div>
-  </div>
-  @if (hasData() && hasRowOrColumn() && !isFetching()) {
-    @if (defaultDataView() === 'Table') {
-      <div [ngClass]="{'hidden': !hasData()}" class="ml-5 md:ml-0">
-        <div class="sr-only">
-          How would you like to display the values in the table?
-        </div>
-        <p-dropdown
-          [(ngModel)]="selectedOption"
-          [options]="options()"
-          panelStyleClass="rounded border w-full h-full bg-base-100"
-          styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
-        >
-          <ng-template let-value pTemplate="item">
           <span
             [ngClass]="{
-              'bg-base-300 hover:bg-base-100': selectedOption() === value
+              'bg-base-100 font-semibold': defaultDataView() === item,
+            }"
+            class="px-1.5 py-0.5 rounded"
+            >{{ item }}</span
+          >
+        </ng-template>
+      </p-selectButton>
+    </div>
+  </div>
+  @if (defaultDataView() === 'Table') {
+    <div class="ml-5 mb-5 md:ml-0">
+      <div class="sr-only">
+        Select a value to use as a weight for your data.
+      </div>
+      <p-dropdown
+        [ngModel]="selectedWeightVariable()"
+        [options]="variablesWithWeightedOnTop()"
+        (onChange)="onWeightChange($event)"
+        placeholder="Select Weight"
+        styleClass="select bg-primary text-primary-content focus:text-base-content w-1/5 py-1.5 mr-0 md:mr-5"
+        panelStyleClass="rounded border rounded-t-none w-full h-full text-base-content bg-base-100"
+      >
+        <ng-template let-item pTemplate="item">
+          <span class="flex flex-row w-full px-2.5 py-0.5 hover:bg-base-300">
+            {{ item.labl['#text'] }}
+            @if (item['@_wgt'] === 'wgt') {
+              <span class="rounded px-1 mx-2 bg-primary text-base-100"
+                >weight</span
+              >
+            }
+          </span>
+        </ng-template>
+      </p-dropdown>
+      <div class="sr-only">
+        How would you like to display the values in the table?
+      </div>
+      <p-dropdown
+        [(ngModel)]="selectedOption"
+        [options]="options()"
+        panelStyleClass="rounded border w-full h-full bg-base-100"
+        styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
+      >
+        <ng-template let-value pTemplate="item">
+          <span
+            [ngClass]="{
+              'bg-base-300 hover:bg-base-100': selectedOption() === value,
             }"
             class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
           >
             {{ value }}
           </span>
-          </ng-template>
-        </p-dropdown>
-        <button
-          (click)="crossTableComponent.downloadDivAsCSV()"
-          class="btn btn-secondary float-right mt-2"
-        >
-          <span>Export table as CSV</span>
-        </button>
-      </div>
-      <dct-cross-table
-        #crossTableComponent
-        [data]="table()"
-        [cols]="cols()"
-        [rows]="rows()"
-        [hasData]="true"
-        [selectedViewOption]="selectedOptionComputed()"
-        [exportClicked]="exportTable"
-        class="my-auto graph-area"
-      ></dct-cross-table>
-    } @else if (defaultDataView() === 'Chart') {
-      <dct-cross-chart
-        [data]="tableChart()"
-        [cols]="cols()"
-        [rows]="rows()"
-      />
-      <div class="sr-only" role="alert" aria-atomic="true" aria-live="polite">
-        Your chart has been generated below.
-      </div>
-    }
+        </ng-template>
+      </p-dropdown>
+      <button
+        class="btn btn-secondary float-right mt-2"
+        (click)="exportTableAsCSV()"
+      >
+        <span>Export table as CSV</span>
+      </button>
+    </div>
+    <dct-cross-table
+      [data]="table()"
+      [rows]="rows()"
+      [cols]="cols()"
+      [hasData]="hasData()"
+      class="my-auto graph-area"
+    ></dct-cross-table>
+  } @else if (defaultDataView() === 'Chart') {
+    <dct-cross-chart [data]="tableChart()" [cols]="cols()" [rows]="rows()" />
+    <div class="sr-only" role="alert" aria-atomic="true" aria-live="polite">
+      Your chart has been generated below.
+    </div>
   } @else {
-    <div
-      class="h-full mx-5 md:mx-auto my-auto"
-    >
-
+    <div class="h-full mx-5 md:mx-auto my-auto">
       @if (!isFetching()) {
         @if (!hasData()) {
-          <div class="mx-auto text-base" role="alert" aria-atomic="true" aria-live="polite">
+          <div
+            class="mx-auto text-base"
+            role="alert"
+            aria-atomic="true"
+            aria-live="polite"
+          >
             No Data yet. Start adding variables to generate your table.
           </div>
-
-        } @else if (hasData() && !hasRowOrColumn()) {
-          <div class="mx-auto text-base" role="alert" aria-atomic="true" aria-live="polite">
-            One more step. Set your rows and/or columns.
-          </div>
-
         }
       } @else if (isFetching()) {
         @if (loadingStatus === 'init') {
-          <div class="mx-auto" role="alert" aria-atomic="true" aria-live="polite">
+          <div
+            class="mx-auto"
+            role="alert"
+            aria-atomic="true"
+            aria-live="polite"
+          >
             Loading dataset ...
           </div>
-
         } @else if (loadingStatus === 'delayed') {
-          <div class="mx-auto" role="alert" aria-atomic="true" aria-live="polite">
+          <div
+            class="mx-auto"
+            role="alert"
+            aria-atomic="true"
+            aria-live="polite"
+          >
             Still loading... One moment please
           </div>
-          
-
         }
       }
     </div>

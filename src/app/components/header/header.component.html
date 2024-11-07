@@ -10,7 +10,9 @@
             ngSrc="./assets/logo.svg"
             width="16"
           />
-          <span class="text-lg font-bold">Data Explorer</span>
+          <span class="text-lg font-bold">{{
+            'HEADER.DATA_EXPLORER' | translate
+          }}</span>
         </div>
         <div class="flex flex-row justify-between">
           <div class="flex flex-row">
@@ -69,11 +71,14 @@
     </div>
 
     <div class="md:flex md:flex-row md:justify-between pt-4">
-
-      <div [ngClass]="{'hide-toast': weightIdle, 'show-toast': !weightIdle}"
-           class="toast toast-top toast-end">
-        <div [ngClass]="{'alert-info': weightPending, 'alert-error': weightFail}"
-             class="alert rounded">
+      <div
+        [ngClass]="{ 'hide-toast': weightIdle, 'show-toast': !weightIdle }"
+        class="toast toast-top toast-end"
+      >
+        <div
+          [ngClass]="{ 'alert-info': weightPending, 'alert-error': weightFail }"
+          class="alert rounded"
+        >
           @if (weightFetchPending()) {
             <span class="loading loading-spinner loading-md"></span>
             <span>Fetching Weight Data from Dataverse</span>
@@ -81,47 +86,95 @@
             <span>Weight Fetch Failed</span>
           }
           <button (click)="closeWeightToast()">
-            <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              class="size-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 18 18 6M6 6l12 12"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
       </div>
 
-      <div [ngClass]="{'hide-toast': !pending, 'show-toast': pending}"
-           class="toast toast-top toast-end">
+      <div
+        [ngClass]="{ 'hide-toast': !pending, 'show-toast': pending }"
+        class="toast toast-top toast-end"
+      >
         <div class="alert rounded alert-info">
           <span class="loading loading-spinner loading-md"></span>
           <span>Dataset uploading to Dataverse</span>
           <button (click)="closeLoadingToast()">
-            <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              class="size-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 18 18 6M6 6l12 12"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
       </div>
 
-      <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
+      <div
+        [ngClass]="{ 'hide-toast': !saved, 'show-toast': saved }"
+        class="toast toast-top toast-end"
+      >
         <div class="alert rounded alert-success">
           <span class="text-base-100">Dataset uploaded to Dataverse!</span>
           <button (click)="closeLoadedToast()">
-            <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              class="size-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 18 18 6M6 6l12 12"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
       </div>
 
-      <div [ngClass]="{'hide-toast': !fail}" class="toast toast-top toast-end">
+      <div
+        [ngClass]="{ 'hide-toast': !fail }"
+        class="toast toast-top toast-end"
+      >
         <div class="alert rounded alert-error">
           <span>Dataset uploaded failed</span>
           <button (click)="closeErrToast()">
-            <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              class="size-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 18 18 6M6 6l12 12"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
@@ -130,6 +183,9 @@
       <div class="flex md:flex-row px-5 pb-4 md:order-last">
         <button
           (click)="menu.toggle($event)"
+          [ngClass]="{
+            'animate-pulse': selection() && !menu.visible,
+          }"
           class="flex-1 border-0 btn btn-secondary dropdownicon"
           pButton
         >

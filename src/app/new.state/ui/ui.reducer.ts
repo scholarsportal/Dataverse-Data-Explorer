@@ -22,6 +22,10 @@ export const initialState: UIState = {
     crossTab: {
       missingCategories: {},
       selection: [],
+      weight: {
+        weighted: false,
+        weightVariableID: '',
+      },
     },
   },
 };
@@ -247,4 +251,22 @@ export const uiReducer = createReducer(
       },
     };
   }),
+  on(
+    CrossTabulationUIActions.addWeightVariableToSelection,
+    (state, { variableID, crossTabValues }) => {
+      return {
+        ...state,
+        bodyState: {
+          ...state.bodyState,
+          crossTab: {
+            ...state.bodyState.crossTab,
+            weight: {
+              weighted: true,
+              weightVariableID: variableID,
+            },
+          },
+        },
+      };
+    },
+  ),
 );

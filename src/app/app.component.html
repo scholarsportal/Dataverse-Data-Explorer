@@ -10,6 +10,23 @@
         Loading dataset ...
       </h1>
     </div>
+  } @else if (error()) {
+    <div
+      class="beautiful h-screen w-screen flex flex-col justify-around items-center"
+    >
+      <h1 class="text-6xl text-white font-sans font-bold">An Error Occurred</h1>
+      <p class="font-bold w-2/3 text-4xl text-white">
+        @if (error().type === 'fetch') {
+          Error fetching dataset: {{ error().message }}
+        } @else {
+          An unexpected error occurred. Please try again later.
+        }
+      </p>
+      <p class="font-thin my-10 w-2/3 text-2xl text-white">
+        Please go back to your Dataverse instance and try again. If the problem
+        persists, contact your system administrator.
+      </p>
+    </div>
   } @else {
     <div
       class="beautiful h-screen w-screen flex flex-col justify-around items-center"
@@ -18,9 +35,8 @@
         Welcome Data Curators
       </h1>
       <p class="font-bold w-2/3 text-4xl text-white">
-        If you are seeing this page, your link has expired.
-        Please go back to your Dataverse instance for a new link to
-        your dataset.
+        If you are seeing this page, your link has expired. Please go back to
+        your Dataverse instance for a new link to your dataset.
       </p>
       <p class="font-thin my-10 w-2/3 text-2xl text-white">
         The Data Explorer allows data owners and curators to view summary

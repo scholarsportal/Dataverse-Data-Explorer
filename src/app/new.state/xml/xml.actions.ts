@@ -54,7 +54,7 @@ export const DataverseFetchActions = createActionGroup({
       ddiData: ddiJSONStructure;
     }>(),
     // Upload failed for some reason
-    'Dataset Upload Error': props<{ error: string }>(),
+    'Dataset Upload Error': props<{ error: Error }>(),
     // Upload complete
     'Dataset Upload Success': props<{ response: string }>(),
   },

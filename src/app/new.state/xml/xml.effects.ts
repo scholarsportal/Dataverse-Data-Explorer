@@ -8,9 +8,18 @@ import { DdiService } from '../../services/ddi.service';
 export class XmlEffects {
   private actions$ = inject(Actions);
 
-  // The IDE for some reason won't pick this up, but because this class is
-  // registered in main.ts, this effect is fired whenever the corresponding
-  // action is called.
+  /**
+   * Effect to fetch dataset from Dataverse
+   *
+   * This effect is triggered by the DataverseFetchActions.fetchDDIStart action.
+   * It uses the DdiService to fetch the dataset from Dataverse based on the provided
+   * fileID, siteURL, and metadataID. On success, it dispatches the fetchDDISuccess action
+   * with the fetched data. On error, it dispatches the fetchDDIError action.
+   *
+   * @param ddiService - The service used to fetch the dataset
+   *
+   * @returns An Observable that emits either a fetchDDISuccess or fetchDDIError action based on the fetch result
+   */
   fetchDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(

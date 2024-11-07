@@ -13,9 +13,37 @@ import {
 import { DatasetActions } from './dataset.actions';
 import { changeWeightForSelectedVariables } from './util';
 
+/**
+ * This file contains effects for handling cross tabulation and weight value operations.
+ *
+ * Key effects and their purposes:
+ *
+ * 1. startWeightProcessing$
+ *    - Triggered when variable info is saved
+ *    - Checks if weight variable changed and handles fetching/processing accordingly
+ *    - Either fetches missing cross tab values by calling fetchCrossTab$ or starts weight processing directly by calling processNewVariableWeight$
+ *
+ * 2. fetchCrossTabValues$ (below)
+ *    - Fetches cross tab values for variables when they are added to selection or when weight variable changes
+ *    - Part of the pipeline that fetches data before weight processing can occur
+ *
+ * 3. processWeightValues$ (below)
+ *    - Processes weight calculations after values are fetched
+ *    - Updates variables with new weighted values
+ *
+ * 4. crossTabSelectionEffects$ (below)
+ *    - Manages the cross tab selection state
+ *    - Handles adding/removing variables and position changes
+ *    - Updates missing categories
+ *
+ * The effects form a pipeline where data flows from fetching -> processing -> state updates
+ */
 @Injectable()
 export class DatasetEffects {
   private actions$ = inject(Actions);
+  // When a user saves a variable, we check if the weight variable has changed.
+  // If it has, we check if we already have the cross tab values for the new weight variable.
+  // If we do, we start the weight processing. If we don't, we fetch the missing cross tab values and start the weight processing.
   startWeightProcessing$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(XmlManipulationActions.saveVariableInfo),
@@ -62,6 +90,9 @@ export class DatasetEffects {
       }),
     );
   });
+  // When a user saves multiple variables, we check if the weight variable has changed.
+  // If it has, we check if we already have the cross tab values for the new weight variable.
+  // If we do, we start the weight processing. If we don't, we fetch the missing cross tab values and start the weight processing.
   startBulkWeightProcessing$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(XmlManipulationActions.bulkSaveVariableInfo),
@@ -137,6 +168,7 @@ export class DatasetEffects {
       );
     },
   );
+  // When a user changes the weight variable, we fetch the missing cross tab values
   private ddiService: DdiService = inject(DdiService);
   fetchMissingCrossTabValuesAndProcessNewVariableWeight$ = createEffect(() =>
     this.actions$.pipe(
@@ -202,6 +234,7 @@ export class DatasetEffects {
       }),
     ),
   );
+  // When the app starts, we fetch the cross tab values for all weighted variables
   processWeightsOnAppStart = createEffect(() =>
     this.actions$.pipe(
       ofType(DataverseFetchActions.fetchDDISuccess),
@@ -230,14 +263,48 @@ export class DatasetEffects {
       }),
     ),
   );
-  startNewWeightSearch$ = createEffect(() =>
+  // When a user starts weight selection, we check if the variable already has cross tab values.
+  // If it does, we add it to the selection. If it doesn't, we fetch the missing cross tab values (searchWeightVariableCrossTabAndAddToSelection) and add it to the selection.
+  startWeightSelection$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DataverseFetchActions.weightSearchStart),
-      mergeMap(({ variableIDs }) => {
+      ofType(CrossTabulationUIActions.startVariableWeightSelection),
+      mergeMap(({ variableID, crossTabValues }) => {
+        const crossTabIDs = Object.keys(crossTabValues);
+        if (crossTabIDs.includes(variableID)) {
+          return of(
+            CrossTabulationUIActions.addWeightVariableToSelection({
+              variableID,
+              crossTabValues,
+            }),
+          );
+        }
+        return of(
+          CrossTabulationUIActions.searchWeightVariableCrossTabAndAddToSelection(
+            {
+              variableID,
+              crossTabValues,
+            },
+          ),
+        );
+      }),
+    ),
+  );
+  // Called when a the selected weight variable is not in the cross tabulation.
+  fetchCrossTabValueAndAddVariableAsCrossTabWeight$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        CrossTabulationUIActions.searchWeightVariableCrossTabAndAddToSelection,
+      ),
+      mergeMap(({ variableID, crossTabValues }) => {
         return this.ddiService
-          .fetchCrossTabulationFromVariables(variableIDs.join(','))
+          .fetchCrossTabulationFromVariables(variableID)
           .pipe(
-            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
+            map((data) =>
+              CrossTabulationUIActions.addWeightVariableToSelection({
+                variableID,
+                crossTabValues: { ...crossTabValues, ...data },
+              }),
+            ),
             catchError((error) =>
               of(DataverseFetchActions.weightsFetchError(error)),
             ),

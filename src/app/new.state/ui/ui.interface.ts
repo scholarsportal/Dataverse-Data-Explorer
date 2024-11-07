@@ -19,6 +19,10 @@ export interface UIState {
         variableID: string;
         orientation: 'rows' | 'cols' | '';
       }[];
+      weight: {
+        weighted: boolean;
+        weightVariableID: string;
+      };
     };
   };
 }

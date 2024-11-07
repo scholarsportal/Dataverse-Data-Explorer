@@ -16,7 +16,6 @@ import {
 } from '../dataset/dataset.selectors';
 import {
   buildTable,
-  createRowAndCategoryLabels,
   createTable,
   matchCategoriesWithLabels,
   transformCombinationsToChartData,
@@ -28,6 +27,11 @@ export const selectUIFeature = createFeatureSelector<UIState>('ui');
 export const selectBodyToggleState = createSelector(
   selectUIFeature,
   (state) => state.bodyToggle,
+);
+
+export const selectSelectedWeightVariable = createSelector(
+  selectUIFeature,
+  (state) => state.bodyState.crossTab.weight.weightVariableID,
 );
 
 export const selectOpenVariableID = createSelector(
@@ -301,6 +305,8 @@ export const selectCrossTabSelection = createSelector(
   (state) => state.bodyState.crossTab.selection || [],
 );
 
+// Recreate cross tab values by matching categories with raw cross tab values using data from selecDatasetAllVariableCategories.
+// At this point we also remove rows that are in the missing categories.
 export const selectMatchCategories = createSelector(
   selectDatasetAllVariableCategories,
   selectDatasetVariableCrossTabValues,
@@ -314,45 +320,80 @@ export const selectMatchCategories = createSelector(
   },
 );
 
-export const selectCrossTabulationTableData = createSelector(
+export const selectWeightVariableData = createSelector(
+  selectSelectedWeightVariable,
+  selectDatasetVariableCrossTabValues,
+  (weightVariableID, crossTabValues) => {
+    if (weightVariableID && crossTabValues[weightVariableID]) {
+      return crossTabValues[weightVariableID].map(Number);
+    }
+    return [];
+  },
+);
+
+export const selectCrossTabulationData = createSelector(
   selectCrossTabSelection,
   selectMatchCategories,
   selectDatasetProcessedVariables,
-  (crossTabSelection, processedAndMatchedCategories, variables) => {
-    const rowAndColumnLabels = createRowAndCategoryLabels(
-      crossTabSelection,
-      variables,
+  selectWeightVariableData,
+  (
+    crossTabSelection,
+    processedAndMatchedCategories,
+    variables,
+    weightVariableData,
+  ) => {
+    // Get row and column variable IDs from selection
+    const rowVariables = crossTabSelection
+      .filter((v) => v.orientation === 'rows')
+      .map((v) => v.variableID);
+    const colVariables = crossTabSelection
+      .filter((v) => v.orientation === 'cols')
+      .map((v) => v.variableID);
+
+    // Create the data array for pivottable.js
+    const pivotData = createTable(
+      processedAndMatchedCategories,
+      Object.fromEntries(
+        crossTabSelection.map((v) => [
+          v.variableID,
+          `${variables[v.variableID]?.['@_name'] || v.variableID} - ${variables[v.variableID]?.['labl']?.['#text'] || v.variableID}`,
+        ]),
+      ),
+      weightVariableData,
     );
-    const { labels, rows, cols } = rowAndColumnLabels;
-    const table = createTable(processedAndMatchedCategories, labels);
-    const removeEmptyValuesFromTable: { [id: string]: string }[] = [];
-    table.map((item) => {
-      if (
-        Object.keys(item).length &&
-        Object.keys(item).length === Object.keys(labels).length
-      ) {
-        removeEmptyValuesFromTable.push(item);
-      }
-    });
-    const empty: {
-      table: { [id: string]: string }[];
-      rows: string[];
-      cols: string[];
-      rawTable: string[];
-    } = {
-      table: [],
-      cols: [],
-      rows: [],
-      rawTable: [],
-    };
-    return removeEmptyValuesFromTable.length
-      ? { table: removeEmptyValuesFromTable, rows, cols, rawTable: table }
-      : empty;
+
+    const hasData = pivotData.length > 0;
+    const rowLabels = rowVariables.map(
+      (id) =>
+        `${variables[id]?.['@_name'] || id} - ${
+          variables[id]?.['labl']?.['#text']
+        }`,
+    );
+    const colLabels = colVariables.map(
+      (id) =>
+        `${variables[id]?.['@_name'] || id} - ${
+          variables[id]?.['labl']?.['#text']
+        }`,
+    );
+    console.log(colLabels);
+    return hasData
+      ? {
+          pivotData,
+          rows: rowLabels,
+          cols: colLabels,
+          hasData,
+        }
+      : {
+          pivotData: [],
+          rows: [],
+          cols: [],
+          hasData: false,
+        };
   },
 );
 
 export const selectCrossCharts = createSelector(
-  selectCrossTabulationTableData,
+  selectCrossTabulationData,
   (crossTabData) => {
     const crossChart: {
       labels: string[];
@@ -365,7 +406,11 @@ export const selectCrossCharts = createSelector(
       datasets: [],
     };
 
-    const countedCombinations = buildTable(crossTabData);
+    const countedCombinations = buildTable({
+      rows: crossTabData.rows,
+      cols: crossTabData.cols,
+      table: crossTabData.pivotData,
+    });
     const chartData = transformCombinationsToChartData(countedCombinations);
 
     return chartData || crossChart;

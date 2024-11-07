@@ -1,0 +1,62 @@
+{
+  "GROUPS": {
+    "HIDE": "Masquer les groupes",
+    "SHOW": "Afficher les groupes",
+    "ADD": "Ajouter un groupe",
+    "ADDTO": "Ajouter au groupe",
+    "ALLVAR": "Toutes les variables",
+    "DONE": "Complété",
+    "SAVE": "Sauvegarder",
+    "CANCEL": "Annuler",
+    "DELETE": "Supprimer",
+    "EDIT": "Modifier le nom du groupe",
+    "ADDTOGRP": "Ajouter à un groupe",
+    "CONFIRM": "Êtes-vous sûr de vouloir supprimer "
+  },
+  "SAVE": {
+    "SAVE": "Sauvegarder dans Dataverse",
+    "DOWNLOAD": "Télécharger",
+    "CANNOT": "N'a pas pu être sauvegardé dans Dataverse.",
+    "SAVED": "A été enregisté dans Dataverse",
+    "MISSAPI": "N'a pas pu être sauvegardé dans Dataverse - La clé API est introuvable."
+  },
+  "VAR": {
+    "SEARCH": "Chercher",
+    "SELECT": "Sélectionner",
+    "ID": "ID",
+    "NAME": "Nom",
+    "LABEL": "Étiquette",
+    "WEIGHT": "Poids",
+    "VIEW": "Visualiser",
+    "GROUPEDIT": "Modification au groupe",
+    "EDIT": "Modifier"
+  },
+  "VARDIALOG": {
+    "VARINFO": "Information sur la variable",
+    "LITQ": "Question littérale",
+    "INTINSTR": "Les directives pour l'intervieweur",
+    "POSTQ": "Instruction à propos de la question posée",
+    "UNIVERSE": "Univers",
+    "NOTES": "Remarques",
+    "GROUP": "Groupe",
+    "WEIGHTVAR": "Variable de poids",
+    "UNWEIGHTED": "Non-pondéré",
+    "ISWEIGHT": "Pondéré",
+    "UPDATE": "Mettre à jour",
+    "CANCEL": "Annuler"
+  },
+  "VARDIALSTAT": {
+    "CLOSE": "Fermer",
+    "VALUES": "Valeurs",
+    "CATEGORIES": "Catégories",
+    "COUNT": "Nombre",
+    "COUNTPER": "Nombre d'observations en %",
+    "WEIGHTCOUNT": "Chiffre pondéré"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Éléments par page",
+    "NEXT_PAGE": "Page suivante",
+    "PREVIOUS_PAGE": "Page précédente",
+    "RANGE": "{{startIndex}} - {{endIndex}} de {{length}}"
+  }
+}

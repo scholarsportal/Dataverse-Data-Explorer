@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Chart } from 'chart.js/auto';
+import { join } from 'path';
 
 @Component({
   selector: 'dct-cross-chart',
@@ -15,7 +16,7 @@ import { Chart } from 'chart.js/auto';
   imports: [NgClass],
   template: `
     <h3 class="sr-only">Chart</h3>
-    <div [ngClass]="{ blur: !hasData() }" class="flex h-full w2/3 mt-4">
+    <div class="flex h-full w2/3 mt-4">
       <canvas id="crossTabChart"> {{ chartJS }}</canvas>
     </div>
   `,
@@ -23,37 +24,33 @@ import { Chart } from 'chart.js/auto';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CrossChartComponent implements OnInit {
-  rows = input.required<string[]>();
-  cols = input.required<string[]>();
-  data = input.required<{
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-    }[];
-  }>();
-  hasData = computed(() => {
-    return !!this.data().datasets.length;
-  });
+  rows = input.required<any>();
+  cols = input.required<any>();
+  data = input.required<any>();
   public chartJS: any;
 
-  constructor() {
-    effect(() => {
-      if (this.hasData()) {
-        this.redrawChart(this.data());
-      }
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     const data = this.data();
+  //     if (data) {
+  //       this.redrawChart(data);
+  //     }
+  //   });
+  // }
 
-  rowsAsString = (separator: string) =>
-    computed(() => {
-      return this.rows().join(separator);
-    });
+  redrawChart$ = effect(() => {
+    const data = this.data();
 
-  colsAsString = (separator: string) =>
-    computed(() => {
-      return this.cols().join(separator);
-    });
+    if (data) {
+      this.redrawChart(data);
+    }
+  });
+
+  relabelChart$ = effect(() => {
+    if (this.cols() || this.rows()) {
+      this.redrawChart(this.data());
+    }
+  });
 
   ngOnInit() {
     this.createChart();
@@ -70,7 +67,7 @@ export class CrossChartComponent implements OnInit {
         plugins: {
           title: {
             display: true,
-            text: `${this.colsAsString(', ')()}`,
+            text: this.cols().join(', '),
           },
         },
         responsive: true,
@@ -81,7 +78,7 @@ export class CrossChartComponent implements OnInit {
           },
           y: {
             title: {
-              text: this.rowsAsString(' - ')(),
+              text: this.rows().join(' - '),
               display: true,
             },
             stacked: true,
