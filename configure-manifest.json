@@ -30,7 +30,7 @@
     },
     {
       "name": "uploadDataFile",
-      "httpMethod": "POST",
+      "httpMethod": "PUT",
       "urlTemplate": "/api/v1/edit/{fileId}"
     }
   ]
