@@ -190,7 +190,6 @@ export const xmlReducer = createReducer(
     duplicateVariableGroups.push({
       '@_ID': groupID,
       labl: label,
-      '@_var': '',
     });
     return {
       ...state,
