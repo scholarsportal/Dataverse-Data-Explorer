@@ -17,7 +17,9 @@
         <div class="flex flex-row justify-between">
           <div class="flex flex-row">
             <label class="swap swap-rotate mr-3">
-              <span class="sr-only">Theme Toggle</span>
+              <span class="sr-only">{{
+                'HEADER.THEME_TOGGLE' | translate
+              }}</span>
               <!-- this hidden checkbox controls the state -->
               <input
                 (change)="toggleTheme()"
@@ -51,7 +53,9 @@
           </div>
           <div class="flex flex-row">
             <label>
-              <span class="sr-only">Language Selection</span>
+              <span class="sr-only">{{
+                'HEADER.LANGUAGE_SELECTION' | translate
+              }}</span>
               <select class="border-0 select select-ghost ml-1">
                 <option>Fr</option>
                 <option>En</option>
@@ -63,7 +67,7 @@
       </div>
       <div class="py-2 md:h-full">
         <h1 class="flex flex-row pb-4">{{ title() }}</h1>
-        <h2 class="sr-only">Dataset Citation</h2>
+        <h2 class="sr-only">{{ 'HEADER.DATASET_CITATION' | translate }}</h2>
         <p class="flex flex-row text-xs md:text-sm lg:text-base">
           {{ citation() }}
         </p>
@@ -81,9 +85,9 @@
         >
           @if (weightFetchPending()) {
             <span class="loading loading-spinner loading-md"></span>
-            <span>Fetching Weight Data from Dataverse</span>
+            <span>{{ 'HEADER.FETCHING_WEIGHT' | translate }}</span>
           } @else if (weightFetchFail()) {
-            <span>Weight Fetch Failed</span>
+            <span>{{ 'HEADER.FETCHING_WEIGHT_FAILED' | translate }}</span>
           }
           <button (click)="closeWeightToast()">
             <svg
@@ -110,7 +114,7 @@
       >
         <div class="alert rounded alert-info">
           <span class="loading loading-spinner loading-md"></span>
-          <span>Dataset uploading to Dataverse</span>
+          <span>{{ 'HEADER.DATASET_UPLOADING' | translate }}</span>
           <button (click)="closeLoadingToast()">
             <svg
               class="size-6"
@@ -135,7 +139,9 @@
         class="toast toast-top toast-end"
       >
         <div class="alert rounded alert-success">
-          <span class="text-base-100">Dataset uploaded to Dataverse!</span>
+          <span class="text-base-100">{{
+            'HEADER.DATASET_UPLOADED' | translate
+          }}</span>
           <button (click)="closeLoadedToast()">
             <svg
               class="size-6"
@@ -160,7 +166,7 @@
         class="toast toast-top toast-end"
       >
         <div class="alert rounded alert-error">
-          <span>Dataset uploaded failed</span>
+          <span>{{ 'HEADER.DATASET_UPLOAD_FAILED' | translate }}</span>
           <button (click)="closeErrToast()">
             <svg
               class="size-6"
@@ -203,7 +209,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          Download
+          {{ 'HEADER.DOWNLOAD' | translate }}
           <span class="ml-5"> </span>
         </button>
         <p-menu
@@ -232,7 +238,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          Save to Dataverse
+          {{ 'HEADER.SAVE_TO_DATAVERSE' | translate }}
         </button>
       </div>
       <dct-body-toggle
