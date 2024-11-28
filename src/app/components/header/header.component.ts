@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import {
   selectDatasetCitation,
   selectDatasetDoi,
-  selectDatasetHasApiKey,
+  selectUserHasUploadAccess,
   selectDatasetInfo,
   selectDatasetState,
   selectDatasetTitle,
@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit {
   uploadPending = this.store.selectSignal(selectDatasetImportPending);
 
   datasetState = this.store.selectSignal(selectDatasetState);
-  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
 
   siteURL = computed(() => {

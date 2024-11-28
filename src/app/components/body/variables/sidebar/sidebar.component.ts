@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 
 // Selectors
 import {
-  selectDatasetHasApiKey,
+  selectUserHasUploadAccess,
   selectDatasetProcessedGroups,
 } from 'src/app/new.state/xml/xml.selectors';
 import {
@@ -37,7 +37,7 @@ import { GroupButtonComponent } from './group-button/group-button.component';
 })
 export class SidebarComponent {
   store = inject(Store);
-  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
 
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   simplifiedGroups = computed(() => {
