@@ -29,9 +29,12 @@ export class AppComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
 
-  ngOnInit() {
+  constructor() {
     this.translate.setDefaultLang('en');
     this.translate.use('en');
+  }
+
+  ngOnInit() {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
