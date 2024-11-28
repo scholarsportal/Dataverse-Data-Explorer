@@ -18,7 +18,7 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, AsyncPipe, CommonModule, BodyComponent],
+  imports: [HeaderComponent, CommonModule, BodyComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
