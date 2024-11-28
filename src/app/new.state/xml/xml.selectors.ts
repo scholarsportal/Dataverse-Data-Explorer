@@ -13,9 +13,9 @@ export const selectDatasetError = createSelector(
   (state) => state.error,
 );
 
-export const selectDatasetHasApiKey = createSelector(
+export const selectUserHasUploadAccess = createSelector(
   selectXmlFeature,
-  (state) => !!state.info?.apiKey,
+  (state) => !!state.info?.secureUploadUrl,
 );
 
 export const selectDatasetInfo = createSelector(
