@@ -89,9 +89,9 @@ export class BodyComponent {
     } else {
       const filteredVariables: { [variableID: string]: Variable } = {};
       if (this.groups()[this.selectedGroupID()]) {
-        if (this.groups()[this.selectedGroupID()]['@_var']) {
-          const selectedGroupVariableArray =
-            this.groups()[this.selectedGroupID()]['@_var']?.split(' ') || [];
+        const groupVariables = this.groups()[this.selectedGroupID()]['@_var'];
+        if (groupVariables && groupVariables.length > 0) {
+          const selectedGroupVariableArray = groupVariables.split(' ') || [];
           selectedGroupVariableArray.map((variableID) => {
             filteredVariables[variableID] = this.variables()[variableID];
           });
