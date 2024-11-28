@@ -1,62 +1,195 @@
 {
-  "GROUPS": {
-    "HIDE": "Masquer les groupes",
-    "SHOW": "Afficher les groupes",
-    "ADD": "Ajouter un groupe",
-    "ADDTO": "Ajouter au groupe",
-    "ALLVAR": "Toutes les variables",
-    "DONE": "Complété",
-    "SAVE": "Sauvegarder",
-    "CANCEL": "Annuler",
-    "DELETE": "Supprimer",
-    "EDIT": "Modifier le nom du groupe",
-    "ADDTOGRP": "Ajouter à un groupe",
-    "CONFIRM": "Êtes-vous sûr de vouloir supprimer "
+  "_TODO": {
+    "COMMENTS": "Below are variable translation to be reviewed or complete or to see live. Instructions: '//' means that I wrote an alternative translation in French, //* means that this is a question that I am asking myself (reflexion ",
+    "COMMON": {
+      "LOADING_DATASET": "Chargement du jeu de données",
+      "INTVQST": "Les directives pour l'intervieweur",
+      "POSTQST": "Instruction à propos de la question posée",
+      "CHANGES_APPLIED": "Modifications appliquées"
+    },
+    "APP": {
+      "WELCOME_MESSAGE": "",
+      "WELCOME_MESSAGE_EXPIRED": ""
+    },
+    "HEADER": {
+      "THEME_TOGGLE": "Basculer le thème",
+      "LANGUAGE_TOGGLE": "Sélection de la langue",
+      "DATASET_UPLOADING": "Téléchargement du jeu de données vers Dataverse",
+      "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse"
+    },
+    "RENAMING_BUTTON": {
+      "CONFIRM": "Confirmer le renommage // Confirmer // Confirmer le nouveau nom",
+      "CANCEL": "Annuler le renommage // Annuler // Annuler le nouveau nom"
+    },
+    "DELETING_BUTTON": {
+      "DOUBLE_CHECK": "Êtes-vous sûr // Êtes-vous sûr // En êtes-vous certain?"
+    },
+    "GROUP_BUTTON": {
+      "ADD_GROUP_SR": "un nouveau groupe de variables // Un nouveau... "
+    },
+    "IMPORT": {
+      "IMPORT_XML": "Importer XML // Importer un fichier XML",
+      "SELECT_DDI_SECTIONS": "Sélectionnez les sections et textes DDI à inclure :",
+      "GO_BACK": "Retourner aux variables // Retourner à la liste de variable",
+      "IMPORT_ERROR": "Il y a eu un problème avec votre fichier XML."
+    },
+    "BULK_EDIT_MODAL": {
+      "UPDATE_VARIABLES": "{count, plural, =1 {Mettre à jour # variable} other {Mettre à jour # variables}}"
+    },
+    "EDIT": {
+      "IS_WEIGHT": "Est un poids // Assigner comme variable de poids (Assign as weight variable) // Variable de poids (Weight variable) ",
+      "UPDATE": "METTRE À JOUR LES VARIABLES // Mettre à jour les variables"
+    },
+    "TABLE_NAV": {
+      "ITEMS_PER_PAGE": "Éléments par page // Nombre de variable par page",
+      "PREVIOUS_PAGE": "Aller à la page précédente des variables // Aller à la page précédente // Page précédente",
+      "NEXT_PAGE": "Aller à la page suivante des variables // Aller à la page suivante // Page suivante ",
+      "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
+    },
+    "CROSS_TABULATION": {
+      "ADD_VARIABLE": "AJOUTER UNE VARIABLE // Ajouter une variable",
+      "CHART_OR_TABLE": "",
+      "SELECT_WEIGHT": "Sélectionnez une valeur à utiliser comme poids pour vos données.  // ? une valeur or variable",
+      "NO_DATA_YET": "Pas encore de données. Commencez à ajouter des variables pour générer votre tableau. // Aucunes données. Commencez à ajouter des variables pour générer votre tableau. // Aucuns variables. Commencez à ajouter des variables pour générer votre tableau. ",
+      "NO_DATA": "Votre jeu de données ne contient aucune donnée.",
+      "ONE_MORE_STEP": "Une étape de plus. Définissez vos lignes et/ou colonnes.",
+      "STILL_LOADING": "Chargement en cours... Un moment s'il vous plaît",
+      "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
+    }
   },
-  "SAVE": {
-    "SAVE": "Sauvegarder dans Dataverse",
-    "DOWNLOAD": "Télécharger",
-    "CANNOT": "N'a pas pu être sauvegardé dans Dataverse.",
-    "SAVED": "A été enregisté dans Dataverse",
-    "MISSAPI": "N'a pas pu être sauvegardé dans Dataverse - La clé API est introuvable."
-  },
-  "VAR": {
-    "SEARCH": "Chercher",
-    "SELECT": "Sélectionner",
+  "COMMON": {
+    "ALL": "Tout",
+    "LOADING_DATASET": "Chargement du jeu de données",
+    "VARIABLE": "Variable",
+    "VARIABLES": "Variables",
+    "ALL_VARIABLES": "Toutes les variables",
+    "WEIGHT": "Poids",
+    "NO_WEIGHT": "Sans poids",
+    "VALUE": "Valeur",
     "ID": "ID",
     "NAME": "Nom",
     "LABEL": "Étiquette",
-    "WEIGHT": "Poids",
-    "VIEW": "Visualiser",
-    "GROUPEDIT": "Modification au groupe",
-    "EDIT": "Modifier"
-  },
-  "VARDIALOG": {
-    "VARINFO": "Information sur la variable",
-    "LITQ": "Question littérale",
-    "INTINSTR": "Les directives pour l'intervieweur",
-    "POSTQ": "Instruction à propos de la question posée",
+    "GROUP": "Groupe",
+    "GROUPS": "Groupes",
+    "OPTIONS": "Options",
+    "SELECT_SR": "",
+    "SUMMARY_STATISTICS": "Statistiques sommaires",
+    "VARIABLE_INFORMATION": "Information sur la variable",
+    "MODE": "Mode",
+    "MINIMUM": "Minimum",
+    "STANDARD_DEVIATION": "Écart-type",
+    "TOTAL_VALID_COUNT": "Nombre total de valeurs valides",
+    "TOTAL_INVALID_COUNT": "Nombre total de valeurs invalides",
+    "MEAN": "Moyenne",
+    "CLOSE": "Fermer",
+    "CANCEL": "Annuler",
+    "LITQST": "Question littérale",
+    "INTVQST": "Les directives pour l'intervieweur",
+    "POSTQST": "Instruction à propos de la question posée",
     "UNIVERSE": "Univers",
     "NOTES": "Remarques",
-    "GROUP": "Groupe",
-    "WEIGHTVAR": "Variable de poids",
-    "UNWEIGHTED": "Non-pondéré",
-    "ISWEIGHT": "Pondéré",
     "UPDATE": "Mettre à jour",
+    "CHANGES_APPLIED": "Modifications appliquées",
+    "VIEW": "Visualiser",
+    "CHART": "Graphique",
+    "TABLE": "Tableau",
+    "FILTER": "Filtrer",
+    "CATEGORIES": "Catégories",
+    "DATA_EXPLORER": "Explorateur de données",
+    "NO_CATEGORIES": "Cette variable n'a pas de catégories"
+  },
+  "APP": {
+    "LOADING": "Chargement du jeu de données ...",
+    "ERROR": "Une erreur s'est produite",
+    "ERROR_FETCH": "Erreur lors de la récupération du jeu de données : ",
+    "ERROR_UNEXPECTED": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
+    "WELCOME": "Bienvenue aux conservateurs de données",
+    "WELCOME_MESSAGE": "",
+    "WELCOME_MESSAGE_EXPIRED": ""
+  },
+  "HEADER": {
+    "THEME_TOGGLE": "Basculer le thème",
+    "LANGUAGE_TOGGLE": "Sélection de la langue",
+    "DATASET_CITATION": "Citation du jeu de données",
+    "FETCHING_WEIGHT": "Récupération des données de poids depuis Dataverse",
+    "FETCHING_WEIGHT_FAILED": "Échec de la récupération des données de poids depuis Dataverse",
+    "DATASET_UPLOADING": "Téléchargement du jeu de données vers Dataverse",
+    "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse",
+    "DATASET_UPLOAD_FAILED": "Échec du téléchargement du jeu de données",
+    "DOWNLOAD": "Télécharger",
+    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse"
+  },
+  "SIDEBAR": {
+    "NO_GROUPS": "Aucun groupe",
+    "IMPORT_METADATA": "Importer les métadonnées"
+  },
+  "SIDEBAR_BUTTON": {
+    "RENAME": "Renommer",
+    "DELETE": "Supprimer"
+  },
+  "RENAMING_BUTTON": {
+    "CONFIRM": "Confirmer le renommage",
+    "CANCEL": "Annuler le renommage"
+  },
+  "DELETING_BUTTON": {
+    "DOUBLE_CHECK": "Êtes-vous sûr",
+    "CONFIRM": "Confirmer",
     "CANCEL": "Annuler"
   },
-  "VARDIALSTAT": {
-    "CLOSE": "Fermer",
-    "VALUES": "Valeurs",
-    "CATEGORIES": "Catégories",
-    "COUNT": "Nombre",
-    "COUNTPER": "Nombre d'observations en %",
-    "WEIGHTCOUNT": "Chiffre pondéré"
+  "GROUP_BUTTON": {
+    "ADD_GROUP": "Ajouter",
+    "ADD_GROUP_SR": "un nouveau groupe de variables",
+    "CONFIRM_ADD": "Confirmer l'ajout du groupe",
+    "CANCEL_ADD": "Annuler l'ajout du groupe"
   },
-  "PAGINATOR": {
+  "IMPORT": {
+    "IMPORT_XML": "Importer XML",
+    "SELECT_DDI_SECTIONS": "Sélectionnez les sections et textes DDI à inclure :",
+    "START_IMPORT": "Commencer l'importation",
+    "IMPORT": "Importer",
+    "IMPORTING": "Importation en cours...",
+    "IMPORT_SUCCESS": "Métadonnées importées avec succès !",
+    "GO_BACK": "Retourner aux variables",
+    "IMPORT_ERROR": "Il y a eu un problème avec votre XML.",
+    "SELECT_FILE": "Sélectionner le fichier XML"
+  },
+  "BULK_EDIT_MODAL": {
+    "BULK_EDIT": "Modification en masse",
+    "BULK_EDIT_VARIABLES": "Modification en masse des variables",
+    "UPDATE_VARIABLES": "{count, plural, =1 {Mettre à jour # variable} other {Mettre à jour # variables}}"
+  },
+  "EDIT": {
+    "ADD_TO_GROUP": "Ajouter la variable au groupe",
+    "WEIGHT_VARIABLE": "Variable de poids",
+    "IS_WEIGHT": "Est un poids",
+    "UPDATE": "METTRE À JOUR LES VARIABLES"
+  },
+  "MODAL_HEADER": {
+    "VARIABLE_NAVIGATE_LEFT": "Naviguer vers la variable précédente",
+    "VARIABLE_NAVIGATE_RIGHT": "Naviguer vers la variable suivante"
+  },
+  "TABLE_MENU": {
+    "ASSIGN_WEIGHT": "Assigner un poids"
+  },
+  "TABLE_NAV": {
     "ITEMS_PER_PAGE": "Éléments par page",
-    "NEXT_PAGE": "Page suivante",
-    "PREVIOUS_PAGE": "Page précédente",
-    "RANGE": "{{startIndex}} - {{endIndex}} de {{length}}"
+    "PREVIOUS_PAGE": "Aller à la page précédente des variables",
+    "NEXT_PAGE": "Aller à la page suivante des variables",
+    "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
+  },
+  "CROSS_TABULATION": {
+    "ADD_VARIABLE": "AJOUTER UNE VARIABLE",
+    "CHART_OR_TABLE": "",
+    "SELECT_WEIGHT": "Sélectionnez une valeur à utiliser comme poids pour vos données.",
+    "SELECT_DISPLAY": "Comment souhaitez-vous afficher les valeurs dans le tableau ?",
+    "EXPORT_TABLE": "Exporter le tableau au format CSV",
+    "CHART_MESSAGE": "Votre graphique a été généré ci-dessous.",
+    "NO_DATA_YET": "Pas encore de données. Commencez à ajouter des variables pour générer votre tableau.",
+    "NO_DATA": "Votre jeu de données ne contient aucune donnée.",
+    "ONE_MORE_STEP": "Une étape de plus. Définissez vos lignes et/ou colonnes.",
+    "STILL_LOADING": "Chargement en cours... Un moment s'il vous plaît",
+    "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau.",
+    "ROW_COLUMN": "Ligne ou Colonne",
+    "REMOVE_VARIABLE": "Supprimer cette variable"
   }
 }

@@ -402,8 +402,9 @@ function editSingleVariable(
     currentVariableCloned['@_wgt-var'] = reverseLookup[importedVariable]
       ? reverseLookup[importedVariable]?.currentDatasetVariableID
       : '';
-    currentVariableCloned['@_wgt'] = importedVariablesMatched
-      .importedVariable['@_wgt']
+    currentVariableCloned['@_wgt'] = importedVariablesMatched.importedVariable[
+      '@_wgt'
+    ]
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';
     currentVariableCloned.catgry =
@@ -451,6 +452,9 @@ function editSingleVariable(
 }
 
 export function extractUrlAndToken(url: string) {
+  if (!url) {
+    return null;
+  }
   try {
     const parsedUrl = new URL(url);
     const siteURL = `${parsedUrl.protocol}//${parsedUrl.host}`;

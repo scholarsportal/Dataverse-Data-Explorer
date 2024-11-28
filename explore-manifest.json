@@ -23,7 +23,7 @@
   },
   "allowedApiCalls": [
     {
-      "name": "retrieveDataFile",
+      "name": "retrieveDataFileDDI",
       "httpMethod": "GET",
       "urlTemplate": "/api/v1/access/datafile/{fileId}/metadata/ddi",
       "timeOut": 270
