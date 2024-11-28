@@ -63,7 +63,7 @@ export class XmlEffects {
     },
   );
 
-  querySignedURL$ = createEffect(
+  fetchSignedURL$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.decodeSuccess),
