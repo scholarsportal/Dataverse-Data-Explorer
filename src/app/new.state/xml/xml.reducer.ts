@@ -36,20 +36,31 @@ export const xmlReducer = createReducer(
         apiKey: string | null;
         fileID: number;
         secureUploadUrl: string | null;
+        crossTabUrl: string | null;
       } = {
         apiKey: null,
         fileID: apiResponse.data.queryParameters.fileId,
         secureUploadUrl: null,
+        crossTabUrl: null,
       };
       const extractedData = extractUrlAndToken(
-        apiResponse.data.signedUrls[0].signedUrl,
+        apiResponse.data.signedUrls.find(
+          (url) => url.name === 'retrieveDataFileDDI',
+        )?.signedUrl || '',
       );
       if (extractedData) {
         info = {
           ...info,
           siteURL: extractedData.siteURL,
           apiKey: extractedData.apiKey ? extractedData.apiKey : null,
-          secureUploadUrl: apiResponse.data.signedUrls[1]?.signedUrl || null,
+          crossTabUrl:
+            apiResponse.data.signedUrls.find(
+              (url) => url.name === 'retrieveDataFile',
+            )?.signedUrl || null,
+          secureUploadUrl:
+            apiResponse.data.signedUrls.find(
+              (url) => url.name === 'uploadDataFile',
+            )?.signedUrl || null,
         };
       }
       return {
