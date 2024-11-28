@@ -16,7 +16,6 @@ import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
 export class DdiService {
   store = inject(Store);
   http = inject(HttpClient);
-  signedUploadLink = signal('');
   datasetInfo = this.store.selectSignal(selectDatasetInfo);
   fileID = computed(() => {
     if (this.datasetInfo()?.fileID) {

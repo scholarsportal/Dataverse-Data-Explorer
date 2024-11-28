@@ -43,6 +43,7 @@ export const xmlReducer = createReducer(
         secureUploadUrl: null,
         crossTabUrl: null,
       };
+
       const extractedData = extractUrlAndToken(
         apiResponse.data.signedUrls.find(
           (url) => url.name === 'retrieveDataFileDDI',
