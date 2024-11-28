@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  selectDatasetHasApiKey,
+  selectUserHasUploadAccess,
   selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
 } from '../../new.state/xml/xml.selectors';
@@ -43,7 +43,7 @@ import { TableComponent } from './variables/data/table/table.component';
 export class BodyComponent {
   store = inject(Store);
 
-  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
   variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
   crossTabValuesFetched = this.store.selectSignal(
     selectDatasetVariableCrossTabValues,

@@ -27,7 +27,7 @@ import {
   selectOpenVariableSummaryStatistics,
 } from 'src/app/new.state/ui/ui.selectors';
 import {
-  selectDatasetHasApiKey,
+  selectUserHasUploadAccess,
   selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
   selectVariablesWithCorrespondingGroups,
@@ -57,7 +57,7 @@ export class ModalComponent {
   nextVar = input.required<string>();
   previousVar = input.required<string>();
   // form data
-  hasApiKey = this.store.selectSignal(selectDatasetHasApiKey);
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
   hasCategories = this.store.selectSignal(selectOpenVariableHasCategories);
   modalMode = this.store.selectSignal(selectOpenVariableMode);
   variableFormData = this.store.selectSignal(selectOpenVariableFormState);
@@ -110,5 +110,4 @@ export class ModalComponent {
       this.closeLoadedToast();
     }, 3000);
   }
-
 }
