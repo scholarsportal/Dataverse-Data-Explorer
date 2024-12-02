@@ -23,7 +23,6 @@ import {
   selectDatasetImportPending,
   selectDatasetUploadedSuccessfully,
   selectDatasetUploadError,
-  selectDatasetWeightFetchStatus,
 } from '../../new.state/dataset/dataset.selectors';
 import {
   selectBodyToggleState,
@@ -52,7 +51,6 @@ import { TranslateModule } from '@ngx-translate/core';
     BodyToggleComponent,
     FormsModule,
     NgClass,
-    AsyncPipe,
     NgOptimizedImage,
     SplitButtonModule,
     MenuModule,
@@ -100,20 +98,6 @@ export class HeaderComponent implements OnInit {
       ? this.selectedVariables()[this.selectedGroupID()].join(',')
       : '';
   });
-
-  weightFetchStatus = this.store.selectSignal(selectDatasetWeightFetchStatus);
-  weightFetchIdle = computed(
-    () => this.weightFetchStatus() === ('idle' as const),
-  );
-  weightFetchSuccess = computed(
-    () => this.weightFetchStatus() === ('success' as const),
-  );
-  weightFetchPending = computed(
-    () => this.weightFetchStatus() === ('pending' as const),
-  );
-  weightFetchFail = computed(
-    () => this.weightFetchStatus() === ('error' as const),
-  );
 
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
@@ -175,11 +159,6 @@ export class HeaderComponent implements OnInit {
       this.pending = this.uploadPending();
       this.saved = this.uploadSuccess();
       this.fail = this.uploadFail();
-
-      this.weightIdle = this.weightFetchIdle();
-      this.weightPending = this.weightFetchPending();
-      this.weightSuccess = this.weightFetchSuccess();
-      this.weightFail = this.weightFetchFail();
     });
   }
 
@@ -262,10 +241,6 @@ export class HeaderComponent implements OnInit {
         }),
       );
     }
-  }
-
-  closeWeightToast() {
-    this.weightIdle = true;
   }
 
   closeLoadingToast() {

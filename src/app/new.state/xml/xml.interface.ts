@@ -185,11 +185,11 @@ export interface XmlState {
     siteURL?: string;
     doi?: string;
     fileID?: number;
+    language?: string;
     apiKey: string | null;
     importedSuccess?: boolean;
     secureUploadUrl: string | null;
   } | null;
-  // ... existing properties ...
   error: {
     type: 'fetch' | 'upload' | null;
     message: string | null;

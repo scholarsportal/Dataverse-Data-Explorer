@@ -23,6 +23,11 @@ export const selectDatasetInfo = createSelector(
   (state) => state.info,
 );
 
+export const selectDatasetLanguage = createSelector(
+  selectXmlFeature,
+  (state) => state.info?.language,
+);
+
 export const selectDatasetCitationData = createSelector(
   selectXmlFeature,
   (state) => state.header,

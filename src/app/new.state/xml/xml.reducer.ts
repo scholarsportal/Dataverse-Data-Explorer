@@ -29,19 +29,19 @@ export const initialState: XmlState = {
 export const xmlReducer = createReducer(
   initialState,
   on(
-    DataverseFetchActions.decodeAndFetchDDISuccess,
-    (state, { data, apiResponse }) => {
+    DataverseFetchActions.completeCrossTabFetch,
+    (state, { ddiData, apiResponse, language }) => {
       let info: {
         siteURL?: string;
         apiKey: string | null;
+        language?: string;
         fileID: number;
         secureUploadUrl: string | null;
-        crossTabUrl: string | null;
       } = {
         apiKey: null,
         fileID: apiResponse.data.queryParameters.fileId,
+        language,
         secureUploadUrl: null,
-        crossTabUrl: null,
       };
 
       const extractedData = extractUrlAndToken(
@@ -54,10 +54,6 @@ export const xmlReducer = createReducer(
           ...info,
           siteURL: extractedData.siteURL,
           apiKey: extractedData.apiKey ? extractedData.apiKey : null,
-          crossTabUrl:
-            apiResponse.data.signedUrls.find(
-              (url) => url.name === 'retrieveDataFile',
-            )?.signedUrl || null,
           secureUploadUrl:
             apiResponse.data.signedUrls.find(
               (url) => url.name === 'uploadDataFile',
@@ -66,11 +62,11 @@ export const xmlReducer = createReducer(
       }
       return {
         ...state,
-        dataset: data,
+        dataset: ddiData,
         info,
         header: {
-          citation: data.codeBook.stdyDscr?.citation.biblCit,
-          title: data.codeBook.stdyDscr?.citation.titlStmt.titl,
+          citation: ddiData.codeBook.stdyDscr?.citation.biblCit,
+          title: ddiData.codeBook.stdyDscr?.citation.titlStmt.titl,
         },
       };
     },
