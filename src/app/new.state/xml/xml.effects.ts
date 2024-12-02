@@ -47,7 +47,7 @@ export class XmlEffects {
     },
   );
 
-  decodeAndFetchSignedURL$ = createEffect(
+  decodeSignedURLBeforeFetch$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.decodeURLAndFetch),
@@ -70,7 +70,8 @@ export class XmlEffects {
         exhaustMap(({ data }) =>
           ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
             map((xml) => {
-              // console.log(data);
+              console.log('DATA', data);
+              console.log('XML', xml);
               return DataverseFetchActions.decodeAndFetchDDISuccess({
                 data: xml,
                 apiResponse: data,
