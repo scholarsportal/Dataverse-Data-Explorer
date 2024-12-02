@@ -97,10 +97,10 @@ export const selectVariablesWithCorrespondingGroups = createSelector(
     } = {};
     if (variables && groups) {
       // Loop through groups
-      groups.map((variableGroup) => {
+      groups?.forEach((variableGroup) => {
         // For each variable group, split the corresponding varlist into an array,
         // then loop through that array
-        variableGroup['@_var']?.split(' ').map((variableID) => {
+        variableGroup['@_var']?.split(' ').forEach((variableID) => {
           // If the variable is already in the variablesWithCorrespondingGroups
           // group, we push this to list, if not, we create a new entry for it
           variablesWithCorrespondingGroups[variableID]
