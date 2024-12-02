@@ -23,6 +23,11 @@
   },
   "allowedApiCalls": [
     {
+      "name": "retrieveDataFile",
+      "httpMethod": "GET",
+      "urlTemplate": "/api/v1/access/datafile/{fileId}"
+    },
+    {
       "name": "retrieveDataFileDDI",
       "httpMethod": "GET",
       "urlTemplate": "/api/v1/access/datafile/{fileId}/metadata/ddi",
