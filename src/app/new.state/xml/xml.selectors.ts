@@ -74,7 +74,10 @@ export const selectDatasetProcessedVariables = createSelector(
 
 export const selectDatasetVariableGroups = createSelector(
   selectXmlFeature,
-  (state): VariableGroup[] => state.dataset?.codeBook.dataDscr.varGrp ?? [],
+  (state): VariableGroup[] =>
+    (Array.isArray(state.dataset?.codeBook.dataDscr.varGrp)
+      ? state.dataset?.codeBook.dataDscr.varGrp
+      : null) ?? [],
 );
 
 export const selectDatasetProcessedGroups = createSelector(
@@ -97,7 +100,7 @@ export const selectVariablesWithCorrespondingGroups = createSelector(
     } = {};
     if (variables && groups) {
       // Loop through groups
-      groups?.forEach((variableGroup) => {
+      groups.forEach((variableGroup) => {
         // For each variable group, split the corresponding varlist into an array,
         // then loop through that array
         variableGroup['@_var']?.split(' ').forEach((variableID) => {
