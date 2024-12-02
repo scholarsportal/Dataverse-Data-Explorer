@@ -63,7 +63,6 @@ export class CrossTabulationComponent {
   isFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
   rows = computed(() => this.tableData().rows);
   cols = computed(() => {
-    console.log(this.tableData());
     return this.tableData().cols;
   });
   hasData = computed(() => this.tableData().hasData);

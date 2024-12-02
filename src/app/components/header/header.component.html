@@ -82,30 +82,7 @@
         <div
           [ngClass]="{ 'alert-info': weightPending, 'alert-error': weightFail }"
           class="alert rounded"
-        >
-          @if (weightFetchPending()) {
-            <span class="loading loading-spinner loading-md"></span>
-            <span>{{ 'HEADER.FETCHING_WEIGHT' | translate }}</span>
-          } @else if (weightFetchFail()) {
-            <span>{{ 'HEADER.FETCHING_WEIGHT_FAILED' | translate }}</span>
-          }
-          <button (click)="closeWeightToast()">
-            <svg
-              class="size-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 18 18 6M6 6l12 12"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
+        ></div>
       </div>
 
       <div
