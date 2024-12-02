@@ -77,7 +77,9 @@ export const selectDatasetVariableGroups = createSelector(
   (state): VariableGroup[] =>
     (Array.isArray(state.dataset?.codeBook.dataDscr.varGrp)
       ? state.dataset?.codeBook.dataDscr.varGrp
-      : null) ?? [],
+      : state.dataset?.codeBook.dataDscr.varGrp
+        ? [state.dataset?.codeBook.dataDscr.varGrp]
+        : null) ?? [],
 );
 
 export const selectDatasetProcessedGroups = createSelector(
