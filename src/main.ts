@@ -29,7 +29,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       BrowserModule,
       TranslateModule.forRoot({
-        defaultLanguage: 'en',
+        defaultLanguage: 'en-CA',
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

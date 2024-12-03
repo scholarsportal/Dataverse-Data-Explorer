@@ -53,13 +53,17 @@
           </div>
           <div class="flex flex-row">
             <label>
-              <span class="sr-only">{{
-                'HEADER.LANGUAGE_SELECTION' | translate
-              }}</span>
-              <select class="border-0 select select-ghost ml-1">
-                <option>Fr</option>
-                <option>En</option>
-                <option>Pr</option>
+              <span class="sr-only">
+                {{ 'HEADER.LANGUAGE_SELECTION' | translate }}
+              </span>
+              <select (change)="changeLanguage($event)" class="border-0 select select-ghost ml-1">
+                @for (lang of languages; track $index) {
+                <option
+                  [value]="lang.id"
+                  [selected]="lang.id === language">
+                  {{ lang.name }}
+                </option>
+              }
               </select>
             </label>
           </div>

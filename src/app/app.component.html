@@ -4,10 +4,8 @@
     <dct-body class="body" />
   } @else if (loading()) {
     <div class="h-screen w-screen flex flex-col items-center my-auto">
-      <h1
-        class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary"
-      >
-        Loading dataset ...
+      <h1 class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary">
+      {{ 'APP.LOADING' | translate }}
       </h1>
     </div>
   } @else if (error()) {

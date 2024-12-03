@@ -10,7 +10,8 @@ import {
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Languages } from '../assets/i18n/localizations';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
@@ -18,7 +19,7 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, CommonModule, BodyComponent],
+  imports: [HeaderComponent, CommonModule, BodyComponent, TranslateModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
@@ -29,9 +30,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
 
-  constructor() {
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+  constructor() {  
+    let lang = Languages.find(x=>x.id == navigator.language);
+    if(lang) {   
+      this.setLang(lang.id);
+    } else {
+      this.setLang("en-CA");
+    }
   }
 
   ngOnInit() {
@@ -65,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
           );
         }
         this.setTheme();
+        
       });
   }
 
@@ -85,6 +91,18 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         document.body.setAttribute('data-theme', 'light');
       }
+    }
+  }
+
+  private setLang(lang: string) {
+    let local = localStorage.getItem('language');
+    if (local) {
+      this.translate.setDefaultLang(local);
+      this.translate.use(local);
+    } else {
+      localStorage.setItem('language', lang);
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
     }
   }
 }
