@@ -135,9 +135,11 @@ export class DdiService {
 
     // Extract headers from the first line (not used, but useful for clarity)
     const headers = lines[0].split('\t');
+    console.log('headers', headers);
 
     // Split the keys string into an array
     const keys = variableString.split(',');
+    console.log('keys', keys);
 
     // Ensure the number of keys matches the number of columns
     if (keys.length !== headers.length) {
