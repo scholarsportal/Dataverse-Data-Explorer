@@ -92,9 +92,17 @@ export class XmlEffects {
           const variables = data.codeBook.dataDscr.var.map(
             (variable) => variable['@_ID'],
           );
-          console.log(variables);
+          const urlForCrossTab = apiResponse?.data.signedUrls.find(
+            (url) => url.name === 'retrieveDataFile',
+          )?.signedUrl;
+          if (!urlForCrossTab) {
+            throw new Error('No URL found for cross tabulation');
+          }
           return ddiService
-            .fetchCrossTabulationFromVariables(variables.join(','))
+            .fetchCrossTabulationFromVariables(
+              variables.join(','),
+              urlForCrossTab,
+            )
             .pipe(
               map((crossTabData) => {
                 return DataverseFetchActions.completeCrossTabFetch({

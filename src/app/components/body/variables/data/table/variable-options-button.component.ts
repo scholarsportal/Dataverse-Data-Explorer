@@ -155,12 +155,6 @@ export class VariableOptionsButtonComponent {
           orientation: '',
         }),
       );
-    } else {
-      this.store.dispatch(
-        CrossTabulationUIActions.fetchCrossTabAndAddToSelection({
-          variableID: this.variableID(),
-        }),
-      );
     }
     this.liveAnnouncer.announce('Variable added to cross tabulations.');
   }
