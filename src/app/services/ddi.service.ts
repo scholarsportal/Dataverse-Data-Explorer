@@ -113,13 +113,9 @@ export class DdiService {
   }
 
   fetchCrossTabulationFromVariables(variable: string, url: string) {
-    if (this.siteURL() !== '' && this.fileID() !== '') {
-      return this.http
-        .get(url, { responseType: 'text' })
-        .pipe(map((data) => this.splitLines(data, variable)));
-    } else {
-      throw Error('No Site URL, File ID');
-    }
+    return this.http
+      .get(url, { responseType: 'text' })
+      .pipe(map((data) => this.splitLines(data, variable)));
   }
 
   XMLtoJSON(xml: string): ddiJSONStructure {
