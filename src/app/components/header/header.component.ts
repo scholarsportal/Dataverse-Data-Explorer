@@ -39,7 +39,8 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
 import { MessagesModule } from 'primeng/messages';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Languages } from '../../../assets/i18n/localizations';
 
 @Component({
   selector: 'dct-header',
@@ -62,6 +63,9 @@ import { TranslateModule } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
   store = inject(Store);
   ddi = inject(DdiService);
+  translate = inject(TranslateService);
+  languages = Languages;
+  language = localStorage.getItem('language');
 
   currentThemeLight: boolean = true;
   showToggle: boolean = false;
@@ -212,6 +216,11 @@ export class HeaderComponent implements OnInit {
       localStorage.setItem('theme', 'light');
       document.body.setAttribute('data-theme', 'light');
     }
+  }
+
+  changeLanguage(event: any) {
+    this.translate.use(event.target.value);
+    localStorage.setItem('language', event.target.value);
   }
 
   handleUpload() {

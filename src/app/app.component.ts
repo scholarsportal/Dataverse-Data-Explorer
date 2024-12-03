@@ -10,9 +10,10 @@ import {
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
 import { selectDatasetProgress } from './new.state/ui/ui.selectors';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Languages } from '../assets/i18n/localizations';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'dct-root',
@@ -21,22 +22,32 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
       @if (loaded()) {
         <dct-header class="header border-b"></dct-header>
         <dct-body class="body" />
-      } @else if (loading() || !loading()) {
+      } @else if (loading()) {
         <div class="h-screen w-screen flex flex-col items-center my-auto">
-          <h1 class="my-auto w-full font-bold dark:text-light-on-primary">
-            <label
-              class="flex flex-col items-center justify-center text-center"
-            >
-              <span class="animate-pulse text-5xl">Loading dataset ...</span>
-              <progress
-                max="100"
-                [value]="progress()"
-                class="w-1/2 rounded-xl mx-auto my-5"
-                id="dataset-progress"
-                aria-label="Loading dataset..."
-              ></progress>
-            </label>
+          <h1
+            class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary"
+          >
+            {{ 'APP.LOADING' | translate }}
           </h1>
+        </div>
+      } @else if (error()) {
+        <div
+          class="beautiful h-screen w-screen flex flex-col justify-around items-center"
+        >
+          <h1 class="text-6xl text-white font-sans font-bold">
+            An Error Occurred
+          </h1>
+          <p class="font-bold w-2/3 text-4xl text-white">
+            @if (error().type === 'fetch') {
+              Error fetching dataset: {{ error().message }}
+            } @else {
+              An unexpected error occurred. Please try again later.
+            }
+          </p>
+          <p class="font-thin my-10 w-2/3 text-2xl text-white">
+            Please go back to your Dataverse instance and try again. If the
+            problem persists, contact your system administrator.
+          </p>
         </div>
       } @else {
         <div
@@ -60,7 +71,7 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
   `,
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, CommonModule, BodyComponent],
+  imports: [HeaderComponent, CommonModule, BodyComponent, TranslateModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
@@ -73,8 +84,12 @@ export class AppComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor() {
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+    const lang = Languages.find((x) => x.id == navigator.language);
+    if (lang) {
+      this.setLang(lang.id);
+    } else {
+      this.setLang('en-CA');
+    }
   }
 
   ngOnInit() {
@@ -128,6 +143,18 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         document.body.setAttribute('data-theme', 'light');
       }
+    }
+  }
+
+  private setLang(lang: string) {
+    const local = localStorage.getItem('language');
+    if (local) {
+      this.translate.setDefaultLang(local);
+      this.translate.use(local);
+    } else {
+      localStorage.setItem('language', lang);
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
     }
   }
 }

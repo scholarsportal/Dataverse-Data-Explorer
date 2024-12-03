@@ -99,7 +99,7 @@
     "NO_CATEGORIES": "Cette variable n'a pas de catégories"
   },
   "APP": {
-    "LOADING": "Chargement du jeu de données ...",
+    "LOADING": "Chargement du jeu de données",
     "ERROR": "Une erreur s'est produite",
     "ERROR_FETCH": "Erreur lors de la récupération du jeu de données : ",
     "ERROR_UNEXPECTED": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
@@ -118,7 +118,8 @@
     "DATASET_UPLOADED": "Ensemble de données téléversé",
     "DATASET_UPLOAD_FAILED": "Échec du téléversement de l’ensemble de données",
     "DOWNLOAD": "Télécharger",
-    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse"
+    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse",
+    "DATA_EXPLORER": "Data Explorer"
   },
   "SIDEBAR": {
     "NO_GROUPS": "Aucun groupe",
