@@ -98,6 +98,7 @@ export class XmlEffects {
           if (!urlForCrossTab) {
             throw new Error('No URL found for cross tabulation');
           }
+          console.log('variables', variables);
           return ddiService
             .fetchCrossTabulationFromVariables(
               variables.join(','),
