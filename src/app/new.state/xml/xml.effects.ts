@@ -70,8 +70,6 @@ export class XmlEffects {
         exhaustMap(({ data }) =>
           ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
             map((xml) => {
-              console.log('DATA', data);
-              console.log('XML', xml);
               return DataverseFetchActions.decodeAndFetchDDISuccess({
                 data: xml,
                 apiResponse: data,
@@ -82,6 +80,44 @@ export class XmlEffects {
             }),
           ),
         ),
+      );
+    },
+  );
+
+  fetchCrossTabValues$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.decodeAndFetchDDISuccess),
+        switchMap(({ apiResponse, data, language }) => {
+          const variables = data.codeBook.dataDscr.var.map(
+            (variable) => variable['@_ID'],
+          );
+          const urlForCrossTab = apiResponse?.data.signedUrls.find(
+            (url) => url.name === 'retrieveDataFile',
+          )?.signedUrl;
+          if (!urlForCrossTab) {
+            throw new Error('No URL found for cross tabulation');
+          }
+          return ddiService
+            .fetchCrossTabulationFromVariables(
+              variables.join(','),
+              urlForCrossTab,
+            )
+            .pipe(
+              map((crossTabData) => {
+                return DataverseFetchActions.completeCrossTabFetch({
+                  crossTabData,
+                  ddiData: data,
+                  apiResponse: apiResponse,
+                  language,
+                });
+              }),
+              catchError((error) => {
+                console.log(error);
+                return of(DataverseFetchActions.weightsFetchError({ error }));
+              }),
+            );
+        }),
       );
     },
   );

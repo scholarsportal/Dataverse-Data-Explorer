@@ -14,8 +14,6 @@ export interface DatasetState {
   operationStatus: {
     download: 'idle' | 'pending' | 'error' | 'success';
     downloadErrorMessage?: string;
-    weightProcess: 'idle' | 'pending' | 'error' | 'success';
-    weightProcessMessage?: string;
     upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled';
     uploadErrorMessage?: string;
     variableDownload: 'idle' | 'pending' | 'error' | 'success';
@@ -42,7 +40,6 @@ const initialState: DatasetState = {
   operationStatus: {
     download: 'idle',
     upload: 'idle',
-    weightProcess: 'idle',
     variableDownload: 'idle',
     import: 'idle',
     openVariableEdit: 'idle',
@@ -75,7 +72,7 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(DataverseFetchActions.decodeAndFetchDDISuccess, (state) => {
+  on(DataverseFetchActions.completeCrossTabFetch, (state) => {
     return {
       ...state,
       operationStatus: {
@@ -100,12 +97,12 @@ export const datasetReducer = createReducer(
       download: 'success' as const,
     },
   })),
-  on(DataverseFetchActions.weightsFetchSuccess, (state, { data }) => {
+  on(DataverseFetchActions.completeCrossTabFetch, (state, { crossTabData }) => {
     return {
       ...state,
       crossTabulation: {
         ...state.crossTabulation,
-        ...data,
+        ...crossTabData,
       },
     };
   }),
@@ -134,28 +131,6 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(DatasetActions.updateCrossTabValues, (state, { data, variableID }) => {
-    return {
-      ...state,
-      crossTabulation: {
-        ...state.crossTabulation,
-        [variableID]: data[variableID],
-      },
-      operationStatus: {
-        ...state.operationStatus,
-        variableDownload: 'success' as const,
-      },
-    };
-  }),
-  on(CrossTabulationUIActions.fetchCrossTabAndAddToSelection, (state) => {
-    return {
-      ...state,
-      operationStatus: {
-        ...state.operationStatus,
-        variableDownload: 'pending' as const,
-      },
-    };
-  }),
   on(VariableTabUIAction.changeOpenVariable, (state) => {
     return {
       ...state,
@@ -165,18 +140,6 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(
-    CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex,
-    (state) => {
-      return {
-        ...state,
-        operationStatus: {
-          ...state.operationStatus,
-          variableDownload: 'pending' as const,
-        },
-      };
-    },
-  ),
   on(XmlManipulationActions.startImportMetadata, (state) => {
     return {
       ...state,
@@ -242,13 +205,16 @@ export const datasetReducer = createReducer(
       };
     },
   ),
-  on(CrossTabulationUIActions.addWeightVariableToSelection, (state, { variableID, crossTabValues }) => {
-    return {
-      ...state,
-      crossTabulation: {
-        ...state.crossTabulation,
-        ...crossTabValues,
-      },
-    };
-  }),
+  on(
+    CrossTabulationUIActions.addWeightVariableToSelection,
+    (state, { variableID, crossTabValues }) => {
+      return {
+        ...state,
+        crossTabulation: {
+          ...state.crossTabulation,
+          ...crossTabValues,
+        },
+      };
+    },
+  ),
 );

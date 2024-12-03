@@ -151,23 +151,6 @@ export class DatasetEffects {
       }),
     ),
   );
-  fetchCrossTab$ = createEffect(
-    (ddiService: DdiService = inject(DdiService)) => {
-      return this.actions$.pipe(
-        ofType(CrossTabulationUIActions.fetchCrossTabAndAddToSelection),
-        switchMap(({ variableID }) =>
-          ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
-            map((data) =>
-              DatasetActions.updateCrossTabValues({ variableID, data }),
-            ),
-            catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          ),
-        ),
-      );
-    },
-  );
   // When a user changes the weight variable, we fetch the missing cross tab values
   private ddiService: DdiService = inject(DdiService);
   fetchMissingCrossTabValuesAndProcessNewVariableWeight$ = createEffect(() =>
@@ -180,158 +163,14 @@ export class DatasetEffects {
           weightID,
           variablesWithCrossTabMetadata,
         } = props;
-        const missingCrossTabMetadata: string[] = [];
-        selectedVariables.forEach((variableID) => {
-          if (!variablesWithCrossTabMetadata[variableID]) {
-            missingCrossTabMetadata.push(variableID);
-          }
-        });
-        if (!variablesWithCrossTabMetadata[weightID] && weightID !== 'remove') {
-          missingCrossTabMetadata.push(weightID);
-        }
-        if (missingCrossTabMetadata.length === 0) {
-          return of(
-            XmlManipulationActions.weightProcessStart({
-              allVariables,
-              selectedVariables,
-              weightID,
-              variablesWithCrossTabMetadata,
-            }),
-          );
-        }
-
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(missingCrossTabMetadata.join(','))
-          .pipe(
-            map((crossTabData) =>
-              XmlManipulationActions.weightProcessStart({
-                allVariables,
-                selectedVariables,
-                weightID,
-                variablesWithCrossTabMetadata: {
-                  ...variablesWithCrossTabMetadata,
-                  ...crossTabData,
-                },
-              }),
-            ),
-          );
-      }),
-    ),
-  );
-  // When a user opens a modal/ any modal, we fetch its cross tab
-  processOpenVariable$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(VariableTabUIAction.changeOpenVariable),
-      switchMap(({ variableID }) => {
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(variableID)
-          .pipe(
-            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
-            catchError((error) =>
-              of(DataverseFetchActions.weightsFetchError(error)),
-            ),
-          );
-      }),
-    ),
-  );
-  // When the app starts, we fetch the cross tab values for all weighted variables
-  processWeightsOnAppStart = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataverseFetchActions.fetchDDISuccess),
-      switchMap(({ data }) => {
-        const variables = data.codeBook.dataDscr.var;
-        const weightedValues: string[] = [];
-        variables.map((value) => {
-          if (value['@_wgt'] && !weightedValues.includes(value['@_ID'])) {
-            weightedValues.push(value['@_ID']);
-          }
-          if (
-            value['@_wgt-var'] &&
-            !weightedValues.includes(value['@_wgt-var'])
-          ) {
-            weightedValues.push(value['@_wgt-var']);
-          }
-        });
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(weightedValues.join(','))
-          .pipe(
-            map((data) => DataverseFetchActions.weightsFetchSuccess({ data })),
-            catchError((error) =>
-              of(DataverseFetchActions.weightsFetchError(error)),
-            ),
-          );
-      }),
-    ),
-  );
-  // When a user starts weight selection, we check if the variable already has cross tab values.
-  // If it does, we add it to the selection. If it doesn't, we fetch the missing cross tab values (searchWeightVariableCrossTabAndAddToSelection) and add it to the selection.
-  startWeightSelection$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CrossTabulationUIActions.startVariableWeightSelection),
-      mergeMap(({ variableID, crossTabValues }) => {
-        const crossTabIDs = Object.keys(crossTabValues);
-        if (crossTabIDs.includes(variableID)) {
-          return of(
-            CrossTabulationUIActions.addWeightVariableToSelection({
-              variableID,
-              crossTabValues,
-            }),
-          );
-        }
         return of(
-          CrossTabulationUIActions.searchWeightVariableCrossTabAndAddToSelection(
-            {
-              variableID,
-              crossTabValues,
-            },
-          ),
+          XmlManipulationActions.weightProcessStart({
+            allVariables,
+            selectedVariables,
+            weightID,
+            variablesWithCrossTabMetadata,
+          }),
         );
-      }),
-    ),
-  );
-  // Called when a the selected weight variable is not in the cross tabulation.
-  fetchCrossTabValueAndAddVariableAsCrossTabWeight$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        CrossTabulationUIActions.searchWeightVariableCrossTabAndAddToSelection,
-      ),
-      mergeMap(({ variableID, crossTabValues }) => {
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(variableID)
-          .pipe(
-            map((data) =>
-              CrossTabulationUIActions.addWeightVariableToSelection({
-                variableID,
-                crossTabValues: { ...crossTabValues, ...data },
-              }),
-            ),
-            catchError((error) =>
-              of(DataverseFetchActions.weightsFetchError(error)),
-            ),
-          );
-      }),
-    ),
-  );
-  fetchCrossTabAndSetIndex$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex),
-      mergeMap((action) => {
-        const { variableID, index, orientation } = action;
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(action.variableID)
-          .pipe(
-            map((data) =>
-              DatasetActions.updateCrossTabValues({
-                variableID,
-                data,
-                orientation,
-                index,
-              }),
-            ),
-            catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          );
       }),
     ),
   );

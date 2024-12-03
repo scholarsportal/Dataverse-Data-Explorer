@@ -10,33 +10,71 @@ import {
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { Languages } from '../assets/i18n/localizations';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject, takeUntil } from 'rxjs';
+import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 
 @Component({
   selector: 'dct-root',
-  templateUrl: './app.component.html',
+  template: `
+    <div class="md:grid main">
+      @if (loaded()) {
+        <dct-header class="header border-b"></dct-header>
+        <dct-body class="body" />
+      } @else if (loading() || !loading()) {
+        <div class="h-screen w-screen flex flex-col items-center my-auto">
+          <h1 class="my-auto w-full font-bold dark:text-light-on-primary">
+            <label
+              class="flex flex-col items-center justify-center text-center"
+            >
+              <span class="animate-pulse text-5xl">Loading dataset ...</span>
+              <progress
+                max="100"
+                [value]="progress()"
+                class="w-1/2 rounded-xl mx-auto my-5"
+                id="dataset-progress"
+                aria-label="Loading dataset..."
+              ></progress>
+            </label>
+          </h1>
+        </div>
+      } @else {
+        <div
+          class="beautiful h-screen w-screen flex flex-col justify-around items-center"
+        >
+          <h1 class="text-6xl text-white font-sans font-bold">
+            Welcome Data Curators
+          </h1>
+          <p class="font-bold w-2/3 text-4xl text-white">
+            If you are seeing this page, your link has expired. Please go back
+            to your Dataverse instance for a new link to your dataset.
+          </p>
+          <p class="font-thin my-10 w-2/3 text-2xl text-white">
+            The Data Explorer allows data owners and curators to view summary
+            statistics for variables and to create and edit variable-level
+            metadata for any tabular file in a dataset.
+          </p>
+        </div>
+      }
+    </div>
+  `,
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, CommonModule, BodyComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, BodyComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   loading = this.store.selectSignal(selectDatasetDownloadPending);
   loaded = this.store.selectSignal(selectDatasetDownloadedSuccessfully);
   error = this.store.selectSignal(selectDatasetError);
+  progress = this.store.selectSignal(selectDatasetProgress);
   private route = inject(ActivatedRoute);
   private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
 
-  constructor() {  
-    let lang = Languages.find(x=>x.id == navigator.language);
-    if(lang) {   
-      this.setLang(lang.id);
-    } else {
-      this.setLang("en-CA");
-    }
+  constructor() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
   }
 
   ngOnInit() {
@@ -70,7 +108,6 @@ export class AppComponent implements OnInit, OnDestroy {
           );
         }
         this.setTheme();
-        
       });
   }
 
@@ -91,18 +128,6 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         document.body.setAttribute('data-theme', 'light');
       }
-    }
-  }
-
-  private setLang(lang: string) {
-    let local = localStorage.getItem('language');
-    if (local) {
-      this.translate.setDefaultLang(local);
-      this.translate.use(local);
-    } else {
-      localStorage.setItem('language', lang);
-      this.translate.setDefaultLang(lang);
-      this.translate.use(lang);
     }
   }
 }

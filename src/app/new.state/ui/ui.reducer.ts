@@ -2,9 +2,13 @@ import { UIState } from './ui.interface';
 import { createReducer, on } from '@ngrx/store';
 import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';
 import { DatasetActions } from '../dataset/dataset.actions';
-import { XmlManipulationActions } from '../xml/xml.actions';
+import {
+  DataverseFetchActions,
+  XmlManipulationActions,
+} from '../xml/xml.actions';
 
 export const initialState: UIState = {
+  progress: 0,
   bodyToggle: 'variables',
   bodyState: {
     variables: {
@@ -32,6 +36,18 @@ export const initialState: UIState = {
 
 export const uiReducer = createReducer(
   initialState,
+  on(DataverseFetchActions.decodeSuccess, (state) => ({
+    ...state,
+    progress: 22,
+  })),
+  on(DataverseFetchActions.decodeAndFetchDDISuccess, (state) => ({
+    ...state,
+    progress: 44,
+  })),
+  on(DataverseFetchActions.completeCrossTabFetch, (state) => ({
+    ...state,
+    progress: 77,
+  })),
   on(VariableTabUIAction.navigateToVariableTab, (state) => ({
     ...state,
     bodyToggle: 'variables' as const,

@@ -112,17 +112,10 @@ export class DdiService {
     return this.http.put(secureUploadURL, xml, httpOptions);
   }
 
-  fetchCrossTabulationFromVariables(variable: string) {
-    if (this.siteURL() !== '' && this.fileID() !== '') {
-      return this.http
-        .get(
-          `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${variable}`,
-          { responseType: 'text' },
-        )
-        .pipe(map((data) => this.splitLines(data, variable)));
-    } else {
-      throw Error('No Site URL, File ID');
-    }
+  fetchCrossTabulationFromVariables(variable: string, url: string) {
+    return this.http
+      .get(url, { responseType: 'text' })
+      .pipe(map((data) => this.splitLines(data, variable)));
   }
 
   XMLtoJSON(xml: string): ddiJSONStructure {
@@ -142,9 +135,11 @@ export class DdiService {
 
     // Extract headers from the first line (not used, but useful for clarity)
     const headers = lines[0].split('\t');
+    console.log('headers', headers);
 
     // Split the keys string into an array
     const keys = variableString.split(',');
+    console.log('keys', keys);
 
     // Ensure the number of keys matches the number of columns
     if (keys.length !== headers.length) {

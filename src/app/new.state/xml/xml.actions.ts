@@ -20,6 +20,12 @@ export const DataverseFetchActions = createActionGroup({
       apiResponse: ApiResponse;
       language?: string;
     }>(),
+    'Complete Cross Tab Fetch': props<{
+      crossTabData: ParsedCrossTabData;
+      ddiData: ddiJSONStructure;
+      apiResponse: ApiResponse;
+      language?: string;
+    }>(),
     // on site init if URL params are satisfied, this is called
     'Fetch DDI Start': props<{
       siteURL: string;

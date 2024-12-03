@@ -1,4 +1,5 @@
 export interface UIState {
+  progress: number;
   bodyToggle: 'cross-tab' | 'variables';
   bodyState: {
     variables: {

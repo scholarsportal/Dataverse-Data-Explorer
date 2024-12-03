@@ -24,6 +24,11 @@ import {
 
 export const selectUIFeature = createFeatureSelector<UIState>('ui');
 
+export const selectDatasetProgress = createSelector(
+  selectUIFeature,
+  (state) => state.progress,
+);
+
 export const selectBodyToggleState = createSelector(
   selectUIFeature,
   (state) => state.bodyToggle,
