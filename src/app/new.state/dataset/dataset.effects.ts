@@ -151,23 +151,6 @@ export class DatasetEffects {
       }),
     ),
   );
-  fetchCrossTab$ = createEffect(
-    (ddiService: DdiService = inject(DdiService)) => {
-      return this.actions$.pipe(
-        ofType(CrossTabulationUIActions.fetchCrossTabAndAddToSelection),
-        switchMap(({ variableID }) =>
-          ddiService.fetchCrossTabulationFromVariables(variableID).pipe(
-            map((data) =>
-              DatasetActions.updateCrossTabValues({ variableID, data }),
-            ),
-            catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          ),
-        ),
-      );
-    },
-  );
   // When a user changes the weight variable, we fetch the missing cross tab values
   private ddiService: DdiService = inject(DdiService);
   fetchMissingCrossTabValuesAndProcessNewVariableWeight$ = createEffect(() =>
@@ -180,65 +163,14 @@ export class DatasetEffects {
           weightID,
           variablesWithCrossTabMetadata,
         } = props;
-        const missingCrossTabMetadata: string[] = [];
-        selectedVariables.forEach((variableID) => {
-          if (!variablesWithCrossTabMetadata[variableID]) {
-            missingCrossTabMetadata.push(variableID);
-          }
-        });
-        if (!variablesWithCrossTabMetadata[weightID] && weightID !== 'remove') {
-          missingCrossTabMetadata.push(weightID);
-        }
-        if (missingCrossTabMetadata.length === 0) {
-          return of(
-            XmlManipulationActions.weightProcessStart({
-              allVariables,
-              selectedVariables,
-              weightID,
-              variablesWithCrossTabMetadata,
-            }),
-          );
-        }
-
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(missingCrossTabMetadata.join(','))
-          .pipe(
-            map((crossTabData) =>
-              XmlManipulationActions.weightProcessStart({
-                allVariables,
-                selectedVariables,
-                weightID,
-                variablesWithCrossTabMetadata: {
-                  ...variablesWithCrossTabMetadata,
-                  ...crossTabData,
-                },
-              }),
-            ),
-          );
-      }),
-    ),
-  );
-
-  fetchCrossTabAndSetIndex$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex),
-      mergeMap((action) => {
-        const { variableID, index, orientation } = action;
-        return this.ddiService
-          .fetchCrossTabulationFromVariables(action.variableID)
-          .pipe(
-            map((data) =>
-              DatasetActions.updateCrossTabValues({
-                variableID,
-                data,
-                orientation,
-                index,
-              }),
-            ),
-            catchError((error) =>
-              of(DataverseFetchActions.fetchDDIError(error)),
-            ),
-          );
+        return of(
+          XmlManipulationActions.weightProcessStart({
+            allVariables,
+            selectedVariables,
+            weightID,
+            variablesWithCrossTabMetadata,
+          }),
+        );
       }),
     ),
   );
