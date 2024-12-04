@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions';
 import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -30,6 +31,7 @@ import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal
     ChipModule,
     FormsModule,
     BulkEditModalComponent,
+    TranslateModule
   ],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css',

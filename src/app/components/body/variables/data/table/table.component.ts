@@ -23,6 +23,7 @@ import { TableNavComponent } from '../table-nav/table-nav.component';
 import { ChipsModule } from 'primeng/chips';
 import { TableMenuComponent } from '../table-menu/table-menu.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-table',
@@ -40,6 +41,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
     ModalComponent,
     NgClass,
     ChipsModule,
+    TranslateModule
   ],
 })
 export class TableComponent {

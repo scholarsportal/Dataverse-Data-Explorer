@@ -1,10 +1,11 @@
 import { Component, computed, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-multiselect-dropdown',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './multiselect-dropdown.component.html',
   styleUrl: './multiselect-dropdown.component.css'
 })

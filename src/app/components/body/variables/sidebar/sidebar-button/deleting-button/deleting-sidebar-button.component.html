@@ -1,8 +1,12 @@
 <div class="flex flex-row justify-between px-5 h-16 items-center">
-  <span class="font-bold">Are You Sure?</span>
+  <span class="font-bold">
+    {{ 'DELETING_BUTTON.DOUBLE_CHECK' | translate }}
+  </span>
   <div class="flex flex-row">
     <button (click)="confirmDelete()" class="text-success mr-1.5">
-      <span class="sr-only">Confirm</span>
+      <span class="sr-only">
+        {{ 'DELETING_BUTTON.CONFIRM' | translate }}
+      </span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -19,7 +23,9 @@
       </svg>
     </button>
     <button (click)="cancelDelete()" class="text-error">
-      <span class="sr-only">Cancel</span>
+      <span class="sr-only">
+        {{ 'DELETING_BUTTON.CANCEL' | translate }}
+      </span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

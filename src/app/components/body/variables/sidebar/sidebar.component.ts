@@ -21,6 +21,7 @@ import { XmlManipulationActions } from 'src/app/new.state/xml/xml.actions';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import { SidebarButtonComponent } from './sidebar-button/sidebar-button.component';
 import { GroupButtonComponent } from './group-button/group-button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-sidebar',
@@ -32,6 +33,7 @@ import { GroupButtonComponent } from './group-button/group-button.component';
     SidebarButtonComponent,
     NgClass,
     GroupButtonComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
