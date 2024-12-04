@@ -57,11 +57,14 @@
       "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
     }
   },
+
+
   "COMMON": {
     "ALL": "Tout",
     "LOADING_DATASET": "Chargement du jeu de données",
     "VARIABLE": "Variable",
     "VARIABLES": "Variables",
+    "CROSS_TABULATION": "Tableaux croisés",
     "ALL_VARIABLES": "Toutes les variables",
     "WEIGHT": "Poids",
     "NO_WEIGHT": "Sans poids",
@@ -99,7 +102,7 @@
     "NO_CATEGORIES": "Cette variable n'a pas de catégories"
   },
   "APP": {
-    "LOADING": "Chargement du jeu de données ...",
+    "LOADING": "Chargement du jeu de données",
     "ERROR": "Une erreur s'est produite",
     "ERROR_FETCH": "Erreur lors de la récupération du jeu de données : ",
     "ERROR_UNEXPECTED": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
@@ -117,7 +120,8 @@
     "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse",
     "DATASET_UPLOAD_FAILED": "Échec du téléchargement du jeu de données",
     "DOWNLOAD": "Télécharger",
-    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse"
+    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse",
+    "DATA_EXPLORER": "Data Explorer"
   },
   "SIDEBAR": {
     "NO_GROUPS": "Aucun groupe",
@@ -172,10 +176,14 @@
     "ASSIGN_WEIGHT": "Assigner un poids"
   },
   "TABLE_NAV": {
+    "SEARCH_TABLE": "Chercher",
     "ITEMS_PER_PAGE": "Éléments par page",
+    "ALL": "TOUT",
     "PREVIOUS_PAGE": "Aller à la page précédente des variables",
     "NEXT_PAGE": "Aller à la page suivante des variables",
-    "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
+    "OF": "sur",
+    "VARIABLE": "variable",
+    "VARIABLES": "variables"
   },
   "CROSS_TABULATION": {
     "ADD_VARIABLE": "AJOUTER UNE VARIABLE",

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { VariablesSimplified } from '../../../../../new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-table-nav',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './table-nav.component.html',
   styleUrl: './table-nav.component.css',
 })
@@ -23,12 +24,9 @@ export class TableNavComponent {
   currentPage = input.required<number>();
   isLastPage = input.required<boolean>();
   isFirstPage = input.required<boolean>();
+
   indexRange = computed(() => {
-    if (this.total() === 1) {
-      return '1 variable';
-    } else {
-      return `${this.currentPage() + 1} - ${this.currentPage() + this.itemsPerPage()} of ${this.total()} variables`;
-    }
+    return `${this.currentPage() + 1} - ${this.currentPage() + this.itemsPerPage()}`;
   });
 
   emitItemsPerPageChange = output<number>();

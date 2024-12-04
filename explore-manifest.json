@@ -17,7 +17,7 @@
         "datasetPid": "{datasetPid}"
       },
       {
-        "dvLocale": "{localeCode}"
+        "locale": "{localeCode}"
       }
     ]
   },

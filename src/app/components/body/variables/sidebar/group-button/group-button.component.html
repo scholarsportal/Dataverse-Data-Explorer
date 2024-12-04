@@ -1,7 +1,7 @@
 @if (!adding()) {
   <div class="w-full my-auto mx-auto flex flex-row justify-between">
     <h2 class="mx-5 py-6 self-center font-bold">
-      Groups
+      {{ 'COMMON.GROUPS' | translate }}
     </h2>
     <button
       [disabled]="disabled()"
@@ -12,7 +12,8 @@
         <path
           d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
       </svg>
-      <span class="hidden lg:flex">Add</span><span class="sr-only">a new variables group</span>
+      <span class="hidden lg:flex">{{ 'GROUP_BUTTON.ADD_GROUP' | translate }}</span>
+      <span class="sr-only">{{ 'GROUP_BUTTON.ADD_GROUP_SR' | translate }}</span>
     </button>
   </div>
 } @else {
@@ -30,7 +31,7 @@
       />
       <div class="absolute inset-y-0 end-0 flex items-center z-20 pe-4">
         <button (click)="confirmAdd()" class="mr-1.5 text-success">
-          <span class="sr-only">Confirm Add Group</span>
+          <span class="sr-only">{{ 'GROUP_BUTTON.CONFIRM_ADD' | translate }}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -47,7 +48,7 @@
           </svg>
         </button>
         <button (click)="cancelAdd()" class="text-error">
-          <span class="sr-only">Cancel Group Add</span>
+          <span class="sr-only">{{ 'GROUP_BUTTON.CANCEL_ADD' | translate }}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
