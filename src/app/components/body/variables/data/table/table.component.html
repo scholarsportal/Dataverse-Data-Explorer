@@ -1,6 +1,6 @@
 <h2 id="tableHeading" tabindex="-1" class="sr-only">
   @if (groupLbl() === 'ALL') {
-    All Variables
+    {{ 'COMMON.ALL_VARIABLES' | translate }}
   } @else {
     {{groupLbl()}}
   }
@@ -33,11 +33,11 @@
 >
   <ng-template let-columns pTemplate="header">
     <tr class="bg-base-100 border-b-2 z-20 border-slate-300">
-      <th pSortableColumn="variableID">ID</th>
-      <th pSortableColumn="name">Name</th>
-      <th pSortableColumn="label">Label</th>
-      <th pSortableColumn="weight">Weight</th>
-      <th>Options</th>
+      <th pSortableColumn="variableID">{{ 'COMMON.ID' | translate }}</th>
+      <th pSortableColumn="name">{{ 'COMMON.NAME' | translate }}</th>
+      <th pSortableColumn="label">{{ 'COMMON.LABEL' | translate }}</th>
+      <th pSortableColumn="weight">{{ 'COMMON.WEIGHT' | translate }}</th>
+      <th>{{ 'COMMON.OPTIONS' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template let-columns="columns" let-variable pTemplate="body">
@@ -45,28 +45,28 @@
       class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
       <td class="px-5 pt-5 pb-2">
-        <div class="p-column-title font-bold w-1/4">ID</div>
+        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.ID' | translate }}</div>
         <div class="w-3/4">{{ variable.variableID }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">Name</div>
+        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.NAME' | translate }}</div>
         <div class="w-3/4">{{ variable.name }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">Label</div>
+        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.LABEL' | translate }}</div>
         <div class="w-3/4">{{ variable.label }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">Weight</div>
+        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.WEIGHT' | translate }}</div>
         @if (variable.weight.length) {
           <div class="w-3/4">{{ variable.weight }}</div>
         } @else if (variable.isWeight) {
           <div class="w-3/4">
-            <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">Weight</span>
+            <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">{{ 'COMMON.WEIGHT' | translate }}</span>
           </div>
         } @else {
           <div class="w-3/4">
-            <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">No Weight</span>
+            <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">{{ 'COMMON.NO_WEIGHT' | translate }}</span>
           </div>
         }
       </td>
@@ -115,7 +115,7 @@
     <tr class="bg-base-100 border-b-2 border-gray-200 z-20">
       <th>
         <label>
-          <span class="sr-only">Select All Variables. Selecting this or any of the rows below will toggle options at the end of the table.</span>
+          <span class="sr-only">{{ 'COMMON.SELECT_SR' | translate }}</span>
           <input
             (change)="toggleAll()"
             [checked]="allVariablesSelected()"
@@ -125,11 +125,11 @@
           />
         </label>
       </th>
-      <th pSortableColumn="variableID">ID</th>
-      <th pSortableColumn="name">Name</th>
-      <th pSortableColumn="label">Label</th>
-      <th pSortableColumn="weight">Weight</th>
-      <th>Options</th>
+      <th pSortableColumn="variableID">{{ 'COMMON.ID' | translate }}</th>
+      <th pSortableColumn="name">{{ 'COMMON.NAME' | translate }}</th>
+      <th pSortableColumn="label">{{ 'COMMON.LABEL' | translate }}</th>
+      <th pSortableColumn="weight">{{ 'COMMON.WEIGHT' | translate }}</th>
+      <th>{{ 'COMMON.OPTIONS' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template let-variable pTemplate="body">
@@ -155,10 +155,10 @@
         @if (variable.weight.length) {
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
-          <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">Weight</span
+          <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">{{ 'COMMON.WEIGHT' | translate }}</span
           >
         } @else {
-          <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">No Weight</span>
+          <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">{{ 'COMMON.NO_WEIGHT' | translate }}</span>
         }
       </td>
       <td class="flex flex-row float-right">

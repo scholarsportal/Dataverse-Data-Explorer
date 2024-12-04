@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { RenamingSidebarButtonComponent } from './renaming-button/renaming-sidebar-button.component';
 import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sidebar-button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-sidebar-button',
@@ -19,6 +20,7 @@ import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sideb
     CommonModule,
     RenamingSidebarButtonComponent,
     DeletingSidebarButtonComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar-button.component.html',

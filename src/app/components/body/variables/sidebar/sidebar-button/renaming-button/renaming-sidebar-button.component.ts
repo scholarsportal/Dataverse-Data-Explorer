@@ -1,11 +1,12 @@
 import { Component, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-renaming-button',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './renaming-sidebar-button.component.html',
   styleUrl: './renaming-sidebar-button.component.css'
 })

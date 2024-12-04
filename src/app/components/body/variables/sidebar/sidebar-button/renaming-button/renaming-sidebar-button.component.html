@@ -12,7 +12,9 @@
         (click)="confirmRename()"
         class="mr-1.5 text-success"
       >
-        <span class="sr-only">Confirm Rename</span>
+        <span class="sr-only">
+          {{ 'RENAMING_BUTTON.CONFIRM' | translate }}
+        </span>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg">
           <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
@@ -25,7 +27,9 @@
         (click)="cancelRename()"
         class="text-error"
       >
-        <span class="sr-only">Cancel Rename</span>
+        <span class="sr-only">
+          {{ 'RENAMING_BUTTON.CANCEL' | translate }}
+        </span>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg">
           <path d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"

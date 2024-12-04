@@ -57,11 +57,14 @@
       "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
     }
   },
+
+
   "COMMON": {
     "ALL": "Tout",
     "LOADING_DATASET": "Chargement du jeu de données",
     "VARIABLE": "Variable",
     "VARIABLES": "Variables",
+    "CROSS_TABULATION": "Tableaux croisés",
     "ALL_VARIABLES": "Toutes les variables",
     "WEIGHT": "Poids",
     "NO_WEIGHT": "Sans poids",
@@ -173,10 +176,14 @@
     "ASSIGN_WEIGHT": "Assigner un poids"
   },
   "TABLE_NAV": {
+    "SEARCH_TABLE": "Chercher",
     "ITEMS_PER_PAGE": "Éléments par page",
+    "ALL": "TOUT",
     "PREVIOUS_PAGE": "Aller à la page précédente des variables",
     "NEXT_PAGE": "Aller à la page suivante des variables",
-    "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
+    "OF": "sur",
+    "VARIABLE": "variable",
+    "VARIABLES": "variables"
   },
   "CROSS_TABULATION": {
     "ADD_VARIABLE": "AJOUTER UNE VARIABLE",

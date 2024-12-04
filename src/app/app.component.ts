@@ -10,9 +10,11 @@ import {
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Languages } from '../assets/i18n/localizations';
 import { Subject, takeUntil } from 'rxjs';
 import { selectDatasetProgress } from './new.state/ui/ui.selectors';
+
 
 @Component({
   selector: 'dct-root',
@@ -27,7 +29,7 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
             <label
               class="flex flex-col items-center justify-center text-center"
             >
-              <span class="animate-pulse text-5xl">Loading dataset ...</span>
+              <span class="animate-pulse text-5xl"> {{ 'APP.LOADING' | translate }} </span>
               <progress
                 max="100"
                 [value]="progress()"
@@ -60,7 +62,7 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
   `,
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, CommonModule, BodyComponent],
+  imports: [HeaderComponent, CommonModule, BodyComponent, TranslateModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
@@ -73,8 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor() {
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+
   }
 
   ngOnInit() {
@@ -89,7 +90,19 @@ export class AppComponent implements OnInit, OnDestroy {
           (params['dfId'] as number);
         const apiKey = params['key'] as string;
         // If a dataset is in French then we automatically set the language to French
-        const language = params['dvLocale'] as string;
+        const language = params['locale'] as string;
+        const dvLocale = Languages.find(x=>x.dv == language);
+        if(dvLocale) {
+          localStorage.setItem('language',dvLocale.id);
+          setTimeout(()=>{ this.setLang(dvLocale.id) }, 500);
+        } else {
+          const lang = Languages.find(x=>x.id == navigator.language);
+          if(lang) {   
+            this.setLang(lang.id);
+          } else {
+            this.setLang("en-CA");
+          }
+        }
         // The identifier to specify the version of the dataset to load
         const metadataID = params['metadataID'] as number;
         if (callback) {
@@ -128,6 +141,18 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         document.body.setAttribute('data-theme', 'light');
       }
+    }
+  }
+
+  private setLang(lang: string) {
+    let local = localStorage.getItem('language');
+    if (local) {
+      this.translate.setDefaultLang(local);
+      this.translate.use(local);
+    } else {
+      localStorage.setItem('language', lang);
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
     }
   }
 }

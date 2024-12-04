@@ -1,5 +1,5 @@
 <label class="input input-bordered border-slate-300 mx-5 md:mx-0 my-0 md:my-4 flex flex-row items-center md:gap-2">
-  <input (input)="search()" [(ngModel)]="searchTerm" class="grow" placeholder="Search table" type="text" />
+  <input (input)="search()" [(ngModel)]="searchTerm" class="grow" placeholder="{{ 'TABLE_NAV.SEARCH_TABLE' | translate }}" type="text" />
   <svg class="w-4 h-4 opacity-70"
        fill="currentColor"
        viewBox="0 0 16 16"
@@ -12,7 +12,9 @@
 <div class="lg:flex lg:flex-row">
   <div class="align-middle justify-end hidden md:flex mt-5 lg:mt-0 flex-row">
     <label class="lg:mx-5 my-auto" for="items-per-page">
-      <span class="mx-1.5"> Items Per Page: </span>
+      <span class="mx-1.5">
+        {{ 'TABLE_NAV.ITEMS_PER_PAGE' | translate }}
+      </span>
       <select
         (change)="onItemsPerPageChange($event)"
         class="select select-bordered max-w-xs border-slate-300"
@@ -25,7 +27,7 @@
           </option>
         }
         <option [selected]="itemsPerPage() === variablesList().length - 1" [value]="variablesList().length - 1">
-          ALL
+          {{ 'TABLE_NAV.ALL' | translate }}
         </option>
       </select>
     </label>
@@ -33,11 +35,23 @@
   <div class="flex flex-row md:align-middle md:justify-between">
     @if (total()) {
       @if (total() > itemsPerPage()) {
-        <span class="hidden md:block mr-4 my-auto">{{ indexRange() }}</span>
+        <span class="hidden md:block mr-4 my-auto">
+          @if (total() > 1) {
+            {{ indexRange() }} 
+            {{ 'TABLE_NAV.OF' | translate }} 
+            {{ total() }} 
+            {{ 'TABLE_NAV.VARIABLES' | translate }}
+          } @else {
+            1 {{ 'TABLE_NAV.VARIABLE' | translate }}
+          }
+          
+        </span>
         <div class="hidden md:block">
           <button [disabled]="isFirstPage()" (click)="pagePrevious()"
                   class="btn border border-slate-300 bg-transparent my-3 mt-4 mr-1  table-nav-button">
-            <span class="sr-only">Go To Previous Variable Page</span>
+            <span class="sr-only">
+              {{ 'TABLE_NAV.PREVIOUS_PAGE' | translate }}
+            </span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"
                     d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
@@ -46,7 +60,9 @@
           </button>
           <button [disabled]="isLastPage()" (click)="pageNext()"
                   class="btn border border-slate-300 bg-transparent my-3 mt-4 table-nav-button">
-            <span class="sr-only">Go To Next Variable Page</span>
+            <span class="sr-only">
+              {{ 'TABLE_NAV.NEXT_PAGE' | translate }}
+            </span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"
                     d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
@@ -55,9 +71,9 @@
           </button>
         </div>
       } @else {
-        <span class="hidden md:block mr-4 py-5 my-auto">{{ total() }} variables</span>
+        <span class="hidden md:block mr-4 py-5 my-auto">{{ total() }} {{ 'TABLE_NAV.VARIABLES' | translate }}</span>
       }
-      <span class="mx-5 md:hidden mr-4 py-5 my-auto">{{ total() }} variables</span>
+      <span class="mx-5 md:hidden mr-4 py-5 my-auto">{{ total() }} {{ 'TABLE_NAV.VARIABLES' | translate }}</span>
     }
 
   </div>

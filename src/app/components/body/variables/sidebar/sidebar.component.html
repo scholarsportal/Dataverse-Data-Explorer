@@ -3,7 +3,7 @@
   <div class="md:hidden m-5">
     <label>
       <select class="select select-bordered w-full">
-        <option (click)="changeGroup('ALL', 'ALL')">All Variables</option>
+        <option (click)="changeGroup('ALL', 'ALL')">{{ 'COMMON.ALL_VARIABLES' | translate }}</option>
         @for (item of (simplifiedGroups() | keyvalue); track $index) {
           <option (click)="changeGroup(item.key, item.value)">
             {{ item.value }}
@@ -20,7 +20,7 @@
         (changeSelectedGroupID)="changeGroup($event, $event)"
         [selected]="selectedGroupID() === 'ALL'"
         groupID="ALL"
-        label="All Variables"
+        label="{{ 'COMMON.ALL_VARIABLES' | translate }}"
       />
       @for (group of (simplifiedGroups() | keyvalue); track $index) {
         <dct-sidebar-button
@@ -33,14 +33,16 @@
           (emitRenameGroup)="renameGroup($event)"
         />
       } @empty {
-        <div class="mx-auto w-full text-center py-5 font-medium">No groups!</div>
+        <div class="mx-auto w-full text-center py-5 font-medium">
+          {{ 'SIDEBAR.NO_GROUPS' | translate }}
+        </div>
       }
     </div>
   </div>
   <button (click)="toggleImportComponentState()" [ngClass]="{'bg-base-200': importButtonSelected()}"
           class="hidden md:flex justify-between w-full px-5 py-5 items-center hover:bg-base-200 border-t rounded-none import max-h-16">
       <span [ngClass]="{'font-bold': importButtonSelected()}" class="metadata-lbl">
-      Import Metadata
+        {{ 'SIDEBAR.IMPORT_METADATA' | translate }}
       </span>
     <svg
       class="w-6 h-6"
