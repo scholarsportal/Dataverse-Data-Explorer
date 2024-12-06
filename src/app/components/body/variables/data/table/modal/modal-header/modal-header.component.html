@@ -14,12 +14,15 @@
         stroke-linejoin="round"
       />
     </svg>
-    <span class="sr-only">close</span>
+    <span class="sr-only">{{ 'COMMON.CLOSE' | translate }}</span>
   </button>
-  <h2 class="text-2xl">{{ modalMode() | titlecase }} Variable</h2>
+  <h2 class="text-2xl">
+    {{ 'COMMON.'+modalMode() | translate }}
+    
+  </h2>
 </div>
 <div class="flex flex-row-reverse md:flex-row justify-between pt-5">
-  @if (modalMode() === 'view') {
+  @if (modalMode() === 'VIEW_VAR') {
     <button [disabled]="!hasApiKey()" (click)="switchToEdit()"
             class="hidden md:flex btn border border-slate-300 bg-transparent">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -30,7 +33,7 @@
       EDIT
     </button>
   }
-  @if (modalMode() === 'edit') {
+  @if (modalMode() === 'EDIT_VAR') {
     <button (click)="switchToView()" class="btn border border-slate-300 bg-transparent">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
            class="w-5 h-5 mr-1">

@@ -99,7 +99,9 @@
       "FILTER": "Filter",
       "CATEGORIES": "Categories",
       "DATA_EXPLORER": "Data Explorer",
-      "NO_CATEGORIES": "This variable has no categories"  
+      "NO_CATEGORIES": "This variable has no categories",
+      "EDIT_VAR": "Edit variable",
+      "VIEW_VAR": "View variable"  
     },
     "APP": {
       "LOADING": "Loading dataset ...",

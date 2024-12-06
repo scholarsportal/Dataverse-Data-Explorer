@@ -197,7 +197,7 @@ export class TableComponent {
     setTimeout(() => document.getElementById(selection)?.focus(), 200);
   }
 
-  launchModal(value: { mode: 'view' | 'edit'; variableID: string }) {
+  launchModal(value: { mode: 'VIEW_VAR' | 'EDIT_VAR'; variableID: string }) {
     this.store.dispatch(VariableTabUIAction.changeOpenVariable(value));
     this.ModalComponent()?.open();
   }

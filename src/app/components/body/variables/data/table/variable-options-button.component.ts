@@ -128,7 +128,7 @@ export class VariableOptionsButtonComponent {
     input.required<
       { variableID: string; orientation: 'rows' | 'cols' | '' }[]
     >();
-  emitLaunchModal = output<{ mode: 'view' | 'edit'; variableID: string }>();
+  emitLaunchModal = output<{ mode: 'VIEW_VAR' | 'EDIT_VAR'; variableID: string }>();
   variablesComputed = computed(() => {
     const variables: string[] = [];
     this.variablesInCrossTab().map((value) => {
@@ -140,11 +140,11 @@ export class VariableOptionsButtonComponent {
   constructor(private liveAnnouncer: LiveAnnouncer) {}
 
   launchView() {
-    this.emitLaunchModal.emit({ mode: 'view', variableID: this.variableID() });
+    this.emitLaunchModal.emit({ mode: 'VIEW_VAR', variableID: this.variableID() });
   }
 
   launchEdit() {
-    this.emitLaunchModal.emit({ mode: 'edit', variableID: this.variableID() });
+    this.emitLaunchModal.emit({ mode: 'EDIT_VAR', variableID: this.variableID() });
   }
 
   addToCrossTab() {

@@ -99,7 +99,9 @@
     "FILTER": "Filtrer",
     "CATEGORIES": "Catégories",
     "DATA_EXPLORER": "Explorateur de données",
-    "NO_CATEGORIES": "Cette variable n'a pas de catégories"
+    "NO_CATEGORIES": "Cette variable n'a pas de catégories",
+    "EDIT_VAR": "Edit variable",
+    "VIEW_VAR": "View variable"
   },
   "APP": {
     "LOADING": "Chargement du jeu de données",
