@@ -60,6 +60,7 @@
 
 
     "COMMON": {
+      "SPACE": "",
       "ALL": "All",
       "LOADING_DATASET": "Loading dataset",
       "VARIABLE": "Variable",
@@ -94,6 +95,7 @@
       "UPDATE": "Update",
       "CHANGES_APPLIED": "Changes applied",
       "VIEW": "VIEW",
+      "EDIT": "EDIT",
       "CHART": "Chart",
       "TABLE": "Table",
       "FILTER": "Filter",
@@ -101,7 +103,21 @@
       "DATA_EXPLORER": "Data Explorer",
       "NO_CATEGORIES": "This variable has no categories",
       "EDIT_VAR": "Edit variable",
-      "VIEW_VAR": "View variable"  
+      "VIEW_VAR": "View variable",
+      "CHART_DATA": "Chart Data",
+      "CHART_VAR": "Chart variable",
+      "SHOW_IN_GRAPH": "Show in graph",
+      "VALUES": "Values",
+      "COUNT": "Count",
+      "COUNT_PERC": "Count (%)",
+      "WEIGHTED": "Weighted (%)",
+      "WEIGHTED_COUNT": "Weighted count",
+      "MAXIMUM": "Maximum",
+      "MEDIAN": "Median",
+      "ADD_TO_CROSS": "Add to cross tabulation",
+      "ADDING_VAR": "Adding variable. Please wait.",
+      "REM_CROSS": "Remove from cross tabulation."
+
     },
     "APP": {
       "LOADING": "Loading dataset ...",
@@ -162,20 +178,30 @@
     "BULK_EDIT_MODAL": {
       "BULK_EDIT": "Bulk Edit",
       "BULK_EDIT_VARIABLES": "Bulk Edit Variables",
-      "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}"  
+      "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}",
+      "UPDATE": "Update",
+      "VARS": "variables"  
     },
     "EDIT": {
       "ADD_TO_GROUP": "Add Variable to Group",
       "WEIGHT_VARIABLE": "Weight Variable",
       "IS_WEIGHT": "Is Weight",
-      "UPDATE": "UPDATE VARIABLES"  
+      "UPDATE": "UPDATE VARIABLES",
+      "SELECTED": "selected"
     },
     "MODAL_HEADER": {
       "VARIABLE_NAVIGATE_LEFT": "Variable Navigate left",
       "VARIABLE_NAVIGATE_RIGHT": "Variable Navigate right"  
     },
     "TABLE_MENU": {
-      "ASSIGN_WEIGHT": "Assign Weight"
+      "ASSIGN_WEIGHT": "Assign weight",
+      "NO_GROUP": "No group or weight option selected",
+      "VAR_TABLE_OPTS": "Variable table options",
+      "ADD_SELECTED": "Add selected variables to group",
+      "ADD_TO_GROUP": "Add to group",
+      "REMOVE_WEIGHT": "Remove weight",
+      "APPLY": "Apply",
+      "REMOVE": "Remove"
     },
     "TABLE_NAV": {
       "SEARCH_TABLE": "Search table",
@@ -188,6 +214,8 @@
       "VARIABLES": "variables"  
     },
     "CROSS_TABULATION": {
+      "VARIABLE": "Variable",
+      "VARIABLES": "Variables",
       "ADD_VARIABLE": "ADD VARIABLE",
       "CHART_OR_TABLE": "Select whether to generate a table or a chart. Charts display the table data in a bar graph and are not screen reader compatible.",
       "SELECT_WEIGHT": "Select a value to use as a weight for your data.",
@@ -197,9 +225,16 @@
       "NO_DATA_YET": "No Data yet. Start adding variables to generate your table.",
       "NO_DATA": "Your dataset does not contain any data.",
       "ONE_MORE_STEP": "One more step. Set your rows and/or columns.",
-      "STILL_LOADING": "Still loading... One moment please",
+      "STILL_LOADING": "Still loading... One moment please.",
       "NOTHING_HERE_YET": "Nothing here yet. Add a variable to start creating your table.",
-      "ROW_COLUMN": "Row or Column",
-      "REMOVE_VARIABLE": "Remove this variable"  
+      "ROW_COLUMN": "Row or Column?",
+      "REMOVE_VARIABLE": "Remove this variable", 
+      "TABLE": "Table",
+      "WEIGHT": "Weight",
+      "SELECT": "Select Weight",
+      "ROW": "ROW",
+      "COLUMN": "COLUMN",
+      "NONE": "### None",
+      "SELECT_ROW_COL": "### select a row or column" 
     }
   }

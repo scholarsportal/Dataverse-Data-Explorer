@@ -10,12 +10,14 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { TranslateModule } from '@ngx-translate/core';
+
 declare const jQuery: any;
 
 @Component({
   selector: 'dct-cross-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="[&_table]:w-full">

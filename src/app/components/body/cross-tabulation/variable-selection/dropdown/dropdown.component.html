@@ -1,33 +1,33 @@
 <div class="sr-only">
   <h3>
-    Variable: {{ selectedVariableLabel() || 'None selected' }}
+    {{ selectedVariableLabel() || 'No variable selected' }}
     @if (variableOrientation() === 'cols') {
-      [COLUMN]
+      [{{'CROSS_TABULATION.COLUMN' | translate}}]
     } @else if (variableOrientation() === 'rows') {
-      [ROW]
+      [{{'CROSS_TABULATION.ROW' | translate}}]
     } @else {
-      [select a row or column]
+      [{{'CROSS_TABULATION.SELECT_ROW_COL' | translate}}]
     }
   </h3>
 </div>
 <div class="w-full md:flex md:flex-row">
   <div class="w-full md:w-2/12 md:pr-1">
     <label class="my-2 flex flex-col" for="rowColumnSelect">
-      Row or column?
+      {{ 'CROSS_TABULATION.ROW_COLUMN' | translate }}
       <p-dropdown
         [ngModel]="variableOrientation()"
         (ngModelChange)="onChangeVariableOrientation($event)"
         [options]="['rows', 'cols']"
-        placeholder="None"
+        placeholder="{{ 'CROSS_TABULATION.NONE' | translate }}"
         styleClass="select w-full py-1.5 px-3 mt-2 bg-base-100 rounded border"
         panelStyleClass="rounded bg-base-100 border border-slate-300"
       >
         <ng-template pTemplate="selectedItem" let-item>{{
-          item === 'rows' ? 'Row' : 'Column'
+          item === 'rows' ? ('CROSS_TABULATION.ROW' | translate) : ('CROSS_TABULATION.COLUMN' | translate)
         }}</ng-template>
         <ng-template pTemplate="item" let-item>
             <span class="px-2">{{
-              item === 'rows' ? 'ROW' : 'COLUMN'
+              item === 'rows' ? ('CROSS_TABULATION.ROW' | translate) : ('CROSS_TABULATION.COLUMN' | translate) 
             }}</span>
         </ng-template>
       </p-dropdown>

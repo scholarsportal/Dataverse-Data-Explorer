@@ -1,5 +1,5 @@
 {
-  "displayName": "Data Explorer",
+  "displayName": "Data Explorer TEST 2",
   "description": "Odesi Data Explorer for viewing, configuring and editing variables",
   "scope": "file",
   "type": "configure",
@@ -31,12 +31,14 @@
     {
       "name": "retrieveDataFile",
       "httpMethod": "GET",
-      "urlTemplate": "/api/v1/access/datafile/{fileId}"
+      "urlTemplate": "/api/v1/access/datafile/{fileId}",
+      "timeOut": 270
     },
     {
       "name": "uploadDataFile",
       "httpMethod": "PUT",
-      "urlTemplate": "/api/v1/edit/{fileId}"
+      "urlTemplate": "/api/v1/edit/{fileId}",
+      "timeOut": 270
     }
   ]
 }

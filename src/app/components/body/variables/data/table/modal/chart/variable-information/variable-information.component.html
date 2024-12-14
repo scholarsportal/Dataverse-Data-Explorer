@@ -1,28 +1,28 @@
 <table class="mx-auto w-full mb-10">
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Literal Question</th>
+    <th class="text-left font-medium">{{ 'COMMON.LITQST' | translate }}</th>
     <td class="border-b p-2 text-right">{{ form().literalQuestion || '' }}</td>
   </tr>
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Interviewer Instructions</th>
+    <th class="text-left font-medium">{{ 'COMMON.INTVQST' | translate }}</th>
     <td class="border-b p-2 text-right">
       {{ form().interviewQuestion || '' }}
     </td>
   </tr>
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Post Questions</th>
+    <th class="text-left font-medium">{{ 'COMMON.POSTQST' | translate }}</th>
     <td class="border-b p-2 text-right">
       {{ form().postQuestion || '' }}
     </td>
   </tr>
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Universe</th>
+    <th class="text-left font-medium">{{ 'COMMON.UNIVERSE' | translate }}</th>
     <td class="border-b p-2 text-right">
       {{ form().universe || '' }}
     </td>
   </tr>
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Notes</th>
+    <th class="text-left font-medium">{{ 'COMMON.NOTES' | translate }}</th>
     <td class="border-b p-2 text-right">
       {{ form().notes || '' }}
     </td>
@@ -36,13 +36,13 @@
   <!--    </td>-->
   <!--  </tr>-->
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Weight Variable</th>
+    <th class="text-left font-medium">{{ 'EDIT.WEIGHT_VARIABLE' | translate }}</th>
     <td class="border-b p-2 text-right">
       {{ form().assignedWeight }}
     </td>
   </tr>
   <tr class="table-row border-b">
-    <th class="text-left font-medium">Is Weight</th>
+    <th class="text-left font-medium">{{ 'EDIT.IS_WEIGHT' | translate }}</th>
     <td class="border-b p-2 capitalize text-right">{{ form().isWeight }}</td>
   </tr>
 </table>

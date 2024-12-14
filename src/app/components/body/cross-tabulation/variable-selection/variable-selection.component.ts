@@ -15,11 +15,12 @@ import {
   selectDatasetVariableCrossTabValues,
 } from '../../../../new.state/dataset/dataset.selectors';
 import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [KeyValuePipe, DropdownComponent, NgClass],
+  imports: [KeyValuePipe, DropdownComponent, NgClass, TranslateModule],
   templateUrl: './variable-selection.component.html',
   styleUrl: './variable-selection.component.css',
 })
@@ -74,7 +75,10 @@ export class VariableSelectionComponent {
     index: number;
   }) {
     const { variableID, index, orientation } = value;
-    if (this.variablesMetadata()?.[variableID]) {
+    console.log(this.variablesMetadata()?.[variableID]);
+    if (this.variablesMetadata()) {
+      //ASK NANA ABOUT CHANGING THIS
+      //if (this.variablesMetadata()?.[variableID]) {
       this.store.dispatch(
         CrossTabulationUIActions.changeValueInGivenIndex({
           index,

@@ -31,7 +31,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 import { Variable } from 'src/app/new.state/xml/xml.interface';
 import { generateCrossTabCSV } from '../../../new.state/ui/util';
-
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'dct-cross-tabulation',
   standalone: true,
@@ -43,6 +43,7 @@ import { generateCrossTabCSV } from '../../../new.state/ui/util';
     FormsModule,
     CrossChartComponent,
     SelectButtonModule,
+    TranslateModule
   ],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
