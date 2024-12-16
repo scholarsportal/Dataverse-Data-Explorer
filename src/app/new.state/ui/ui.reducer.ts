@@ -25,7 +25,10 @@ export const initialState: UIState = {
     },
     crossTab: {
       missingCategories: {},
-      selection: [],
+      selection: [
+        { variableID: '', orientation: 'rows' as const },
+        { variableID: '', orientation: 'cols' as const },
+      ],
       weight: {
         weighted: false,
         weightVariableID: '',
