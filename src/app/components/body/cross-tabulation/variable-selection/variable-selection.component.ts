@@ -74,21 +74,13 @@ export class VariableSelectionComponent {
     index: number;
   }) {
     const { variableID, index, orientation } = value;
-    if (this.variablesMetadata()?.[variableID]) {
-      this.store.dispatch(
-        CrossTabulationUIActions.changeValueInGivenIndex({
-          index,
-          variableID,
-          orientation,
-        }),
-      );
-    } else {
-      this.store.dispatch(
-        CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex({
-          ...value,
-        }),
-      );
-    }
+    this.store.dispatch(
+      CrossTabulationUIActions.changeValueInGivenIndex({
+        index,
+        variableID,
+        orientation,
+      }),
+    );
   }
 
   removeVariable(value: { index: number }) {
