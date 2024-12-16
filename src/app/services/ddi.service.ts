@@ -112,10 +112,10 @@ export class DdiService {
     return this.http.put(secureUploadURL, xml, httpOptions);
   }
 
-  fetchCrossTabulationFromVariables(variable: string, url: string) {
+  fetchCrossTabulationFromVariables(variables: string[], url: string) {
     return this.http
       .get(url, { responseType: 'text' })
-      .pipe(map((data) => this.splitLines(data, variable)));
+      .pipe(map((data) => this.splitLines(variables, data)));
   }
 
   XMLtoJSON(xml: string): ddiJSONStructure {
@@ -129,7 +129,7 @@ export class DdiService {
   }
 
   // From: https://stackoverflow.com/a/52947649
-  splitLines(input: string, variableString: string): ParsedCrossTabData {
+  splitLines(variable: string[], input: string): ParsedCrossTabData {
     // Split the input into lines
     const lines = input.trim().split('\n');
 
@@ -137,19 +137,15 @@ export class DdiService {
     const headers = lines[0].split('\t');
     console.log('headers', headers);
 
-    // Split the keys string into an array
-    const keys = variableString.split(',');
-    console.log('keys', keys);
-
     // Ensure the number of keys matches the number of columns
-    if (keys.length !== headers.length) {
+    if (variable.length !== headers.length) {
       throw new Error(
         'The number of keys does not match the number of columns.',
       );
     }
 
     // Initialize the result object with empty arrays for each key
-    const parsedData: ParsedCrossTabData = keys.reduce((acc, key) => {
+    const parsedData: ParsedCrossTabData = variable.reduce((acc, key) => {
       acc[key] = [];
       return acc;
     }, {} as ParsedCrossTabData);
@@ -158,7 +154,7 @@ export class DdiService {
     lines.slice(1).forEach((line) => {
       const values = line.split('\t');
       values.forEach((value, index) => {
-        parsedData[keys[index]].push(value);
+        parsedData[variable[index]].push(value);
       });
     });
 

@@ -65,8 +65,8 @@ export const xmlReducer = createReducer(
         dataset: ddiData,
         info,
         header: {
-          citation: ddiData.codeBook.stdyDscr?.citation.biblCit,
-          title: ddiData.codeBook.stdyDscr?.citation.titlStmt.titl,
+          citation: ddiData?.codeBook?.stdyDscr?.citation?.biblCit,
+          title: ddiData?.codeBook?.stdyDscr?.citation?.titlStmt?.titl,
         },
       };
     },

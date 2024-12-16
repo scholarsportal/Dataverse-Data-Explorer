@@ -57,8 +57,6 @@
       "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
     }
   },
-
-
   "COMMON": {
     "ALL": "Tout",
     "LOADING_DATASET": "Chargement du jeu de données",
@@ -111,17 +109,17 @@
     "WELCOME_MESSAGE_EXPIRED": ""
   },
   "HEADER": {
-    "THEME_TOGGLE": "Basculer le thème",
-    "LANGUAGE_TOGGLE": "Sélection de la langue",
-    "DATASET_CITATION": "Citation du jeu de données",
+    "DATA_EXPLORER": "Explorateur de données",
+    "THEME_TOGGLE": "Bascules de thème",
+    "LANGUAGE_TOGGLE": "Sélecteur de langue",
+    "DATASET_CITATION": "Citer l'ensemble de données",
     "FETCHING_WEIGHT": "Récupération des données de poids depuis Dataverse",
     "FETCHING_WEIGHT_FAILED": "Échec de la récupération des données de poids depuis Dataverse",
-    "DATASET_UPLOADING": "Téléchargement du jeu de données vers Dataverse",
-    "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse",
-    "DATASET_UPLOAD_FAILED": "Échec du téléchargement du jeu de données",
+    "DATASET_UPLOADING": "Téléversement de l'ensemble de données",
+    "DATASET_UPLOADED": "Ensemble de données téléversé",
+    "DATASET_UPLOAD_FAILED": "Échec du téléversement de l’ensemble de données",
     "DOWNLOAD": "Télécharger",
-    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse",
-    "DATA_EXPLORER": "Data Explorer"
+    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse"
   },
   "SIDEBAR": {
     "NO_GROUPS": "Aucun groupe",

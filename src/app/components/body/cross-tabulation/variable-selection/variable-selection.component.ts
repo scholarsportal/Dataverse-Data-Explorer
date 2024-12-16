@@ -19,7 +19,7 @@ import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [KeyValuePipe, DropdownComponent, NgClass],
+  imports: [DropdownComponent, NgClass],
   templateUrl: './variable-selection.component.html',
   styleUrl: './variable-selection.component.css',
 })
@@ -74,21 +74,13 @@ export class VariableSelectionComponent {
     index: number;
   }) {
     const { variableID, index, orientation } = value;
-    if (this.variablesMetadata()?.[variableID]) {
-      this.store.dispatch(
-        CrossTabulationUIActions.changeValueInGivenIndex({
-          index,
-          variableID,
-          orientation,
-        }),
-      );
-    } else {
-      this.store.dispatch(
-        CrossTabulationUIActions.fetchCrossTabAndChangeValueInGivenIndex({
-          ...value,
-        }),
-      );
-    }
+    this.store.dispatch(
+      CrossTabulationUIActions.changeValueInGivenIndex({
+        index,
+        variableID,
+        orientation,
+      }),
+    );
   }
 
   removeVariable(value: { index: number }) {
