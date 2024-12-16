@@ -19,7 +19,7 @@ import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [KeyValuePipe, DropdownComponent, NgClass],
+  imports: [DropdownComponent, NgClass],
   templateUrl: './variable-selection.component.html',
   styleUrl: './variable-selection.component.css',
 })

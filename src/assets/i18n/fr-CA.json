@@ -58,7 +58,6 @@
     }
   },
 
-
   "COMMON": {
     "ALL": "Tout",
     "LOADING_DATASET": "Chargement du jeu de données",
@@ -121,8 +120,7 @@
     "DATASET_UPLOADED": "Ensemble de données téléversé",
     "DATASET_UPLOAD_FAILED": "Échec du téléversement de l’ensemble de données",
     "DOWNLOAD": "Télécharger",
-    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse",
-    "DATA_EXPLORER": "Data Explorer"
+    "SAVE_TO_DATAVERSE": "Sauvegarder dans Dataverse"
   },
   "SIDEBAR": {
     "NO_GROUPS": "Aucun groupe",
