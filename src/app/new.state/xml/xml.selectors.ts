@@ -62,10 +62,10 @@ export const selectDatasetCitation = createSelector(
 export const selectDatasetVariables = createSelector(
   selectXmlFeature,
   (state): Variable[] => {
-    return Array.isArray(state.dataset?.codeBook.dataDscr.var)
-      ? state.dataset?.codeBook.dataDscr.var
-      : state.dataset?.codeBook.dataDscr.var
-        ? [state.dataset?.codeBook.dataDscr.var]
+    return Array.isArray(state.dataset?.codeBook?.dataDscr?.var)
+      ? state.dataset?.codeBook?.dataDscr?.var
+      : state.dataset?.codeBook?.dataDscr?.var
+        ? [state.dataset?.codeBook?.dataDscr?.var]
         : [];
   },
 );

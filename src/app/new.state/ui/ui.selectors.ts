@@ -142,10 +142,103 @@ export const selectOpenVariableHasCategories = createSelector(
   },
 );
 
+// Recreate cross tab values by matching categories with raw cross tab values using data from selecDatasetAllVariableCategories.
+// At this point we also remove rows that are in the missing categories.
+export const selectMatchCategories = createSelector(
+  selectDatasetAllVariableCategories,
+  selectDatasetVariableCrossTabValues,
+  selectCrossTabCategoriesMissing,
+  (allCategories, crossTabValues, missingCategories) => {
+    return matchCategoriesWithLabels(
+      allCategories,
+      crossTabValues,
+      missingCategories,
+    );
+  },
+);
+
+export const selectWeightVariableData = createSelector(
+  selectSelectedWeightVariable,
+  selectDatasetVariableCrossTabValues,
+  (weightVariableID, crossTabValues) => {
+    if (weightVariableID && crossTabValues[weightVariableID]) {
+      return crossTabValues[weightVariableID].map(Number);
+    }
+    return [];
+  },
+);
+
+export const selectCrossTabSelection = createSelector(
+  selectUIFeature,
+  (state) => state.bodyState.crossTab.selection || [],
+);
+
+export const selectCrossTabulationData = createSelector(
+  selectCrossTabSelection,
+  selectMatchCategories,
+  selectDatasetProcessedVariables,
+  selectWeightVariableData,
+  (
+    crossTabSelection,
+    processedAndMatchedCategories,
+    variables,
+    weightVariableData,
+  ) => {
+    // Get row and column variable IDs from selection
+    const rowVariables = crossTabSelection
+      .filter((v) => v.orientation === 'rows')
+      .map((v) => v.variableID);
+    const colVariables = crossTabSelection
+      .filter((v) => v.orientation === 'cols')
+      .map((v) => v.variableID);
+
+    // Create the data array for pivottable.js
+    const pivotData = createTable(
+      processedAndMatchedCategories,
+      Object.fromEntries(
+        crossTabSelection.map((v) => [
+          v.variableID,
+          `${variables[v.variableID]?.['@_name'] || v.variableID} - ${variables[v.variableID]?.['labl']?.['#text'] || v.variableID}`,
+        ]),
+      ),
+      weightVariableData,
+    );
+
+    const hasData = pivotData.length > 0;
+    const rowLabels = rowVariables.map(
+      (id) =>
+        `${variables[id]?.['@_name'] || id} - ${
+          variables[id]?.['labl']?.['#text']
+        }`,
+    );
+    const colLabels = colVariables.map(
+      (id) =>
+        `${variables[id]?.['@_name'] || id} - ${
+          variables[id]?.['labl']?.['#text']
+        }`,
+    );
+    console.log(colLabels);
+    return hasData
+      ? {
+          pivotData,
+          rows: rowLabels,
+          cols: colLabels,
+          hasData,
+        }
+      : {
+          pivotData: [],
+          rows: [],
+          cols: [],
+          hasData: false,
+        };
+  },
+);
+
 export const selectOpenVariableChartTable = createSelector(
   selectOpenVariableID,
   selectDatasetProcessedVariables,
   selectOpenVariableCategoriesMissing,
+  selectCrossTabulationData,
   (variableID, variables, missing) => {
     const chart: ChartData = {};
     let totalCount = 0;
@@ -181,6 +274,7 @@ export const selectOpenVariableChartTable = createSelector(
         invalid: missing.includes(value.catValu.toString()),
       };
     });
+
     Object.values(chart).forEach((value) => {
       value.countPercent =
         (Number(value.count) / totalCount) * 100 || Number.NEGATIVE_INFINITY;
@@ -302,98 +396,6 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       });
     }
     return summaryStatistics;
-  },
-);
-
-export const selectCrossTabSelection = createSelector(
-  selectUIFeature,
-  (state) => state.bodyState.crossTab.selection || [],
-);
-
-// Recreate cross tab values by matching categories with raw cross tab values using data from selecDatasetAllVariableCategories.
-// At this point we also remove rows that are in the missing categories.
-export const selectMatchCategories = createSelector(
-  selectDatasetAllVariableCategories,
-  selectDatasetVariableCrossTabValues,
-  selectCrossTabCategoriesMissing,
-  (allCategories, crossTabValues, missingCategories) => {
-    return matchCategoriesWithLabels(
-      allCategories,
-      crossTabValues,
-      missingCategories,
-    );
-  },
-);
-
-export const selectWeightVariableData = createSelector(
-  selectSelectedWeightVariable,
-  selectDatasetVariableCrossTabValues,
-  (weightVariableID, crossTabValues) => {
-    if (weightVariableID && crossTabValues[weightVariableID]) {
-      return crossTabValues[weightVariableID].map(Number);
-    }
-    return [];
-  },
-);
-
-export const selectCrossTabulationData = createSelector(
-  selectCrossTabSelection,
-  selectMatchCategories,
-  selectDatasetProcessedVariables,
-  selectWeightVariableData,
-  (
-    crossTabSelection,
-    processedAndMatchedCategories,
-    variables,
-    weightVariableData,
-  ) => {
-    // Get row and column variable IDs from selection
-    const rowVariables = crossTabSelection
-      .filter((v) => v.orientation === 'rows')
-      .map((v) => v.variableID);
-    const colVariables = crossTabSelection
-      .filter((v) => v.orientation === 'cols')
-      .map((v) => v.variableID);
-
-    // Create the data array for pivottable.js
-    const pivotData = createTable(
-      processedAndMatchedCategories,
-      Object.fromEntries(
-        crossTabSelection.map((v) => [
-          v.variableID,
-          `${variables[v.variableID]?.['@_name'] || v.variableID} - ${variables[v.variableID]?.['labl']?.['#text'] || v.variableID}`,
-        ]),
-      ),
-      weightVariableData,
-    );
-
-    const hasData = pivotData.length > 0;
-    const rowLabels = rowVariables.map(
-      (id) =>
-        `${variables[id]?.['@_name'] || id} - ${
-          variables[id]?.['labl']?.['#text']
-        }`,
-    );
-    const colLabels = colVariables.map(
-      (id) =>
-        `${variables[id]?.['@_name'] || id} - ${
-          variables[id]?.['labl']?.['#text']
-        }`,
-    );
-    console.log(colLabels);
-    return hasData
-      ? {
-          pivotData,
-          rows: rowLabels,
-          cols: colLabels,
-          hasData,
-        }
-      : {
-          pivotData: [],
-          rows: [],
-          cols: [],
-          hasData: false,
-        };
   },
 );
 
