@@ -15,6 +15,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from '../assets/i18n/localizations';
 import { Subject, takeUntil } from 'rxjs';
 
+
 @Component({
   selector: 'dct-root',
   template: `
@@ -24,10 +25,20 @@ import { Subject, takeUntil } from 'rxjs';
         <dct-body class="body" />
       } @else if (loading()) {
         <div class="h-screen w-screen flex flex-col items-center my-auto">
-          <h1
-            class="my-auto text-4xl font-bold animate-pulse dark:text-light-on-primary"
-          >
-            {{ 'APP.LOADING' | translate }}
+
+          <h1 class="my-auto w-full font-bold dark:text-light-on-primary">
+            <label
+              class="flex flex-col items-center justify-center text-center"
+            >
+              <span class="animate-pulse text-5xl"> {{ 'APP.LOADING' | translate }} </span>
+              <progress
+                max="100"
+                [value]="progress()"
+                class="w-1/2 rounded-xl mx-auto my-5"
+                id="dataset-progress"
+                aria-label="Loading dataset..."
+              ></progress>
+            </label>
           </h1>
         </div>
       } @else if (error()) {
@@ -84,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor() {
-    const lang = Languages.find((x) => x.id == navigator.language);
+  const lang = Languages.find((x) => x.id == navigator.language);
     if (lang) {
       this.setLang(lang.id);
     } else {
@@ -104,7 +115,19 @@ export class AppComponent implements OnInit, OnDestroy {
           (params['dfId'] as number);
         const apiKey = params['key'] as string;
         // If a dataset is in French then we automatically set the language to French
-        const language = params['dvLocale'] as string;
+        const language = params['locale'] as string;
+        const dvLocale = Languages.find(x=>x.dv == language);
+        if(dvLocale) {
+          localStorage.setItem('language',dvLocale.id);
+          setTimeout(()=>{ this.setLang(dvLocale.id) }, 500);
+        } else {
+          const lang = Languages.find(x=>x.id == navigator.language);
+          if(lang) {   
+            this.setLang(lang.id);
+          } else {
+            this.setLang("en-CA");
+          }
+        }
         // The identifier to specify the version of the dataset to load
         const metadataID = params['metadataID'] as number;
         if (callback) {
