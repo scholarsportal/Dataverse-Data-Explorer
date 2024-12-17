@@ -58,7 +58,7 @@
         [options]="variablesWithWeightedOnTop()"
         (onChange)="onWeightChange($event)"
         placeholder="{{ 'CROSS_TABULATION.SELECT' | translate }}"
-        styleClass="select bg-primary text-primary-content focus:text-base-content w-1/5 py-1.5 mr-0 md:mr-5"
+        styleClass="select border w-1/5 py-1.5 mr-0 md:mr-5"
         panelStyleClass="rounded border rounded-t-none w-full h-full text-base-content bg-base-100"
       >
         <ng-template let-item pTemplate="item">
@@ -81,6 +81,9 @@
         panelStyleClass="rounded border w-full h-full bg-base-100"
         styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
       >
+        <ng-template pTemplate="selectedItem" let-item>
+          {{ 'CROSS_TABULATION.'+item | translate }}
+        </ng-template>
         <ng-template let-value pTemplate="item">
           <span
             [ngClass]="{
@@ -88,7 +91,7 @@
             }"
             class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
           >
-            {{ value }}
+          {{ 'CROSS_TABULATION.'+value | translate }}
           </span>
         </ng-template>
       </p-dropdown>

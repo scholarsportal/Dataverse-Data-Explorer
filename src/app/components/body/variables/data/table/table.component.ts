@@ -23,7 +23,7 @@ import { TableNavComponent } from '../table-nav/table-nav.component';
 import { ChipsModule } from 'primeng/chips';
 import { TableMenuComponent } from '../table-menu/table-menu.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-table',
@@ -89,9 +89,19 @@ export class TableComponent {
   });
   searchResult = signal<VariablesSimplified[]>([]);
   searchResultVariables = computed(() => {
+    let txt1: string = "";
+    let txt2: string = "";
+    
+    this.translate.get("TABLE_NAV.SHOWING").subscribe((res: string) => {
+      txt1 = res;
+    });
+    this.translate.get("TABLE_NAV.BELOW").subscribe((res: string) => {
+      txt2 = res;
+    });
+
     if (this.searchResult().length > 0) { 
       if (this.searchResult().length < this.variables().length) {
-        this.liveAnnouncer.announce("Showing " + this.searchResult().length + " variables below.");
+        this.liveAnnouncer.announce(txt1 + this.searchResult().length + txt2);
       }
     }
     if (this.searchResult().length) {
@@ -108,7 +118,7 @@ export class TableComponent {
   currentPage = 0;
   itemsPerPage = signal(10);
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
     effect(() => {
       if (this.groupChanged()) {
         this.start();

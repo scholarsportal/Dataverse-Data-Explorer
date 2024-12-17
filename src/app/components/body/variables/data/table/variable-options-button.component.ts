@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
 import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -139,7 +139,7 @@ export class VariableOptionsButtonComponent {
     return variables;
   });
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {}
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
 
   launchView() {
     this.emitLaunchModal.emit({ mode: 'VIEW_VAR', variableID: this.variableID() });
@@ -151,13 +151,17 @@ export class VariableOptionsButtonComponent {
 
   addToCrossTab() {
     //if (this.crossTabValuesFetched()[this.variableID()]) {
-      this.store.dispatch(
-        CrossTabulationUIActions.addToSelection({
-          variableID: this.variableID(),
-          orientation: '',
-        }),
-      );
-      this.liveAnnouncer.announce('Variable added to cross tabulations.');
+    this.store.dispatch(
+      CrossTabulationUIActions.addToSelection({
+        variableID: this.variableID(),
+        orientation: '',
+      }),
+    );
+    let txt: string = "";
+    this.translate.get("COMMON.VAR_ADDED").subscribe((res: string) => {
+      txt = res;
+    });
+    this.liveAnnouncer.announce(txt);
     //}
     
   }
@@ -168,6 +172,10 @@ export class VariableOptionsButtonComponent {
         variableID: this.variableID(),
       }),
     );
-    this.liveAnnouncer.announce('Variable removed from cross tabulations.');
+    let txt: string = "";
+    this.translate.get("COMMON.VAR_REMOVED").subscribe((res: string) => {
+      txt = res;
+    });
+    this.liveAnnouncer.announce(txt);
   }
 }

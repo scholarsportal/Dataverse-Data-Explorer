@@ -12,11 +12,12 @@ import {
 import { ImportVariableFormTemplate } from '../../new.state/xml/xml.interface';
 import { XmlManipulationActions } from '../../new.state/xml/xml.actions';
 import { VariableTabUIAction } from '../../new.state/ui/ui.actions';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-import',
   standalone: true,
-  imports: [CommonModule, FormsModule, FileUploadButtonComponent],
+  imports: [CommonModule, FormsModule, FileUploadButtonComponent, TranslateModule],
   templateUrl: './import.component.html',
   styleUrl: './import.component.css',
   changeDetection: ChangeDetectionStrategy.Default,

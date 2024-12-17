@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 declare const jQuery: any;
 
@@ -35,7 +35,7 @@ export class CrossTableComponent {
   selectedViewOption = input<string>('Count');
   element: ElementRef = inject(ElementRef);
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
     effect(() => {
       if (this.data() && (this.rows() || this.cols())) {
         this.createTable();
@@ -73,7 +73,10 @@ export class CrossTableComponent {
       rendererName: 'Table',
       showUI: false,
     });
-
-    this.liveAnnouncer.announce('Your table is ready below.');
+    let txt: string = "";
+    this.translate.get("CROSS_TABULATION.TABLE_MESSAGE").subscribe((res: string) => {
+      txt = res;
+    });
+    setTimeout(() => {this.liveAnnouncer.announce(txt);},2000);
   }
 }

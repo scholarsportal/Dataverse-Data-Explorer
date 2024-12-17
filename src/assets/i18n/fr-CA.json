@@ -1,62 +1,4 @@
 {
-  "_TODO": {
-    "COMMENTS": "Below are variable translation to be reviewed or complete or to see live. Instructions: '//' means that I wrote an alternative translation in French, //* means that this is a question that I am asking myself (reflexion ",
-    "COMMON": {
-      "LOADING_DATASET": "Chargement du jeu de données",
-      "INTVQST": "Les directives pour l'intervieweur",
-      "POSTQST": "Instruction à propos de la question posée",
-      "CHANGES_APPLIED": "Modifications appliquées"
-    },
-    "APP": {
-      "WELCOME_MESSAGE": "",
-      "WELCOME_MESSAGE_EXPIRED": ""
-    },
-    "HEADER": {
-      "THEME_TOGGLE": "Basculer le thème",
-      "LANGUAGE_TOGGLE": "Sélection de la langue",
-      "DATASET_UPLOADING": "Téléchargement du jeu de données vers Dataverse",
-      "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse"
-    },
-    "RENAMING_BUTTON": {
-      "CONFIRM": "Confirmer le renommage // Confirmer // Confirmer le nouveau nom",
-      "CANCEL": "Annuler le renommage // Annuler // Annuler le nouveau nom"
-    },
-    "DELETING_BUTTON": {
-      "DOUBLE_CHECK": "Êtes-vous sûr // Êtes-vous sûr // En êtes-vous certain?"
-    },
-    "GROUP_BUTTON": {
-      "ADD_GROUP_SR": "un nouveau groupe de variables // Un nouveau... "
-    },
-    "IMPORT": {
-      "IMPORT_XML": "Importer XML // Importer un fichier XML",
-      "SELECT_DDI_SECTIONS": "Sélectionnez les sections et textes DDI à inclure :",
-      "GO_BACK": "Retourner aux variables // Retourner à la liste de variable",
-      "IMPORT_ERROR": "Il y a eu un problème avec votre fichier XML."
-    },
-    "BULK_EDIT_MODAL": {
-      "UPDATE_VARIABLES": "{count, plural, =1 {Mettre à jour # variable} other {Mettre à jour # variables}}"
-    },
-    "EDIT": {
-      "IS_WEIGHT": "Est un poids // Assigner comme variable de poids (Assign as weight variable) // Variable de poids (Weight variable) ",
-      "UPDATE": "METTRE À JOUR LES VARIABLES // Mettre à jour les variables"
-    },
-    "TABLE_NAV": {
-      "ITEMS_PER_PAGE": "Éléments par page // Nombre de variable par page",
-      "PREVIOUS_PAGE": "Aller à la page précédente des variables // Aller à la page précédente // Page précédente",
-      "NEXT_PAGE": "Aller à la page suivante des variables // Aller à la page suivante // Page suivante ",
-      "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
-    },
-    "CROSS_TABULATION": {
-      "ADD_VARIABLE": "AJOUTER UNE VARIABLE // Ajouter une variable",
-      "CHART_OR_TABLE": "",
-      "SELECT_WEIGHT": "Sélectionnez une valeur à utiliser comme poids pour vos données.  // ? une valeur or variable",
-      "NO_DATA_YET": "Pas encore de données. Commencez à ajouter des variables pour générer votre tableau. // Aucunes données. Commencez à ajouter des variables pour générer votre tableau. // Aucuns variables. Commencez à ajouter des variables pour générer votre tableau. ",
-      "NO_DATA": "Votre jeu de données ne contient aucune donnée.",
-      "ONE_MORE_STEP": "Une étape de plus. Définissez vos lignes et/ou colonnes.",
-      "STILL_LOADING": "Chargement en cours... Un moment s'il vous plaît",
-      "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
-    }
-  },
   "COMMON": {
     "SPACE": " ",
     "ALL": "Tout",
@@ -74,7 +16,7 @@
     "GROUP": "Groupe",
     "GROUPS": "Groupes",
     "OPTIONS": "Options",
-    "SELECT_SR": "",
+    "SELECT_SR": "Sélectionnez toutes les variables. Sélectionner cette ligne ou l'une des lignes ci-dessous fera basculer les options à la fin du tableau.",
     "SUMMARY_STATISTICS": "Statistiques sommaires",
     "VARIABLE_INFORMATION": "Information sur la variable",
     "MODE": "Mode",
@@ -100,21 +42,23 @@
     "CATEGORIES": "Catégories",
     "DATA_EXPLORER": "Explorateur de données",
     "NO_CATEGORIES": "Cette variable n'a pas de catégories",
-    "EDIT_VAR": "### Edit variable",
-    "VIEW_VAR": "### View variable",
-    "CHART_DATA": "### Chart Data",
+    "EDIT_VAR": "Modifier une variable",
+    "VIEW_VAR": "Visualiser une variable",
+    "CHART_DATA": "### Chart data",
     "CHART_VAR": "### Chart variable",
     "SHOW_IN_GRAPH": "### Show in graph",
-    "VALUES": "### Values",
-    "COUNT": "### Count",
-    "COUNT_PERC": "### Count (%)",
-    "WEIGHTED": "### Weighted (%)",
-    "WEIGHTED_COUNT": "### Weighted count",
-    "MAXIMUM": "### Maximum",
-    "MEDIAN": "### Median",
+    "VALUES": "Valeurs",
+    "COUNT": "Nombre",
+    "COUNT_PERC": "Nombre (%)",
+    "WEIGHTED": "Pondéré(e) (%)",
+    "WEIGHTED_COUNT": "Nombre d'observations (pondéré)",
+    "MAXIMUM": "Maximum",
+    "MEDIAN": "Médiane",
     "ADD_TO_CROSS": "### Add to cross tabulation",
     "ADDING_VAR": "### Adding variable. Please wait.",
-    "REM_CROSS": "### Remove from cross tabulation."
+    "REM_CROSS": "### Remove from cross tabulation.",
+    "VAR_ADDED": "### Variable added to cross tabulations.",
+    "VAR_REMOVED": "### Variable removed from cross tabulations."
   },
   "APP": {
     "LOADING": "Chargement du jeu de données",
@@ -122,8 +66,8 @@
     "ERROR_FETCH": "Erreur lors de la récupération du jeu de données : ",
     "ERROR_UNEXPECTED": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
     "WELCOME": "Bienvenue aux conservateurs de données",
-    "WELCOME_MESSAGE": "",
-    "WELCOME_MESSAGE_EXPIRED": ""
+    "WELCOME_MESSAGE": "### The Data Explorer allows data owners and curators to view summary statistics for variables and to create and edit variable-level metadata for any tabular file in a dataset.",
+    "WELCOME_MESSAGE_EXPIRED": "### If you are seeing this page, your link has expired. Please go back to your Dataverse instance for a new link to your dataset."
   },
   "HEADER": {
     "DATA_EXPLORER": "Explorateur de données",
@@ -170,7 +114,16 @@
     "IMPORT_SUCCESS": "Métadonnées importées avec succès !",
     "GO_BACK": "Retourner aux variables",
     "IMPORT_ERROR": "Il y a eu un problème avec votre XML.",
-    "SELECT_FILE": "Sélectionner le fichier XML"
+    "SELECT_FILE": "Sélectionner le fichier XML",
+    "VAR_GROUPS": "Groupes de variables",
+    "LABELS": "Étiquettes",
+    "QSTN_TXT": "Textes de questions",
+    "LITQST": "Question littérale",
+    "INTVQST": "Directives d'entrevue",
+    "POSTQST": "Instructions à propos de la question posée",
+    "UNIVERSE": "Univers",
+    "VAR_NOTE": "Remarques",
+    "WEIGHTS": "Poids"
   },
   "BULK_EDIT_MODAL": {
     "BULK_EDIT": "Modification en masse",
@@ -197,8 +150,8 @@
     "ADD_SELECTED": "### Add selected variables to group",
     "ADD_TO_GROUP": "### Add to group",
     "REMOVE_WEIGHT": "### Remove weight",
-    "APPLY": "### Apply",
-    "REMOVE": "### Remove"
+    "APPLY": "Soumettre",
+    "REMOVE": "Retirer"
   },
   "TABLE_NAV": {
     "SEARCH_TABLE": "Chercher",
@@ -208,13 +161,15 @@
     "NEXT_PAGE": "Aller à la page suivante des variables",
     "OF": "sur",
     "VARIABLE": "variable",
-    "VARIABLES": "variables"
+    "VARIABLES": "variables",
+    "SHOWING": "Afficher ",
+    "BELOW": " variables ci-dessous."
   },
   "CROSS_TABULATION": {
     "VARIABLE": "Variable",
     "VARIABLES": "Variables",
     "ADD_VARIABLE": "AJOUTER UNE VARIABLE",
-    "CHART_OR_TABLE": "### Select whether to generate a table or a chart. Charts display the table data in a bar graph and are not screen reader compatible.",
+    "CHART_OR_TABLE": "Choisissez si vous voulez générer un tableau ou un graphique. Les graphiques affichent les données du tableau sous forme de graphique à barres et ne sont pas compatibles avec les lecteurs d'écran.",
     "SELECT_WEIGHT": "Sélectionnez une valeur à utiliser comme poids pour vos données.",
     "SELECT_DISPLAY": "Comment souhaitez-vous afficher les valeurs dans le tableau ?",
     "EXPORT_TABLE": "Exporter le tableau au format CSV",
@@ -232,6 +187,21 @@
     "ROW": "LIGNE",
     "COLUMN": "COLONNE",
     "NONE": "### None",
-    "SELECT_ROW_COL": "### select a row or column" 
+    "SELECT_ROW_COL": "### select a row or column",
+    "GROUP": "### Group (Filter)",
+    "ALL_VARIABLES": "### All Variables",
+    "SELECT_VAR": "### Select Variable",
+    "FILTER": "### Filter",
+    "CATEGORIES": "### Categories (Filter)",
+    "NO_CATEGORIES": "### No categories available",
+    "REMOVE_ROW": "### Remove this row",
+    "CHART": "### Chart",
+    "SHOW_VALUE": "### Show Value",
+    "ROW_PERC": "### Row Percentage",
+    "COL_PERC": "### Column Percentage",
+    "TOTAL_PERC": "### Total Percentage",
+    "NEW_ROW": "### New row added above.",
+    "TABLE_MESSAGE": "### Your table is ready below.",
+    "REM_ROW": "### This row has been removed."
   }
 }

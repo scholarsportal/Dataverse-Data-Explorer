@@ -8,7 +8,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -118,7 +118,7 @@ export class DropdownComponent {
   });
   filterValue: string = '';
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {}
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
 
   onChangeVariableOrientation(value: string) {
     if (value === 'rows') {
@@ -175,6 +175,10 @@ export class DropdownComponent {
 
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
-    this.liveAnnouncer.announce("This row has been removed.");
+    let txt: string = "";
+    this.translate.get("CROSS_TABULATION.REM_ROW").subscribe((res: string) => {
+      txt = res;
+    });
+    this.liveAnnouncer.announce(txt);
   }
 }
