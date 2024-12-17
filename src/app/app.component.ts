@@ -10,10 +10,10 @@ import {
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
+import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from '../assets/i18n/localizations';
 import { Subject, takeUntil } from 'rxjs';
-import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 
 
 @Component({
@@ -23,8 +23,9 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
       @if (loaded()) {
         <dct-header class="header border-b"></dct-header>
         <dct-body class="body" />
-      } @else if (loading() || !loading()) {
+      } @else if (loading()) {
         <div class="h-screen w-screen flex flex-col items-center my-auto">
+
           <h1 class="my-auto w-full font-bold dark:text-light-on-primary">
             <label
               class="flex flex-col items-center justify-center text-center"
@@ -39,6 +40,25 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
               ></progress>
             </label>
           </h1>
+        </div>
+      } @else if (error()) {
+        <div
+          class="beautiful h-screen w-screen flex flex-col justify-around items-center"
+        >
+          <h1 class="text-6xl text-white font-sans font-bold">
+            An Error Occurred
+          </h1>
+          <p class="font-bold w-2/3 text-4xl text-white">
+            @if (error().type === 'fetch') {
+              Error fetching dataset: {{ error().message }}
+            } @else {
+              An unexpected error occurred. Please try again later.
+            }
+          </p>
+          <p class="font-thin my-10 w-2/3 text-2xl text-white">
+            Please go back to your Dataverse instance and try again. If the
+            problem persists, contact your system administrator.
+          </p>
         </div>
       } @else {
         <div
@@ -75,7 +95,12 @@ export class AppComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor() {
-
+  const lang = Languages.find((x) => x.id == navigator.language);
+    if (lang) {
+      this.setLang(lang.id);
+    } else {
+      this.setLang('en-CA');
+    }
   }
 
   ngOnInit() {
@@ -145,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private setLang(lang: string) {
-    let local = localStorage.getItem('language');
+    const local = localStorage.getItem('language');
     if (local) {
       this.translate.setDefaultLang(local);
       this.translate.use(local);

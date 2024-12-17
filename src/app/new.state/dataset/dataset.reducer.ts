@@ -176,19 +176,15 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(
-    XmlManipulationActions.weightProcessStart,
-    XmlManipulationActions.weightProcessFetchMissingValuesAndStart,
-    (state) => {
-      return {
-        ...state,
-        operationStatus: {
-          ...state.operationStatus,
-          weightProcess: 'pending' as const,
-        },
-      };
-    },
-  ),
+  on(XmlManipulationActions.weightProcessStart, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        weightProcess: 'pending' as const,
+      },
+    };
+  }),
   on(
     XmlManipulationActions.weightProcessSuccess,
     (state, { variablesWithCrossTabMetadata }) => {

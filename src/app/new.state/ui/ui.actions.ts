@@ -16,12 +16,6 @@ export const CrossTabulationUIActions = createActionGroup({
       variableID: string;
       orientation: 'rows' | 'cols' | '';
     }>(),
-    // Fetch cross tab values and then chang value in given index
-    'Fetch Cross Tab and Change Value in Given Index': props<{
-      index: number;
-      variableID: string;
-      orientation: 'rows' | 'cols' | '';
-    }>(),
     // Remove Variable From Cross Tabulation using variableID
     'Remove Variable Using VariableID': props<{ variableID: string }>(),
     // Remove variable from cross tabulation selection using index

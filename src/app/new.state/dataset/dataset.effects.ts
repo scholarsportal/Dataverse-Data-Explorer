@@ -1,43 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DdiService } from '../../services/ddi.service';
-import {
-  CrossTabulationUIActions,
-  VariableTabUIAction,
-} from '../ui/ui.actions';
-import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
-import {
-  DataverseFetchActions,
-  XmlManipulationActions,
-} from '../xml/xml.actions';
-import { DatasetActions } from './dataset.actions';
+import { of, switchMap } from 'rxjs';
+import { XmlManipulationActions } from '../xml/xml.actions';
 import { changeWeightForSelectedVariables } from './util';
 
-/**
- * This file contains effects for handling cross tabulation and weight value operations.
- *
- * Key effects and their purposes:
- *
- * 1. startWeightProcessing$
- *    - Triggered when variable info is saved
- *    - Checks if weight variable changed and handles fetching/processing accordingly
- *    - Either fetches missing cross tab values by calling fetchCrossTab$ or starts weight processing directly by calling processNewVariableWeight$
- *
- * 2. fetchCrossTabValues$ (below)
- *    - Fetches cross tab values for variables when they are added to selection or when weight variable changes
- *    - Part of the pipeline that fetches data before weight processing can occur
- *
- * 3. processWeightValues$ (below)
- *    - Processes weight calculations after values are fetched
- *    - Updates variables with new weighted values
- *
- * 4. crossTabSelectionEffects$ (below)
- *    - Manages the cross tab selection state
- *    - Handles adding/removing variables and position changes
- *    - Updates missing categories
- *
- * The effects form a pipeline where data flows from fetching -> processing -> state updates
- */
 @Injectable()
 export class DatasetEffects {
   private actions$ = inject(Actions);
@@ -58,27 +24,14 @@ export class DatasetEffects {
           newVariableValue.assignedWeight !==
           allVariables[variableID]['@_wgt-var']
         ) {
-          if (
-            !Object.keys(variablesWithCrossTabMetadata).includes(variableID)
-          ) {
-            return of(
-              XmlManipulationActions.weightProcessFetchMissingValuesAndStart({
-                allVariables,
-                selectedVariables: [variableID],
-                weightID: newVariableValue.assignedWeight,
-                variablesWithCrossTabMetadata,
-              }),
-            );
-          } else {
-            return of(
-              XmlManipulationActions.weightProcessStart({
-                allVariables,
-                selectedVariables: [variableID],
-                weightID: newVariableValue.assignedWeight,
-                variablesWithCrossTabMetadata,
-              }),
-            );
-          }
+          return of(
+            XmlManipulationActions.weightProcessStart({
+              allVariables,
+              selectedVariables: [variableID],
+              weightID: newVariableValue.assignedWeight,
+              variablesWithCrossTabMetadata,
+            }),
+          );
         }
         return of(
           XmlManipulationActions.weightProcessSuccess({
@@ -105,7 +58,7 @@ export class DatasetEffects {
         } = props;
         if (assignedWeight) {
           return of(
-            XmlManipulationActions.weightProcessFetchMissingValuesAndStart({
+            XmlManipulationActions.weightProcessStart({
               allVariables,
               selectedVariables: variableIDs,
               weightID: assignedWeight,
@@ -145,29 +98,6 @@ export class DatasetEffects {
           XmlManipulationActions.weightProcessSuccess({
             selectedVariables: selectedVariables,
             allVariables: newVariables,
-            variablesWithCrossTabMetadata,
-          }),
-        );
-      }),
-    ),
-  );
-  // When a user changes the weight variable, we fetch the missing cross tab values
-  private ddiService: DdiService = inject(DdiService);
-  fetchMissingCrossTabValuesAndProcessNewVariableWeight$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(XmlManipulationActions.weightProcessFetchMissingValuesAndStart),
-      switchMap((props) => {
-        const {
-          allVariables,
-          selectedVariables,
-          weightID,
-          variablesWithCrossTabMetadata,
-        } = props;
-        return of(
-          XmlManipulationActions.weightProcessStart({
-            allVariables,
-            selectedVariables,
-            weightID,
             variablesWithCrossTabMetadata,
           }),
         );

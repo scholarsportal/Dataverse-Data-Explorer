@@ -68,17 +68,23 @@ export class XmlEffects {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.decodeSuccess),
         exhaustMap(({ data }) =>
-          ddiService.fetchSignedURL(data.data.signedUrls[0].signedUrl).pipe(
-            map((xml) => {
-              return DataverseFetchActions.decodeAndFetchDDISuccess({
-                data: xml,
-                apiResponse: data,
-              });
-            }),
-            catchError((error) => {
-              return of(DataverseFetchActions.fetchDDIError(error));
-            }),
-          ),
+          ddiService
+            .fetchSignedURL(
+              data.data.signedUrls.find(
+                (url) => url.name === 'retrieveDataFileDDI',
+              )?.signedUrl || '',
+            )
+            .pipe(
+              map((xml) => {
+                return DataverseFetchActions.decodeAndFetchDDISuccess({
+                  data: xml,
+                  apiResponse: data,
+                });
+              }),
+              catchError((error) => {
+                return of(DataverseFetchActions.fetchDDIError(error));
+              }),
+            ),
         ),
       );
     },
@@ -89,21 +95,17 @@ export class XmlEffects {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.decodeAndFetchDDISuccess),
         switchMap(({ apiResponse, data, language }) => {
-          const variables =
-            data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
-            [];
           const urlForCrossTab = apiResponse?.data.signedUrls.find(
             (url) => url.name === 'retrieveDataFile',
           )?.signedUrl;
           if (!urlForCrossTab) {
             throw new Error('No URL found for cross tabulation');
           }
-          console.log('variables', variables);
+          const variables =
+            data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
+            [];
           return ddiService
-            .fetchCrossTabulationFromVariables(
-              variables.join(','),
-              urlForCrossTab,
-            )
+            .fetchCrossTabulationFromVariables(variables, urlForCrossTab)
             .pipe(
               map((crossTabData) => {
                 return DataverseFetchActions.completeCrossTabFetch({
