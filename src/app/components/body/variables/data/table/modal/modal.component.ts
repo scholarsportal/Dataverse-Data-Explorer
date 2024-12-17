@@ -36,6 +36,7 @@ import {
   selectDatasetVariableCrossTabValues,
   selectDatasetWeights,
 } from 'src/app/new.state/dataset/dataset.selectors';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-modal',
@@ -46,6 +47,7 @@ import {
     EditComponent,
     ModalHeaderComponent,
     ModalFooterComponent,
+    TranslateModule
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',

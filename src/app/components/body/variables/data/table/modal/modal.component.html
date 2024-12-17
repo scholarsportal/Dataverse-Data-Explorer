@@ -6,7 +6,7 @@
 >
   <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
     <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
-      <span class="text-base-100">Changes applied!</span>
+      <span class="text-base-100">{{ 'COMMON.CHANGES_APPLIED' | translate }}</span>
       <button (click)="closeLoadedToast()">
         <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +27,7 @@
       class="modal-header"
     ></dct-modal-header>
     <div class="modal-body h-full">
-      @if ((modalMode()) === 'view') {
+      @if ((modalMode()) === 'VIEW_VAR') {
         <dct-chart
           class="dark:text-white"
           [categoriesInvalid]="categoriesInvalid()"
@@ -42,7 +42,7 @@
           [weights]="allWeights()"
           [groups]="variableGroups()"
         ></dct-chart>
-      } @else if (modalMode() === 'edit') {
+      } @else if (modalMode() === 'EDIT_VAR') {
         <dct-edit
           (emitToast)="showToast()"
           [allVariables]="allVariables()"

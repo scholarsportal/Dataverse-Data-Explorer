@@ -6,6 +6,7 @@ import {
   effect,
   inject,
   signal,
+  OnInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CrossTableComponent } from './cross-table/cross-table.component';
@@ -31,7 +32,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 import { Variable } from 'src/app/new.state/xml/xml.interface';
 import { generateCrossTabCSV } from '../../../new.state/ui/util';
-
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'dct-cross-tabulation',
   standalone: true,
@@ -43,12 +44,13 @@ import { generateCrossTabCSV } from '../../../new.state/ui/util';
     FormsModule,
     CrossChartComponent,
     SelectButtonModule,
+    TranslateModule
   ],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrossTabulationComponent {
+export class CrossTabulationComponent implements OnInit {
   loadingStatus: 'init' | 'delayed' | '' = '';
   store = inject(Store);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
@@ -83,36 +85,47 @@ export class CrossTabulationComponent {
   chartOrTable = signal(['Chart', 'Table']);
   defaultDataView = signal('Table');
   table = computed(() => this.tableData().pivotData);
+
+  opt1 = 'test';
+  
   options = signal([
-    'Show Value',
+    'SHOW_VALUE',
     // 'Weighted Value',
-    'Row Percentage',
-    'Column Percentage',
-    'Total Percentage',
+    'ROW_PERC',
+    'COL_PERC',
+    'TOTAL_PERC',
   ]);
-  selectedOption = signal('Show Value');
+
+  selectedOption = signal('SHOW_VALUE');
+  
   selectedOptionComputed = computed(() => {
     switch (this.selectedOption()) {
-      case 'Show Value':
+      case 'SHOW_VALUE':
         return 'Count';
-      case 'Row Percentage':
+      case 'ROW_PERC':
         return 'Count as Fraction of Rows';
-      case 'Column Percentage':
+      case 'COL_PERC':
         return 'Count as Fraction of Columns';
-      case 'Total Percentage':
+      case 'TOTAL_PERC':
         return 'Count as Fraction of Total';
       default:
         return 'Count';
     }
   });
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
     effect(() => {
       if (this.isFetching()) {
         this.fetchingCheck();
       } else {
         this.loadingStatus = '';
       }
+    });
+  }
+
+  ngOnInit(): void {
+    this.translate.get("CROSS_TABULATION.SHOW_VALUE").subscribe((res: string) => {
+      this.opt1 = res;
     });
   }
 
@@ -130,7 +143,11 @@ export class CrossTabulationComponent {
         orientation: '',
       }),
     );
-    this.liveAnnouncer.announce('New row added above.');
+    let txt: string = "";
+    this.translate.get("CROSS_TABULATION.NEW_ROW").subscribe((res: string) => {
+      txt = res;
+    });
+    this.liveAnnouncer.announce(txt);
   }
 
   onWeightChange(event: { value: Variable }) {

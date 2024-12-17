@@ -19,6 +19,7 @@ import {
 import { VariableInformationComponent } from './variable-information/variable-information.component';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { shuffleColours } from './chart.interface';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-chart',
@@ -27,6 +28,7 @@ import { shuffleColours } from './chart.interface';
     CommonModule,
     SummaryStatisticsComponent,
     VariableInformationComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './chart.component.html',

@@ -49,7 +49,7 @@ export const VariableTabUIAction = createActionGroup({
     'Change Selected Group ID': props<{ groupID: string }>(),
     // User has opened a variables chart or edit modal
     'Change Open Variable': props<{
-      mode?: 'edit' | 'view';
+      mode?: 'EDIT_VAR' | 'VIEW_VAR';
       variableID: string;
     }>(),
     // User has selected one or more variables

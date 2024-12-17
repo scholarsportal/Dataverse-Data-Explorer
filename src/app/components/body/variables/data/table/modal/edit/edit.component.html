@@ -1,6 +1,6 @@
 <form [formGroup]="variableForm" class="flex flex-col w-full">
   <label class="form-label">
-    Label
+    {{ 'COMMON.LABEL' | translate }}
     <input
       class="form-input form-outline"
       formControlName="label"
@@ -10,7 +10,7 @@
     />
   </label>
   <label class="form-label">
-    Literal Question
+    {{ 'COMMON.LITQST' | translate }}
     <input
       class="form-input form-outline"
       formControlName="literalQuestion"
@@ -20,7 +20,7 @@
     />
   </label>
   <label class="form-label">
-    Interviewer Instructions
+    {{ 'COMMON.INTVQST' | translate }}
     <input
       class="form-input form-outline"
       formControlName="interviewQuestion"
@@ -30,7 +30,7 @@
     />
   </label>
   <label class="form-label">
-    Post Question
+    {{ 'COMMON.POSTQST' | translate }}
     <input
       class="form-input form-outline"
       formControlName="postQuestion"
@@ -40,7 +40,7 @@
     />
   </label>
   <label class="form-label">
-    Universe
+    {{ 'COMMON.UNIVERSE' | translate }}
     <input
       class="form-input form-outline"
       formControlName="universe"
@@ -50,7 +50,7 @@
     />
   </label>
   <label class="form-label">
-    Notes
+    {{ 'COMMON.NOTES' | translate }}
     <textarea
       class="form-input form-outline"
       cols="50"
@@ -63,7 +63,7 @@
   </label>
   <div class="flex flex-row">
     <label class="form-label w-full" for="multiselect-edit">
-      Group(s)
+      {{ 'COMMON.GROUPS' | translate }}
       <p-multiSelect
         (onChange)="changeGroup($event)"
         [filter]="false"
@@ -72,8 +72,9 @@
         [ngModel]="variableGroupsPlaceholder"
         [options]="allGroupsArray()"
         id="multiselect-edit"
-        placeholder="Add Variable to Group"
+        placeholder="{{ 'EDIT.ADD_TO_GROUP' | translate }}"
         styleClass="select select-bordered border-slate-300 w-full"
+        emptyMessage="{{ 'SIDEBAR.NO_GROUPS' | translate }}"
         >
         <ng-template let-value pTemplate="selectedItems">
           <span *ngIf="variableGroupsPlaceholder.length > 0; 
@@ -91,9 +92,11 @@
           </ng-template>
           <ng-template #elseTemplate>
             <ng-template [ngIf]="value?.length ?? 0 > 0" [ngIfElse]="defaultTemplate"
-              >{{ value?.length ?? 0 }} selected
+              >{{ value?.length ?? 0 }} {{ 'EDIT.SELECTED' | translate }}
             </ng-template>
-            <ng-template #defaultTemplate>Add Variable to Group</ng-template>
+            <ng-template #defaultTemplate>
+              {{ 'EDIT.ADD_TO_GROUP' | translate }}
+            </ng-template>
           </ng-template>
         </ng-template>
         <ng-template let-value pTemplate="item">
@@ -108,13 +111,13 @@
     </label>
   </div>
   <div class="flex flex-row pr-5">
-    <label class="form-label" for="weightVar">Weight Variable
+    <label class="form-label" for="weightVar">{{ 'EDIT.WEIGHT_VARIABLE' | translate }}
       <select
         class="select select-bordered w-full max-w-xs"
         formControlName="assignedWeight"
         id="weightVar"
       >
-        <option value="">No Weight Assigned</option>
+        <option value="">{{ 'COMMON.NO_WEIGHT' | translate }}</option>
         @for (weightValue of weights() | keyvalue; track $index) {
           <option [value]="weightValue.key">
             {{ weightValue.value }}
@@ -132,7 +135,7 @@
         id="isWeight"
         name="isWeight"
         type="checkbox"
-      />Is Weight
+      />{{ 'EDIT.IS_WEIGHT' | translate }}
     </label>
   </div>
 </form>
@@ -151,5 +154,5 @@
       stroke-linejoin="round"
     />
   </svg>
-  <span class="button-label">UPDATE VARIABLES</span>
+  <span class="button-label">{{ 'EDIT.UPDATE' | translate }}</span>
 </button>

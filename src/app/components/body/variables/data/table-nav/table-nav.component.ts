@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { VariablesSimplified } from '../../../../../new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-table-nav',
@@ -37,7 +37,7 @@ export class TableNavComponent {
 
   pageLimitOptions = [{ value: 10 }, { value: 25 }, { value: 50 }];
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
     effect(() => {
       if (this.groupChanged().length) {
         this.searchTerm = '';
@@ -70,13 +70,26 @@ export class TableNavComponent {
 
   pagePrevious() {
     this.pagePreviousClick.emit();
-    const range = this.indexRange();
-    this.liveAnnouncer.announce("Showing " + range);
+    setTimeout(() => {
+      const range = this.indexRange();
+      let txt: string = "";
+      this.translate.get("TABLE_NAV.SHOWING").subscribe((res: string) => {
+        txt = res;
+      });
+      this.liveAnnouncer.announce(txt + range);
+    },500);
   }
 
   pageNext() {
     this.pageNextClick.emit();
-    const range = this.indexRange();
-    this.liveAnnouncer.announce("Showing " + range);
+    setTimeout(() => {
+      const range = this.indexRange();
+      let txt: string = "";
+      this.translate.get("TABLE_NAV.SHOWING").subscribe((res: string) => {
+        txt = res;
+      });
+      
+      this.liveAnnouncer.announce(txt + range);
+    },500);
   }
 }

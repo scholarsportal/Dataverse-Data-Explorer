@@ -1,65 +1,6 @@
 {
-    "_TODO": {
-      "COMMENTS": "Below are variable translation to be reviewed or complete or to see live. Instructions: '//' means that I wrote an alternative translation in French, //* means that this is a question that I am asking myself (reflexion ",
-      "COMMON": {
-        "LOADING_DATASET": "Chargement du jeu de données",
-        "INTVQST": "Les directives pour l'intervieweur",
-        "POSTQST": "Instruction à propos de la question posée",
-        "CHANGES_APPLIED": "Modifications appliquées"
-      },
-      "APP": {
-        "WELCOME_MESSAGE": "",
-        "WELCOME_MESSAGE_EXPIRED": ""
-      },
-      "HEADER": {
-        "THEME_TOGGLE": "Basculer le thème",
-        "LANGUAGE_TOGGLE": "Sélection de la langue",
-        "DATASET_UPLOADING": "Téléchargement du jeu de données vers Dataverse",
-        "DATASET_UPLOADED": "Jeu de données téléchargé vers Dataverse"
-      },
-      "RENAMING_BUTTON": {
-        "CONFIRM": "Confirmer le renommage // Confirmer // Confirmer le nouveau nom",
-        "CANCEL": "Annuler le renommage // Annuler // Annuler le nouveau nom"
-      },
-      "DELETING_BUTTON": {
-        "DOUBLE_CHECK": "Êtes-vous sûr // Êtes-vous sûr // En êtes-vous certain?"
-      },
-      "GROUP_BUTTON": {
-        "ADD_GROUP_SR": "un nouveau groupe de variables // Un nouveau... "
-      },
-      "IMPORT": {
-        "IMPORT_XML": "Importer XML // Importer un fichier XML",
-        "SELECT_DDI_SECTIONS": "Sélectionnez les sections et textes DDI à inclure :",
-        "GO_BACK": "Retourner aux variables // Retourner à la liste de variable",
-        "IMPORT_ERROR": "Il y a eu un problème avec votre fichier XML."
-      },
-      "BULK_EDIT_MODAL": {
-        "UPDATE_VARIABLES": "{count, plural, =1 {Mettre à jour # variable} other {Mettre à jour # variables}}"
-      },
-      "EDIT": {
-        "IS_WEIGHT": "Est un poids // Assigner comme variable de poids (Assign as weight variable) // Variable de poids (Weight variable) ",
-        "UPDATE": "METTRE À JOUR LES VARIABLES // Mettre à jour les variables"
-      },
-      "TABLE_NAV": {
-        "ITEMS_PER_PAGE": "Éléments par page // Nombre de variable par page",
-        "PREVIOUS_PAGE": "Aller à la page précédente des variables // Aller à la page précédente // Page précédente",
-        "NEXT_PAGE": "Aller à la page suivante des variables // Aller à la page suivante // Page suivante ",
-        "RANGE": "{{startIndex}} - {{endIndex}} sur {{length}}"
-      },
-      "CROSS_TABULATION": {
-        "ADD_VARIABLE": "AJOUTER UNE VARIABLE // Ajouter une variable",
-        "CHART_OR_TABLE": "",
-        "SELECT_WEIGHT": "Sélectionnez une valeur à utiliser comme poids pour vos données.  // ? une valeur or variable",
-        "NO_DATA_YET": "Pas encore de données. Commencez à ajouter des variables pour générer votre tableau. // Aucunes données. Commencez à ajouter des variables pour générer votre tableau. // Aucuns variables. Commencez à ajouter des variables pour générer votre tableau. ",
-        "NO_DATA": "Votre jeu de données ne contient aucune donnée.",
-        "ONE_MORE_STEP": "Une étape de plus. Définissez vos lignes et/ou colonnes.",
-        "STILL_LOADING": "Chargement en cours... Un moment s'il vous plaît",
-        "NOTHING_HERE_YET": "Rien ici pour le moment. Ajoutez une variable pour commencer à créer votre tableau. // Il y a aucune données pour le moment. Ajoutez une variable pour commencer à créer votre tableau. "
-      }
-    },
-
-
     "COMMON": {
+      "SPACE": "",
       "ALL": "All",
       "LOADING_DATASET": "Loading dataset",
       "VARIABLE": "Variable",
@@ -94,12 +35,30 @@
       "UPDATE": "Update",
       "CHANGES_APPLIED": "Changes applied",
       "VIEW": "VIEW",
+      "EDIT": "EDIT",
       "CHART": "Chart",
       "TABLE": "Table",
       "FILTER": "Filter",
       "CATEGORIES": "Categories",
       "DATA_EXPLORER": "Data Explorer",
-      "NO_CATEGORIES": "This variable has no categories"  
+      "NO_CATEGORIES": "This variable has no categories",
+      "EDIT_VAR": "Edit variable",
+      "VIEW_VAR": "View variable",
+      "CHART_DATA": "Chart data",
+      "CHART_VAR": "Chart variable",
+      "SHOW_IN_GRAPH": "Show in graph",
+      "VALUES": "Values",
+      "COUNT": "Count",
+      "COUNT_PERC": "Count (%)",
+      "WEIGHTED": "Weighted (%)",
+      "WEIGHTED_COUNT": "Weighted count",
+      "MAXIMUM": "Maximum",
+      "MEDIAN": "Median",
+      "ADD_TO_CROSS": "Add to cross tabulation",
+      "ADDING_VAR": "Adding variable. Please wait.",
+      "REM_CROSS": "Remove from cross tabulation.",
+      "VAR_ADDED": "Variable added to cross tabulations.",
+      "VAR_REMOVED": "Variable removed from cross tabulations."
     },
     "APP": {
       "LOADING": "Loading dataset ...",
@@ -155,25 +114,44 @@
       "IMPORT_SUCCESS": "Imported Metadata Successfully!",
       "GO_BACK": "Go Back to Variables",
       "IMPORT_ERROR": "There was a problem with your XML.",
-      "SELECT_FILE": "Select XML file"  
+      "SELECT_FILE": "Select XML file",
+      "VAR_GROUPS": "Variable Groups",
+      "LABELS": "Labels",
+      "QSTN_TXT": "Question Texts",
+      "LITQST": "Literal Question",
+      "INTVQST": "Interviewer Question",
+      "POSTQST": "Post Question",
+      "UNIVERSE": "Universe",
+      "VAR_NOTE": "Variable Notes",
+      "WEIGHTS": "Weights"
     },
     "BULK_EDIT_MODAL": {
       "BULK_EDIT": "Bulk Edit",
       "BULK_EDIT_VARIABLES": "Bulk Edit Variables",
-      "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}"  
+      "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}",
+      "UPDATE": "Update",
+      "VARS": "variables"  
     },
     "EDIT": {
       "ADD_TO_GROUP": "Add Variable to Group",
       "WEIGHT_VARIABLE": "Weight Variable",
       "IS_WEIGHT": "Is Weight",
-      "UPDATE": "UPDATE VARIABLES"  
+      "UPDATE": "UPDATE VARIABLES",
+      "SELECTED": "selected"
     },
     "MODAL_HEADER": {
       "VARIABLE_NAVIGATE_LEFT": "Variable Navigate left",
       "VARIABLE_NAVIGATE_RIGHT": "Variable Navigate right"  
     },
     "TABLE_MENU": {
-      "ASSIGN_WEIGHT": "Assign Weight"
+      "ASSIGN_WEIGHT": "Assign weight",
+      "NO_GROUP": "No group or weight option selected",
+      "VAR_TABLE_OPTS": "Variable table options",
+      "ADD_SELECTED": "Add selected variables to group",
+      "ADD_TO_GROUP": "Add to group",
+      "REMOVE_WEIGHT": "Remove weight",
+      "APPLY": "Apply",
+      "REMOVE": "Remove"
     },
     "TABLE_NAV": {
       "SEARCH_TABLE": "Search table",
@@ -183,9 +161,13 @@
       "NEXT_PAGE": "Go to Next Variable Page",
       "OF": "of",
       "VARIABLE": "variable",
-      "VARIABLES": "variables"  
+      "VARIABLES": "variables",  
+      "SHOWING": "Showing ",
+      "BELOW": " variables below."
     },
     "CROSS_TABULATION": {
+      "VARIABLE": "Variable",
+      "VARIABLES": "Variables",
       "ADD_VARIABLE": "ADD VARIABLE",
       "CHART_OR_TABLE": "Select whether to generate a table or a chart. Charts display the table data in a bar graph and are not screen reader compatible.",
       "SELECT_WEIGHT": "Select a value to use as a weight for your data.",
@@ -195,9 +177,31 @@
       "NO_DATA_YET": "No Data yet. Start adding variables to generate your table.",
       "NO_DATA": "Your dataset does not contain any data.",
       "ONE_MORE_STEP": "One more step. Set your rows and/or columns.",
-      "STILL_LOADING": "Still loading... One moment please",
+      "STILL_LOADING": "Still loading... One moment please.",
       "NOTHING_HERE_YET": "Nothing here yet. Add a variable to start creating your table.",
-      "ROW_COLUMN": "Row or Column",
-      "REMOVE_VARIABLE": "Remove this variable"  
+      "ROW_COLUMN": "Row or Column?",
+      "REMOVE_VARIABLE": "Remove this variable", 
+      "TABLE": "Table",
+      "WEIGHT": "Weight",
+      "SELECT": "Select Weight",
+      "ROW": "ROW",
+      "COLUMN": "COLUMN",
+      "NONE": "### None",
+      "SELECT_ROW_COL": "### select a row or column",
+      "GROUP": "Group (Filter)",
+      "ALL_VARIABLES": "All Variables",
+      "SELECT_VAR": "Select Variable",
+      "FILTER": "Filter",
+      "CATEGORIES": "Categories (Filter)",
+      "NO_CATEGORIES": "No categories available",
+      "REMOVE_ROW": "Remove this row",
+      "CHART": "Chart",
+      "SHOW_VALUE": "Show Value",
+      "ROW_PERC": "Row Percentage",
+      "COL_PERC": "Column Percentage",
+      "TOTAL_PERC": "Total Percentage",
+      "NEW_ROW": "New row added above.",
+      "TABLE_MESSAGE": "Your table is ready below.",
+      "REM_ROW": "This row has been removed."
     }
   }

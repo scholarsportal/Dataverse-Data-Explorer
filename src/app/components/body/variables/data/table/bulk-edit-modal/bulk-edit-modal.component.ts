@@ -9,11 +9,12 @@ import {
 import { Store } from '@ngrx/store';
 import { XmlManipulationActions } from '../../../../../../new.state/xml/xml.actions';
 import { Variable } from '../../../../../../new.state/xml/xml.interface';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-bulk-edit-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslateModule],
   templateUrl: './bulk-edit-modal.component.html',
   styleUrl: './bulk-edit-modal.component.css',
 })
