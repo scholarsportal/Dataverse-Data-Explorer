@@ -84,6 +84,7 @@ export class CrossTabulationComponent {
   chartOrTable = signal(['Chart', 'Table']);
   defaultDataView = signal('Table');
   table = computed(() => this.tableData().pivotData);
+  
   options = signal([
     'Show Value',
     // 'Weighted Value',

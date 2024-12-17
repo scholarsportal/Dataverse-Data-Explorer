@@ -235,6 +235,16 @@
       "ROW": "ROW",
       "COLUMN": "COLUMN",
       "NONE": "### None",
-      "SELECT_ROW_COL": "### select a row or column" 
+      "SELECT_ROW_COL": "### select a row or column",
+      "GROUP": "Group (Filter)",
+      "ALL_VARIABLES": "All Variables",
+      "SELECT_VAR": "Select Variable",
+      "FILTER": "Filter",
+      "CATEGORIES": "Categories (Filter)",
+      "NO_CATEGORIES": "No categories available",
+      "REMOVE_ROW": "Remove this row",
+      "CHART": "Chart",
+      "SHOW_VALUE": "Show Value"
+      
     }
   }

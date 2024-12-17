@@ -35,13 +35,13 @@
   </div>
   <div class="w-full md:w-2/12 md:pr-1">
     <label class="my-2 flex flex-col" for="groupDropdown">
-      Group (Filter)
+      {{ 'CROSS_TABULATION.GROUP' | translate }}
       <p-dropdown
         [ngModel]="selectedGroup()"
         optionValue="key"
         optionLabel="value.labl"
         (ngModelChange)="onGroupChange($event)"
-        placeholder="All Variables"
+        placeholder="{{ 'CROSS_TABULATION.ALL_VARIABLES' | translate }}"
         [options]="groups() | keyvalue"
         styleClass="select w-full py-1.5 px-3 mt-2 bg-base-100 rounded border"
         panelStyleClass="rounded bg-base-100 border border-slate-300"
@@ -54,7 +54,7 @@
   </div>
   <div class="w-full md:w-5/12 md:pr-1">
     <label class="my-2 flex flex-col" for="variableDropdown"
-      >Variable
+      >{{ 'CROSS_TABULATION.VARIABLE' | translate }}
       <p-dropdown
         [ngModel]="selectedVariableID()"
         [options]="filteredVariables()"
@@ -63,7 +63,7 @@
         filterBy="label"
         optionValue="variableID"
         optionLabel="label"
-        placeholder="Select Variable"
+        placeholder="{{ 'CROSS_TABULATION.SELECT_VAR' | translate }}"
         styleClass="select w-full py-1.5 px-3 mt-2 rounded border bg-base-100"
         panelStyleClass="w-44 relative rounded border border-slate-300 bg-base-100"
       >
@@ -74,7 +74,7 @@
                 class="px-2 rounded border w-full border-slate-300 bg-base-100"
                 type="text"
                 pInputText
-                placeholder="Filter"
+                placeholder="{{ 'CROSS_TABULATION.FILTER' | translate }}"
                 [(ngModel)]="filterValue"
                 (click)="$event.stopPropagation()"
                 (keyup)="options.filter($event)"
@@ -108,11 +108,11 @@
   </div>
   <div class="w-full md:w-2/12 md:pr-1">
     <label class="my-2 flex flex-col" for="categoriesSelectedDropdown">
-      Categories (Filter)
+      {{ 'CROSS_TABULATION.CATEGORIES' | translate }}
       <p-multiSelect
         [options]="filteredCategories() | keyvalue"
         [ngModel]="filteredMissing()"
-        placeholder="None"
+        placeholder="{{ 'CROSS_TABULATION.NONE' | translate }}"
         [disabled]="!hasCategories()" 
         (ngModelChange)="changeMissingValues($event)"
         optionLabel="value"
@@ -121,12 +121,12 @@
         styleClass="select select-cats w-full px-3 py-1.5 mt-2 rounded border bg-base-100"
       >
         <ng-template pTemplate="empty">
-          <span>No categories available</span>
+          <span>{{ 'CROSS_TABULATION.NO_CATEGORIES' | translate }}</span>
         </ng-template>
         
         <ng-template pTemplate="selectedItems" let-items>
           @if (!hasCategories()) {
-            <span>None</span>
+            <span>{{ 'CROSS_TABULATION.NONE' | translate }}</span>
           } @else {
             
               @for (item of items; track $index) {
@@ -137,9 +137,8 @@
                   , {{ item.value }}
                 </span>
               } @empty {
-                <span>None</span>
+                <span>{{ 'CROSS_TABULATION.NONE' | translate }}</span>
               }
-            
           }
         </ng-template>
         <ng-template let-item pTemplate="item">
@@ -181,10 +180,8 @@
             stroke-linejoin="round"
           />
         </svg>
-        <span class="sr-only">Remove this row</span>
+        <span class="sr-only">{{ 'CROSS_TABULATION.REMOVE_ROW' | translate }}</span>
       </button>
     </div>
   </div>
 </div>
-
-

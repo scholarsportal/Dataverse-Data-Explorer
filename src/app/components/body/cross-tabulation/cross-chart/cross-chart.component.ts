@@ -9,13 +9,14 @@ import {
 import { NgClass } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 import { join } from 'path';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-cross-chart',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, TranslateModule],
   template: `
-    <h3 class="sr-only">Chart</h3>
+    <h3 class="sr-only">{{ 'CROSS_TABULATION.CHART' | translate }}</h3>
     <div class="flex h-full w2/3 mt-4">
       <canvas id="crossTabChart"> {{ chartJS }}</canvas>
     </div>

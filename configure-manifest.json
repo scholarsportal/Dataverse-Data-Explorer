@@ -1,5 +1,5 @@
 {
-  "displayName": "Data Explorer TEST 2",
+  "displayName": "Data Explorer",
   "description": "Odesi Data Explorer for viewing, configuring and editing variables",
   "scope": "file",
   "type": "configure",
