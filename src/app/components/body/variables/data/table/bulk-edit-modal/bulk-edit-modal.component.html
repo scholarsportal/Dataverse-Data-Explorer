@@ -1,5 +1,5 @@
 <button (click)="openModal()" class="btn border border-slate-300 bg-transparent">
-  Bulk Edit
+  {{ 'BULK_EDIT_MODAL.BULK_EDIT' | translate }}
 </button>
 <dialog #bulkEdit class="modal modal-bottom sm:modal-middle font-normal">
   <div class="modal-box">
@@ -20,16 +20,16 @@
               stroke-linejoin="round"
             />
           </svg>
-          <span class="sr-only">close</span>
+          <span class="sr-only">{{ 'COMMON.CLOSE' | translate }}</span>
         </button>
-        <h2 class="text-2xl">Bulk Edit Variables</h2>
+        <h2 class="text-2xl">{{ 'BULK_EDIT_MODAL.BULK_EDIT_VARIABLES' | translate }}</h2>
       </div>
       <hr class="divider" />
     </div>
     <div class="modal-body h-full">
       <form [formGroup]="variableForm" class="flex flex-col">
         <label class="form-label" for="label">
-          Label
+          {{ 'COMMON.LABEL' | translate }}
           <input
             class="form-input form-outline"
             formControlName="label"
@@ -39,7 +39,7 @@
           />
         </label>
         <label class="form-label" for="literalQuestion">
-          Literal Question
+          {{ 'COMMON.LITQST' | translate }}
           <input
             class="form-input form-outline"
             formControlName="literalQuestion"
@@ -49,7 +49,7 @@
           />
         </label>
         <label class="form-label" for="interviewQuestion">
-          Interviewer Question
+          {{ 'COMMON.INTVQST' | translate }}
           <input
             class="form-input form-outline"
             formControlName="interviewQuestion"
@@ -59,8 +59,7 @@
           />
         </label>
         <label class="form-label" for="postQTxt">
-          Post Question
-
+          {{ 'COMMON.POSTQST' | translate }}
           <input
             class="form-input form-outline"
             formControlName="postQuestion"
@@ -70,7 +69,7 @@
           />
         </label>
         <label class="form-label" for="universe">
-          Universe
+          {{ 'COMMON.UNIVERSE' | translate }}
           <input
             class="form-input form-outline"
             formControlName="universe"
@@ -80,7 +79,7 @@
           />
         </label>
         <label class="form-label" for="notes">
-          Notes
+          {{ 'COMMON.NOTES' | translate }}
           <textarea
             class="form-input form-outline"
             cols="50"
@@ -109,7 +108,11 @@
               stroke-linejoin="round"
             />
           </svg>
-          <span class="">UPDATE {{ selectedVariables().length }} VARIABLES</span>
+          <span class="">
+            {{ 'BULK_EDIT_MODAL.UPDATE' | translate }} 
+            {{ selectedVariables().length }}
+            {{ 'BULK_EDIT_MODAL.VARS' | translate }}
+          </span>
         </button>
       </form>
     </div>

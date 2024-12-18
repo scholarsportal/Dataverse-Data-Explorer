@@ -11,7 +11,7 @@ export interface UIState {
       };
       openVariable: {
         variableID: string;
-        mode: 'edit' | 'view';
+        mode: 'EDIT_VAR' | 'VIEW_VAR';
       };
     };
     crossTab: {

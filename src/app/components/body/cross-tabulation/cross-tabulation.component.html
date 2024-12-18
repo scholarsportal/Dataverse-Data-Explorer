@@ -21,13 +21,14 @@
             stroke-linejoin="round"
           />
         </svg>
-        <span class="my-auto mx-2.5 font-medium">ADD VARIABLE</span>
+        <span class="my-auto mx-2.5 font-medium">
+          {{ 'CROSS_TABULATION.ADD_VARIABLE' | translate }}
+        </span>
       </button>
     </div>
     <div [ngClass]="{ hidden: !hasData() }" class="flex flex-row mr-5 md:mr-0">
       <div class="sr-only">
-        Select whether to generate a table or a chart. Charts display the table
-        data in a bar graph and are not screen reader compatible.
+        {{ 'CROSS_TABULATION.CHART_OR_TABLE' | translate }}
       </div>
       <p-selectButton
         [(ngModel)]="defaultDataView"
@@ -50,14 +51,14 @@
   @if (defaultDataView() === 'Table') {
     <div class="ml-5 mb-5 md:ml-0">
       <div class="sr-only">
-        Select a value to use as a weight for your data.
+        {{ 'CROSS_TABULATION.SELECT_WEIGHT' | translate }}
       </div>
       <p-dropdown
         [ngModel]="selectedWeightVariable()"
         [options]="variablesWithWeightedOnTop()"
         (onChange)="onWeightChange($event)"
-        placeholder="Select Weight"
-        styleClass="select bg-primary text-primary-content focus:text-base-content w-1/5 py-1.5 mr-0 md:mr-5"
+        placeholder="{{ 'CROSS_TABULATION.SELECT' | translate }}"
+        styleClass="select border w-1/5 py-1.5 mr-0 md:mr-5"
         panelStyleClass="rounded border rounded-t-none w-full h-full text-base-content bg-base-100"
       >
         <ng-template let-item pTemplate="item">
@@ -65,14 +66,14 @@
             {{ item.labl['#text'] }}
             @if (item['@_wgt'] === 'wgt') {
               <span class="rounded px-1 mx-2 bg-primary text-base-100"
-                >weight</span
+                >{{ 'CROSS_TABULATION.WEIGHT' | translate }}</span
               >
             }
           </span>
         </ng-template>
       </p-dropdown>
       <div class="sr-only">
-        How would you like to display the values in the table?
+        {{ 'CROSS_TABULATION.SELECT_DISPLAY' | translate }}
       </div>
       <p-dropdown
         [(ngModel)]="selectedOption"
@@ -80,6 +81,9 @@
         panelStyleClass="rounded border w-full h-full bg-base-100"
         styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
       >
+        <ng-template pTemplate="selectedItem" let-item>
+          {{ 'CROSS_TABULATION.'+item | translate }}
+        </ng-template>
         <ng-template let-value pTemplate="item">
           <span
             [ngClass]="{
@@ -87,7 +91,7 @@
             }"
             class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
           >
-            {{ value }}
+          {{ 'CROSS_TABULATION.'+value | translate }}
           </span>
         </ng-template>
       </p-dropdown>
@@ -95,7 +99,7 @@
         class="btn btn-secondary float-right mt-2"
         (click)="exportTableAsCSV()"
       >
-        <span>Export table as CSV</span>
+        <span>{{ 'CROSS_TABULATION.EXPORT_TABLE' | translate }}</span>
       </button>
     </div>
     <dct-cross-table
@@ -108,7 +112,7 @@
   } @else if (defaultDataView() === 'Chart') {
     <dct-cross-chart [data]="tableChart()" [cols]="cols()" [rows]="rows()" />
     <div class="sr-only" role="alert" aria-atomic="true" aria-live="polite">
-      Your chart has been generated below.
+      {{ 'CROSS_TABULATION.CHART_MESSAGE' | translate }}
     </div>
   } @else {
     <div class="h-full mx-5 md:mx-auto my-auto">
@@ -120,7 +124,7 @@
             aria-atomic="true"
             aria-live="polite"
           >
-            No Data yet. Start adding variables to generate your table.
+            {{ 'CROSS_TABULATION.NO_DATA_YET' | translate }}
           </div>
         }
       } @else if (isFetching()) {
@@ -131,7 +135,7 @@
             aria-atomic="true"
             aria-live="polite"
           >
-            Loading dataset ...
+          {{ 'COMMON.LOADING_DATASET' | translate }}...
           </div>
         } @else if (loadingStatus === 'delayed') {
           <div
@@ -140,7 +144,7 @@
             aria-atomic="true"
             aria-live="polite"
           >
-            Still loading... One moment please
+            {{ 'CROSS_TABULATION.STILL_LOADING' | translate }}
           </div>
         }
       }

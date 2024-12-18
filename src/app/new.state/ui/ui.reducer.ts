@@ -20,7 +20,7 @@ export const initialState: UIState = {
       },
       openVariable: {
         variableID: '',
-        mode: 'view',
+        mode: 'VIEW_VAR',
       },
     },
     crossTab: {

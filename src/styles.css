@@ -107,6 +107,9 @@
 .p-multiselect-item {
   padding: 0.5rem 1rem;
 }
+.p-multiselect-empty-message {
+  padding: 0.5rem 1rem;
+}
 .p-menuitem-link {
   @apply leading-normal p-5 hover:bg-base-300 focus:bg-base-300;
 }
@@ -150,4 +153,17 @@
 }
 .cdk-live-announcer-element {
   @apply sr-only;
+}
+.p-tooltip-left {
+  @apply rounded p-2 text-xs text-base-100 bg-primary -ml-1.5;
+}
+.p-tooltip-left::after {
+  @apply border-t-transparent border-r-transparent border-b-transparent border-l-primary ;
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%; /* To the right of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
 }

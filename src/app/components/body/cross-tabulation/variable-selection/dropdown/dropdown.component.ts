@@ -8,6 +8,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 /**
  * This is a dumb component. It should not accept any Observable. The values (groups, variables, selectedVariable,
@@ -18,7 +19,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 @Component({
   selector: 'dct-dropdown',
   standalone: true,
-  imports: [CommonModule, FormsModule, MultiSelectModule, DropdownModule],
+  imports: [CommonModule, FormsModule, MultiSelectModule, DropdownModule, TranslateModule],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.css'
 })
@@ -27,6 +28,7 @@ export class DropdownComponent {
   // Inputs
   index = input.required<number>();
   groups = input.required<{ [groupID: string]: VariableGroup }>();
+  
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
   variableOrientation = input.required<'rows' | 'cols' | ''>();
   selectedVariableID = input.required<string>();
@@ -52,8 +54,9 @@ export class DropdownComponent {
   
   selectedVariableLabel = computed(() => {
     const label = this.variables()[this.selectedVariableID()]?.labl['#text'];
+    console.log(label);
     return label
-  })
+  });
   
   filteredVariables = computed(() => {
     const newVariables: {
@@ -115,7 +118,7 @@ export class DropdownComponent {
   });
   filterValue: string = '';
 
-  constructor(private liveAnnouncer: LiveAnnouncer) {}
+  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
 
   onChangeVariableOrientation(value: string) {
     if (value === 'rows') {
@@ -151,11 +154,12 @@ export class DropdownComponent {
 
   onVariableChange(value: string) {
     this.filterValue = '';
+    console.log(value);
     if (value) {
       this.emitChangeSelectedVariable.emit({
+        variableID: value,
         index: this.index(),
         orientation: this.variableOrientation(),
-        variableID: value
       });
     }
   }
@@ -171,6 +175,10 @@ export class DropdownComponent {
 
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
-    this.liveAnnouncer.announce("This row has been removed.");
+    let txt: string = "";
+    this.translate.get("CROSS_TABULATION.REM_ROW").subscribe((res: string) => {
+      txt = res;
+    });
+    this.liveAnnouncer.announce(txt);
   }
 }

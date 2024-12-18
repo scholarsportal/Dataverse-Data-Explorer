@@ -21,6 +21,7 @@ import { Variable, VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import { ChipModule } from 'primeng/chip';
 import { XmlManipulationActions } from '../../../../../../../new.state/xml/xml.actions';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-edit',
@@ -32,6 +33,7 @@ import { XmlManipulationActions } from '../../../../../../../new.state/xml/xml.a
     ReactiveFormsModule,
     MultiSelectModule,
     ChipModule,
+    TranslateModule
   ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css',

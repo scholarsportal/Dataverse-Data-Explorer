@@ -31,12 +31,14 @@
     {
       "name": "retrieveDataFile",
       "httpMethod": "GET",
-      "urlTemplate": "/api/v1/access/datafile/{fileId}"
+      "urlTemplate": "/api/v1/access/datafile/{fileId}",
+      "timeOut": 270
     },
     {
       "name": "uploadDataFile",
       "httpMethod": "PUT",
-      "urlTemplate": "/api/v1/edit/{fileId}"
+      "urlTemplate": "/api/v1/edit/{fileId}",
+      "timeOut": 270
     }
   ]
 }

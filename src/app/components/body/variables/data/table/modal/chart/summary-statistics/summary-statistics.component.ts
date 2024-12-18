@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { SummaryStatistics } from 'src/app/new.state/ui/ui.interface';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-summary-statistics',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './summary-statistics.component.html',
   styleUrl: './summary-statistics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

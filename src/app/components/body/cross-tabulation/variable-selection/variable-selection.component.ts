@@ -15,11 +15,12 @@ import {
   selectDatasetVariableCrossTabValues,
 } from '../../../../new.state/dataset/dataset.selectors';
 import { CrossTabulationUIActions } from '../../../../new.state/ui/ui.actions';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'dct-variable-selection',
   standalone: true,
-  imports: [DropdownComponent, NgClass],
+  imports: [DropdownComponent, NgClass, TranslateModule],
   templateUrl: './variable-selection.component.html',
   styleUrl: './variable-selection.component.css',
 })
