@@ -103,6 +103,8 @@ export class HeaderComponent implements OnInit {
       : '';
   });
 
+  count = computed(() => { return Object.values(this.selectedVariables()).flat().length });
+
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
   uploadPending = this.store.selectSignal(selectDatasetImportPending);
@@ -120,38 +122,39 @@ export class HeaderComponent implements OnInit {
 
   downloadOptions = signal<MenuItem[]>([
     {
-      label: 'Download original file (.sav file)',
+      label: 'DOWNLOAD_ORIG',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=original`,
     },
     {
-      label: 'Download tab-delimited',
+      label: 'DOWNLOAD_TAB',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}`,
     },
     {
-      label: 'Download RData format file',
+      label: 'DOWNLOAD_RDATA',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
     },
     {
-      label: 'Download HTML format file',
+      label: 'DOWNLOAD_HTML',
       url: `${this.siteURL()}/api/datasets/export?exporter=html&persistentId=doi:${this.doi()}`,
     },
     {
-      label: 'Download variable metadata (.xml file)',
+      label: 'DOWNLOAD_META',
       url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
     },
     {
-      label: 'Download this version (.xml file)',
+      label: 'DOWNLOAD_XML',
       command: () => this.handleDownload(),
     },
   ]);
+
   downloadWithSubsetOption = computed(() => [
-    ...this.downloadOptions(),
     {
-      label: 'Download selected variables as subset',
+      label: 'DOWNLOAD_SUBSET',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${this.currentSelectionAsString()}`,
-      styleClass: 'bg-primary text-primary-content hover:text-neutral-content',
     },
+    ...this.downloadOptions()
   ]);
+
   computedDownloadOptions = computed(() => {
     return this.selection()
       ? this.downloadWithSubsetOption()
