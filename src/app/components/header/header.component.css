@@ -1,0 +1,19 @@
+.count-ball {
+  padding: 0.25rem;
+  border-radius: 2rem;
+  min-width: 1.75rem;
+  max-height: 1.75rem;
+  left: 15px;
+  position: relative;
+  top: -10px;
+  text-align: center;
+  z-index: 100;
+}
+.count {
+  padding: 0.25rem;
+  border-radius: 2rem;
+  min-width: 1.75rem;
+  max-height: 1.75rem;
+  margin-left: 0.5rem;
+  text-align: center;
+}

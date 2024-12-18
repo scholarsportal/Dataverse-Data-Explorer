@@ -168,6 +168,9 @@
       </div>
 
       <div class="flex md:flex-row px-5 pb-4 md:order-last">
+        @if (count() > 0) {
+          <span class="bg-primary count-ball text-base-100">{{ count() }}</span>
+        }
         <button
           (click)="menu.toggle($event)"
           [ngClass]="{
@@ -191,6 +194,7 @@
             />
           </svg>
           {{ 'HEADER.DOWNLOAD' | translate }}
+          
           <span class="ml-5"> </span>
         </button>
         <p-menu
@@ -199,6 +203,22 @@
           [popup]="true"
           styleClass="rounded bg-base-100 border border-slate-300"
         >
+          <ng-template pTemplate="item" let-item>
+            @if (item.label === 'DOWNLOAD_SUBSET') {
+              <a class="p-ripple p-element p-menuitem-link ng-star-inserted border-b " href="{{item.url}}">
+                <span class="p-menuitem-text ng-star-inserted">
+                  {{ 'HEADER.'+item.label | translate }}
+                </span>
+                <span class="bg-primary count text-base-100">{{ count() }}</span>
+              </a>
+            } @else {
+              <a class="p-ripple p-element p-menuitem-link ng-star-inserted" href="{{item.url}}">
+                <span class="p-menuitem-text ng-star-inserted">
+                  {{ 'HEADER.'+item.label | translate }}
+                </span>
+              </a>
+            }
+          </ng-template>
         </p-menu>
         <button
           (click)="handleUpload()"

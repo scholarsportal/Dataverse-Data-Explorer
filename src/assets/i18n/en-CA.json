@@ -80,7 +80,14 @@
       "DATASET_UPLOAD_FAILED": "Dataset upload failed",
       "DOWNLOAD": "Download",
       "SAVE_TO_DATAVERSE": "Save to Dataverse",  
-      "DATA_EXPLORER": "Data Explorer"
+      "DATA_EXPLORER": "Data Explorer",
+      "DOWNLOAD_ORIG": "Download original file (.sav file)",
+      "DOWNLOAD_TAB": "Download tab-delimited",
+      "DOWNLOAD_RDATA": "Download RData format file",
+      "DOWNLOAD_HTML": "Download HTML format file",
+      "DOWNLOAD_META": "Download variable metadata (.xml file)",
+      "DOWNLOAD_XML": "Download this version (.xml file)",
+      "DOWNLOAD_SUBSET": "Download selected variables as subset"
     },
     "SIDEBAR": {
       "NO_GROUPS": "No Groups",
@@ -103,7 +110,8 @@
       "ADD_GROUP": "Add",
       "ADD_GROUP_SR": "a new variables group",
       "CONFIRM_ADD": "Confirm Add Group",
-      "CANCEL_ADD": "Cancel Add Group"  
+      "CANCEL_ADD": "Cancel Add Group",
+      "NEW_GROUP": "Enter new group name" 
     },
     "IMPORT": {
       "IMPORT_XML": "Import XML",
@@ -130,13 +138,14 @@
       "BULK_EDIT_VARIABLES": "Bulk Edit Variables",
       "UPDATE_VARIABLES": "{count, plural, =1 {Update # Variable} other {Update # Variables}}",
       "UPDATE": "Update",
-      "VARS": "variables"  
+      "VARS": "variables",
+      "CLOSE": "Close"  
     },
     "EDIT": {
       "ADD_TO_GROUP": "Add Variable to Group",
       "WEIGHT_VARIABLE": "Weight Variable",
       "IS_WEIGHT": "Is Weight",
-      "UPDATE": "UPDATE VARIABLES",
+      "UPDATE": "Update Variables",
       "SELECTED": "selected"
     },
     "MODAL_HEADER": {
