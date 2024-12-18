@@ -134,14 +134,6 @@ export const selectVariableSelectionContext = createSelector(
   (state) => state.bodyState.variables.variableSelectionContext,
 );
 
-export const selectOpenVariableHasCategories = createSelector(
-  selectOpenVariableID,
-  selectDatasetProcessedVariables,
-  (openID, variables) => {
-    return !!variables[openID]?.catgry;
-  },
-);
-
 // Recreate cross tab values by matching categories with raw cross tab values using data from selecDatasetAllVariableCategories.
 // At this point we also remove rows that are in the missing categories.
 export const selectMatchCategories = createSelector(
@@ -238,8 +230,8 @@ export const selectOpenVariableChartTable = createSelector(
   selectOpenVariableID,
   selectDatasetProcessedVariables,
   selectOpenVariableCategoriesMissing,
-  selectCrossTabulationData,
-  (variableID, variables, missing) => {
+  selectDatasetVariableCrossTabValues,
+  (variableID, variables, missing, crossTabValues) => {
     const chart: ChartData = {};
     let totalCount = 0;
     let totalWeightCount = 0;
@@ -274,7 +266,28 @@ export const selectOpenVariableChartTable = createSelector(
         invalid: missing.includes(value.catValu.toString()),
       };
     });
-
+    if (!variables[variableID].catgry) {
+      let highestCount = 0;
+      const openVariableCrossTabValues = crossTabValues[variableID];
+      if (openVariableCrossTabValues) {
+        openVariableCrossTabValues.map((value) => {
+          chart[value]
+            ? (chart[value].count = `${Number(chart[value].count) + 1}`)
+            : (chart[value] = {
+                category: value,
+                count: '1',
+                countPercent: 0,
+                weightedCount: '0',
+                weightedCountPercent: 0,
+                invalid: missing.includes(value.toString()),
+              });
+          if (Number(chart[value].count) > highestCount) {
+            highestCount = Number(chart[value].count);
+          }
+          totalCount += 1;
+        });
+      }
+    }
     Object.values(chart).forEach((value) => {
       value.countPercent =
         (Number(value.count) / totalCount) * 100 || Number.NEGATIVE_INFINITY;
@@ -283,6 +296,13 @@ export const selectOpenVariableChartTable = createSelector(
         Number.NEGATIVE_INFINITY;
     });
     return chart;
+  },
+);
+
+export const selectOpenVariableHasCategories = createSelector(
+  selectOpenVariableChartTable,
+  (chart) => {
+    return Object.keys(chart).length > 0;
   },
 );
 
