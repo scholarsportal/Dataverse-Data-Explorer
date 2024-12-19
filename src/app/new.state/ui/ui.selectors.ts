@@ -170,6 +170,7 @@ export const selectCrossTabulationData = createSelector(
   selectMatchCategories,
   selectDatasetProcessedVariables,
   selectWeightVariableData,
+
   (
     crossTabSelection,
     processedAndMatchedCategories,
@@ -209,10 +210,13 @@ export const selectCrossTabulationData = createSelector(
           variables[id]?.['labl']?.['#text']
         }`,
     );
-    console.log(colLabels);
+    const newPivotData = pivotData.filter(
+      (value) =>
+        Object.keys(value).length === colLabels.length + rowLabels.length + 1,
+    );
     return hasData
       ? {
-          pivotData,
+          pivotData: newPivotData,
           rows: rowLabels,
           cols: colLabels,
           hasData,
@@ -266,7 +270,7 @@ export const selectOpenVariableChartTable = createSelector(
         invalid: missing.includes(value.catValu.toString()),
       };
     });
-    if (!variables[variableID].catgry) {
+    if (!variables[variableID]?.catgry) {
       let highestCount = 0;
       const openVariableCrossTabValues = crossTabValues[variableID];
       if (openVariableCrossTabValues) {
