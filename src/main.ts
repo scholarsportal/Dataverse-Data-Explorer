@@ -18,6 +18,7 @@ import { DatasetEffects } from './app/new.state/dataset/dataset.effects';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { provideMatomo } from 'ngx-matomo-client';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,6 +50,10 @@ bootstrapApplication(AppComponent, {
       // Add this line to 'activate effects for actions'
       EffectsModule.forRoot([XmlEffects, DatasetEffects]),
     ),
+    provideMatomo({
+      scriptUrl:
+        'https://analytics.scholarsportal.info/js/container_MOTMjz1l_dev_860b195d069efc12f7a26700.js',
+    }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),
     provideAnimations(),

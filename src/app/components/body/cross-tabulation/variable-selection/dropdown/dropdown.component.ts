@@ -1,4 +1,11 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariableGroup } from 'src/app/new.state/xml/xml.interface';
 import { FormsModule } from '@angular/forms';
@@ -19,16 +26,22 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'dct-dropdown',
   standalone: true,
-  imports: [CommonModule, FormsModule, MultiSelectModule, DropdownModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MultiSelectModule,
+    DropdownModule,
+    TranslateModule,
+  ],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css'
+  styleUrl: './dropdown.component.css',
 })
 export class DropdownComponent {
   store = inject(Store);
   // Inputs
   index = input.required<number>();
   groups = input.required<{ [groupID: string]: VariableGroup }>();
-  
+
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
   variableOrientation = input.required<'rows' | 'cols' | ''>();
   selectedVariableID = input.required<string>();
@@ -51,13 +64,12 @@ export class DropdownComponent {
   emitRemoveVariable = output<{ index: number }>();
   // Component Values
   selectedGroup = signal<string | null>(null);
-  
+
   selectedVariableLabel = computed(() => {
     const label = this.variables()[this.selectedVariableID()]?.labl['#text'];
-    console.log(label);
-    return label
+    return label;
   });
-  
+
   filteredVariables = computed(() => {
     const newVariables: {
       variableID: string;
@@ -71,16 +83,18 @@ export class DropdownComponent {
         newVariables.push({
           variableID: variableID,
           label: this.variables()[variableID].labl['#text'],
-          disabled: this.variablesAlreadySelected().includes(variableID)
-        })
+          disabled: this.variablesAlreadySelected().includes(variableID),
+        }),
       );
       return newVariables;
     } else {
       Object.values(this.variables()).map((variable) => {
         newVariables.push({
           variableID: variable['@_ID'],
-          label: variable.labl?.['#text'] ? variable.labl['#text'] : `${variable['@_name']} - No Label`,
-          disabled: this.variablesAlreadySelected().includes(variable['@_ID'])
+          label: variable.labl?.['#text']
+            ? variable.labl['#text']
+            : `${variable['@_name']} - No Label`,
+          disabled: this.variablesAlreadySelected().includes(variable['@_ID']),
         });
       });
       return newVariables;
@@ -118,21 +132,24 @@ export class DropdownComponent {
   });
   filterValue: string = '';
 
-  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
+  constructor(
+    private liveAnnouncer: LiveAnnouncer,
+    private translate: TranslateService,
+  ) {}
 
   onChangeVariableOrientation(value: string) {
     if (value === 'rows') {
       this.emitChangeVariableOrientation.emit({
         index: this.index(),
         newOrientation: 'rows',
-        variableID: this.selectedVariableID()
+        variableID: this.selectedVariableID(),
       });
     }
     if (value === 'cols') {
       this.emitChangeVariableOrientation.emit({
         index: this.index(),
         newOrientation: 'cols',
-        variableID: this.selectedVariableID()
+        variableID: this.selectedVariableID(),
       });
     }
   }
@@ -154,7 +171,6 @@ export class DropdownComponent {
 
   onVariableChange(value: string) {
     this.filterValue = '';
-    console.log(value);
     if (value) {
       this.emitChangeSelectedVariable.emit({
         variableID: value,
@@ -168,15 +184,15 @@ export class DropdownComponent {
     this.store.dispatch(
       CrossTabulationUIActions.changeMissingCategories({
         variableID: this.selectedVariableID(),
-        missing
-      })
+        missing,
+      }),
     );
   }
 
   removeVariable(index: number) {
     this.emitRemoveVariable.emit({ index });
-    let txt: string = "";
-    this.translate.get("CROSS_TABULATION.REM_ROW").subscribe((res: string) => {
+    let txt: string = '';
+    this.translate.get('CROSS_TABULATION.REM_ROW').subscribe((res: string) => {
       txt = res;
     });
     this.liveAnnouncer.announce(txt);
