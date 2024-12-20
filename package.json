@@ -33,6 +33,7 @@
     "fast-xml-parser": "^4.3.3",
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
+    "ngx-matomo-client": "^6.3.1",
     "pivottable": "^2.23.0",
     "primeng": "^17.18.1",
     "rxjs": "~7.8.0",
