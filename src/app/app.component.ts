@@ -12,7 +12,7 @@ import { BodyComponent } from './components/body/body.component';
 import { selectDatasetError } from './new.state/xml/xml.selectors';
 import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { Languages } from 'src/assets/i18n/localizations';
+import { Languages } from './../assets/i18n/localizations';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
