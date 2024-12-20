@@ -210,13 +210,20 @@ export const selectCrossTabulationData = createSelector(
           variables[id]?.['labl']?.['#text']
         }`,
     );
+    const hasOneRow = rowVariables.length === 1 && !!rowVariables[0];
+    const hasOneCol = colVariables.length === 1 && !!colVariables[0];
+    const hasOneRowOrCol =
+      (hasOneRow || hasOneCol) && !(hasOneRow && hasOneCol);
+    console.log('One row or column', hasOneRowOrCol);
+    console.log('One row', hasOneRow);
+    console.log('One col', hasOneCol);
     const newPivotData = pivotData.filter(
       (value) =>
         Object.keys(value).length === colLabels.length + rowLabels.length + 1,
     );
     return hasData
       ? {
-          pivotData: newPivotData,
+          pivotData: hasOneRowOrCol ? pivotData : newPivotData,
           rows: rowLabels,
           cols: colLabels,
           hasData,
