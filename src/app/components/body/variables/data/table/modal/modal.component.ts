@@ -47,7 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
     EditComponent,
     ModalHeaderComponent,
     ModalFooterComponent,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
@@ -93,7 +93,6 @@ export class ModalComponent {
     this.opened = true;
     const modal = this.variableModal?.nativeElement as HTMLDialogElement;
     modal.showModal();
-    console.log(this.variableLabel());
   }
 
   close() {
