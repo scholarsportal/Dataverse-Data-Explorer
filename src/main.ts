@@ -19,10 +19,15 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { provideMatomo } from 'ngx-matomo-client';
+import { environment } from './environments/environment';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(
+    http,
+    './data-explorer-test/assets/i18n/',
+    '.json',
+  );
 }
 
 bootstrapApplication(AppComponent, {
@@ -51,8 +56,7 @@ bootstrapApplication(AppComponent, {
       EffectsModule.forRoot([XmlEffects, DatasetEffects]),
     ),
     provideMatomo({
-      scriptUrl:
-        'https://analytics.scholarsportal.info/js/container_MOTMjz1l_dev_860b195d069efc12f7a26700.js',
+      scriptUrl: environment.matomoScriptUrl,
     }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),
