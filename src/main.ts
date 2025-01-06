@@ -23,7 +23,8 @@ import { environment } from './environments/environment';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  const basePath = document.getElementsByTagName('base')[0].href || '/';
+  return new TranslateHttpLoader(http, `${basePath}assets/i18n/`, '.json');
 }
 
 bootstrapApplication(AppComponent, {
