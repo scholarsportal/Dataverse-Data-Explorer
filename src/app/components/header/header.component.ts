@@ -132,6 +132,10 @@ export class HeaderComponent implements OnInit {
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}?format=RData`,
     },
     {
+      label: 'Download PDF format file',
+      url: `${this.siteURL()}/api/datasets/export?exporter=pdf&persistentId=doi:${this.doi()}`,
+    },
+    {
       label: 'Download HTML format file',
       url: `${this.siteURL()}/api/datasets/export?exporter=html&persistentId=doi:${this.doi()}`,
     },
