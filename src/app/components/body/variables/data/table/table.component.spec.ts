@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/table.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';

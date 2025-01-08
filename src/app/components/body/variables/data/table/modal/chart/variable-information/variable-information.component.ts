@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/variable-information/variable-information.component.ts
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
 import { VariableForm } from 'src/app/new.state/ui/ui.interface';

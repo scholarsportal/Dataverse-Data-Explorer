@@ -1,3 +1,4 @@
+// Path: src/app/new.state/xml/xml.interface.ts
 interface Location {
   '@_fileid': string;
 }

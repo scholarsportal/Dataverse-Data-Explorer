@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/modal-header/modal-header.component.ts
 import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

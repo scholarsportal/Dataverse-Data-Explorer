@@ -1,3 +1,4 @@
+// Path: src/app/components/header/header.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HeaderComponent } from './header.component';

@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/variable-options-button.component.ts
 import { Component, computed, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

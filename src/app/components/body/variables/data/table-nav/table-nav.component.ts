@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table-nav/table-nav.component.ts
 import { Component, computed, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VariablesSimplified } from '../../../../../new.state/xml/xml.interface';

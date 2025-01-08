@@ -1,3 +1,4 @@
+// Path: src/app/services/ddi.service.ts
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';

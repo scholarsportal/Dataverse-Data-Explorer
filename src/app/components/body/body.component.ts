@@ -1,3 +1,4 @@
+// Path: src/app/components/body/body.component.ts
 import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {

@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/sidebar-button/sidebar-button.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarButtonComponent } from './sidebar-button.component';

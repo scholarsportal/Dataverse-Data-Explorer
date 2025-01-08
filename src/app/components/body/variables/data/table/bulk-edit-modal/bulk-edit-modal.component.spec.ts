@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/bulk-edit-modal/bulk-edit-modal.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BulkEditModalComponent } from './bulk-edit-modal.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';

@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table-menu/table-menu.component.ts
 import { Component, computed, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

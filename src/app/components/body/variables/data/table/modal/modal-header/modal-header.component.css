@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/modal-header/modal-header.component.css
 .variable-navigate-button {
   @apply rounded p-2 border dark:border-dark-inverse-surface;
 }

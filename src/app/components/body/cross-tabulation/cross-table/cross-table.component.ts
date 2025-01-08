@@ -1,3 +1,4 @@
+// Path: src/app/components/body/cross-tabulation/cross-table/cross-table.component.ts
 import {
   Component,
   computed,

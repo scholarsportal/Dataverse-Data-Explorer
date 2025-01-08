@@ -1,3 +1,4 @@
+// Path: src/app/components/body/cross-tabulation/cross-chart/cross-chart.component.ts
 import {
   ChangeDetectionStrategy,
   Component,

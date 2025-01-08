@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table-nav/table-nav.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableNavComponent } from './table-nav.component';

@@ -1,3 +1,4 @@
+// Path: src/app/new.state/ui/ui.actions.ts
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const CrossTabulationUIActions = createActionGroup({

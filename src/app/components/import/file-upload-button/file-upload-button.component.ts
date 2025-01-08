@@ -1,3 +1,4 @@
+// Path: src/app/components/import/file-upload-button/file-upload-button.component.ts
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';

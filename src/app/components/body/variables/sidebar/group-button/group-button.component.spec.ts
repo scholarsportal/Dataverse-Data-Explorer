@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/group-button/group-button.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupButtonComponent } from './group-button.component';

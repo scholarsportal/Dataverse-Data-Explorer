@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/data.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataComponent } from './data.component';

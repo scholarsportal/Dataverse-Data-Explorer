@@ -1,3 +1,4 @@
+// Path: src/app/new.state/xml/xml.reducer.ts
 import { MatchVariables, XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';

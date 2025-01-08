@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/chart.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChartComponent } from './chart.component';

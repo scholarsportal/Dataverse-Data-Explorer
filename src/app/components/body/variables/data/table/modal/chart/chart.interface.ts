@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/chart.interface.ts
 export const backgroundColor = [
   '#FFBE98',
   '#EB9FEF',

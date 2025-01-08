@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/modal-header/modal-header.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModalHeaderComponent } from './modal-header.component';

@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/modal-footer/modal-footer.component.ts
 import { Component, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

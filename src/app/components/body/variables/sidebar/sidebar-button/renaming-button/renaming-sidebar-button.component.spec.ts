@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/sidebar-button/renaming-button/renaming-sidebar-button.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RenamingSidebarButtonComponent } from './renaming-sidebar-button.component';

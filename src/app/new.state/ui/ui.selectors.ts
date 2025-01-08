@@ -1,3 +1,4 @@
+// Path: src/app/new.state/ui/ui.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   ChartData,

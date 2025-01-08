@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/sidebar-button/renaming-button/renaming-sidebar-button.component.ts
 import { Component, effect, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

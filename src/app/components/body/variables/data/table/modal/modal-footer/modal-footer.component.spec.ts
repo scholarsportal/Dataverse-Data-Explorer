@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/modal-footer/modal-footer.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModalFooterComponent } from './modal-footer.component';

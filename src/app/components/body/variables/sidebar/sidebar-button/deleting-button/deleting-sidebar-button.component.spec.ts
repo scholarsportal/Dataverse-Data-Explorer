@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/sidebar-button/deleting-button/deleting-sidebar-button.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeletingSidebarButtonComponent } from './deleting-sidebar-button.component';

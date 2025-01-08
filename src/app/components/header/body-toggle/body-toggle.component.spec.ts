@@ -1,3 +1,4 @@
+// Path: src/app/components/header/body-toggle/body-toggle.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BodyToggleComponent } from './body-toggle.component';

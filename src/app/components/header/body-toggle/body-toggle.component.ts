@@ -1,3 +1,4 @@
+// Path: src/app/components/header/body-toggle/body-toggle.component.ts
 import { Component, computed, input, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';

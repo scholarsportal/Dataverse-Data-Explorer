@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/bulk-edit-modal/bulk-edit-modal.component.ts
 import { Component, ElementRef, input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {

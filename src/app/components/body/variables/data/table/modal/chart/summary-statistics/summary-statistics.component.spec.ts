@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/summary-statistics/summary-statistics.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SummaryStatisticsComponent } from './summary-statistics.component';

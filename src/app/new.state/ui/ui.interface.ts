@@ -1,3 +1,4 @@
+// Path: src/app/new.state/ui/ui.interface.ts
 export interface UIState {
   progress: number;
   bodyToggle: 'cross-tab' | 'variables';

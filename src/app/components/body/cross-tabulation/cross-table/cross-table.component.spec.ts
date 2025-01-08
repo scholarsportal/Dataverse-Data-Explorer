@@ -1,3 +1,4 @@
+// Path: src/app/components/body/cross-tabulation/cross-table/cross-table.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CrossTableComponent } from './cross-table.component';

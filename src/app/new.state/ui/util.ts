@@ -1,3 +1,4 @@
+// Path: src/app/new.state/ui/util.ts
 import { Variable } from '../xml/xml.interface';
 
 export const truncatedText = (text: string) => {

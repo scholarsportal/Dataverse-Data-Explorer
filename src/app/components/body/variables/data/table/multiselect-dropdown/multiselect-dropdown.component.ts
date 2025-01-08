@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/multiselect-dropdown/multiselect-dropdown.component.ts
 import { Component, computed, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';

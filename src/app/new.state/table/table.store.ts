@@ -1,3 +1,4 @@
+// Path: src/app/new.state/table/table.store.ts
 // import { VariablesSimplified } from "../xml/xml.interface";
 // import {signalStore} from '@ngrx/signals'
 //

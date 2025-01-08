@@ -1,3 +1,4 @@
+// Path: src/app/new.state/xml/xml.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Variable, VariableGroup, XmlState } from './xml.interface';
 

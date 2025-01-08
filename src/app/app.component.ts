@@ -1,3 +1,4 @@
+// Path: src/app/app.component.ts
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';

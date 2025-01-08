@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/group-button/group-button.component.ts
 import { Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

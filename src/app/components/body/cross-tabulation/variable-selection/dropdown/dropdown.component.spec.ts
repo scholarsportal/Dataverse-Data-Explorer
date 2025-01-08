@@ -1,3 +1,4 @@
+// Path: src/app/components/body/cross-tabulation/variable-selection/dropdown/dropdown.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropdownComponent } from './dropdown.component';

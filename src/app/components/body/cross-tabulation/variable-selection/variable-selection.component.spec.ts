@@ -1,3 +1,4 @@
+// Path: src/app/components/body/cross-tabulation/variable-selection/variable-selection.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VariableSelectionComponent } from './variable-selection.component';

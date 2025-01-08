@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/chart.component.ts
 import {
   ChangeDetectionStrategy,
   Component,

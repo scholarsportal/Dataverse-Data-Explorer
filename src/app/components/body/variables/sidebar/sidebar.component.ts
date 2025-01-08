@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/sidebar/sidebar.component.ts
 import {
   ChangeDetectionStrategy,
   Component,

@@ -1,3 +1,4 @@
+// Path: src/app/new.state/ui/ui.reducer.ts
 import { UIState } from './ui.interface';
 import { createReducer, on } from '@ngrx/store';
 import { CrossTabulationUIActions, VariableTabUIAction } from './ui.actions';

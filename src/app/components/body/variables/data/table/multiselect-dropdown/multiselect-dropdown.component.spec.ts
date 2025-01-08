@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/multiselect-dropdown/multiselect-dropdown.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MultiselectDropdownComponent } from './multiselect-dropdown.component';

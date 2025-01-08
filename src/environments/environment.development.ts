@@ -1,3 +1,4 @@
+// Path: src/environments/environment.development.ts
 export const environment = {
   production: false,
   domain: 'http://localhost:3489',

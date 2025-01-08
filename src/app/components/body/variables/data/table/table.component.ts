@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/table.component.ts
 import {
   Component,
   computed,

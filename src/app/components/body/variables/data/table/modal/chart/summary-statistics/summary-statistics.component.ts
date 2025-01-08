@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table/modal/chart/summary-statistics/summary-statistics.component.ts
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { SummaryStatistics } from 'src/app/new.state/ui/ui.interface';
 import { TranslateModule } from '@ngx-translate/core';

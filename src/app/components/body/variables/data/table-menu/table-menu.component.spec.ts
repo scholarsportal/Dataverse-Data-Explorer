@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/table-menu/table-menu.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableMenuComponent } from './table-menu.component';

@@ -1,3 +1,4 @@
+// Path: src/app/components/body/variables/data/data.component.ts
 import { Component, computed, input } from '@angular/core';
 import {
   Variable,
