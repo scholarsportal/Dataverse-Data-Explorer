@@ -111,7 +111,7 @@
     "ADD_GROUP_SR": "un nouveau groupe de variables",
     "CONFIRM_ADD": "Confirmer l'ajout du groupe",
     "CANCEL_ADD": "Annuler l'ajout du groupe",
-    "NEW_GROUP": "Entrez le nouveau nom du groupe"
+    "NEW_GROUP": "Inscrivez un nouveau nom de groupe"
   },
   "IMPORT": {
     "IMPORT_XML": "Importer XML",

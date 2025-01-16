@@ -266,7 +266,7 @@ export const selectOpenVariableChartTable = createSelector(
         invalid: missing.includes(value.catValu.toString()),
       };
     });
-    if (!variables[variableID].catgry) {
+    if (!variables[variableID]?.catgry) {
       let highestCount = 0;
       const openVariableCrossTabValues = crossTabValues[variableID];
       if (openVariableCrossTabValues) {
