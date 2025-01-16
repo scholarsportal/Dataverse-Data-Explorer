@@ -170,6 +170,7 @@ export const selectCrossTabulationData = createSelector(
   selectMatchCategories,
   selectDatasetProcessedVariables,
   selectWeightVariableData,
+
   (
     crossTabSelection,
     processedAndMatchedCategories,
@@ -197,22 +198,35 @@ export const selectCrossTabulationData = createSelector(
     );
 
     const hasData = pivotData.length > 0;
-    const rowLabels = rowVariables.map(
-      (id) =>
-        `${variables[id]?.['@_name'] || id} - ${
-          variables[id]?.['labl']?.['#text']
-        }`,
+    const rowLabels = rowVariables
+      .filter((id) => id && variables[id])
+      .map(
+        (id) =>
+          `${variables[id]?.['@_name'] || id} - ${
+            variables[id]?.['labl']?.['#text']
+          }`,
+      );
+    const colLabels = colVariables
+      .filter((id) => id && variables[id])
+      .map(
+        (id) =>
+          `${variables[id]?.['@_name'] || id} - ${
+            variables[id]?.['labl']?.['#text']
+          }`,
+      );
+    console.log('col labels', colLabels);
+    const numberOfRows = rowVariables.filter(
+      (label) => label.trim() !== '',
+    ).length;
+    const numberOfCols = colVariables.filter(
+      (label) => label.trim() !== '',
+    ).length;
+    const newPivotData = pivotData.filter(
+      (value) => Object.keys(value).length === numberOfCols + numberOfRows + 1,
     );
-    const colLabels = colVariables.map(
-      (id) =>
-        `${variables[id]?.['@_name'] || id} - ${
-          variables[id]?.['labl']?.['#text']
-        }`,
-    );
-    console.log(colLabels);
     return hasData
       ? {
-          pivotData,
+          pivotData: newPivotData,
           rows: rowLabels,
           cols: colLabels,
           hasData,

@@ -76,8 +76,6 @@ export class DdiService {
       })
       .pipe(
         map((data) => {
-          console.log(data);
-          console.log(this.XMLtoJSON(data));
           return this.XMLtoJSON(data);
         }),
       );
@@ -135,7 +133,6 @@ export class DdiService {
 
     // Extract headers from the first line (not used, but useful for clarity)
     const headers = lines[0].split('\t');
-    console.log('headers', headers);
 
     // Ensure the number of keys matches the number of columns
     if (variable.length !== headers.length) {
