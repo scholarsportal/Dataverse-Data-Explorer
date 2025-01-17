@@ -280,7 +280,10 @@ export const selectOpenVariableChartTable = createSelector(
         invalid: missing.includes(value.catValu.toString()),
       };
     });
-    if (!variables[variableID]?.catgry) {
+    if (
+      !variables[variableID]?.catgry &&
+      variables[variableID]?.['@_name'] !== 'REC_NUM'
+    ) {
       let highestCount = 0;
       const openVariableCrossTabValues = crossTabValues[variableID];
       if (openVariableCrossTabValues) {
@@ -302,7 +305,7 @@ export const selectOpenVariableChartTable = createSelector(
         });
       }
     }
-    Object.values(chart).forEach((value) => {
+    Object.values(chart)?.forEach((value) => {
       value.countPercent =
         (Number(value.count) / totalCount) * 100 || Number.NEGATIVE_INFINITY;
       value.weightedCountPercent =
