@@ -167,3 +167,7 @@
   border-width: 5px;
   border-style: solid;
 }
+
+.p-datatable-tbody > tr:last-child {
+  border-bottom: 0;
+}

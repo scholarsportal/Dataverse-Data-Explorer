@@ -107,7 +107,7 @@
   [rows]="itemsPerPage()"
   [scrollable]="true"
   [value]="searchResultVariables()"
-  class="hidden md:block w-full pl-5 overflow-y-auto"
+  class="hidden md:block w-full pl-5 mb-16 overflow-y-auto"
   paginatorStyleClass="hidden"
   scrollHeight="flex"
 >
@@ -177,7 +177,6 @@
     </tr>
   </ng-template>
 </p-table>
-
 @if (hasApiKey()) {
   <dct-table-menu
     [allVariables]="allVariables()"
@@ -186,7 +185,7 @@
     [groupID]="groupChanged()"
     [selectedVariables]="selectedVariables()"
     [weights]="weights()"
-    class="hidden md:flex table-menu z-20 border-t bg-base-100 max-h-16"
+    class="hidden md:flex table-menu z-20 border-t bg-base-100 max-h-16 absolute bottom-0 w-full"
   />
 }
 <dct-modal

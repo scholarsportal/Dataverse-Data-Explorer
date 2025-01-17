@@ -20,7 +20,7 @@
       class="h-16 px-5 w-full items-center text-start">
       {{ label() }}
     </button>
-    @if (selected() && label() !== 'All Variables' && !disabledOptions()) {
+    @if (selected() && groupID() !== 'ALL' && !disabledOptions()) {
       <div class="flex flex-row px-3 py-3">
         <button
           class="btn-action transition-all duration-75 p-2"

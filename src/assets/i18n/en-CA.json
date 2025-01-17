@@ -87,7 +87,8 @@
       "DOWNLOAD_HTML": "Download HTML format file",
       "DOWNLOAD_META": "Download variable metadata (.xml file)",
       "DOWNLOAD_XML": "Download this version (.xml file)",
-      "DOWNLOAD_SUBSET": "Download selected variables as subset"
+      "DOWNLOAD_SUBSET": "Download selected variables as subset",
+      "DOWNLOAD_PDF": "Download PDF format file"
     },
     "SIDEBAR": {
       "NO_GROUPS": "No Groups",
@@ -146,7 +147,9 @@
       "WEIGHT_VARIABLE": "Weight Variable",
       "IS_WEIGHT": "Is Weight",
       "UPDATE": "Update Variables",
-      "SELECTED": "selected"
+      "SELECTED": "selected",
+      "TRUE": "True",
+      "FALSE": "False"
     },
     "MODAL_HEADER": {
       "VARIABLE_NAVIGATE_LEFT": "Variable Navigate left",

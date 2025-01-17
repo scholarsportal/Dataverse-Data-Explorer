@@ -28,7 +28,7 @@
     "CLOSE": "Fermer",
     "CANCEL": "Annuler",
     "LITQST": "Question littérale",
-    "INTVQST": "Les directives pour l'intervieweur",
+    "INTVQST": "Question de l’intervieweur",
     "POSTQST": "Instruction à propos de la question posée",
     "UNIVERSE": "Univers",
     "NOTES": "Remarques",
@@ -48,10 +48,10 @@
     "CHART_VAR": "Variable du graphique",
     "SHOW_IN_GRAPH": "Présenter dans le graphique",
     "VALUES": "Valeurs",
-    "COUNT": "Nombre",
-    "COUNT_PERC": "Nombre (%)",
-    "WEIGHTED": "Pondéré(e) (%)",
-    "WEIGHTED_COUNT": "Nombre d'observations (pondéré)",
+    "COUNT": "Quantité",
+    "COUNT_PERC": "Quantité (%)",
+    "WEIGHTED": "Quantité pondérée (%)",
+    "WEIGHTED_COUNT": "Quantité pondérée (pondéré)",
     "MAXIMUM": "Maximum",
     "MEDIAN": "Médiane",
     "ADD_TO_CROSS": "Ajouter au tableau croisé",
@@ -87,7 +87,8 @@
     "DOWNLOAD_HTML": "Télécharger le fichier en format HTML",
     "DOWNLOAD_META": "Télécharger les métadonnées des variables (.xml)",
     "DOWNLOAD_XML": "Téléchargez cette version (.xml file)",
-    "DOWNLOAD_SUBSET": "Télécharger le sous-ensemble (uniquement délimité par des tabulations)"
+    "DOWNLOAD_SUBSET": "Télécharger le sous-ensemble (uniquement délimité par des tabulations)",
+    "DOWNLOAD_PDF": "Télécharger le fichier en format PDF"
   },
   "SIDEBAR": {
     "NO_GROUPS": "Aucun groupe",
@@ -146,7 +147,9 @@
     "WEIGHT_VARIABLE": "Variable de poids",
     "IS_WEIGHT": "Est un poids",
     "UPDATE": "Mettre à jour les variables",
-    "SELECTED": "sélectionné" 
+    "SELECTED": "sélectionné" ,
+    "TRUE": "Oui",
+    "FALSE": "Non"
   },
   "MODAL_HEADER": {
     "VARIABLE_NAVIGATE_LEFT": "Naviguer vers la variable précédente",
