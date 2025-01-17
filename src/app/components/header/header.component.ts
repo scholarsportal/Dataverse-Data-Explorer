@@ -103,7 +103,9 @@ export class HeaderComponent implements OnInit {
       : '';
   });
 
-  count = computed(() => { return Object.values(this.selectedVariables()).flat().length });
+  count = computed(() => {
+    return (this.selectedVariables()[this.selectedGroupID()] || []).length;
+  });
 
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
@@ -156,7 +158,7 @@ export class HeaderComponent implements OnInit {
       label: 'DOWNLOAD_SUBSET',
       url: `${this.siteURL()}/api/access/datafile/${this.fileID()}/?format=subset&variables=${this.currentSelectionAsString()}`,
     },
-    ...this.downloadOptions()
+    ...this.downloadOptions(),
   ]);
 
   computedDownloadOptions = computed(() => {
