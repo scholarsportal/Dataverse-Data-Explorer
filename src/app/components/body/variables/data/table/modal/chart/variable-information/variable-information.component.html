@@ -43,6 +43,10 @@
   </tr>
   <tr class="table-row border-b">
     <th class="text-left font-medium">{{ 'EDIT.IS_WEIGHT' | translate }}</th>
-    <td class="border-b p-2 capitalize text-right">{{ form().isWeight }}</td>
+    @if (form().isWeight) {
+      <td class="border-b p-2 text-right">{{ 'EDIT.TRUE' | translate }}</td>
+    } @else {
+      <td class="border-b p-2 text-right">{{ 'EDIT.FALSE' | translate }}</td>
+    }
   </tr>
 </table>
