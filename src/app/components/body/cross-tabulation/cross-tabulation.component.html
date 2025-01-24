@@ -36,13 +36,13 @@
         [options]="chartOrTable()"
         styleClass="bg-base-200 rounded mt-3 px-2 py-2"
       >
-        <ng-template let-item pTemplate>
+        <ng-template let-value pTemplate>
           <span
             [ngClass]="{
-              'bg-base-100 font-semibold': defaultDataView() === item,
+              'bg-base-100 font-semibold': defaultDataView() === value,
             }"
             class="px-1.5 py-0.5 rounded"
-            >{{ item }}</span
+            >{{ 'CROSS_TABULATION.' + value | uppercase | translate }}</span
           >
         </ng-template>
       </p-selectButton>
@@ -65,9 +65,9 @@
           <span class="flex flex-row w-full px-2.5 py-0.5 hover:bg-base-300">
             {{ item.labl['#text'] }}
             @if (item['@_wgt'] === 'wgt') {
-              <span class="rounded px-1 mx-2 bg-primary text-base-100"
-                >{{ 'CROSS_TABULATION.WEIGHT' | translate }}</span
-              >
+              <span class="rounded px-1 mx-2 bg-primary text-base-100">{{
+                'CROSS_TABULATION.WEIGHT' | translate
+              }}</span>
             }
           </span>
         </ng-template>
@@ -82,7 +82,7 @@
         styleClass="select rounded border mt-2 py-1.5 mr-5 md:mr-0"
       >
         <ng-template pTemplate="selectedItem" let-item>
-          {{ 'CROSS_TABULATION.'+item | translate }}
+          {{ 'CROSS_TABULATION.' + item | translate }}
         </ng-template>
         <ng-template let-value pTemplate="item">
           <span
@@ -91,7 +91,7 @@
             }"
             class="w-full my-5 px-2.5 py-0.5 hover:bg-base-300"
           >
-          {{ 'CROSS_TABULATION.'+value | translate }}
+            {{ 'CROSS_TABULATION.' + value | translate }}
           </span>
         </ng-template>
       </p-dropdown>
@@ -135,7 +135,7 @@
             aria-atomic="true"
             aria-live="polite"
           >
-          {{ 'COMMON.LOADING_DATASET' | translate }}...
+            {{ 'COMMON.LOADING_DATASET' | translate }}...
           </div>
         } @else if (loadingStatus === 'delayed') {
           <div

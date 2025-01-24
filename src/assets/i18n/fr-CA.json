@@ -48,10 +48,10 @@
     "CHART_VAR": "Variable du graphique",
     "SHOW_IN_GRAPH": "Présenter dans le graphique",
     "VALUES": "Valeurs",
-    "COUNT": "Nombre",
-    "COUNT_PERC": "Nombre (%)",
-    "WEIGHTED": "Pondéré(e) (%)",
-    "WEIGHTED_COUNT": "Nombre d'observations (pondéré)",
+    "COUNT": "Fréquence",
+    "COUNT_PERC": "Fréquence (%)",
+    "WEIGHTED": "Fréquence pondérée (%)",
+    "WEIGHTED_COUNT": "Fréquence pondérée",
     "MAXIMUM": "Maximum",
     "MEDIAN": "Médiane",
     "ADD_TO_CROSS": "Ajouter au tableau croisé",
@@ -146,7 +146,7 @@
     "WEIGHT_VARIABLE": "Variable de poids",
     "IS_WEIGHT": "Est un poids",
     "UPDATE": "Mettre à jour les variables",
-    "SELECTED": "sélectionné" 
+    "SELECTED": "sélectionné"
   },
   "MODAL_HEADER": {
     "VARIABLE_NAVIGATE_LEFT": "Naviguer vers la variable précédente",

@@ -1,31 +1,36 @@
 <h3 class="pb-2.5 text-lg font-bold">
-  {{ 'COMMON.LABEL' | translate }}{{ 'COMMON.SPACE' | translate }}: {{ variableLabel() }}
+  {{ 'COMMON.LABEL' | translate }}{{ 'COMMON.SPACE' | translate }}:
+  {{ variableLabel() }}
 </h3>
 <!-- CHART -->
 <h3 class="sr-only">{{ 'COMMON.CHART' | translate }}</h3>
-<div [ngClass]="{ 'blur': !hasCategories() }" class="flex h-full w-full mt-4">
+<div [ngClass]="{ blur: !hasCategories() }" class="flex h-full w-full mt-4">
   <canvas id="variableChart"> {{ chartJS }}</canvas>
 </div>
 @if (hasCategories()) {
-  <h3 class="font-bold text-xl mt-10 mb-5">{{ 'COMMON.CHART_DATA' | translate }}</h3>
+  <h3 class="font-bold text-xl mt-10 mb-5">
+    {{ 'COMMON.CHART_DATA' | translate }}
+  </h3>
   <!-- CHART DATA -->
   <table class="w-full mt-2">
     <thead class="table-header">
-    <tr class="border-gray-200 border-b">
-      <th>{{ 'COMMON.SHOW_IN_GRAPH' | translate }}</th>
-      <th>{{ 'COMMON.VALUES' | translate }}</th>
-      <th>{{ 'COMMON.CATEGORIES' | translate }}</th>
-      <th>{{ 'COMMON.COUNT' | translate }}</th>
-      <th>{{ 'COMMON.COUNT_PERC' | translate }} (%)</th>
-      <th>{{ 'COMMON.WEIGHTED_COUNT' | translate }}</th>
-      <th>{{ 'COMMON.WEIGHTED' | translate }}</th>
-    </tr>
+      <tr class="border-gray-200 border-b">
+        <th>{{ 'COMMON.SHOW_IN_GRAPH' | translate }}</th>
+        <th>{{ 'COMMON.VALUES' | translate }}</th>
+        <th>{{ 'COMMON.CATEGORIES' | translate }}</th>
+        <th>{{ 'COMMON.COUNT' | translate }}</th>
+        <th>{{ 'COMMON.COUNT_PERC' | translate }}</th>
+        <th>{{ 'COMMON.WEIGHTED_COUNT' | translate }}</th>
+        <th>{{ 'COMMON.WEIGHTED' | translate }}</th>
+      </tr>
     </thead>
     <tbody>
       @for (item of chartTable() | keyvalue; track $index) {
         <tr class="border-gray-200 border-b">
           <td class="w-full justify-between">
-            <label class="sr-only" for="{{ $index }}">{{ 'COMMON.CHART_VAR' | translate }}</label>
+            <label class="sr-only" for="{{ $index }}">{{
+              'COMMON.CHART_VAR' | translate
+            }}</label>
             <input
               class="mx-auto"
               type="checkbox"
@@ -38,24 +43,33 @@
           <td>{{ item.key }}</td>
           <td>{{ item.value.category }}</td>
           <td>{{ item.value.count }}</td>
-          <td>{{ item.value.countPercent  | number : '1.2-2' }}</td>
-          <td>{{ item.value.weightedCount === 'None' ? 'None' : item.value.weightedCount | number : '1.2-2' }}</td>
-          <td>{{ item.value.weightedCountPercent | number : '1.2-2' }}</td>
+          <td>{{ item.value.countPercent | number: '1.2-2' }}</td>
+          <td>
+            {{
+              item.value.weightedCount === 'None'
+                ? 'None'
+                : (item.value.weightedCount | number: '1.2-2')
+            }}
+          </td>
+          <td>{{ item.value.weightedCountPercent | number: '1.2-2' }}</td>
         </tr>
       }
     </tbody>
   </table>
 } @else {
-  <div class="md:absolute z-20 top-96 mx-auto text-xl">{{ 'COMMON.NO_CATEGORIES' | translate }}</div>
+  <div class="md:absolute z-20 top-96 mx-auto text-xl">
+    {{ 'COMMON.NO_CATEGORIES' | translate }}
+  </div>
 }
 
-<h3 class="font-bold text-xl mt-10 mb-5">{{ 'COMMON.SUMMARY_STATISTICS' | translate }}</h3>
-<dct-summary-statistics
-  [summaryStats]="sumStat()"
-/>
+<h3 class="font-bold text-xl mt-10 mb-5">
+  {{ 'COMMON.SUMMARY_STATISTICS' | translate }}
+</h3>
+<dct-summary-statistics [summaryStats]="sumStat()" />
 
-<h3 class="font-bold text-xl mt-5 mb-5">{{ 'COMMON.VARIABLE_INFORMATION' | translate }}</h3>
+<h3 class="font-bold text-xl mt-5 mb-5">
+  {{ 'COMMON.VARIABLE_INFORMATION' | translate }}
+</h3>
 @if (form()) {
-  <dct-variable-information class="mb-10"
-                            [form]="form()" />
+  <dct-variable-information class="mb-10" [form]="form()" />
 }
