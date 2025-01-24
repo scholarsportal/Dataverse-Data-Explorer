@@ -3,46 +3,72 @@
 [![Data Explorer Deploy](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml)
 [![Lint/Test](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml)
 
+![Data Explorer Screenshot](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Data%20Explorer%20Screenshot.png?raw=true 'Data Explorer Screenshot')
+
+## 📜 Description
+
 The Data Explorer combines the previous Data Curation Tool and Data Explorer, built for use with the open-source Dataverse data repository. Data Explorer connects to Dataverse repository tabular data files and enables open metadata discovery and exploration of data such as visualizing charts, statistical analysis and cross tabulations, as well as authorized curation and permission controls for editing and curation of variable metadata such as labels, questions, universe, notes, weights, plus. Any DDI compliant metadata can be adapted for use with this tool, and any stand-alone component is built to complement [The Dataverse Project](http://dataverse.org/). The Data Curation tool options, now built into Data Explorer, are integrated into Dataverse for .tab files under the configure button.
 
 Data Explorer is an Angular application.
 
+## 🎉 Features
+
+- 🌍 Connect to Dataverse repositories
+- 📊 Visualize data with charts and tables
+- 📊 Create cross tabulations
+- 📈 Create cross charts
+- 📝 Edit variable metadata
+- 📝 Import DDI XML for curation workflows
+
 A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?dfId=127759&siteUrl=https://borealisdata.ca](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
 
-## Installation
-
-### Pre-Requisites
+## 📦 Prerequisites
 
 - NodeJS (runtime for Angular and client)
+- Angular CLI (client framework)
 
-  For development, I recommend using a Node Version manager such as [nvm](https://github.com/creationix/nvm) or [fnm](https://github.com/Schniz/fnm). Otherwise, NodeJS can be found [here](https://nodejs.org/en/download).
-- Angular (client framework)
+## ⚙️ Installation
 
-  ```npm install -g @angular/cli```
+1. Clone the repository
 
-Now to start development.
+   ```sh
+   git clone https://github.com/scholarsportal/Dataverse-Data-Explorer.git
+   ```
+
+2. Change to the project directory
+
+   ```sh
+   cd ./Dataverse-Data-Explorer
+   ```
+
+3. Install dependencies
 
 ```sh
 npm install
+```
+
+4. Run the development server
+
+```sh
 ng serve
 ```
 
-## Customization
+## 🎨 Customization
 
 ### Dataverse Instance Name
 
-You can customize the dataverse instance name in the en.json.
+You can customize the dataverse instance name in the en.json (make sure to update the other language files as well).
 
-## Building
+## 📦 Building
 
-### Into Dataverse Instance
+### 📦 Into Dataverse Instance
 
 Integrating Data Explorer in your institution? See [the Dataverse guide for more information about installing external tools](http://guides.dataverse.org/en/latest/installation/external-tools.html).
 
-### Serve as web app
+### 🌐 Serve as web app
 
 You can serve the Data Explorer app like you would any other website.
-Use ```ng build``` to get the `dist` directory, and serve the dist directly using Apache, Nginx, or whatever server you use.
+Use `ng build` to get the `dist` directory, and serve the dist directly using Apache, Nginx, or whatever server you use.
 
 > [!NOTE]
 > You can also deploy this via docker.
