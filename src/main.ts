@@ -54,6 +54,8 @@ bootstrapApplication(AppComponent, {
     ),
     provideMatomo({
       scriptUrl: environment.matomoScriptUrl,
+      siteId: environment.matomoSiteId,
+      trackerUrl: environment.matomoTrackerUrl,
     }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),
