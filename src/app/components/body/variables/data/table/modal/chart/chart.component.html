@@ -14,15 +14,15 @@
   <!-- CHART DATA -->
   <table class="w-full mt-2">
     <thead class="table-header">
-      <tr class="border-gray-200 border-b">
-        <th>{{ 'COMMON.SHOW_IN_GRAPH' | translate }}</th>
-        <th>{{ 'COMMON.VALUES' | translate }}</th>
-        <th>{{ 'COMMON.CATEGORIES' | translate }}</th>
-        <th>{{ 'COMMON.COUNT' | translate }}</th>
-        <th>{{ 'COMMON.COUNT_PERC' | translate }}</th>
-        <th>{{ 'COMMON.WEIGHTED_COUNT' | translate }}</th>
-        <th>{{ 'COMMON.WEIGHTED' | translate }}</th>
-      </tr>
+    <tr class="border-gray-200 border-b">
+      <th>{{ 'COMMON.SHOW_IN_GRAPH' | translate }}</th>
+      <th>{{ 'COMMON.VALUES' | translate }}</th>
+      <th>{{ 'COMMON.CATEGORIES' | translate }}</th>
+      <th>{{ 'COMMON.COUNT' | translate }}</th>
+      <th>{{ 'COMMON.COUNT_PERC' | translate }}</th>
+      <th>{{ 'COMMON.WEIGHTED_COUNT' | translate }}</th>
+      <th>{{ 'COMMON.WEIGHTED' | translate }}</th>
+    </tr>
     </thead>
     <tbody>
       @for (item of chartTable() | keyvalue; track $index) {
