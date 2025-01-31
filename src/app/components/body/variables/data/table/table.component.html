@@ -107,9 +107,10 @@
   [rows]="itemsPerPage()"
   [scrollable]="true"
   [value]="searchResultVariables()"
-  class="hidden md:block w-full pl-5 mb-16 overflow-y-auto"
+  class="hidden md:block w-full pl-5 overflow-y-auto"
   paginatorStyleClass="hidden"
   scrollHeight="flex"
+  [ngClass]="hasApiKey() ? 'mb-16' : 'mb-0' "
 >
   <ng-template pTemplate="header">
     <tr class="bg-base-100 border-b-2 border-gray-200 z-20">
