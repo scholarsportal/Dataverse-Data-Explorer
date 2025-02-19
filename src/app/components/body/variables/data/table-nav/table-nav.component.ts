@@ -37,7 +37,10 @@ export class TableNavComponent {
 
   pageLimitOptions = [{ value: 10 }, { value: 25 }, { value: 50 }];
 
-  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
+  constructor(
+    private liveAnnouncer: LiveAnnouncer,
+    private translate: TranslateService,
+  ) {
     effect(() => {
       if (this.groupChanged().length) {
         this.searchTerm = '';
@@ -58,12 +61,12 @@ export class TableNavComponent {
           : false,
       );
     });
-    
+
     this.emitSearchResultList.emit(newList);
-    
   }
 
   onItemsPerPageChange(event: any) {
+    console.log(event);
     const selectedValue = parseInt(event.target.value, 10);
     this.emitItemsPerPageChange.emit(selectedValue);
   }
@@ -72,24 +75,24 @@ export class TableNavComponent {
     this.pagePreviousClick.emit();
     setTimeout(() => {
       const range = this.indexRange();
-      let txt: string = "";
-      this.translate.get("TABLE_NAV.SHOWING").subscribe((res: string) => {
+      let txt: string = '';
+      this.translate.get('TABLE_NAV.SHOWING').subscribe((res: string) => {
         txt = res;
       });
       this.liveAnnouncer.announce(txt + range);
-    },500);
+    }, 500);
   }
 
   pageNext() {
     this.pageNextClick.emit();
     setTimeout(() => {
       const range = this.indexRange();
-      let txt: string = "";
-      this.translate.get("TABLE_NAV.SHOWING").subscribe((res: string) => {
+      let txt: string = '';
+      this.translate.get('TABLE_NAV.SHOWING').subscribe((res: string) => {
         txt = res;
       });
-      
+
       this.liveAnnouncer.announce(txt + range);
-    },500);
+    }, 500);
   }
 }

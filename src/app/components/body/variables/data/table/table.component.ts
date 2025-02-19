@@ -180,6 +180,9 @@ export class TableComponent {
 
   setItemsPerPage(itemsPerPage: number) {
     this.itemsPerPage.set(itemsPerPage);
+    if (this.itemsPerPage() === this.variables().length) {
+      this.currentPage = 0;
+    }
   }
 
   setSearchResultList(value: VariablesSimplified[]) {
