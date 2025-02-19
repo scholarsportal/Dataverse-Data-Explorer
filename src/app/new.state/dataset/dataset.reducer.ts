@@ -72,15 +72,6 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  // on(DataverseFetchActions.completeCrossTabFetch, (state) => {
-  //   return {
-  //     ...state,
-  //     operationStatus: {
-  //       ...state.operationStatus,
-  //       download: 'success' as const,
-  //     },
-  //   };
-  // }),
   on(DataverseFetchActions.fetchDDIError, (state, { error }) => {
     return {
       ...state,
@@ -104,13 +95,17 @@ export const datasetReducer = createReducer(
   on(DataverseFetchActions.completeCrossTabFetch, (state, { crossTabData }) => {
     return {
       ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        download: 'success' as const,
+      },
       crossTabulation: {
         ...state.crossTabulation,
         ...crossTabData,
       },
     };
   }),
-  on(DataverseFetchActions.datasetUploadStart, (state) => ({
+  on(DataverseFetchActions.startSecureDatasetUpload, (state) => ({
     ...state,
     operationStatus: {
       ...state.operationStatus,
@@ -132,6 +127,15 @@ export const datasetReducer = createReducer(
       operationStatus: {
         ...state.operationStatus,
         upload: 'error' as const,
+      },
+    };
+  }),
+  on(DatasetActions.clearDatasetUploadStatus, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        upload: 'idle' as const,
       },
     };
   }),

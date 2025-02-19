@@ -1,4 +1,4 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ParsedCrossTabData } from '../xml/xml.interface';
 
 export const DatasetActions = createActionGroup({
@@ -10,5 +10,6 @@ export const DatasetActions = createActionGroup({
       orientation?: 'rows' | 'cols' | '';
       index?: number;
     }>(),
+    'Clear Dataset Upload Status': emptyProps(),
   },
 });

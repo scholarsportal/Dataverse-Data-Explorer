@@ -2,7 +2,7 @@
   @if (groupLbl() === 'ALL') {
     {{ 'COMMON.ALL_VARIABLES' | translate }}
   } @else {
-    {{groupLbl()}}
+    {{ groupLbl() }}
   }
 </h2>
 <dct-table-nav
@@ -45,28 +45,42 @@
       class="group h-14 py-2 border-y hover:bg-base-200 hover:border-y border-slate-300"
     >
       <td class="px-5 pt-5 pb-2">
-        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.ID' | translate }}</div>
+        <div class="p-column-title font-bold w-1/4">
+          {{ 'COMMON.ID' | translate }}
+        </div>
         <div class="w-3/4">{{ variable.variableID }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.NAME' | translate }}</div>
+        <div class="p-column-title font-bold w-1/4">
+          {{ 'COMMON.NAME' | translate }}
+        </div>
         <div class="w-3/4">{{ variable.name }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.LABEL' | translate }}</div>
+        <div class="p-column-title font-bold w-1/4">
+          {{ 'COMMON.LABEL' | translate }}
+        </div>
         <div class="w-3/4">{{ variable.label }}</div>
       </td>
       <td class="px-5 py-2">
-        <div class="p-column-title font-bold w-1/4">{{ 'COMMON.WEIGHT' | translate }}</div>
+        <div class="p-column-title font-bold w-1/4">
+          {{ 'COMMON.WEIGHT' | translate }}
+        </div>
         @if (variable.weight.length) {
           <div class="w-3/4">{{ variable.weight }}</div>
         } @else if (variable.isWeight) {
           <div class="w-3/4">
-            <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">{{ 'COMMON.WEIGHT' | translate }}</span>
+            <span
+              class="rounded px-2 bg-success text-base-100 whitespace-nowrap"
+              >{{ 'COMMON.WEIGHT' | translate }}</span
+            >
           </div>
         } @else {
           <div class="w-3/4">
-            <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">{{ 'COMMON.NO_WEIGHT' | translate }}</span>
+            <span
+              class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap"
+              >{{ 'COMMON.NO_WEIGHT' | translate }}</span
+            >
           </div>
         }
       </td>
@@ -104,7 +118,7 @@
 <p-table
   [first]="currentPage"
   [paginator]="true"
-  [rows]="itemsPerPage()"
+  [rows]="itemsPerPage() + 1"
   [scrollable]="true"
   [value]="searchResultVariables()"
   class="hidden md:block w-full pl-5 overflow-y-auto"
@@ -156,10 +170,15 @@
         @if (variable.weight.length) {
           <span>{{ variable.weight }}</span>
         } @else if (variable.isWeight) {
-          <span class="rounded px-2 bg-success text-base-100 whitespace-nowrap">{{ 'COMMON.WEIGHT' | translate }}</span
+          <span
+            class="rounded px-2 bg-success text-base-100 whitespace-nowrap"
+            >{{ 'COMMON.WEIGHT' | translate }}</span
           >
         } @else {
-          <span class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap">{{ 'COMMON.NO_WEIGHT' | translate }}</span>
+          <span
+            class="rounded px-2 bg-base-content text-base-100 whitespace-nowrap"
+            >{{ 'COMMON.NO_WEIGHT' | translate }}</span
+          >
         }
       </td>
       <td class="flex flex-row float-right">

@@ -34,6 +34,11 @@ export const selectDatasetUploadError = createSelector(
   (state) => state.operationStatus.upload === 'error',
 );
 
+export const selectDatasetUploadPending = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.upload === 'pending',
+);
+
 export const selectDatasetImportIdle = createSelector(
   selectDatasetFeature,
   (state) => state.operationStatus.import === 'idle',
