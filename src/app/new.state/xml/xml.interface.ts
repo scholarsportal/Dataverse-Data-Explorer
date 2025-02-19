@@ -186,7 +186,6 @@ export interface XmlState {
     doi?: string;
     fileID?: number;
     language?: string;
-    apiKey: string | null;
     importedSuccess?: boolean;
     secureUploadUrl: string | null;
   } | null;

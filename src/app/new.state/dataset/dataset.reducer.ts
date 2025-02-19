@@ -72,15 +72,15 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(DataverseFetchActions.completeCrossTabFetch, (state) => {
-    return {
-      ...state,
-      operationStatus: {
-        ...state.operationStatus,
-        download: 'success' as const,
-      },
-    };
-  }),
+  // on(DataverseFetchActions.completeCrossTabFetch, (state) => {
+  //   return {
+  //     ...state,
+  //     operationStatus: {
+  //       ...state.operationStatus,
+  //       download: 'success' as const,
+  //     },
+  //   };
+  // }),
   on(DataverseFetchActions.fetchDDIError, (state, { error }) => {
     return {
       ...state,
@@ -90,8 +90,12 @@ export const datasetReducer = createReducer(
       },
     };
   }),
-  on(DataverseFetchActions.fetchDDISuccess, (state) => ({
+  on(DataverseFetchActions.fetchDDISuccess, (state, { crossTabData }) => ({
     ...state,
+    crossTabulation: {
+      ...state.crossTabulation,
+      ...crossTabData,
+    },
     operationStatus: {
       ...state.operationStatus,
       download: 'success' as const,

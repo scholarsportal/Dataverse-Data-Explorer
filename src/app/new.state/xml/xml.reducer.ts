@@ -87,13 +87,12 @@ export const xmlReducer = createReducer(
   })),
   on(
     DataverseFetchActions.fetchDDISuccess,
-    (state, { data, fileID, siteURL, apiKey }) => {
+    (state, { data, fileID, siteURL }) => {
       return {
         ...state,
         dataset: data,
         info: {
           siteURL,
-          apiKey: apiKey ? apiKey : null,
           fileID,
           secureUploadUrl: null,
         },

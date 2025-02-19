@@ -51,6 +51,14 @@ export const uiReducer = createReducer(
     ...state,
     progress: 77,
   })),
+  on(DataverseFetchActions.fetchCrosstabStart, (state) => ({
+    ...state,
+    progress: 44,
+  })),
+  on(DataverseFetchActions.fetchDDISuccess, (state) => ({
+    ...state,
+    progress: 77,
+  })),
   on(VariableTabUIAction.navigateToVariableTab, (state) => ({
     ...state,
     bodyToggle: 'variables' as const,
