@@ -17,3 +17,28 @@
   margin-left: 0.5rem;
   text-align: center;
 }
+
+.notification {
+  @apply absolute
+    flex
+    top-0
+    right-0
+    items-center
+    p-4
+    m-4
+    rounded-lg
+    transition-opacity
+    duration-500;
+}
+
+.notification-pending {
+  @apply bg-info text-info-content;
+}
+
+.notification-success {
+  @apply bg-success text-success-content;
+}
+
+.notification-error {
+  @apply bg-error text-error-content;
+}
