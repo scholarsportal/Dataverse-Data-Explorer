@@ -24,16 +24,15 @@ export class XmlEffects {
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.fetchDDIStart),
-        exhaustMap(({ fileID, siteURL, apiKey, metadataID, language }) =>
+        exhaustMap(({ fileID, siteURL, metadataID, language }) =>
           ddiService
             .fetchDatasetFromDataverse(fileID, siteURL, metadataID)
             .pipe(
               map((data) =>
-                DataverseFetchActions.fetchDDISuccess({
+                DataverseFetchActions.fetchCrosstabStart({
                   data,
                   fileID,
                   siteURL,
-                  apiKey,
                   metadataID,
                   language,
                 }),
@@ -43,6 +42,38 @@ export class XmlEffects {
               }),
             ),
         ),
+      );
+    },
+  );
+
+  fetchCrosstab$ = createEffect(
+    (ddiService: DdiService = inject(DdiService)) => {
+      return this.actions$.pipe(
+        ofType(DataverseFetchActions.fetchCrosstabStart),
+        switchMap(({ data, fileID, siteURL, metadataID, language }) => {
+          const variables =
+            data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
+            [];
+          const crossTabUrl = `${siteURL}/api/access/datafile/${fileID}`;
+
+          return ddiService
+            .fetchCrossTabulationFromVariables(variables, crossTabUrl)
+            .pipe(
+              map((crossTabData) =>
+                DataverseFetchActions.fetchDDISuccess({
+                  data,
+                  crossTabData,
+                  fileID,
+                  siteURL,
+                  metadataID,
+                  language,
+                }),
+              ),
+              catchError((error) => {
+                return of(DataverseFetchActions.fetchDDIError(error));
+              }),
+            );
+        }),
       );
     },
   );

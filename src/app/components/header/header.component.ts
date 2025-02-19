@@ -238,9 +238,8 @@ export class HeaderComponent implements OnInit {
     this.fail = false;
     const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
-    const siteURL = datasetInfo()?.info?.siteURL;
-    const fileID = datasetInfo()?.info?.fileID;
-    const apiKey = datasetInfo()?.info?.apiKey;
+    // const siteURL = datasetInfo()?.info?.siteURL;
+    // const fileID = datasetInfo()?.info?.fileID;
     const secureUploadURL = datasetInfo()?.info?.secureUploadUrl || '';
     if (ddiData && !!secureUploadURL) {
       this.store.dispatch(
@@ -249,16 +248,17 @@ export class HeaderComponent implements OnInit {
           secureUploadURL,
         }),
       );
-    } else if (siteURL && fileID && apiKey && ddiData) {
-      this.store.dispatch(
-        DataverseFetchActions.datasetUploadStart({
-          ddiData,
-          siteURL,
-          fileID,
-          apiKey,
-        }),
-      );
     }
+    // else if (siteURL && fileID && apiKey && ddiData) {
+    //   this.store.dispatch(
+    //     DataverseFetchActions.datasetUploadStart({
+    //       ddiData,
+    //       siteURL,
+    //       fileID,
+    //       apiKey,
+    //     }),
+    //   );
+    // }
   }
 
   closeLoadingToast() {

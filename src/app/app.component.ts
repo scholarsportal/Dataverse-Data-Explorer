@@ -113,7 +113,6 @@ export class AppComponent implements OnInit, OnDestroy {
           (params['fileId'] as number) ||
           (params['fileID'] as number) ||
           (params['dfId'] as number);
-        const apiKey = params['key'] as string;
         // If a dataset is in French then we automatically set the language to French
         const language = params['locale'] as string;
         const dvLocale = Languages.find((x) => x.dv == language);
@@ -141,7 +140,6 @@ export class AppComponent implements OnInit, OnDestroy {
             DataverseFetchActions.fetchDDIStart({
               fileID,
               siteURL,
-              apiKey,
               language,
               metadataID,
             }),

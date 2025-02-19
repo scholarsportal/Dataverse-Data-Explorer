@@ -30,18 +30,24 @@ export const DataverseFetchActions = createActionGroup({
     'Fetch DDI Start': props<{
       siteURL: string;
       fileID: number;
-      apiKey?: string;
       language?: string;
       metadataID?: number;
     }>(),
     // API call failed for a variety of reasons
     'Fetch DDI Error': props<{ error: Error }>(),
     // DDI file found
-    'Fetch DDI Success': props<{
+    'Fetch Crosstab Start': props<{
       data: ddiJSONStructure;
       siteURL: string;
       fileID: number;
-      apiKey?: string;
+      metadataID?: number;
+      language?: string;
+    }>(),
+    'Fetch DDI Success': props<{
+      crossTabData: ParsedCrossTabData;
+      data: ddiJSONStructure;
+      siteURL: string;
+      fileID: number;
       metadataID?: number;
       language?: string;
     }>(),
