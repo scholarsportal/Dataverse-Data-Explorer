@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
-import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
+import { catchError, delay, exhaustMap, map, of, switchMap } from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
+import { DatasetActions } from '../dataset/dataset.actions';
 
 @Injectable()
 export class XmlEffects {
@@ -209,6 +210,14 @@ export class XmlEffects {
       );
     },
   );
+
+  clearDatasetUploadStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DataverseFetchActions.datasetUploadSuccess),
+      delay(10000),
+      map(() => DatasetActions.clearDatasetUploadStatus()),
+    );
+  });
 
   convertImportedDatasetToXML$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {

@@ -23,6 +23,7 @@ import {
   selectDatasetImportPending,
   selectDatasetUploadedSuccessfully,
   selectDatasetUploadError,
+  selectDatasetUploadPending,
 } from '../../new.state/dataset/dataset.selectors';
 import {
   selectBodyToggleState,
@@ -38,11 +39,12 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
-import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from '../../../assets/i18n/localizations';
 import { Title } from '@angular/platform-browser';
 import { MatomoTracker } from 'ngx-matomo-client';
+import { DatasetActions } from 'src/app/new.state/dataset/dataset.actions';
 
 @Component({
   selector: 'dct-header',
@@ -58,7 +60,7 @@ import { MatomoTracker } from 'ngx-matomo-client';
     SplitButtonModule,
     MenuModule,
     ButtonModule,
-    MessagesModule,
+    MessageModule,
   ],
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -71,10 +73,6 @@ export class HeaderComponent implements OnInit {
 
   currentThemeLight: boolean = true;
   showToggle: boolean = false;
-
-  pending: boolean = false;
-  saved: boolean = false;
-  fail: boolean = false;
 
   weightIdle: boolean = true;
   weightPending: boolean = false;
@@ -112,7 +110,7 @@ export class HeaderComponent implements OnInit {
 
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
-  uploadPending = this.store.selectSignal(selectDatasetImportPending);
+  uploadPending = this.store.selectSignal(selectDatasetUploadPending);
 
   datasetState = this.store.selectSignal(selectDatasetState);
   hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
@@ -172,13 +170,7 @@ export class HeaderComponent implements OnInit {
 
   tracker = inject(MatomoTracker);
 
-  constructor() {
-    effect(() => {
-      this.pending = this.uploadPending();
-      this.saved = this.uploadSuccess();
-      this.fail = this.uploadFail();
-    });
-  }
+  constructor() {}
 
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {
@@ -244,9 +236,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleUpload() {
-    this.pending = true;
-    this.saved = false;
-    this.fail = false;
     const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
     // const siteURL = datasetInfo()?.info?.siteURL;
@@ -272,15 +261,7 @@ export class HeaderComponent implements OnInit {
     // }
   }
 
-  closeLoadingToast() {
-    this.pending = false;
-  }
-
-  closeLoadedToast() {
-    this.saved = false;
-  }
-
   closeErrToast() {
-    this.fail = false;
+    this.store.dispatch(DatasetActions.clearDatasetUploadStatus());
   }
 }
