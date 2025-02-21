@@ -6,6 +6,7 @@ import { CrossTabulationUIActions } from 'src/app/new.state/ui/ui.actions';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TooltipModule } from 'primeng/tooltip';
+import { MatomoTracker } from 'ngx-matomo-client';
 
 @Component({
   selector: 'dct-variable-options-button',
@@ -138,18 +139,22 @@ export class VariableOptionsButtonComponent {
     });
     return variables;
   });
+  tracker = inject(MatomoTracker);
 
   constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
 
   launchView() {
+    this.tracker.trackEvent('Table','View variable');
     this.emitLaunchModal.emit({ mode: 'VIEW_VAR', variableID: this.variableID() });
   }
 
   launchEdit() {
+    this.tracker.trackEvent('Table','Edit variable');
     this.emitLaunchModal.emit({ mode: 'EDIT_VAR', variableID: this.variableID() });
   }
 
   addToCrossTab() {
+    this.tracker.trackEvent('Table','Add to cross tab');
     //if (this.crossTabValuesFetched()[this.variableID()]) {
     this.store.dispatch(
       CrossTabulationUIActions.addToSelection({

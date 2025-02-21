@@ -53,9 +53,9 @@ bootstrapApplication(AppComponent, {
       EffectsModule.forRoot([XmlEffects, DatasetEffects]),
     ),
     provideMatomo({
-      scriptUrl: environment.matomoScriptUrl,
       siteId: environment.matomoSiteId,
       trackerUrl: environment.matomoTrackerUrl,
+      trackAppInitialLoad: false
     }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),
