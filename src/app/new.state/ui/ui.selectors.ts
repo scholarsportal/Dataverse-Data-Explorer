@@ -214,7 +214,7 @@ export const selectCrossTabulationData = createSelector(
             variables[id]?.['labl']?.['#text']
           }`,
       );
-    console.log('col labels', colLabels);
+    // console.log('col labels', colLabels);
     const numberOfRows = rowVariables.filter(
       (label) => label.trim() !== '',
     ).length;

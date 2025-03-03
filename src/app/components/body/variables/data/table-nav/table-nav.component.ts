@@ -66,7 +66,7 @@ export class TableNavComponent {
   }
 
   onItemsPerPageChange(event: any) {
-    console.log(event);
+    // console.log(event);
     const selectedValue = parseInt(event.target.value, 10);
     this.emitItemsPerPageChange.emit(selectedValue);
   }
