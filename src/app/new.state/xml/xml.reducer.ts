@@ -4,8 +4,8 @@ import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 import {
   changeGroupsForMultipleVariables,
   changeGroupsForSingleVariable,
-  changeMultipleVariables,
-  changeMultipleVariableWeights,
+  partiallyChangeMultipleVariables,
+  fullyChangeMultipleVariables,
   changeSingleVariable,
   createNewVariables,
   deleteVariableGroup,
@@ -15,6 +15,7 @@ import {
   renameVariableGroup,
   updateGroups,
 } from './xml.util';
+import { changeWeightForSelectedVariables } from '../dataset/util';
 
 export const initialState: XmlState = {
   dataset: null,
@@ -244,7 +245,16 @@ export const xmlReducer = createReducer(
   ),
   on(
     XmlManipulationActions.saveVariableInfo,
-    (state, { variableID, newVariableValue, groups }) => {
+    (
+      state,
+      {
+        allVariables,
+        variableID,
+        newVariableValue,
+        groups,
+        variablesWithCrossTabMetadata,
+      },
+    ) => {
       let duplicateVariables = structuredClone(
         state.dataset?.codeBook.dataDscr.var || [],
       );
@@ -263,6 +273,16 @@ export const xmlReducer = createReducer(
           groups,
         );
       }
+      const variablesObject = Object.fromEntries(
+        duplicateVariables.map((variable) => [variable['@_ID'], variable]),
+      );
+      const weightsUpdatedVariableArray = changeWeightForSelectedVariables(
+        variablesObject,
+        [variableID],
+        newVariableValue.assignedWeight,
+        variablesWithCrossTabMetadata,
+      );
+      duplicateVariables = weightsUpdatedVariableArray;
       return {
         ...state,
         dataset: !state.dataset
@@ -283,7 +303,16 @@ export const xmlReducer = createReducer(
   ),
   on(
     XmlManipulationActions.bulkSaveVariableInfo,
-    (state, { variableIDs, newVariableValue, groups, assignedWeight }) => {
+    (
+      state,
+      {
+        variableIDs,
+        newVariableValue,
+        groups,
+        assignedWeight,
+        variablesWithCrossTabMetadata,
+      },
+    ) => {
       let duplicateVariables = structuredClone(
         state.dataset?.codeBook.dataDscr.var || [],
       );
@@ -291,7 +320,7 @@ export const xmlReducer = createReducer(
         state.dataset?.codeBook.dataDscr.varGrp || [],
       );
       if (newVariableValue) {
-        duplicateVariables = changeMultipleVariables(
+        duplicateVariables = partiallyChangeMultipleVariables(
           duplicateVariables,
           variableIDs,
           newVariableValue,
@@ -299,7 +328,7 @@ export const xmlReducer = createReducer(
         );
       }
       if (assignedWeight) {
-        duplicateVariables = changeMultipleVariableWeights(
+        duplicateVariables = fullyChangeMultipleVariables(
           duplicateVariables,
           variableIDs,
           assignedWeight === 'remove' ? '' : assignedWeight,
@@ -312,6 +341,16 @@ export const xmlReducer = createReducer(
           groups,
         );
       }
+      const variablesObject = Object.fromEntries(
+        duplicateVariables.map((variable) => [variable['@_ID'], variable]),
+      );
+      const weightsUpdatedVariableArray = changeWeightForSelectedVariables(
+        variablesObject,
+        variableIDs,
+        assignedWeight || '',
+        variablesWithCrossTabMetadata,
+      );
+      duplicateVariables = weightsUpdatedVariableArray;
       return {
         ...state,
         dataset: !state.dataset
@@ -330,36 +369,36 @@ export const xmlReducer = createReducer(
       };
     },
   ),
-  on(
-    XmlManipulationActions.weightProcessSuccess,
-    (
-      state,
-      { selectedVariables, allVariables, variablesWithCrossTabMetadata },
-    ) => {
-      const duplicateVariables =
-        structuredClone(state.dataset?.codeBook.dataDscr.var) || [];
-      if (duplicateVariables) {
-        duplicateVariables.forEach((variable) => {
-          if (selectedVariables.includes(variable['@_ID'])) {
-            variable.catgry = allVariables[variable['@_ID']].catgry;
-          }
-        });
-      }
-      return {
-        ...state,
-        dataset: !state.dataset
-          ? null
-          : {
-              ...state.dataset,
-              codeBook: {
-                ...state.dataset?.codeBook,
-                dataDscr: {
-                  ...state.dataset?.codeBook.dataDscr,
-                  var: duplicateVariables,
-                },
-              },
-            },
-      };
-    },
-  ),
+  // on(
+  //   XmlManipulationActions.weightProcessSuccess,
+  //   (
+  //     state,
+  //     { selectedVariables, allVariables, variablesWithCrossTabMetadata },
+  //   ) => {
+  //     const duplicateVariables =
+  //       structuredClone(state.dataset?.codeBook.dataDscr.var) || [];
+  //     if (duplicateVariables) {
+  //       duplicateVariables.forEach((variable) => {
+  //         if (selectedVariables.includes(variable['@_ID'])) {
+  //           variable.catgry = allVariables[variable['@_ID']].catgry;
+  //         }
+  //       });
+  //     }
+  //     return {
+  //       ...state,
+  //       dataset: !state.dataset
+  //         ? null
+  //         : {
+  //             ...state.dataset,
+  //             codeBook: {
+  //               ...state.dataset?.codeBook,
+  //               dataDscr: {
+  //                 ...state.dataset?.codeBook.dataDscr,
+  //                 var: duplicateVariables,
+  //               },
+  //             },
+  //           },
+  //     };
+  //   },
+  // ),
 );

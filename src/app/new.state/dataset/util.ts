@@ -5,7 +5,7 @@ export function changeWeightForSelectedVariables(
   selectedVariables: string[],
   weightID: string,
   variablesWithCrossTabMetadata: { [variableID: string]: string[] },
-): { [variableID: string]: Variable } {
+): Variable[] {
   const frequencyTableForSelectedVariables: {
     [variableID: string]: { [categoryID: string]: number };
   } = {};
@@ -27,18 +27,35 @@ export function changeWeightForSelectedVariables(
         }
       });
     }
-
     frequencyTableForSelectedVariables[variableID] = frequencyTable;
   });
+
+  console.log(weightID);
 
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
       if (currentCategories && Array.isArray(currentCategories)) {
+        console.log(currentCategories, 'do we get here?');
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
             category.catStat = [
               category.catStat[0],
+              {
+                '#text': weightID
+                  ? frequencyTableForSelectedVariables[variableID][
+                      category.catValu
+                    ]
+                  : Number.NEGATIVE_INFINITY,
+                '@_type': 'freq',
+                '@_wgtd': 'wgtd',
+                '@_wgt-var': weightID,
+              },
+            ];
+          } else {
+            console.log(category, 'do we get here?');
+            category.catStat = [
+              category.catStat,
               {
                 '#text':
                   frequencyTableForSelectedVariables[variableID][
@@ -52,8 +69,8 @@ export function changeWeightForSelectedVariables(
           }
         });
       }
+      duplicateVariables[variableID].catgry = currentCategories;
     }
   });
-
-  return duplicateVariables;
+  return Object.values(duplicateVariables);
 }

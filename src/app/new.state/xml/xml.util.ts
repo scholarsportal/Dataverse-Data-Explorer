@@ -90,16 +90,16 @@ function updateGivenVariable(
   return updatedVariable;
 }
 
-export function changeMultipleVariables(
-  variableArray: Variable[],
-  variableID: string[],
+export function partiallyChangeMultipleVariables(
+  allVariablesArray: Variable[],
+  idsOfvariablesToBeChanged: string[],
   newVariableValue: PartialVariableForm,
   assignedWeight?: string,
 ) {
   const updatedVariableList: Variable[] = [];
-  structuredClone(variableArray).forEach((variable) => {
+  structuredClone(allVariablesArray).forEach((variable) => {
     let tempVar: Variable = variable;
-    if (variableID.includes(variable['@_ID'])) {
+    if (idsOfvariablesToBeChanged.includes(variable['@_ID'])) {
       const patchedVariable: VariableForm = {
         ...newVariableValue,
         label: newVariableValue.label.length
@@ -116,15 +116,15 @@ export function changeMultipleVariables(
   return updatedVariableList;
 }
 
-export function changeMultipleVariableWeights(
-  variableArray: Variable[],
-  variableID: string[],
+export function fullyChangeMultipleVariables(
+  allVariablesArray: Variable[],
+  idsOfvariablesToBeChanged: string[],
   assignedWeight: string,
 ) {
   const updatedVariableList: Variable[] = [];
-  structuredClone(variableArray).forEach((variable) => {
+  structuredClone(allVariablesArray).forEach((variable) => {
     let tempVar: Variable = variable;
-    if (variableID.includes(variable['@_ID'])) {
+    if (idsOfvariablesToBeChanged.includes(variable['@_ID'])) {
       const patchedVariable: VariableForm = {
         label: variable.labl?.['#text'] ? variable.labl['#text'] : '',
         literalQuestion: variable.qstn?.qstnLit ? variable.qstn.qstnLit : '',
