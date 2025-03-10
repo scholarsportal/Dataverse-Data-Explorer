@@ -66,15 +66,7 @@ function updateGivenVariable(
   } else {
     updatedVariable = {
       ...updatedVariable,
-      notes: [
-        {
-          '#text': '',
-          '@_subject': '',
-          '@_level': '',
-          '@_type': '',
-        },
-        newVariableValue.notes,
-      ],
+      notes: [updatedVariable.notes, newVariableValue.notes],
     };
   }
   if (!updatedVariable.qstn) {
