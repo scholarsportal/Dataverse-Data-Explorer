@@ -75,6 +75,13 @@ function updateGivenVariable(
       postQTxt: newVariableValue.postQuestion,
       ivuInstr: newVariableValue.interviewQuestion,
     };
+  } else {
+    updatedVariable.qstn = {
+      ...updatedVariable.qstn,
+      qstnLit: newVariableValue.literalQuestion,
+      postQTxt: newVariableValue.postQuestion,
+      ivuInstr: newVariableValue.interviewQuestion,
+    };
   }
   updatedVariable = {
     ...updatedVariable,
