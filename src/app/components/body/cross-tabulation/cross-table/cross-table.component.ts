@@ -21,7 +21,7 @@ declare const jQuery: any;
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="[&_table]:w-full">
-      <div #output id="output"></div>
+      <div #output id="output" class="pb-8"></div>
     </div>
   `,
   styleUrl: './cross-table.component.css',
