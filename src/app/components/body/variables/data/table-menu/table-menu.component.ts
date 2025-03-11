@@ -31,7 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ChipModule,
     FormsModule,
     BulkEditModalComponent,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './table-menu.component.html',
   styleUrl: './table-menu.component.css',
@@ -39,15 +39,15 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TableMenuComponent {
   store = inject(Store);
   selectedVariables = input.required<string[]>();
-  
-  variablesSelected =  computed(() => {
+
+  variablesSelected = computed(() => {
     if (this.selectedVariables().length > 0) {
-      return false
+      return false;
     } else {
-      return true
+      return true;
     }
   });
-  
+
   groupID = input.required<string>();
   selectedWeight: string = '';
   selectedGroups: string[] = [];
@@ -99,6 +99,7 @@ export class TableMenuComponent {
           groups: this.selectedGroups,
           allVariables: this.allVariables(),
           variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
+          typeOfChange: 'partial',
         }),
       );
       this.saved = true;
