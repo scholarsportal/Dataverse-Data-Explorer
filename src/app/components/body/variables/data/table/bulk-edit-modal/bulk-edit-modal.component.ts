@@ -65,6 +65,7 @@ export class BulkEditModalComponent {
         newVariableValue,
         allVariables: this.allVariables(),
         variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
+        typeOfChange: 'full',
       }),
     );
 

@@ -36,7 +36,7 @@ export function changeWeightForSelectedVariables(
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
       if (currentCategories && Array.isArray(currentCategories)) {
-        console.log(currentCategories, 'do we get here?');
+        // console.log(currentCategories, 'do we get here?');
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
             category.catStat = [
@@ -53,7 +53,6 @@ export function changeWeightForSelectedVariables(
               },
             ];
           } else {
-            console.log(category, 'do we get here?');
             category.catStat = [
               category.catStat,
               {

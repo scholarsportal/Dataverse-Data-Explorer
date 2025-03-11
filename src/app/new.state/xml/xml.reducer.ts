@@ -311,6 +311,7 @@ export const xmlReducer = createReducer(
         groups,
         assignedWeight,
         variablesWithCrossTabMetadata,
+        typeOfChange,
       },
     ) => {
       let duplicateVariables = structuredClone(
@@ -319,21 +320,28 @@ export const xmlReducer = createReducer(
       let duplicateVariableGroups = structuredClone(
         state.dataset?.codeBook.dataDscr.varGrp || [],
       );
-      if (newVariableValue) {
+      if (typeOfChange === 'partial') {
         duplicateVariables = partiallyChangeMultipleVariables(
           duplicateVariables,
           variableIDs,
-          newVariableValue,
-          assignedWeight,
+          assignedWeight || '',
         );
       }
-      if (assignedWeight) {
+      if (typeOfChange === 'full' && newVariableValue) {
         duplicateVariables = fullyChangeMultipleVariables(
           duplicateVariables,
           variableIDs,
-          assignedWeight === 'remove' ? '' : assignedWeight,
+          newVariableValue,
         );
       }
+      // }
+      // if (assignedWeight) {
+      //   duplicateVariables = fullyChangeMultipleVariables(
+      //     duplicateVariables,
+      //     variableIDs,
+      //     assignedWeight === 'remove' ? '' : assignedWeight,
+      //   );
+      // }
       if (groups) {
         duplicateVariableGroups = changeGroupsForMultipleVariables(
           duplicateVariableGroups,

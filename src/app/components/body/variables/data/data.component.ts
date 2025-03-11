@@ -1,46 +1,82 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import {
   Variable,
   VariableGroup,
   VariablesSimplified,
 } from 'src/app/new.state/xml/xml.interface';
 import { KeyValuePipe } from '@angular/common';
-import { TableNavComponent } from './table-nav/table-nav.component';
-import { TableMenuComponent } from './table-menu/table-menu.component';
 import { TableComponent } from './table/table.component';
+import {
+  selectDatasetProcessedGroups,
+  selectDatasetProcessedVariables,
+  selectUserHasUploadAccess,
+} from 'src/app/new.state/xml/xml.selectors';
+import { Store } from '@ngrx/store';
+import {
+  selectCrossTabSelection,
+  selectCurrentGroupID,
+  selectOpenVariableCategoriesMissing,
+  selectOpenVariableID,
+  selectVariableSelectionContext,
+} from 'src/app/new.state/ui/ui.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectDatasetWeights,
+  selectVariableCrossTabIsFetching,
+} from 'src/app/new.state/dataset/dataset.selectors';
 
 @Component({
   selector: 'dct-data',
   standalone: true,
-  imports: [
-    KeyValuePipe,
-    TableComponent,
-    TableNavComponent,
-    TableMenuComponent,
-  ],
+  imports: [TableComponent],
   templateUrl: './data.component.html',
   styleUrl: './data.component.css',
   //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataComponent {
-  groups = input.required<{ [variableID: string]: VariableGroup }>();
-  variables = input.required<{ [variableID: string]: Variable }>();
-  hasApiKey = input.required<boolean>();
-  openVariable = input.required<string>();
-  selectedVariables = input.required<string[]>();
-  categoriesInvalid = input.required<string[]>();
-  variablesWithCrossTabMetadata = input.required<{
-    [variableID: string]: string[];
-  }>();
-  variablesInCrossTabSelection = input.required<
-    {
-      variableID: string;
-      orientation: '' | 'rows' | 'cols';
-    }[]
-  >();
-  isFetching = input.required<boolean>();
-  crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
-  weights = input.required<{ [weightID: string]: string }>();
+  store = inject(Store);
+  groups = this.store.selectSignal(selectDatasetProcessedGroups);
+  selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
+  allVariables = this.store.selectSignal(selectDatasetProcessedVariables);
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
+  openVariable = this.store.selectSignal(selectOpenVariableID);
+  selectedVariableContext = this.store.selectSignal(
+    selectVariableSelectionContext,
+  );
+  selectedVariables = computed(() => {
+    return this.selectedVariableContext()[this.selectedGroupID()] || [];
+  });
+  categoriesInvalid = this.store.selectSignal(
+    selectOpenVariableCategoriesMissing,
+  );
+  variablesWithCrossTabMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
+  variablesInCrossTabSelection = this.store.selectSignal(
+    selectCrossTabSelection,
+  );
+  isFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
+  crossTabValuesFetched = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
+  weights = this.store.selectSignal(selectDatasetWeights);
+  variables = computed(() => {
+    if (this.selectedGroupID() === 'ALL') {
+      return this.allVariables();
+    } else {
+      const filteredVariables: { [variableID: string]: Variable } = {};
+      if (this.groups()[this.selectedGroupID()]) {
+        const groupVariables = this.groups()[this.selectedGroupID()]['@_var'];
+        if (groupVariables && groupVariables.length > 0) {
+          const selectedGroupVariableArray = groupVariables.split(' ') || [];
+          selectedGroupVariableArray.map((variableID) => {
+            filteredVariables[variableID] = this.allVariables()[variableID];
+          });
+        }
+      }
+      return filteredVariables;
+    }
+  });
   variablesSimplified = computed(() => {
     const simplified: VariablesSimplified[] = [];
     Object.values(this.variables()).forEach((value) => {
@@ -61,5 +97,7 @@ export class DataComponent {
 
   // This used to notify the search box that the user has changed the displayed
   // variables listed so the search box resets
-  groupChanged = input.required<string>();
+  groupChanged = computed(() => {
+    return this.selectedGroupID();
+  });
 }

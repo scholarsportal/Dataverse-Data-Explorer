@@ -5,13 +5,14 @@ import {
   inject,
   input,
   output,
-  signal
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { RenamingSidebarButtonComponent } from './renaming-button/renaming-sidebar-button.component';
 import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sidebar-button.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 
 @Component({
   selector: 'dct-sidebar-button',
@@ -20,14 +21,13 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     RenamingSidebarButtonComponent,
     DeletingSidebarButtonComponent,
-    TranslateModule
+    TranslateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar-button.component.html',
   styleUrl: './sidebar-button.component.css',
 })
 export class SidebarButtonComponent {
-
   store = inject(Store);
 
   groupID = input.required<string>();
@@ -48,20 +48,22 @@ export class SidebarButtonComponent {
   deletingActive = computed(() => {
     return this.selected() && this.deleting();
   });
-  
+
   handleClick() {
     this.resetUI();
-    this.changeSelectedGroupID.emit(this.groupID());
-    const elem = document.activeElement;
+    this.store.dispatch(
+      VariableTabUIAction.changeSelectedGroupID({ groupID: this.groupID() }),
+    );
+    // const elem = document.activeElement;
     //if (elem instanceof HTMLElement) {
-      //elem?.blur();
+    //elem?.blur();
     //}
-    setTimeout(()=>{
-      const heading = document.querySelector('#tableHeading');
-      if (heading) {
-        (heading as HTMLElement)?.focus();
-      }
-    },1000)
+    // setTimeout(()=>{
+    //   const heading = document.querySelector('#tableHeading');
+    //   if (heading) {
+    //     (heading as HTMLElement)?.focus();
+    //   }
+    // },1000)
   }
 
   delete() {

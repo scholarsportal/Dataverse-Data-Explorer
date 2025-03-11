@@ -24,7 +24,10 @@ import { ChipsModule } from 'primeng/chips';
 import { TableMenuComponent } from '../table-menu/table-menu.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-
+import {
+  selectDatasetProcessedVariables,
+  selectUserHasUploadAccess,
+} from 'src/app/new.state/xml/xml.selectors';
 @Component({
   selector: 'dct-table',
   templateUrl: './table.component.html',
@@ -47,7 +50,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class TableComponent {
   store = inject(Store);
   ModalComponent = viewChild(ModalComponent);
-  hasApiKey = input.required<boolean>();
+  // hasApiKey = input.required<boolean>();
+  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
   groupChanged = input.required<string>();
   variables = input.required<VariablesSimplified[]>();
   allVariables = input.required<{ [variableID: string]: Variable }>();

@@ -33,7 +33,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SidebarButtonComponent,
     NgClass,
     GroupButtonComponent,
-    TranslateModule
+    TranslateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

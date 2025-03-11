@@ -143,6 +143,7 @@ export const XmlManipulationActions = createActionGroup({
       variableIDs: string[];
       groups?: string[];
       assignedWeight?: string;
+      typeOfChange: 'full' | 'partial';
       newVariableValue?: {
         label: string;
         literalQuestion: string;

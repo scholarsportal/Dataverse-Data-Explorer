@@ -90,11 +90,10 @@ function updateGivenVariable(
   return updatedVariable;
 }
 
-export function partiallyChangeMultipleVariables(
+export function fullyChangeMultipleVariables(
   allVariablesArray: Variable[],
   idsOfvariablesToBeChanged: string[],
   newVariableValue: PartialVariableForm,
-  assignedWeight?: string,
 ) {
   const updatedVariableList: Variable[] = [];
   structuredClone(allVariablesArray).forEach((variable) => {
@@ -106,7 +105,7 @@ export function partiallyChangeMultipleVariables(
           ? newVariableValue.label
           : variable.labl['#text'],
         isWeight: !!variable['@_wgt'],
-        assignedWeight: assignedWeight || variable['@_wgt-var'],
+        assignedWeight: variable['@_wgt-var'],
       };
       tempVar = updateGivenVariable(variable, patchedVariable);
     }
@@ -116,7 +115,7 @@ export function partiallyChangeMultipleVariables(
   return updatedVariableList;
 }
 
-export function fullyChangeMultipleVariables(
+export function partiallyChangeMultipleVariables(
   allVariablesArray: Variable[],
   idsOfvariablesToBeChanged: string[],
   assignedWeight: string,
@@ -169,7 +168,12 @@ export function changeGroupsForSingleVariable(
 ) {
   const dereferencedArray: VariableGroup[] = [];
   // First remove all references from other groups
-  structuredClone(variableGroups).forEach((variableGroup) => {
+  let clonedVariableGroups = structuredClone(variableGroups);
+  if (!Array.isArray(clonedVariableGroups) && !!clonedVariableGroups) {
+    clonedVariableGroups = [clonedVariableGroups];
+  }
+  for (const variableGroup of clonedVariableGroups || []) {
+    console.log('do we get here?');
     if (variableGroup['@_var']?.split(' ').includes(variableID)) {
       const index = variableGroup['@_var']?.split(' ').indexOf(variableID);
       const variables = variableGroup['@_var'].split(' ');
@@ -179,7 +183,7 @@ export function changeGroupsForSingleVariable(
       }
     }
     dereferencedArray.push(variableGroup);
-  });
+  }
 
   const updatedGroupArray: VariableGroup[] = [];
   // Then insert variable ID in selected groups
@@ -198,7 +202,11 @@ export function changeGroupsForMultipleVariables(
   newGroups: string[],
 ) {
   const updatedGroupArray: VariableGroup[] = [];
-  variableGroups.forEach((variableGroup) => {
+  let clonedVariableGroups = structuredClone(variableGroups);
+  if (!Array.isArray(clonedVariableGroups) && !!clonedVariableGroups) {
+    clonedVariableGroups = [clonedVariableGroups];
+  }
+  for (const variableGroup of clonedVariableGroups || []) {
     if (newGroups.includes(variableGroup['@_ID'])) {
       const variablesAsArray = variableGroup['@_var']?.length
         ? variableGroup['@_var']?.split(' ') || []
@@ -207,7 +215,7 @@ export function changeGroupsForMultipleVariables(
       variableGroup['@_var'] = variablesAsArray.join(' ');
     }
     updatedGroupArray.push(variableGroup);
-  });
+  }
   return updatedGroupArray;
 }
 
