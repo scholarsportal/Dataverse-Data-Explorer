@@ -173,7 +173,6 @@ export function changeGroupsForSingleVariable(
     clonedVariableGroups = [clonedVariableGroups];
   }
   for (const variableGroup of clonedVariableGroups || []) {
-    console.log('do we get here?');
     if (variableGroup['@_var']?.split(' ').includes(variableID)) {
       const index = variableGroup['@_var']?.split(' ').indexOf(variableID);
       const variables = variableGroup['@_var'].split(' ');
