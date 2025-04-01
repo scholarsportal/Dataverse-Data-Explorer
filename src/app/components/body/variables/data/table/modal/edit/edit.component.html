@@ -68,18 +68,22 @@
         (onChange)="changeGroup($event)"
         [filter]="false"
         showHeader="false"
-        [ngModelOptions]="{standalone: true}"
+        [ngModelOptions]="{ standalone: true }"
         [ngModel]="variableGroupsPlaceholder"
         [options]="allGroupsArray()"
         id="multiselect-edit"
         placeholder="{{ 'EDIT.ADD_TO_GROUP' | translate }}"
         styleClass="select select-bordered border-slate-300 w-full"
         emptyMessage="{{ 'SIDEBAR.NO_GROUPS' | translate }}"
-        >
+      >
         <ng-template let-value pTemplate="selectedItems">
-          <span *ngIf="variableGroupsPlaceholder.length > 0; 
-            then allSelectedTemplate;
-            else elseTemplate"></span>
+          <span
+            *ngIf="
+              variableGroupsPlaceholder.length > 0;
+              then allSelectedTemplate;
+              else elseTemplate
+            "
+          ></span>
           <ng-template #allSelectedTemplate>
             @for (option of variableGroupsPlaceholder; track $index) {
               <span *ngIf="$index === 0" class="">
@@ -91,7 +95,9 @@
             }
           </ng-template>
           <ng-template #elseTemplate>
-            <ng-template [ngIf]="value?.length ?? 0 > 0" [ngIfElse]="defaultTemplate"
+            <ng-template
+              [ngIf]="value?.length ?? 0 > 0"
+              [ngIfElse]="defaultTemplate"
               >{{ value?.length ?? 0 }} {{ 'EDIT.SELECTED' | translate }}
             </ng-template>
             <ng-template #defaultTemplate>
@@ -101,8 +107,19 @@
         </ng-template>
         <ng-template let-value pTemplate="item">
           <div class="">
-            <input *ngIf="!variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" />
-            <input *ngIf="variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])" type="checkbox" checked />
+            <input
+              *ngIf="
+                !variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])
+              "
+              type="checkbox"
+            />
+            <input
+              *ngIf="
+                variableGroupsPlaceholder.includes(allGroups()[value]['@_ID'])
+              "
+              type="checkbox"
+              checked
+            />
             {{ allGroups()[value].labl || 'no label' }}
           </div>
         </ng-template>
@@ -111,7 +128,8 @@
     </label>
   </div>
   <div class="flex flex-row pr-5">
-    <label class="form-label" for="weightVar">{{ 'EDIT.WEIGHT_VARIABLE' | translate }}
+    <label class="form-label" for="weightVar"
+      >{{ 'EDIT.WEIGHT_VARIABLE' | translate }}
       <select
         class="select select-bordered w-full max-w-xs"
         formControlName="assignedWeight"
@@ -119,7 +137,10 @@
       >
         <option value="">{{ 'COMMON.NO_WEIGHT' | translate }}</option>
         @for (weightValue of weights() | keyvalue; track $index) {
-          <option [value]="weightValue.key">
+          <option
+            [disabled]="weightValue.key === variableID()"
+            [value]="weightValue.key"
+          >
             {{ weightValue.value }}
           </option>
         }
@@ -139,7 +160,10 @@
     </label>
   </div>
 </form>
-<button (click)="handleSave()" class="btn btn-primary justify-start w-full mt-5">
+<button
+  (click)="handleSave()"
+  class="btn btn-primary justify-start w-full mt-5"
+>
   <svg
     class="w-6 h-6"
     fill="none"

@@ -33,7 +33,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     MultiSelectModule,
     ChipModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css',
@@ -90,6 +90,7 @@ export class EditComponent {
         assignedWeight: this.form().assignedWeight,
         notes: this.form().notes,
       });
+      console.log(this.variableGroupsPlaceholder);
     });
   }
 

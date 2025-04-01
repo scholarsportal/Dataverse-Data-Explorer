@@ -24,7 +24,6 @@ import {
   selectDatasetWeights,
   selectVariableCrossTabIsFetching,
 } from '../../new.state/dataset/dataset.selectors';
-import { TableComponent } from './variables/data/table/table.component';
 
 @Component({
   selector: 'dct-body',
@@ -34,7 +33,6 @@ import { TableComponent } from './variables/data/table/table.component';
     DataComponent,
     CrossTabulationComponent,
     ImportComponent,
-    TableComponent,
   ],
   templateUrl: './body.component.html',
   styleUrl: './body.component.css',
@@ -43,14 +41,14 @@ import { TableComponent } from './variables/data/table/table.component';
 export class BodyComponent {
   store = inject(Store);
 
-  hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
-  variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
-  crossTabValuesFetched = this.store.selectSignal(
-    selectDatasetVariableCrossTabValues,
-  );
-  crossTabIsFetching = this.store.selectSignal(
-    selectVariableCrossTabIsFetching,
-  );
+  // hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
+  // variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
+  // crossTabValuesFetched = this.store.selectSignal(
+  //   selectDatasetVariableCrossTabValues,
+  // );
+  // crossTabIsFetching = this.store.selectSignal(
+  //   selectVariableCrossTabIsFetching,
+  // );
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   crossTabulationTabOpen = computed(() => {
     return this.bodyToggleState() === 'cross-tab';
@@ -59,45 +57,41 @@ export class BodyComponent {
     return this.bodyToggleState() === 'variables';
   });
 
-  variablesWithCrossTabMetadata = this.store.selectSignal(
-    selectDatasetVariableCrossTabValues,
-  );
-
-  groups = this.store.selectSignal(selectDatasetProcessedGroups);
-  allWeights = this.store.selectSignal(selectDatasetWeights);
-  variables = this.store.selectSignal(selectDatasetProcessedVariables);
-  selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
-  groupIDChanged = computed(() => {
-    return this.selectedGroupID();
-  });
-  selectedVariableContext = this.store.selectSignal(
-    selectVariableSelectionContext,
-  );
-  selectedVariables = computed(() => {
-    return this.selectedVariableContext()[this.selectedGroupID()] || [];
-  });
-  categoriesMissing = this.store.selectSignal(
-    selectOpenVariableCategoriesMissing,
-  );
-  openVariable = this.store.selectSignal(selectOpenVariableID);
+  // groups = this.store.selectSignal(selectDatasetProcessedGroups);
+  // allWeights = this.store.selectSignal(selectDatasetWeights);
+  // variables = this.store.selectSignal(selectDatasetProcessedVariables);
+  // selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
+  // groupIDChanged = computed(() => {
+  //   return this.selectedGroupID();
+  // });
+  // selectedVariableContext = this.store.selectSignal(
+  //   selectVariableSelectionContext,
+  // );
+  // selectedVariables = computed(() => {
+  //   return this.selectedVariableContext()[this.selectedGroupID()] || [];
+  // });
+  // categoriesMissing = this.store.selectSignal(
+  //   selectOpenVariableCategoriesMissing,
+  // );
+  // openVariable = this.store.selectSignal(selectOpenVariableID);
   importComponentState = this.store.selectSignal(selectImportComponentState);
 
-  // When groupID changes or user selects group, we filter the variables passed to the datatables component
-  filteredByGroupID = computed(() => {
-    if (this.selectedGroupID() === 'ALL') {
-      return this.variables();
-    } else {
-      const filteredVariables: { [variableID: string]: Variable } = {};
-      if (this.groups()[this.selectedGroupID()]) {
-        const groupVariables = this.groups()[this.selectedGroupID()]['@_var'];
-        if (groupVariables && groupVariables.length > 0) {
-          const selectedGroupVariableArray = groupVariables.split(' ') || [];
-          selectedGroupVariableArray.map((variableID) => {
-            filteredVariables[variableID] = this.variables()[variableID];
-          });
-        }
-      }
-      return filteredVariables;
-    }
-  });
+  // // When groupID changes or user selects group, we filter the variables passed to the datatables component
+  // filteredByGroupID = computed(() => {
+  //   if (this.selectedGroupID() === 'ALL') {
+  //     return this.variables();
+  //   } else {
+  //     const filteredVariables: { [variableID: string]: Variable } = {};
+  //     if (this.groups()[this.selectedGroupID()]) {
+  //       const groupVariables = this.groups()[this.selectedGroupID()]['@_var'];
+  //       if (groupVariables && groupVariables.length > 0) {
+  //         const selectedGroupVariableArray = groupVariables.split(' ') || [];
+  //         selectedGroupVariableArray.map((variableID) => {
+  //           filteredVariables[variableID] = this.variables()[variableID];
+  //         });
+  //       }
+  //     }
+  //     return filteredVariables;
+  //   }
+  // });
 }
