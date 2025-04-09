@@ -2,7 +2,6 @@ import { AppComponent } from './app/app.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { importProvidersFrom, isDevMode } from '@angular/core';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { provideRouter } from '@angular/router';
 import {
@@ -20,7 +19,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { provideMatomo } from 'ngx-matomo-client';
 import { environment } from './environments/environment';
-
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   const basePath = document.getElementsByTagName('base')[0].href || '/';
@@ -44,14 +43,10 @@ bootstrapApplication(AppComponent, {
         dataset: datasetReducer,
         ui: uiReducer,
       }),
-      StoreDevtoolsModule.instrument({
-        maxAge: 25,
-        logOnly: !isDevMode(),
-        connectInZone: true,
-      }),
       // Add this line to 'activate effects for actions'
       EffectsModule.forRoot([XmlEffects, DatasetEffects]),
     ),
+    ...environment.providers,
     provideMatomo({
       scriptUrl: environment.matomoScriptUrl,
       siteId: environment.matomoSiteId,

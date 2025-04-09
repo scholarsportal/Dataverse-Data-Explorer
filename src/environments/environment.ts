@@ -6,4 +6,5 @@ export const environment = {
   matomoTrackerUrl: 'https://analytics.scholarsportal.info/matomo.php',
   matomoSiteId: 128,
   serverUrl: 'https://analytics.scholarsportal.info',
+  providers: [],
 };
