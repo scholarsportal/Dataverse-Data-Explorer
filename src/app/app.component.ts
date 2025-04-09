@@ -107,6 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
+        this.setTheme();
         const callback = (params['callback'] as string) || null;
         const siteURL = params['siteUrl'] as string;
         const fileID =
@@ -145,7 +146,6 @@ export class AppComponent implements OnInit, OnDestroy {
             }),
           );
         }
-        this.setTheme();
       });
   }
 
