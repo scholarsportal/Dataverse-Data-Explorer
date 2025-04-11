@@ -164,6 +164,7 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('theme', 'dark');
         document.body.setAttribute('data-theme', 'dark');
       } else {
+        localStorage.setItem('theme', 'light');
         document.body.setAttribute('data-theme', 'light');
       }
     }

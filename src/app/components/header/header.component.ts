@@ -42,6 +42,8 @@ import { DdiService } from '../../services/ddi.service';
 import { MessageModule } from 'primeng/message';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from '../../../assets/i18n/localizations';
+import { Title } from '@angular/platform-browser';
+import { MatomoTracker } from 'ngx-matomo-client';
 import { DatasetActions } from 'src/app/new.state/dataset/dataset.actions';
 
 @Component({
@@ -79,6 +81,7 @@ export class HeaderComponent implements OnInit {
 
   citation = this.store.selectSignal(selectDatasetCitation);
   title = this.store.selectSignal(selectDatasetTitle);
+  pagetitle = inject(Title);
   doi = this.store.selectSignal(selectDatasetDoi);
   bodyToggleState = this.store.selectSignal(selectBodyToggleState);
   selectedVariables = this.store.selectSignal(selectVariableSelectionContext);
@@ -165,20 +168,30 @@ export class HeaderComponent implements OnInit {
       : this.downloadOptions();
   });
 
+  tracker = inject(MatomoTracker);
+
+  constructor() {}
+
   ngOnInit(): void {
     if (localStorage.getItem('theme') === 'dark') {
       this.currentThemeLight = false;
     }
     this.showToggle = true;
+    this.pagetitle.setTitle(this.title() || 'Data Explorer');
+    this.tracker.setDocumentTitle(this.title() || 'Data Explorer');
+    this.tracker.trackPageView();
+
   }
 
   handleToggle($event: 'cross-tab' | 'variables') {
     if ($event === 'cross-tab') {
+      this.tracker.trackEvent('Tabs','Cross Tabulation');
       return this.store.dispatch(
         CrossTabulationUIActions.navigateToCrossTabulationTab(),
       );
     }
     if ($event === 'variables') {
+      this.tracker.trackEvent('Tabs','Variables');
       return this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
     }
   }
