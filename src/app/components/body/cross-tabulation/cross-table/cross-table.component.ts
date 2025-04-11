@@ -33,9 +33,13 @@ export class CrossTableComponent {
   cols = input.required<string[]>();
   hasData = input.required<boolean>();
   selectedViewOption = input<string>('Count');
+  aggregatorName = input.required<string>();
   element: ElementRef = inject(ElementRef);
 
-  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
+  constructor(
+    private liveAnnouncer: LiveAnnouncer,
+    private translate: TranslateService,
+  ) {
     effect(() => {
       if (this.data() && (this.rows() || this.cols())) {
         this.createTable();
@@ -73,10 +77,14 @@ export class CrossTableComponent {
       rendererName: 'Table',
       showUI: false,
     });
-    let txt: string = "";
-    this.translate.get("CROSS_TABULATION.TABLE_MESSAGE").subscribe((res: string) => {
-      txt = res;
-    });
-    setTimeout(() => {this.liveAnnouncer.announce(txt);},2000);
+    let txt: string = '';
+    this.translate
+      .get('CROSS_TABULATION.TABLE_MESSAGE')
+      .subscribe((res: string) => {
+        txt = res;
+      });
+    setTimeout(() => {
+      this.liveAnnouncer.announce(txt);
+    }, 2000);
   }
 }
