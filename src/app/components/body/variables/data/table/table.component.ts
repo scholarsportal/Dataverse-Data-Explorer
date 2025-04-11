@@ -3,16 +3,13 @@ import {
   computed,
   effect,
   inject,
-  input,
   signal,
   viewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ModalComponent } from './modal/modal.component';
-import { KeyValuePipe, NgClass } from '@angular/common';
 import {
   Variable,
-  VariableGroup,
   VariablesSimplified,
 } from 'src/app/new.state/xml/xml.interface';
 import { TableModule } from 'primeng/table';
@@ -25,9 +22,23 @@ import { TableMenuComponent } from '../table-menu/table-menu.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
+  selectDatasetProcessedGroups,
   selectDatasetProcessedVariables,
   selectUserHasUploadAccess,
 } from 'src/app/new.state/xml/xml.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectDatasetWeights,
+  selectVariableCrossTabIsFetching,
+} from 'src/app/new.state/dataset/dataset.selectors';
+import {
+  selectCrossTabSelection,
+  selectCurrentGroupID,
+  selectOpenVariableCategoriesMissing,
+  selectOpenVariableID,
+  selectVariableSelectionContext,
+} from 'src/app/new.state/ui/ui.selectors';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'dct-table',
   templateUrl: './table.component.html',
@@ -36,58 +47,92 @@ import {
   //changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     VariableOptionsButtonComponent,
-    KeyValuePipe,
     TableModule,
     ButtonModule,
     TableNavComponent,
     TableMenuComponent,
     ModalComponent,
-    NgClass,
     ChipsModule,
     TranslateModule,
+    CommonModule,
   ],
 })
 export class TableComponent {
   store = inject(Store);
   ModalComponent = viewChild(ModalComponent);
-  // hasApiKey = input.required<boolean>();
   hasApiKey = this.store.selectSignal(selectUserHasUploadAccess);
-  groupChanged = input.required<string>();
-  variables = input.required<VariablesSimplified[]>();
-  allVariables = input.required<{ [variableID: string]: Variable }>();
-  groups = input.required<{ [variableID: string]: VariableGroup }>();
-  weights = input.required<{ [weightID: string]: string }>();
-  categoriesInvalid = input.required<string[]>();
-  openVariable = input.required<string>();
-  variablesWithCrossTabMetadata = input.required<{
-    [variableID: string]: string[];
-  }>();
-  variablesInCrossTab =
-    input.required<
-      { variableID: string; orientation: 'rows' | 'cols' | '' }[]
-    >();
-  isFetching = input.required<boolean>();
-  crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
+  groups = this.store.selectSignal(selectDatasetProcessedGroups);
+  weights = this.store.selectSignal(selectDatasetWeights);
+  selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
+  allVariables = this.store.selectSignal(selectDatasetProcessedVariables);
+  processedVariables = this.store.selectSignal(selectDatasetProcessedVariables);
+  selectedVariableContext = this.store.selectSignal(
+    selectVariableSelectionContext,
+  );
+  selectedVariables = computed(() => {
+    return this.selectedVariableContext()[this.selectedGroupID()] || [];
+  });
+  categoriesInvalid = this.store.selectSignal(
+    selectOpenVariableCategoriesMissing,
+  );
+  openVariable = this.store.selectSignal(selectOpenVariableID);
+  variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
+  isFetching = this.store.selectSignal(selectVariableCrossTabIsFetching);
+  variablesSimplified = computed(() => {
+    const simplified: VariablesSimplified[] = [];
+    Object.values(this.selectedGroupVariables()).forEach((value) => {
+      if (value?.['@_ID']) {
+        const newObj = {
+          variableID: value['@_ID'],
+          name: value['@_name'],
+          label: value.labl?.['#text'] || '',
+          weight: value['@_wgt-var'] || '',
+          isWeight: !!value['@_wgt'],
+          selected: this.selectedVariables().includes(value['@_ID']),
+        };
+        simplified.push(newObj);
+      }
+    });
+    return simplified;
+  });
+  selectedGroupVariables = computed(() => {
+    if (this.selectedGroupID() === 'ALL') {
+      return this.allVariables();
+    } else {
+      const filteredVariables: { [variableID: string]: Variable } = {};
+      if (this.groups()[this.selectedGroupID()]) {
+        const groupVariables = this.groups()[this.selectedGroupID()]['@_var'];
+        if (groupVariables && groupVariables.length > 0) {
+          const selectedGroupVariableArray = groupVariables.split(' ') || [];
+          selectedGroupVariableArray.map((variableID) => {
+            filteredVariables[variableID] = this.allVariables()[variableID];
+          });
+        }
+      }
+      return filteredVariables;
+    }
+  });
   openVariableData = computed(() => {
     let next = '';
     let previous = '';
     let variable: VariablesSimplified | null = null;
-    this.variables().map((variableData, index) => {
+    this.variablesSimplified().map((variableData, index) => {
       if (variableData.variableID === this.openVariable()) {
-        next = this.variables()[index + 1]?.variableID ?? '';
-        previous = this.variables()[index - 1]?.variableID ?? '';
+        next = this.variablesSimplified()[index + 1]?.variableID ?? '';
+        previous = this.variablesSimplified()[index - 1]?.variableID ?? '';
         variable = variableData;
       }
     });
     return { next, previous, variable };
   });
-  selectedVariables = input.required<string[]>();
   allVariablesSelected = computed(() => {
-    return this.selectedVariables().length === this.variables().length;
+    return (
+      this.selectedVariables().length === this.variablesSimplified().length
+    );
   });
-  groupLbl = computed(() => {
+  groupLabel = computed(() => {
     let label = 'ALL';
-    const currentGroup = this.groups()[this.groupChanged()];
+    const currentGroup = this.groups()[this.selectedGroupID()];
     if (currentGroup) {
       label = currentGroup.labl;
     }
@@ -106,14 +151,14 @@ export class TableComponent {
     });
 
     if (this.searchResult().length > 0) {
-      if (this.searchResult().length < this.variables().length) {
+      if (this.searchResult().length < this.variablesSimplified().length) {
         this.liveAnnouncer.announce(txt1 + this.searchResult().length + txt2);
       }
     }
     if (this.searchResult().length) {
       return this.searchResult();
     } else {
-      return this.variables();
+      return this.variablesSimplified();
     }
   });
   variablesLength = computed(() => {
@@ -128,7 +173,8 @@ export class TableComponent {
     private translate: TranslateService,
   ) {
     effect(() => {
-      if (this.groupChanged()) {
+      // group changed
+      if (this.selectedGroupID()) {
         this.start();
       }
     });
@@ -140,7 +186,8 @@ export class TableComponent {
 
   isLastPage = () => {
     return (
-      this.currentPage + this.itemsPerPage() >= this.variables().length - 1
+      this.currentPage + this.itemsPerPage() >=
+      this.variablesSimplified().length - 1
     );
   };
 
@@ -148,18 +195,18 @@ export class TableComponent {
     if (this.selectedVariables().length > 4) {
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
-          selectedGroup: this.groupChanged(),
+          selectedGroup: this.selectedGroupID(),
           variableIDs: [],
         }),
       );
     } else {
       const values: string[] = [];
-      this.variables().map((variable) => {
+      this.variablesSimplified().map((variable) => {
         values.push(variable.variableID);
       });
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
-          selectedGroup: this.groupChanged(),
+          selectedGroup: this.selectedGroupID(),
           variableIDs: values,
         }),
       );
@@ -184,7 +231,7 @@ export class TableComponent {
 
   setItemsPerPage(itemsPerPage: number) {
     this.itemsPerPage.set(itemsPerPage);
-    if (this.itemsPerPage() === this.variables().length) {
+    if (this.itemsPerPage() === this.variablesSimplified().length) {
       this.currentPage = 0;
     }
   }
@@ -200,7 +247,7 @@ export class TableComponent {
       );
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
-          selectedGroup: this.groupChanged(),
+          selectedGroup: this.selectedGroupID(),
           variableIDs: totalSelection,
         }),
       );
@@ -208,7 +255,7 @@ export class TableComponent {
       const totalSelection = [selection, ...this.selectedVariables()];
       this.store.dispatch(
         VariableTabUIAction.changeVariableSelectionContext({
-          selectedGroup: this.groupChanged(),
+          selectedGroup: this.selectedGroupID(),
           variableIDs: totalSelection,
         }),
       );

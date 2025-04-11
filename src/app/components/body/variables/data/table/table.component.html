@@ -1,8 +1,8 @@
 <h2 id="tableHeading" tabindex="-1" class="sr-only">
-  @if (groupLbl() === 'ALL') {
+  @if (groupLabel() === 'ALL') {
     {{ 'COMMON.ALL_VARIABLES' | translate }}
   } @else {
-    {{ groupLbl() }}
+    {{ groupLabel() }}
   }
 </h2>
 <dct-table-nav
@@ -11,12 +11,12 @@
   (pageNextClick)="next()"
   (pagePreviousClick)="prev()"
   [currentPage]="currentPage"
-  [groupChanged]="groupChanged()"
+  [groupChanged]="selectedGroupID()"
   [isFirstPage]="isFirstPage()"
   [isLastPage]="isLastPage()"
   [itemsPerPage]="itemsPerPage()"
   [total]="variablesLength()"
-  [variablesList]="variables()"
+  [variablesList]="variablesSimplified()"
   class="md:hidden flex md:flex-row w-full md:justify-between md:px-5"
 />
 
@@ -88,7 +88,6 @@
         <div class="mt-0.5">
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
-            [crossTabValuesFetched]="crossTabValuesFetched()"
             [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
@@ -107,12 +106,12 @@
   (pageNextClick)="next()"
   (pagePreviousClick)="prev()"
   [currentPage]="currentPage"
-  [groupChanged]="groupChanged()"
+  [groupChanged]="selectedGroupID()"
   [isFirstPage]="isFirstPage()"
   [isLastPage]="isLastPage()"
   [itemsPerPage]="itemsPerPage()"
   [total]="variablesLength()"
-  [variablesList]="variables()"
+  [variablesList]="variablesSimplified()"
   class="hidden md:flex flex-row w-full justify-between px-5"
 />
 <p-table
@@ -185,7 +184,6 @@
         <div class="mt-0.5">
           <dct-variable-options-button
             (emitLaunchModal)="launchModal($event)"
-            [crossTabValuesFetched]="crossTabValuesFetched()"
             [hasApiKey]="hasApiKey()"
             [isFetching]="isFetching()"
             [variableID]="variable.variableID"
@@ -200,9 +198,8 @@
 @if (hasApiKey()) {
   <dct-table-menu
     [allVariables]="allVariables()"
-    [variablesWithCrossTabMetadata]="variablesWithCrossTabMetadata()"
     [allGroups]="groups()"
-    [groupID]="groupChanged()"
+    [groupID]="selectedGroupID()"
     [selectedVariables]="selectedVariables()"
     [weights]="weights()"
     class="hidden md:flex table-menu z-20 border-t bg-base-100 max-h-16 absolute bottom-0 w-full"

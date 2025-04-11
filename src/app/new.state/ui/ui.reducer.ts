@@ -288,8 +288,8 @@ export const uiReducer = createReducer(
           crossTab: {
             ...state.bodyState.crossTab,
             weight: {
-              weighted: true,
-              weightVariableID: variableID,
+              weighted: !!variableID,
+              weightVariableID: variableID ?? '',
             },
           },
         },

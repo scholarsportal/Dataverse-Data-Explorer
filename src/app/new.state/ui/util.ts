@@ -228,7 +228,6 @@ export function createTable(
   weights?: number[],
 ) {
   const data: { [categoryLabel: string]: string | number }[] = [];
-
   Object.keys(processedCategories).forEach(
     (categoryKeyAsVariableID: string) => {
       // categoryKey here is a variableID

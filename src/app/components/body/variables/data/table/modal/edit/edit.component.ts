@@ -90,7 +90,6 @@ export class EditComponent {
         assignedWeight: this.form().assignedWeight,
         notes: this.form().notes,
       });
-      console.log(this.variableGroupsPlaceholder);
     });
   }
 

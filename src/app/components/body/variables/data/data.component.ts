@@ -29,7 +29,8 @@ import {
   selector: 'dct-data',
   standalone: true,
   imports: [TableComponent],
-  templateUrl: './data.component.html',
+  // templateUrl: './data.component.html',
+  template: ` <dct-table class="md:flex flex-col w-full table" /> `,
   styleUrl: './data.component.css',
   //changeDetection: ChangeDetectionStrategy.OnPush,
 })

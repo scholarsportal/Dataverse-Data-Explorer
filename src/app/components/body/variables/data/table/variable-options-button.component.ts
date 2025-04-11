@@ -38,7 +38,8 @@ import { MatomoTracker } from 'ngx-matomo-client';
     @if (hasApiKey()) {
       <div
         class="hidden md:block mr-1"
-        pTooltip="{{ 'COMMON.EDIT_VAR' | translate }}" tooltipPosition="left"
+        pTooltip="{{ 'COMMON.EDIT_VAR' | translate }}"
+        tooltipPosition="left"
       >
         <button
           (click)="launchEdit()"
@@ -67,13 +68,15 @@ import { MatomoTracker } from 'ngx-matomo-client';
       @if (isFetching()) {
         <div
           class="mx-2"
-          pTooltip="{{ 'COMMON.ADDING_VAR' | translate }}" tooltipPosition="left"
+          pTooltip="{{ 'COMMON.ADDING_VAR' | translate }}"
+          tooltipPosition="left"
         >
           <span class="loading loading-spinner loading-sm mt-2"></span>
         </div>
       } @else {
-        <div 
-          pTooltip="{{ 'COMMON.ADD_TO_CROSS' | translate }}" tooltipPosition="left"
+        <div
+          pTooltip="{{ 'COMMON.ADD_TO_CROSS' | translate }}"
+          tooltipPosition="left"
         >
           <button
             (click)="addToCrossTab()"
@@ -99,7 +102,8 @@ import { MatomoTracker } from 'ngx-matomo-client';
       }
     } @else {
       <div
-        pTooltip="{{ 'COMMON.REM_CROSS' | translate }}" tooltipPosition="left"
+        pTooltip="{{ 'COMMON.REM_CROSS' | translate }}"
+        tooltipPosition="left"
       >
         <button (click)="removeFromCrossTab()" class="visible p-2 btn-action">
           <svg
@@ -124,14 +128,15 @@ export class VariableOptionsButtonComponent {
   store = inject(Store);
   hasApiKey = input.required<boolean>();
   variableID = input.required<string>();
-  testString = "TEST";
-  crossTabValuesFetched = input.required<{ [variableID: string]: string[] }>();
   isFetching = input.required<boolean>();
   variablesInCrossTab =
     input.required<
       { variableID: string; orientation: 'rows' | 'cols' | '' }[]
     >();
-  emitLaunchModal = output<{ mode: 'VIEW_VAR' | 'EDIT_VAR'; variableID: string }>();
+  emitLaunchModal = output<{
+    mode: 'VIEW_VAR' | 'EDIT_VAR';
+    variableID: string;
+  }>();
   variablesComputed = computed(() => {
     const variables: string[] = [];
     this.variablesInCrossTab().map((value) => {
@@ -141,16 +146,23 @@ export class VariableOptionsButtonComponent {
   });
   tracker = inject(MatomoTracker);
 
-  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {}
+  constructor(
+    private liveAnnouncer: LiveAnnouncer,
+    private translate: TranslateService,
+  ) {}
 
   launchView() {
-    this.tracker.trackEvent('Table','View variable');
-    this.emitLaunchModal.emit({ mode: 'VIEW_VAR', variableID: this.variableID() });
+    this.emitLaunchModal.emit({
+      mode: 'VIEW_VAR',
+      variableID: this.variableID(),
+    });
   }
 
   launchEdit() {
-    this.tracker.trackEvent('Table','Edit variable');
-    this.emitLaunchModal.emit({ mode: 'EDIT_VAR', variableID: this.variableID() });
+    this.emitLaunchModal.emit({
+      mode: 'EDIT_VAR',
+      variableID: this.variableID(),
+    });
   }
 
   addToCrossTab() {
@@ -162,13 +174,12 @@ export class VariableOptionsButtonComponent {
         orientation: '',
       }),
     );
-    let txt: string = "";
-    this.translate.get("COMMON.VAR_ADDED").subscribe((res: string) => {
+    let txt: string = '';
+    this.translate.get('COMMON.VAR_ADDED').subscribe((res: string) => {
       txt = res;
     });
     this.liveAnnouncer.announce(txt);
     //}
-    
   }
 
   removeFromCrossTab() {
@@ -177,8 +188,8 @@ export class VariableOptionsButtonComponent {
         variableID: this.variableID(),
       }),
     );
-    let txt: string = "";
-    this.translate.get("COMMON.VAR_REMOVED").subscribe((res: string) => {
+    let txt: string = '';
+    this.translate.get('COMMON.VAR_REMOVED').subscribe((res: string) => {
       txt = res;
     });
     this.liveAnnouncer.announce(txt);

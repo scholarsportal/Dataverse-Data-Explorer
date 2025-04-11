@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of, switchMap } from 'rxjs';
 import { XmlManipulationActions } from '../xml/xml.actions';
-import { changeWeightForSelectedVariables } from './util';
 
 @Injectable()
 export class DatasetEffects {

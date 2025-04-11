@@ -28,7 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     SummaryStatisticsComponent,
     VariableInformationComponent,
-    TranslateModule
+    TranslateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './chart.component.html',
@@ -151,12 +151,12 @@ export class ChartComponent implements OnInit {
       this.chartJS.data.labels = chart.map((item) => item.y); // Update labels
       this.chartJS.data.datasets[0].data = chart.map((item) => item.x); // Update data
       this.chartJS.update();
-      
+
       const light = 'black';
       const dark = 'white';
       const neutral = '#c8c5d0';
       const theme = localStorage.getItem('theme');
-      
+
       if (theme === 'light') {
         this.chartJS.options.scales.x.grid.color = neutral;
         this.chartJS.options.scales.y.grid.color = neutral;
