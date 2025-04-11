@@ -3,10 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   signal,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CrossTableComponent } from './cross-table/cross-table.component';
@@ -44,7 +43,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     FormsModule,
     CrossChartComponent,
     SelectButtonModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './cross-tabulation.component.html',
   styleUrl: './cross-tabulation.component.css',
@@ -52,7 +51,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class CrossTabulationComponent implements OnInit {
   loadingStatus: 'init' | 'delayed' | '' = '';
+  filterValue: string = '';
   store = inject(Store);
+  liveAnnouncer = inject(LiveAnnouncer);
+  translate = inject(TranslateService);
   variables = this.store.selectSignal(selectDatasetProcessedVariables);
   crossTabVariables = this.store.selectSignal(
     selectDatasetVariableCrossTabValues,
@@ -87,7 +89,7 @@ export class CrossTabulationComponent implements OnInit {
   table = computed(() => this.tableData().pivotData);
 
   opt1 = 'test';
-  
+
   options = signal([
     'SHOW_VALUE',
     // 'Weighted Value',
@@ -97,7 +99,7 @@ export class CrossTabulationComponent implements OnInit {
   ]);
 
   selectedOption = signal('SHOW_VALUE');
-  
+
   selectedOptionComputed = computed(() => {
     switch (this.selectedOption()) {
       case 'SHOW_VALUE':
@@ -113,20 +115,17 @@ export class CrossTabulationComponent implements OnInit {
     }
   });
 
-  constructor(private liveAnnouncer: LiveAnnouncer, private translate: TranslateService) {
-    effect(() => {
-      if (this.isFetching()) {
-        this.fetchingCheck();
-      } else {
-        this.loadingStatus = '';
-      }
-    });
+  ngOnInit(): void {
+    this.translate
+      .get('CROSS_TABULATION.SHOW_VALUE')
+      .subscribe((res: string) => {
+        this.opt1 = res;
+      });
   }
 
-  ngOnInit(): void {
-    this.translate.get("CROSS_TABULATION.SHOW_VALUE").subscribe((res: string) => {
-      this.opt1 = res;
-    });
+  getSelectedWeightVariableToString() {
+    const fullVariable = this.variables()[this.selectedWeightVariable()];
+    return fullVariable['labl']['#text'];
   }
 
   fetchingCheck() {
@@ -143,20 +142,21 @@ export class CrossTabulationComponent implements OnInit {
         orientation: '',
       }),
     );
-    let txt: string = "";
-    this.translate.get("CROSS_TABULATION.NEW_ROW").subscribe((res: string) => {
+    let txt: string = '';
+    this.translate.get('CROSS_TABULATION.NEW_ROW').subscribe((res: string) => {
       txt = res;
     });
     this.liveAnnouncer.announce(txt);
   }
 
-  onWeightChange(event: { value: Variable }) {
-    const variable: Variable = event.value;
-    const variableID = variable['@_ID'];
+  onWeightChange(event: { value: Variable | null }) {
+    const variable: Variable | null = event?.value;
+    const variableID = variable?.['@_ID'];
     const crossTabValues = this.crossTabVariables();
+    console.log(event, 'variableID');
     this.store.dispatch(
-      CrossTabulationUIActions.startVariableWeightSelection({
-        variableID,
+      CrossTabulationUIActions.addWeightVariableToSelection({
+        variableID: variableID ?? null,
         crossTabValues,
       }),
     );

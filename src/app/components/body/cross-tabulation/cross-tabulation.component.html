@@ -57,10 +57,14 @@
         [ngModel]="selectedWeightVariable()"
         [options]="variablesWithWeightedOnTop()"
         (onChange)="onWeightChange($event)"
+        [showClear]="!!this.selectedWeightVariable()"
         placeholder="{{ 'CROSS_TABULATION.SELECT' | translate }}"
         styleClass="select border w-1/5 py-1.5 mr-0 md:mr-5"
         panelStyleClass="rounded border rounded-t-none w-full h-full text-base-content bg-base-100"
       >
+        <ng-template pTemplate="selectedItem">
+          {{ getSelectedWeightVariableToString() }}
+        </ng-template>
         <ng-template let-item pTemplate="item">
           <span class="flex flex-row w-full px-2.5 py-0.5 hover:bg-base-300">
             {{ item.labl['#text'] }}
@@ -107,6 +111,7 @@
       [rows]="rows()"
       [cols]="cols()"
       [hasData]="hasData()"
+      [aggregatorName]="selectedOptionComputed()"
       class="my-auto graph-area"
     ></dct-cross-table>
   } @else if (defaultDataView() === 'Chart') {

@@ -34,7 +34,7 @@ export const CrossTabulationUIActions = createActionGroup({
       crossTabValues: { [variableID: string]: string[] };
     }>(),
     'Add Weight Variable To Selection': props<{
-      variableID: string;
+      variableID: string | null;
       crossTabValues: { [variableID: string]: string[] };
     }>(),
   },
