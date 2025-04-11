@@ -38,6 +38,7 @@ import {
   selectOpenVariableID,
   selectVariableSelectionContext,
 } from 'src/app/new.state/ui/ui.selectors';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'dct-table',
   templateUrl: './table.component.html',
@@ -53,6 +54,7 @@ import {
     ModalComponent,
     ChipsModule,
     TranslateModule,
+    CommonModule,
   ],
 })
 export class TableComponent {
