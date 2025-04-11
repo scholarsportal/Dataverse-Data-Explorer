@@ -90,6 +90,80 @@ function updateGivenVariable(
   return updatedVariable;
 }
 
+export function changeWeightForSelectedVariables(
+  allVariables: { [variableID: string]: Variable },
+  selectedVariables: string[],
+  weightID: string,
+  variablesWithCrossTabMetadata: { [variableID: string]: string[] },
+): Variable[] {
+  const frequencyTableForSelectedVariables: {
+    [variableID: string]: { [categoryID: string]: number };
+  } = {};
+  const duplicateVariables = structuredClone(allVariables);
+
+  selectedVariables.forEach((variableID) => {
+    const selectedVariableCrossTab = variablesWithCrossTabMetadata[variableID];
+    const weightVariableCrossTab = variablesWithCrossTabMetadata[weightID];
+    const frequencyTable: { [categoryID: string]: number } = {};
+    if (weightVariableCrossTab && Array.isArray(weightVariableCrossTab)) {
+      weightVariableCrossTab.forEach((weightValue, index) => {
+        const currentFrequencyTableValue =
+          frequencyTable[selectedVariableCrossTab[index]];
+        if (currentFrequencyTableValue) {
+          frequencyTable[selectedVariableCrossTab[index]] +=
+            Number(weightValue);
+        } else {
+          frequencyTable[selectedVariableCrossTab[index]] = Number(weightValue);
+        }
+      });
+    }
+    frequencyTableForSelectedVariables[variableID] = frequencyTable;
+  });
+
+  Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
+    if (duplicateVariables[variableID]) {
+      const currentCategories = duplicateVariables[variableID].catgry;
+      if (currentCategories && Array.isArray(currentCategories)) {
+        currentCategories.map((category) => {
+          if (Array.isArray(category.catStat)) {
+            category.catStat = [
+              category.catStat[0],
+              {
+                '#text':
+                  weightID && weightID !== 'remove'
+                    ? frequencyTableForSelectedVariables[variableID][
+                        category.catValu
+                      ]
+                    : 0,
+                '@_type': 'freq',
+                '@_wgtd': 'wgtd',
+                '@_wgt-var': weightID,
+              },
+            ];
+          } else {
+            category.catStat = [
+              category.catStat,
+              {
+                '#text':
+                  weightID && weightID !== 'remove'
+                    ? frequencyTableForSelectedVariables[variableID][
+                        category.catValu
+                      ]
+                    : 0,
+                '@_type': 'freq',
+                '@_wgtd': 'wgtd',
+                '@_wgt-var': weightID && weightID !== 'remove' ? weightID : '',
+              },
+            ];
+          }
+        });
+      }
+      duplicateVariables[variableID].catgry = currentCategories;
+    }
+  });
+  return Object.values(duplicateVariables);
+}
+
 export function fullyChangeMultipleVariables(
   allVariablesArray: Variable[],
   idsOfvariablesToBeChanged: string[],
@@ -115,7 +189,7 @@ export function fullyChangeMultipleVariables(
   return updatedVariableList;
 }
 
-export function partiallyChangeMultipleVariables(
+export function changeAssignedWeightForMultipleVariables(
   allVariablesArray: Variable[],
   idsOfvariablesToBeChanged: string[],
   assignedWeight: string,
@@ -134,7 +208,10 @@ export function partiallyChangeMultipleVariables(
         universe: variable.universe || '',
         notes: Array.isArray(variable.notes) ? variable.notes[1] : '',
         isWeight: !!variable['@_wgt'],
-        assignedWeight: assignedWeight,
+        assignedWeight:
+          assignedWeight === 'remove' || !!variable['@_wgt']
+            ? ''
+            : assignedWeight,
       };
       tempVar = updateGivenVariable(variable, patchedVariable);
     }
@@ -199,7 +276,7 @@ export function changeGroupsForMultipleVariables(
   variableGroups: VariableGroup[],
   variableIDs: string[],
   newGroups: string[],
-) {
+): VariableGroup[] {
   const updatedGroupArray: VariableGroup[] = [];
   let clonedVariableGroups = structuredClone(variableGroups);
   if (!Array.isArray(clonedVariableGroups) && !!clonedVariableGroups) {

@@ -2,11 +2,9 @@ import { MatchVariables, XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 import {
-  changeGroupsForMultipleVariables,
   changeGroupsForSingleVariable,
-  partiallyChangeMultipleVariables,
-  fullyChangeMultipleVariables,
   changeSingleVariable,
+  changeWeightForSelectedVariables,
   createNewVariables,
   deleteVariableGroup,
   extractUrlAndToken,
@@ -15,7 +13,6 @@ import {
   renameVariableGroup,
   updateGroups,
 } from './xml.util';
-import { changeWeightForSelectedVariables } from '../dataset/util';
 
 export const initialState: XmlState = {
   dataset: null,
@@ -302,63 +299,8 @@ export const xmlReducer = createReducer(
     },
   ),
   on(
-    XmlManipulationActions.bulkSaveVariableInfo,
-    (
-      state,
-      {
-        variableIDs,
-        newVariableValue,
-        groups,
-        assignedWeight,
-        variablesWithCrossTabMetadata,
-        typeOfChange,
-      },
-    ) => {
-      let duplicateVariables = structuredClone(
-        state.dataset?.codeBook.dataDscr.var || [],
-      );
-      let duplicateVariableGroups = structuredClone(
-        state.dataset?.codeBook.dataDscr.varGrp || [],
-      );
-      if (typeOfChange === 'partial') {
-        duplicateVariables = partiallyChangeMultipleVariables(
-          duplicateVariables,
-          variableIDs,
-          assignedWeight || '',
-        );
-      }
-      if (typeOfChange === 'full' && newVariableValue) {
-        duplicateVariables = fullyChangeMultipleVariables(
-          duplicateVariables,
-          variableIDs,
-          newVariableValue,
-        );
-      }
-      // }
-      // if (assignedWeight) {
-      //   duplicateVariables = fullyChangeMultipleVariables(
-      //     duplicateVariables,
-      //     variableIDs,
-      //     assignedWeight === 'remove' ? '' : assignedWeight,
-      //   );
-      // }
-      if (groups) {
-        duplicateVariableGroups = changeGroupsForMultipleVariables(
-          duplicateVariableGroups,
-          variableIDs,
-          groups,
-        );
-      }
-      const variablesObject = Object.fromEntries(
-        duplicateVariables.map((variable) => [variable['@_ID'], variable]),
-      );
-      const weightsUpdatedVariableArray = changeWeightForSelectedVariables(
-        variablesObject,
-        variableIDs,
-        assignedWeight || '',
-        variablesWithCrossTabMetadata,
-      );
-      duplicateVariables = weightsUpdatedVariableArray;
+    XmlManipulationActions.bulkSaveWeightAndGroupChangeSuccess,
+    (state, { updatedGroups, updatedVariables }) => {
       return {
         ...state,
         dataset: !state.dataset
@@ -369,8 +311,8 @@ export const xmlReducer = createReducer(
                 ...state.dataset?.codeBook,
                 dataDscr: {
                   ...state.dataset?.codeBook.dataDscr,
-                  var: duplicateVariables,
-                  varGrp: duplicateVariableGroups,
+                  var: updatedVariables,
+                  varGrp: updatedGroups,
                 },
               },
             },

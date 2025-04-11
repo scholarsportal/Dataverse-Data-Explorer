@@ -5,6 +5,7 @@ import {
   ImportVariableFormTemplate,
   ParsedCrossTabData,
   Variable,
+  VariableGroup,
 } from './xml.interface';
 
 export const DataverseFetchActions = createActionGroup({
@@ -139,12 +140,9 @@ export const XmlManipulationActions = createActionGroup({
         isWeight: boolean;
       };
     }>(),
-    'Bulk Save Variable Info': props<{
+    bulkSaveVariableModal: props<{
       variableIDs: string[];
-      groups?: string[];
-      assignedWeight?: string;
-      typeOfChange: 'full' | 'partial';
-      newVariableValue?: {
+      newVariableValue: {
         label: string;
         literalQuestion: string;
         interviewQuestion: string;
@@ -155,6 +153,34 @@ export const XmlManipulationActions = createActionGroup({
       variablesWithCrossTabMetadata: { [variableID: string]: string[] };
       allVariables: { [variableID: string]: Variable };
     }>(),
+    bulkSaveWeightAndGroupChange: props<{
+      variableIDs: string[];
+      allVariables: { [variableID: string]: Variable };
+      groupsToUpdate: string[];
+      allGroups: { [groupID: string]: VariableGroup };
+      weightToUpdate: string;
+      crossTabMetadata: { [variableID: string]: string[] };
+    }>(),
+    bulkSaveWeightAndGroupChangeSuccess: props<{
+      updatedGroups: VariableGroup[];
+      updatedVariables: Variable[];
+    }>(),
+    // 'Bulk Save Variable Info': props<{
+    //   variableIDs: string[];
+    //   groups?: string[];
+    //   assignedWeight?: string;
+    //   typeOfChange: 'full' | 'partial';
+    //   newVariableValue?: {
+    //     label: string;
+    //     literalQuestion: string;
+    //     interviewQuestion: string;
+    //     postQuestion: string;
+    //     universe: string;
+    //     notes: string;
+    //   };
+    //   variablesWithCrossTabMetadata: { [variableID: string]: string[] };
+    //   allVariables: { [variableID: string]: Variable };
+    // }>(),
     'Weight Process Start': props<{
       allVariables: { [variableID: string]: Variable };
       selectedVariables: string[];

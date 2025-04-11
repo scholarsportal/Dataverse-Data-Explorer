@@ -60,12 +60,11 @@ export class BulkEditModalComponent {
       notes: this.variableForm.value.notes || '',
     };
     this.store.dispatch(
-      XmlManipulationActions.bulkSaveVariableInfo({
+      XmlManipulationActions.bulkSaveVariableModal({
         variableIDs: this.selectedVariables(),
         newVariableValue,
         allVariables: this.allVariables(),
         variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
-        typeOfChange: 'full',
       }),
     );
 

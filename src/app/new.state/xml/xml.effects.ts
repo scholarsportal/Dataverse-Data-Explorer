@@ -1,9 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
-import { catchError, delay, exhaustMap, map, of, switchMap } from 'rxjs';
+import { catchError, delay, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
 import { DatasetActions } from '../dataset/dataset.actions';
+import {
+  changeAssignedWeightForMultipleVariables,
+  changeGroupsForMultipleVariables,
+  changeWeightForSelectedVariables,
+} from './xml.util';
 
 @Injectable()
 export class XmlEffects {
@@ -56,7 +61,6 @@ export class XmlEffects {
             data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
             [];
           const crossTabUrl = `${siteURL}/api/access/datafile/${fileID}`;
-
           return ddiService
             .fetchCrossTabulationFromVariables(variables, crossTabUrl)
             .pipe(
@@ -157,6 +161,55 @@ export class XmlEffects {
     },
   );
 
+  bulkSaveWeightAndGroupChange$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.bulkSaveWeightAndGroupChange),
+      exhaustMap(
+        ({
+          variableIDs,
+          allVariables,
+          groupsToUpdate,
+          weightToUpdate,
+          allGroups,
+          crossTabMetadata,
+        }) => {
+          // Update groups
+          const updatedGroups = changeGroupsForMultipleVariables(
+            Object.values(structuredClone(allGroups)),
+            variableIDs,
+            groupsToUpdate,
+          );
+          // Update assigned weight for variables
+          const updatedAssignedWeightVariables =
+            changeAssignedWeightForMultipleVariables(
+              Object.values(structuredClone(allVariables)),
+              variableIDs,
+              weightToUpdate,
+            );
+          // Create object of updated assigned weight variables
+          const updatedAssignedWeightVariablesObject = Object.fromEntries(
+            updatedAssignedWeightVariables.map((variable) => [
+              variable['@_ID'],
+              variable,
+            ]),
+          );
+          // Update weights for all variables
+          const updateWeightsForAllVariables = changeWeightForSelectedVariables(
+            updatedAssignedWeightVariablesObject,
+            variableIDs,
+            weightToUpdate,
+            crossTabMetadata,
+          );
+          return of(
+            XmlManipulationActions.bulkSaveWeightAndGroupChangeSuccess({
+              updatedGroups,
+              updatedVariables: updateWeightsForAllVariables,
+            }),
+          );
+        },
+      ),
+    );
+  });
   uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(

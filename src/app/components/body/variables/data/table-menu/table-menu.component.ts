@@ -14,6 +14,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { XmlManipulationActions } from '../../../../../new.state/xml/xml.actions';
 import { BulkEditModalComponent } from '../table/bulk-edit-modal/bulk-edit-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { selectCrossTabSelection } from 'src/app/new.state/ui/ui.selectors';
+import { selectDatasetVariableCrossTabValues } from 'src/app/new.state/dataset/dataset.selectors';
 // import { Variable, VariableGroup } from 'src/app/state/interface';
 // import {
 //   bulkChangeGroupsAndWeight,
@@ -25,7 +27,6 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [
     CommonModule,
-    MultiselectDropdownComponent,
     MultiSelectModule,
     DropdownModule,
     ChipModule,
@@ -52,9 +53,10 @@ export class TableMenuComponent {
   selectedWeight: string = '';
   selectedGroups: string[] = [];
   allVariables = input.required<{ [variableID: string]: Variable }>();
-  variablesWithCrossTabMetadata = input.required<{
-    [variableID: string]: string[];
-  }>();
+  variablesWithCrossTabMetadata = this.store.selectSignal(
+    selectDatasetVariableCrossTabValues,
+  );
+  variablesInCrossTab = this.store.selectSignal(selectCrossTabSelection);
   weights = input.required<{ [weightID: string]: string }>();
   allGroups = input.required<{ [id: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
@@ -93,13 +95,13 @@ export class TableMenuComponent {
   onApplyChanges() {
     if (this.selectedGroups.length > 0 || this.selectedWeight) {
       this.store.dispatch(
-        XmlManipulationActions.bulkSaveVariableInfo({
+        XmlManipulationActions.bulkSaveWeightAndGroupChange({
           variableIDs: this.selectedVariables(),
-          assignedWeight: this.selectedWeight,
-          groups: this.selectedGroups,
           allVariables: this.allVariables(),
-          variablesWithCrossTabMetadata: this.variablesWithCrossTabMetadata(),
-          typeOfChange: 'partial',
+          groupsToUpdate: this.selectedGroups,
+          weightToUpdate: this.selectedWeight,
+          allGroups: this.allGroups(),
+          crossTabMetadata: this.variablesWithCrossTabMetadata(),
         }),
       );
       this.saved = true;
