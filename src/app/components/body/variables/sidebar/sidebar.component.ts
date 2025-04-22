@@ -44,10 +44,17 @@ export class SidebarComponent {
   groups = this.store.selectSignal(selectDatasetProcessedGroups);
   simplifiedGroups = computed(() => {
     const simple: { [groupID: string]: string } = {};
+    // Simple object with groupID as key and label as value
     Object.values(this.groups()).map((variableGroup) => {
       simple[variableGroup['@_ID']] = variableGroup.labl;
     });
-    return simple;
+    const sortedEntries = Object.entries(simple)
+      // Map the entries to an array of objects with id and label
+      .map(([id, label]) => ({ id, label }))
+      // Sort the entries by label
+      .sort((a, b) => a.label.localeCompare(b.label));
+    console.log(sortedEntries, 'sortedEntries');
+    return sortedEntries;
   });
 
   selectedGroupID = this.store.selectSignal(selectCurrentGroupID);
@@ -82,26 +89,12 @@ export class SidebarComponent {
     );
   }
 
-  changeGroup(groupID: string, label: string) {
+  changeGroup(groupID: string) {
     // NOTE: Is this related to DaisyUI
     // const elem = document.activeElement;
     // if (elem instanceof HTMLElement) {
     //   elem?.blur();
     // }
     this.store.dispatch(VariableTabUIAction.changeSelectedGroupID({ groupID }));
-  }
-
-  deleteGroup(groupID: string) {
-    this.store.dispatch(XmlManipulationActions.deleteGroup({ groupID }));
-  }
-
-  renameGroup(value: { groupID: string; newLabel: string }) {
-    const { groupID, newLabel } = value;
-    this.store.dispatch(
-      XmlManipulationActions.renameGroup({
-        groupID: groupID,
-        newLabel,
-      }),
-    );
   }
 }
