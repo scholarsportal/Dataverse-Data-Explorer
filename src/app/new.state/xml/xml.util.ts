@@ -126,6 +126,7 @@ export function changeWeightForSelectedVariables(
       if (currentCategories && Array.isArray(currentCategories)) {
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
+            console.log(category.catStat);
             category.catStat = [
               category.catStat[0],
               {
