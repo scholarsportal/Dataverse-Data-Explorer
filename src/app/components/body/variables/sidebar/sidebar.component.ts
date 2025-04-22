@@ -29,7 +29,6 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
   imports: [
-    KeyValuePipe,
     SidebarButtonComponent,
     NgClass,
     GroupButtonComponent,
