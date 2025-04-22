@@ -265,7 +265,11 @@ export function changeGroupsForSingleVariable(
   // Then insert variable ID in selected groups
   dereferencedArray.forEach((variableGroup) => {
     if (groups.includes(variableGroup['@_ID'])) {
-      variableGroup['@_var'] = variableGroup['@_var'] + ' ' + variableID;
+      if (variableGroup['@_var']?.split(' ').length) {
+        variableGroup['@_var'] = variableGroup['@_var'] + ' ' + variableID;
+      } else {
+        variableGroup['@_var'] = '' + variableID + '';
+      }
     }
     updatedGroupArray.push(variableGroup);
   });
