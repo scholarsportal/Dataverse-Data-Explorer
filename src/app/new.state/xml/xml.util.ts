@@ -120,13 +120,17 @@ export function changeWeightForSelectedVariables(
     frequencyTableForSelectedVariables[variableID] = frequencyTable;
   });
 
+  console.log(
+    frequencyTableForSelectedVariables,
+    'frequencyTableForSelectedVariables',
+  );
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
       if (currentCategories && Array.isArray(currentCategories)) {
+        console.log(currentCategories, 'currentCategories');
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
-            console.log(category.catStat);
             category.catStat = [
               category.catStat[0],
               {
