@@ -138,7 +138,7 @@ export function changeWeightForSelectedVariables(
                   weightID && weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
-                      ]
+                      ] || 0
                     : 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
@@ -153,7 +153,7 @@ export function changeWeightForSelectedVariables(
                   weightID && weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
-                      ]
+                      ] || 0
                     : 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
