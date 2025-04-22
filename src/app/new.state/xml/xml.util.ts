@@ -120,15 +120,10 @@ export function changeWeightForSelectedVariables(
     frequencyTableForSelectedVariables[variableID] = frequencyTable;
   });
 
-  console.log(
-    frequencyTableForSelectedVariables,
-    'frequencyTableForSelectedVariables',
-  );
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
       if (currentCategories && Array.isArray(currentCategories)) {
-        console.log(currentCategories, 'currentCategories');
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
             category.catStat = [
@@ -270,7 +265,11 @@ export function changeGroupsForSingleVariable(
   // Then insert variable ID in selected groups
   dereferencedArray.forEach((variableGroup) => {
     if (groups.includes(variableGroup['@_ID'])) {
-      variableGroup['@_var'] = variableGroup['@_var'] + ' ' + variableID;
+      if (variableGroup['@_var']?.split(' ').length) {
+        variableGroup['@_var'] = variableGroup['@_var'] + ' ' + variableID;
+      } else {
+        variableGroup['@_var'] = '' + variableID + '';
+      }
     }
     updatedGroupArray.push(variableGroup);
   });

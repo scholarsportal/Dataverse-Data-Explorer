@@ -13,6 +13,7 @@ import { RenamingSidebarButtonComponent } from './renaming-button/renaming-sideb
 import { DeletingSidebarButtonComponent } from './deleting-button/deleting-sidebar-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
+import { XmlManipulationActions } from 'src/app/new.state/xml/xml.actions';
 
 @Component({
   selector: 'dct-sidebar-button',
@@ -35,10 +36,6 @@ export class SidebarButtonComponent {
   selected = input.required<boolean>();
   disabledOptions = input<boolean>(false);
 
-  changeSelectedGroupID = output<string>();
-  emitDeleteGroup = output<string>();
-  emitRenameGroup = output<{ groupID: string; newLabel: string }>();
-
   renaming = signal(false);
   renamingActive = computed(() => {
     return this.selected() && this.renaming();
@@ -54,16 +51,16 @@ export class SidebarButtonComponent {
     this.store.dispatch(
       VariableTabUIAction.changeSelectedGroupID({ groupID: this.groupID() }),
     );
-    // const elem = document.activeElement;
-    //if (elem instanceof HTMLElement) {
-    //elem?.blur();
-    //}
-    // setTimeout(()=>{
-    //   const heading = document.querySelector('#tableHeading');
-    //   if (heading) {
-    //     (heading as HTMLElement)?.focus();
-    //   }
-    // },1000)
+    const elem = document.activeElement;
+    if (elem instanceof HTMLElement) {
+      elem?.blur();
+    }
+    setTimeout(() => {
+      const heading = document.querySelector('#tableHeading');
+      if (heading) {
+        (heading as HTMLElement)?.focus();
+      }
+    }, 1000);
   }
 
   delete() {
@@ -71,8 +68,10 @@ export class SidebarButtonComponent {
   }
 
   confirmDelete() {
+    this.store.dispatch(
+      XmlManipulationActions.deleteGroup({ groupID: this.groupID() }),
+    );
     this.resetUI();
-    this.emitDeleteGroup.emit(this.groupID());
   }
 
   rename() {
@@ -80,8 +79,13 @@ export class SidebarButtonComponent {
   }
 
   confirmRename(newLabel: string) {
+    this.store.dispatch(
+      XmlManipulationActions.renameGroup({
+        groupID: this.groupID(),
+        newLabel,
+      }),
+    );
     this.resetUI();
-    this.emitRenameGroup.emit({ groupID: this.groupID(), newLabel });
   }
 
   resetUI() {
