@@ -12,6 +12,7 @@ import { ddiJSONStructure } from '../xml/xml.interface';
 
 export interface DatasetState {
   operationStatus: {
+    save: 'idle' | 'pending' | 'error' | 'success';
     download: 'idle' | 'pending' | 'error' | 'success';
     downloadErrorMessage?: string;
     upload: 'idle' | 'pending' | 'error' | 'success' | 'disabled';
@@ -38,6 +39,7 @@ export interface DatasetState {
 
 const initialState: DatasetState = {
   operationStatus: {
+    save: 'idle',
     download: 'idle',
     upload: 'idle',
     variableDownload: 'idle',
@@ -221,4 +223,31 @@ export const datasetReducer = createReducer(
       };
     },
   ),
+  on(DatasetActions.saveVariableStatusPending, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'pending' as const,
+      },
+    };
+  }),
+  on(DatasetActions.saveVariableStatusSuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'success' as const,
+      },
+    };
+  }),
+  on(DatasetActions.clearVariableSaveStatus, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'idle' as const,
+      },
+    };
+  }),
 );

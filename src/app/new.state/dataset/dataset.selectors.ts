@@ -24,6 +24,7 @@ export const selectDatasetDownloadedSuccessfully = createSelector(
   },
 );
 
+//** UPLOAD STATUS */
 export const selectDatasetUploadedSuccessfully = createSelector(
   selectDatasetFeature,
   (state) => state.operationStatus.upload === 'success',
@@ -39,6 +40,28 @@ export const selectDatasetUploadPending = createSelector(
   (state) => state.operationStatus.upload === 'pending',
 );
 
+//** SAVE STATUS */
+export const selectDatasetSaveIdle = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.save === 'idle',
+);
+
+export const selectDatasetSavePending = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.save === 'pending',
+);
+
+export const selectDatasetSaveSuccess = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.save === 'success',
+);
+
+export const selectDatasetSaveError = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.save === 'error',
+);
+
+//** IMPORT STATUS */
 export const selectDatasetImportIdle = createSelector(
   selectDatasetFeature,
   (state) => state.operationStatus.import === 'idle',
@@ -58,6 +81,8 @@ export const selectDatasetImportError = createSelector(
   selectDatasetFeature,
   (state) => state.operationStatus.import === 'error',
 );
+
+//** WEIGHTS */
 
 export const selectDatasetWeights = createSelector(
   selectDatasetProcessedVariables,

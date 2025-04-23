@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { BodyToggleComponent } from './body-toggle/body-toggle.component';
-import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 import {
@@ -20,7 +20,9 @@ import {
 } from '../../new.state/xml/xml.selectors';
 import { DataverseFetchActions } from '../../new.state/xml/xml.actions';
 import {
-  selectDatasetImportPending,
+  selectDatasetSaveError,
+  selectDatasetSavePending,
+  selectDatasetSaveSuccess,
   selectDatasetUploadedSuccessfully,
   selectDatasetUploadError,
   selectDatasetUploadPending,
@@ -108,6 +110,10 @@ export class HeaderComponent implements OnInit {
     return (this.selectedVariables()[this.selectedGroupID()] || []).length;
   });
 
+  savePending = this.store.selectSignal(selectDatasetSavePending);
+  saveSuccess = this.store.selectSignal(selectDatasetSaveSuccess);
+  saveError = this.store.selectSignal(selectDatasetSaveError);
+
   uploadSuccess = this.store.selectSignal(selectDatasetUploadedSuccessfully);
   uploadFail = this.store.selectSignal(selectDatasetUploadError);
   uploadPending = this.store.selectSignal(selectDatasetUploadPending);
@@ -180,18 +186,17 @@ export class HeaderComponent implements OnInit {
     this.pagetitle.setTitle(this.title() || 'Data Explorer');
     this.tracker.setDocumentTitle(this.title() || 'Data Explorer');
     this.tracker.trackPageView();
-
   }
 
   handleToggle($event: 'cross-tab' | 'variables') {
     if ($event === 'cross-tab') {
-      this.tracker.trackEvent('Tabs','Cross Tabulation');
+      this.tracker.trackEvent('Tabs', 'Cross Tabulation');
       return this.store.dispatch(
         CrossTabulationUIActions.navigateToCrossTabulationTab(),
       );
     }
     if ($event === 'variables') {
-      this.tracker.trackEvent('Tabs','Variables');
+      this.tracker.trackEvent('Tabs', 'Variables');
       return this.store.dispatch(VariableTabUIAction.navigateToVariableTab());
     }
   }
@@ -238,8 +243,6 @@ export class HeaderComponent implements OnInit {
   handleUpload() {
     const datasetInfo = this.store.selectSignal(selectDatasetState);
     const ddiData = datasetInfo()?.dataset;
-    // const siteURL = datasetInfo()?.info?.siteURL;
-    // const fileID = datasetInfo()?.info?.fileID;
     const secureUploadURL = datasetInfo()?.info?.secureUploadUrl || '';
     if (ddiData && !!secureUploadURL) {
       this.store.dispatch(
@@ -249,19 +252,9 @@ export class HeaderComponent implements OnInit {
         }),
       );
     }
-    // else if (siteURL && fileID && apiKey && ddiData) {
-    //   this.store.dispatch(
-    //     DataverseFetchActions.datasetUploadStart({
-    //       ddiData,
-    //       siteURL,
-    //       fileID,
-    //       apiKey,
-    //     }),
-    //   );
-    // }
   }
 
-  closeErrToast() {
+  closeUploadErrorToast() {
     this.store.dispatch(DatasetActions.clearDatasetUploadStatus());
   }
 }
