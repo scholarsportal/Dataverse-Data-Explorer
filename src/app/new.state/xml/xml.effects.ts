@@ -210,6 +210,22 @@ export class XmlEffects {
       ),
     );
   });
+
+  saveVariableStatusPending$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.bulkSaveWeightAndGroupChange),
+      map(() => DatasetActions.saveVariableStatusPending()),
+    );
+  });
+
+  clearVariableStatusSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.bulkSaveWeightAndGroupChangeSuccess),
+      delay(10000),
+      map(() => DatasetActions.clearVariableSaveStatus()),
+    );
+  });
+
   uploadDataset$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(

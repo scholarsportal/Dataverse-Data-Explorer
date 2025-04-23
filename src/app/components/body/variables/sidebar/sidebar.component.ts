@@ -52,7 +52,6 @@ export class SidebarComponent {
       .map(([id, label]) => ({ id, label }))
       // Sort the entries by label
       .sort((a, b) => a.label.localeCompare(b.label));
-    console.log(sortedEntries, 'sortedEntries');
     return sortedEntries;
   });
 
