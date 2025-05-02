@@ -139,7 +139,7 @@ interface FileDescription {
 }
 
 interface DataDescription {
-  varGrp: VariableGroup[];
+  varGrp: VariableGroup[] | VariableGroup;
   var: Variable[];
   processedVar?: { [variableID: string]: Variable };
 }

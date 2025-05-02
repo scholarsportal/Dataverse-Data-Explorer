@@ -239,7 +239,7 @@ export function changeSingleVariable(
 }
 
 export function changeGroupsForSingleVariable(
-  variableGroups: VariableGroup[],
+  variableGroups: VariableGroup[] | VariableGroup,
   variableID: string,
   groups: string[],
 ) {
@@ -300,13 +300,19 @@ export function changeGroupsForMultipleVariables(
 }
 
 export function renameVariableGroup(
-  duplicateVariableGroups: VariableGroup[],
+  duplicateVariableGroups: VariableGroup[] | VariableGroup,
   groupID: string,
   newLabel: string,
 ) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length;
-  for (let i = 0; i < variableGroupArrayLength - 1; i++) {
-    const currentVariableGroup = duplicateVariableGroups[i];
+  const variableGroupArrayLength: number = Array.isArray(
+    duplicateVariableGroups,
+  )
+    ? duplicateVariableGroups.length
+    : 1;
+  for (let i = 0; i < variableGroupArrayLength; i++) {
+    const currentVariableGroup = Array.isArray(duplicateVariableGroups)
+      ? duplicateVariableGroups[i]
+      : duplicateVariableGroups;
     if (currentVariableGroup['@_ID'] === groupID) {
       currentVariableGroup.labl = newLabel;
       break;
@@ -316,20 +322,30 @@ export function renameVariableGroup(
 }
 
 export function deleteVariableGroup(
-  duplicateVariableGroups: VariableGroup[],
+  duplicateVariableGroups: VariableGroup[] | VariableGroup,
   groupID: string,
 ) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length;
+  const variableGroupArrayLength: number = Array.isArray(
+    duplicateVariableGroups,
+  )
+    ? duplicateVariableGroups.length
+    : 1;
   let index = -1;
   for (let i = 0; i < variableGroupArrayLength; i++) {
-    const currentVariableGroup = duplicateVariableGroups[i];
+    const currentVariableGroup = Array.isArray(duplicateVariableGroups)
+      ? duplicateVariableGroups[i]
+      : duplicateVariableGroups;
     if (currentVariableGroup['@_ID'] === groupID) {
       index = i;
       break;
     }
   }
   if (index > -1) {
-    duplicateVariableGroups.splice(index, 1);
+    if (Array.isArray(duplicateVariableGroups)) {
+      duplicateVariableGroups.splice(index, 1);
+    } else {
+      return [];
+    }
   }
   return duplicateVariableGroups;
 }
@@ -337,11 +353,18 @@ export function deleteVariableGroup(
 export function removeVariablesFromGroups(
   groupID: string,
   variableIDs: string[],
-  duplicateVariableGroups: VariableGroup[],
+  duplicateVariableGroups: VariableGroup[] | VariableGroup,
 ) {
-  const variableGroupArrayLength: number = duplicateVariableGroups.length;
+  // If the variable groups are not an array (when there is only one variable group), we need to make it an array
+  const variableGroupArrayLength: number = Array.isArray(
+    duplicateVariableGroups,
+  )
+    ? duplicateVariableGroups.length
+    : 1;
   for (let i = 0; i < variableGroupArrayLength; i++) {
-    const currentVariableGroup = duplicateVariableGroups[i];
+    const currentVariableGroup = Array.isArray(duplicateVariableGroups)
+      ? duplicateVariableGroups[i]
+      : duplicateVariableGroups;
     if (currentVariableGroup['@_ID'] === groupID) {
       const variableListAsArray: string[] =
         currentVariableGroup['@_var']?.split(' ') || [];

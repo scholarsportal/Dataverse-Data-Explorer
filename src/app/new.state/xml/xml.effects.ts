@@ -211,14 +211,14 @@ export class XmlEffects {
     );
   });
 
-  saveVariableStatusPending$ = createEffect(() => {
+  saveBulkVariableStatusPending$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(XmlManipulationActions.bulkSaveWeightAndGroupChange),
       map(() => DatasetActions.saveVariableStatusPending()),
     );
   });
 
-  clearVariableStatusSuccess$ = createEffect(() => {
+  clearBulkVariableStatusSuccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(XmlManipulationActions.bulkSaveWeightAndGroupChangeSuccess),
       delay(10000),

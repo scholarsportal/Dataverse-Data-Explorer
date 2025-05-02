@@ -120,7 +120,9 @@ export const xmlReducer = createReducer(
         );
         if (variableTemplate.groups) {
           duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
-            importDdiData.codeBook.dataDscr.varGrp,
+            Array.isArray(importDdiData.codeBook.dataDscr.varGrp)
+              ? importDdiData.codeBook.dataDscr.varGrp
+              : [importDdiData.codeBook.dataDscr.varGrp],
             variablesMatched,
           );
         }
@@ -189,13 +191,22 @@ export const xmlReducer = createReducer(
     };
   }),
   on(XmlManipulationActions.createGroup, (state, { groupID, label }) => {
-    const duplicateVariableGroups = structuredClone(
+    let duplicateVariableGroups = structuredClone(
       state.dataset?.codeBook.dataDscr.varGrp || [],
     );
-    duplicateVariableGroups.push({
+    const newGroup = {
       '@_ID': groupID,
       labl: label,
-    });
+    };
+
+    if (Array.isArray(duplicateVariableGroups)) {
+      duplicateVariableGroups.push(newGroup);
+    } else if (duplicateVariableGroups) {
+      duplicateVariableGroups = [duplicateVariableGroups, newGroup];
+    } else {
+      duplicateVariableGroups = [newGroup];
+    }
+
     return {
       ...state,
       dataset: !state.dataset
