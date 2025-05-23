@@ -16,8 +16,7 @@
           name="variable-groups"
           type="checkbox"
         />
-        {{ 'IMPORT.SELECT_DDI_SECTIONS' | translate }}
-        Variable Groups
+        {{ 'IMPORT.VAR_GROUPS' | translate }}
       </label>
       <label class="input-label" for="labels">
         <input [(ngModel)]="labels" id="labels" name="labels" type="checkbox" />
@@ -26,7 +25,9 @@
       <label class="input-label" for="question-texts">
         <input
           (change)="onQuestionTextSelect()"
-          [indeterminate]="questionTextIndeterminate() && !questionTextSelection()"
+          [indeterminate]="
+            questionTextIndeterminate() && !questionTextSelection()
+          "
           [ngModel]="questionTextSelection()"
           id="question-texts"
           name="question-texts"
@@ -82,19 +83,26 @@
         {{ 'IMPORT.VAR_NOTE' | translate }}
       </label>
       <label class="input-label" for="weights">
-        <input [(ngModel)]="weights" id="weights" name="weights" type="checkbox" />
+        <input
+          [(ngModel)]="weights"
+          id="weights"
+          name="weights"
+          type="checkbox"
+        />
         {{ 'IMPORT.WEIGHTS' | translate }}
       </label>
     </div>
 
     <div class="flex flex-col px-5">
-      @if (file) {
-        <span class="text-base">{{ file.name }}</span>
-      } @else {
-        <dct-file-upload-button
-          class=""
-          (fileSelected)="onFileSelected($event)"
-        ></dct-file-upload-button>
+      @if (!importSucceeded()) {
+        @if (file) {
+          <span class="text-base">{{ file.name }}</span>
+        } @else {
+          <dct-file-upload-button
+            class=""
+            (fileSelected)="onFileSelected($event)"
+          ></dct-file-upload-button>
+        }
       }
 
       @if (importing && importNotStarted()) {
@@ -104,7 +112,9 @@
           class="btn btn-primary my-5"
         >
           @if (!file) {
-            <span title="No File Selected">{{ 'IMPORT.IMPORT' | translate }}</span>
+            <span title="No File Selected">{{
+              'IMPORT.IMPORT' | translate
+            }}</span>
           } @else {
             <span class="">
               {{ 'IMPORT.START_IMPORT' | translate }}
@@ -113,11 +123,7 @@
         </button>
       }
       <div *ngIf="importInProgress()">
-        <button
-          class="btn btn-primary mt-5"
-          disabled
-          type="button"
-        >
+        <button class="btn btn-primary mt-5" disabled type="button">
           <svg
             aria-hidden="true"
             class="inline w-4 h-4 me-3 text-white animate-spin"
@@ -144,17 +150,21 @@
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6 shrink-0 stroke-current"
             fill="none"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <span>{{ 'IMPORT.IMPORT_SUCCESS' | translate }}</span>
         </div>
-        <button class=" rounded border border-base-300 py-2.5 px-5 my-5 "
-                (click)="closeImportComponentState()">
+        <button
+          class="rounded border border-base-300 py-2.5 px-5 my-5"
+          (click)="closeImportComponentState()"
+        >
           {{ 'IMPORT.GO_BACK' | translate }}
         </button>
       } @else if (importError()) {
@@ -163,12 +173,14 @@
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6 shrink-0 stroke-current"
             fill="none"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <span>{{ 'IMPORT.IMPORT_ERROR' | translate }}</span>
         </div>
