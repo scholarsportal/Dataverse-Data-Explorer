@@ -60,7 +60,7 @@ export class BulkEditModalComponent {
       notes: this.variableForm.value.notes || '',
     };
     this.store.dispatch(
-      XmlManipulationActions.bulkSaveVariableModal({
+      XmlManipulationActions.startBulkVariableModalSave({
         variableIDs: this.selectedVariables(),
         newVariableValue,
         allVariables: this.allVariables(),
