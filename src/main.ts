@@ -13,7 +13,6 @@ import { xmlReducer } from './app/new.state/xml/xml.reducer';
 import { datasetReducer } from './app/new.state/dataset/dataset.reducer';
 import { XmlEffects } from './app/new.state/xml/xml.effects';
 import { uiReducer } from './app/new.state/ui/ui.reducer';
-import { DatasetEffects } from './app/new.state/dataset/dataset.effects';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
@@ -44,13 +43,13 @@ bootstrapApplication(AppComponent, {
         ui: uiReducer,
       }),
       // Add this line to 'activate effects for actions'
-      EffectsModule.forRoot([XmlEffects, DatasetEffects]),
+      EffectsModule.forRoot([XmlEffects]),
     ),
     ...environment.providers,
     provideMatomo({
       siteId: environment.matomoSiteId,
       trackerUrl: environment.matomoTrackerUrl,
-      trackAppInitialLoad: false
+      trackAppInitialLoad: false,
     }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter([]),

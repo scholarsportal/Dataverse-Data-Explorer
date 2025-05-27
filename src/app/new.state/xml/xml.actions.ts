@@ -140,7 +140,7 @@ export const XmlManipulationActions = createActionGroup({
         isWeight: boolean;
       };
     }>(),
-    bulkSaveVariableModal: props<{
+    startBulkVariableModalSave: props<{
       variableIDs: string[];
       newVariableValue: {
         label: string;
@@ -153,6 +153,10 @@ export const XmlManipulationActions = createActionGroup({
       variablesWithCrossTabMetadata: { [variableID: string]: string[] };
       allVariables: { [variableID: string]: Variable };
     }>(),
+    bulkSaveVariableModalSuccess: props<{
+      updatedVariables: Variable[];
+    }>(),
+    clearSaveVariableModalSuccess: emptyProps,
     bulkSaveWeightAndGroupChange: props<{
       variableIDs: string[];
       allVariables: { [variableID: string]: Variable };

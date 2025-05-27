@@ -210,35 +210,6 @@ export const uiReducer = createReducer(
       };
     },
   ),
-  // on(
-  //   DatasetActions.updateCrossTabValues,
-  //   (state, { variableID, orientation = '', index = -1 }) => {
-  //     const newSelection = structuredClone(state.bodyState.crossTab.selection);
-  //     if (index === -1) {
-  //       newSelection[newSelection.length] = {
-  //         ...newSelection[newSelection.length],
-  //         variableID,
-  //         orientation,
-  //       };
-  //     } else {
-  //       newSelection[index] = {
-  //         ...newSelection[index],
-  //         variableID,
-  //         orientation,
-  //       };
-  //     }
-  //     return {
-  //       ...state,
-  //       bodyState: {
-  //         ...state.bodyState,
-  //         crossTab: {
-  //           ...state.bodyState.crossTab,
-  //           selection: newSelection,
-  //         },
-  //       },
-  //     };
-  //   },
-  // ),
   on(
     CrossTabulationUIActions.removeVariableUsingVariableID,
     (state, { variableID }) => {
@@ -280,7 +251,7 @@ export const uiReducer = createReducer(
   }),
   on(
     CrossTabulationUIActions.addWeightVariableToSelection,
-    (state, { variableID, crossTabValues }) => {
+    (state, { variableID }) => {
       return {
         ...state,
         bodyState: {

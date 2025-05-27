@@ -75,6 +75,7 @@
     "DATASET_CITATION": "Citer l'ensemble de données",
     "FETCHING_WEIGHT": "Récupération des données de poids depuis Dataverse",
     "FETCHING_WEIGHT_FAILED": "Échec de la récupération des données de poids depuis Dataverse",
+    "DATASET_SAVED": "Ensemble de données sauvegardé",
     "DATASET_UPLOADING": "Téléversement de l'ensemble de données",
     "DATASET_UPLOADED": "Ensemble de données téléversé",
     "DATASET_UPLOAD_FAILED": "Échec du téléversement de l’ensemble de données",
@@ -147,7 +148,7 @@
     "WEIGHT_VARIABLE": "Variable de poids",
     "IS_WEIGHT": "Est un poids",
     "UPDATE": "Mettre à jour les variables",
-    "SELECTED": "sélectionné" ,
+    "SELECTED": "sélectionné",
     "TRUE": "Oui",
     "FALSE": "Non"
   },

@@ -150,6 +150,24 @@ export const datasetReducer = createReducer(
       },
     };
   }),
+  on(XmlManipulationActions.bulkSaveWeightAndGroupChange, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'pending' as const,
+      },
+    };
+  }),
+  on(XmlManipulationActions.bulkSaveWeightAndGroupChangeSuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'success' as const,
+      },
+    };
+  }),
   on(XmlManipulationActions.startImportMetadata, (state) => {
     return {
       ...state,
@@ -223,6 +241,33 @@ export const datasetReducer = createReducer(
       };
     },
   ),
+  on(XmlManipulationActions.startBulkVariableModalSave, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'pending' as const,
+      },
+    };
+  }),
+  on(XmlManipulationActions.bulkSaveVariableModalSuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'success' as const,
+      },
+    };
+  }),
+  on(XmlManipulationActions.clearSaveVariableModalSuccess, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        save: 'idle' as const,
+      },
+    };
+  }),
   on(DatasetActions.saveVariableStatusPending, (state) => {
     return {
       ...state,

@@ -1,29 +1,4 @@
 <div class="flex w-full px-5">
-
-  <div [ngClass]="{'hide-toast': !saved, 'show-toast': saved}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-success" role="alert" aria-atomic="true" aria-live="polite">
-      <span class="text-base-100">{{ 'COMMON.CHANGES_APPLIED' | translate }}</span>
-      <button (click)="closeLoadedToast()">
-        <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-             xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <div [ngClass]="{'hide-toast': !error, 'show-toast': error}" class="toast toast-top toast-end">
-    <div class="alert rounded alert-error" role="alert" aria-atomic="true" aria-live="polite">
-      <span class="text-base-100">{{ 'TABLE_MENU.NO_GROUP' | translate }}</span>
-      <button (click)="closeLoadedToast()">
-        <svg class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-             xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-    </div>
-  </div>
-
   <div class="flex-none w-5">
     <svg
       class="my-6"
@@ -47,7 +22,7 @@
       <span class="sr-only">{{ 'TABLE_MENU.ADD_SELECTED' | translate }}</span>
       <p-multiSelect
         (onChange)="changeGroup($event)"
-        [ngModelOptions]="{standalone: true}"
+        [ngModelOptions]="{ standalone: true }"
         [ngModel]="selectedGroups"
         [options]="allGroupsArray()"
         filter="false"
@@ -59,31 +34,48 @@
         [disabled]="variablesSelected()"
       >
         <ng-template let-value pTemplate="selectedItems">
-            <span *ngIf="selectedGroups.length > 0;
+          <span
+            *ngIf="
+              selectedGroups.length > 0;
               then allSelectedTemplate;
-              else elseTemplate"></span>
+              else elseTemplate
+            "
+          ></span>
           <ng-template #allSelectedTemplate>
             @for (option of selectedGroups; track $index) {
               <span *ngIf="$index === 0" class="">
-                  {{ allGroups()[option].labl || 'no label' }}
-                </span>
+                {{ allGroups()[option].labl || 'no label' }}
+              </span>
               <span *ngIf="$index > 0" class="-ml-1">
-                  , {{ allGroups()[option].labl || 'no label' }}
-                </span>
+                , {{ allGroups()[option].labl || 'no label' }}
+              </span>
             }
           </ng-template>
           <ng-template #elseTemplate>
-            <ng-template [ngIfElse]="defaultTemplate" [ngIf]="value?.length ?? 0 > 0"
-            >{{ value?.length ?? 0 }} selected
+            <ng-template
+              [ngIfElse]="defaultTemplate"
+              [ngIf]="value?.length ?? 0 > 0"
+              >{{ value?.length ?? 0 }} selected
             </ng-template>
-            <ng-template #defaultTemplate>{{ 'TABLE_MENU.ADD_TO_GROUP' | translate }}</ng-template>
+            <ng-template #defaultTemplate>{{
+              'TABLE_MENU.ADD_TO_GROUP' | translate
+            }}</ng-template>
           </ng-template>
         </ng-template>
         <ng-template let-value pTemplate="item">
           <div class="">
-            <input id="{{allGroups()[value]['@_ID']}}" *ngIf="!selectedGroups.includes(allGroups()[value]['@_ID'])" type="checkbox" />
-            <input id="{{allGroups()[value]['@_ID']}}" *ngIf="selectedGroups.includes(allGroups()[value]['@_ID'])" checked type="checkbox" />
-            <label for="{{allGroups()[value]['@_ID']}}">
+            <input
+              id="{{ allGroups()[value]['@_ID'] }}"
+              *ngIf="!selectedGroups.includes(allGroups()[value]['@_ID'])"
+              type="checkbox"
+            />
+            <input
+              id="{{ allGroups()[value]['@_ID'] }}"
+              *ngIf="selectedGroups.includes(allGroups()[value]['@_ID'])"
+              checked
+              type="checkbox"
+            />
+            <label for="{{ allGroups()[value]['@_ID'] }}">
               {{ allGroups()[value].labl || 'no label' }}
             </label>
           </div>
@@ -104,8 +96,12 @@
         name="assign-weight"
         [disabled]="variablesSelected()"
       >
-        <option disabled hidden selected value="">{{ 'TABLE_MENU.ASSIGN_WEIGHT' | translate }}</option>
-        <option [value]="'remove'">{{ 'TABLE_MENU.REMOVE_WEIGHT' | translate }}</option>
+        <option disabled hidden selected value="">
+          {{ 'TABLE_MENU.ASSIGN_WEIGHT' | translate }}
+        </option>
+        <option [value]="'remove'">
+          {{ 'TABLE_MENU.REMOVE_WEIGHT' | translate }}
+        </option>
         @for (weightValue of weights() | keyvalue; track $index) {
           <option [value]="weightValue.key">
             {{ weightValue.value }}
@@ -115,11 +111,15 @@
     </label>
   </div>
   <div class="flex-none self-center">
-    <button (click)="onApplyChanges()" class="ml-1 btn btn-primary self-center" [disabled]="variablesSelected()">
+    <button
+      (click)="onApplyChanges()"
+      class="ml-1 btn btn-primary self-center"
+      [disabled]="variablesSelected()"
+    >
       {{ 'TABLE_MENU.APPLY' | translate }}
     </button>
   </div>
-  @if (groupID() !== 'ALL'; ) {
+  @if (groupID() !== 'ALL') {
     <div class="flex-none self-center border-l mx-3">
       <button
         (click)="onRemoveFromGroup(groupID())"

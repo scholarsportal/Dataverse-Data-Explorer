@@ -8,6 +8,7 @@ import {
   changeAssignedWeightForMultipleVariables,
   changeGroupsForMultipleVariables,
   changeWeightForSelectedVariables,
+  fullyChangeMultipleVariables,
 } from './xml.util';
 
 @Injectable()
@@ -161,6 +162,32 @@ export class XmlEffects {
     },
   );
 
+  bulkVariableModalSave$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.startBulkVariableModalSave),
+      exhaustMap(({ variableIDs, newVariableValue, allVariables }) => {
+        const updatedVariables = fullyChangeMultipleVariables(
+          Object.values(structuredClone(allVariables)),
+          variableIDs,
+          newVariableValue,
+        );
+        return of(
+          XmlManipulationActions.bulkSaveVariableModalSuccess({
+            updatedVariables,
+          }),
+        );
+      }),
+    );
+  });
+
+  clearBulkVariableSaveStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.bulkSaveVariableModalSuccess),
+      delay(10000),
+      map(() => XmlManipulationActions.clearSaveVariableModalSuccess()),
+    );
+  });
+
   bulkSaveWeightAndGroupChange$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(XmlManipulationActions.bulkSaveWeightAndGroupChange),
@@ -208,13 +235,6 @@ export class XmlEffects {
           );
         },
       ),
-    );
-  });
-
-  saveBulkVariableStatusPending$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(XmlManipulationActions.bulkSaveWeightAndGroupChange),
-      map(() => DatasetActions.saveVariableStatusPending()),
     );
   });
 

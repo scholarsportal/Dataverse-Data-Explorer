@@ -41,7 +41,7 @@ function updateGivenVariable(
       '#text': newVariableValue.label,
     };
   }
-  if (updatedVariable['@_wgt']) {
+  if (newVariableValue.isWeight && updatedVariable['@_wgt']) {
     updatedVariable['@_wgt'] = newVariableValue.isWeight ? 'wgt' : '';
   } else {
     updatedVariable = {
@@ -49,7 +49,7 @@ function updateGivenVariable(
       '@_wgt': newVariableValue.isWeight ? 'wgt' : '',
     };
   }
-  if (updatedVariable['@_wgt-var']) {
+  if (newVariableValue.isWeight && updatedVariable['@_wgt-var']) {
     updatedVariable['@_wgt-var'] = newVariableValue.isWeight
       ? ''
       : newVariableValue.assignedWeight;
@@ -85,7 +85,9 @@ function updateGivenVariable(
   }
   updatedVariable = {
     ...updatedVariable,
-    universe: newVariableValue.universe,
+    universe: newVariableValue.universe.length
+      ? newVariableValue.universe
+      : updatedVariable.universe,
   };
   return updatedVariable;
 }
@@ -130,7 +132,7 @@ export function changeWeightForSelectedVariables(
               category.catStat[0],
               {
                 '#text':
-                  weightID && weightID !== 'remove'
+                  weightID.length && weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
                       ] || 0
@@ -145,14 +147,15 @@ export function changeWeightForSelectedVariables(
               category.catStat,
               {
                 '#text':
-                  weightID && weightID !== 'remove'
+                  weightID.length && weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
                       ] || 0
                     : 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
-                '@_wgt-var': weightID && weightID !== 'remove' ? weightID : '',
+                '@_wgt-var':
+                  weightID.length && weightID !== 'remove' ? weightID : '',
               },
             ];
           }
@@ -291,7 +294,12 @@ export function changeGroupsForMultipleVariables(
       const variablesAsArray = variableGroup['@_var']?.length
         ? variableGroup['@_var']?.split(' ') || []
         : [];
-      variablesAsArray.push(...variableIDs);
+      // Add variables that are not already in the group
+      for (const variableID of variableIDs) {
+        if (!variablesAsArray.includes(variableID)) {
+          variablesAsArray.push(variableID);
+        }
+      }
       variableGroup['@_var'] = variablesAsArray.join(' ');
     }
     updatedGroupArray.push(variableGroup);
