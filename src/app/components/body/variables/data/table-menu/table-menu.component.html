@@ -96,8 +96,11 @@
         name="assign-weight"
         [disabled]="variablesSelected()"
       >
-        <option disabled hidden selected value="">
+        <option disabled hidden selected [value]="''">
           {{ 'TABLE_MENU.ASSIGN_WEIGHT' | translate }}
+        </option>
+        <option [value]="''">
+          {{ 'TABLE_MENU.NO_CHANGE' | translate }}
         </option>
         <option [value]="'remove'">
           {{ 'TABLE_MENU.REMOVE_WEIGHT' | translate }}

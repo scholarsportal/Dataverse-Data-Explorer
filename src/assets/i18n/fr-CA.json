@@ -75,6 +75,7 @@
     "DATASET_CITATION": "Citer l'ensemble de données",
     "FETCHING_WEIGHT": "Récupération des données de poids depuis Dataverse",
     "FETCHING_WEIGHT_FAILED": "Échec de la récupération des données de poids depuis Dataverse",
+    "DATASET_SAVING": "Sauvegarde de l'ensemble de données",
     "DATASET_SAVED": "Ensemble de données sauvegardé",
     "DATASET_UPLOADING": "Téléversement de l'ensemble de données",
     "DATASET_UPLOADED": "Ensemble de données téléversé",
@@ -158,6 +159,7 @@
   },
   "TABLE_MENU": {
     "ASSIGN_WEIGHT": "Assigner un poids",
+    "NO_CHANGE": "Laisser le poids tel quel",
     "NO_GROUP": "Aucune option de groupe ou poids sélectionné",
     "VAR_TABLE_OPTS": "Options du tableau de variables",
     "ADD_SELECTED": "Ajouter les variables sélectionnées au groupe",
