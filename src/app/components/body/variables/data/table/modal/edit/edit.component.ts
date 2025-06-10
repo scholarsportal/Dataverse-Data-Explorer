@@ -51,10 +51,15 @@ export class EditComponent {
   }>();
   allGroups = input.required<{ [groupID: string]: VariableGroup }>();
   allGroupsArray = computed(() => {
-    return Object.keys(this.allGroups());
+    const groups = Object.keys(this.allGroups());
+    const alphabetizedGroups = groups.sort((a, b) => {
+      const labelA = this.allGroups()[a].labl;
+      const labelB = this.allGroups()[b].labl;
+      return labelA.localeCompare(labelB);
+    });
+    return alphabetizedGroups;
   });
   decodedVariableGroups = computed(() => {
-    // console.log(this.variableGroups());
     const varGroups: string[] = [];
     Object.values(this.allGroups()).map((group) => {
       varGroups.push(group.labl);

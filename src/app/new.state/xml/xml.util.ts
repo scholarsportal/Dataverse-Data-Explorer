@@ -125,6 +125,7 @@ export function changeWeightForSelectedVariables(
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
+      console.log('Weight ID: ', !!weightID);
       if (currentCategories && Array.isArray(currentCategories)) {
         currentCategories.map((category) => {
           if (Array.isArray(category.catStat)) {
@@ -132,14 +133,14 @@ export function changeWeightForSelectedVariables(
               category.catStat[0],
               {
                 '#text':
-                  weightID.length && weightID !== 'remove'
+                  weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
                       ] || 0
                     : 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
-                '@_wgt-var': weightID,
+                '@_wgt-var': weightID !== 'remove' ? weightID : '',
               },
             ];
           } else {
@@ -147,15 +148,14 @@ export function changeWeightForSelectedVariables(
               category.catStat,
               {
                 '#text':
-                  weightID.length && weightID !== 'remove'
+                  weightID !== 'remove'
                     ? frequencyTableForSelectedVariables[variableID][
                         category.catValu
                       ] || 0
                     : 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
-                '@_wgt-var':
-                  weightID.length && weightID !== 'remove' ? weightID : '',
+                '@_wgt-var': weightID !== 'remove' ? weightID : '',
               },
             ];
           }
@@ -221,7 +221,7 @@ export function changeAssignedWeightForMultipleVariables(
     updatedVariableList.push(tempVar);
   });
 
-  return updatedVariableList;
+  return assignedWeight.length ? updatedVariableList : allVariablesArray;
 }
 
 export function changeSingleVariable(
