@@ -94,15 +94,13 @@
     </div>
 
     <div class="flex flex-col px-5">
-      @if (!importSucceeded()) {
-        @if (file) {
-          <span class="text-base">{{ file.name }}</span>
-        } @else {
-          <dct-file-upload-button
-            class=""
-            (fileSelected)="onFileSelected($event)"
-          ></dct-file-upload-button>
-        }
+      @if (file) {
+        <span class="text-base">{{ file.name }}</span>
+      } @else {
+        <dct-file-upload-button
+          class=""
+          (fileSelected)="onFileSelected($event)"
+        ></dct-file-upload-button>
       }
 
       @if (importing && importNotStarted()) {

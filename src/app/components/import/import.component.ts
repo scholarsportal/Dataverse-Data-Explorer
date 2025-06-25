@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadButtonComponent } from './file-upload-button/file-upload-button.component';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,12 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'dct-import',
   standalone: true,
-  imports: [CommonModule, FormsModule, FileUploadButtonComponent, TranslateModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FileUploadButtonComponent,
+    TranslateModule,
+  ],
   templateUrl: './import.component.html',
   styleUrl: './import.component.css',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -43,7 +48,14 @@ export class ImportComponent {
   error = true;
   loading = false;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    effect(() => {
+      if (this.importSucceeded()) {
+        this.file = undefined;
+        this.store.dispatch(XmlManipulationActions.resetImport());
+      }
+    });
+  }
 
   onFileSelected(file: File) {
     // Handle the selected file here
