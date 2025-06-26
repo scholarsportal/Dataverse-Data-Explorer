@@ -159,6 +159,7 @@
   },
   "TABLE_MENU": {
     "ASSIGN_WEIGHT": "Assign weight",
+    "NO_CHANGE": "Leave Weight As Is",
     "NO_GROUP": "No group or weight option selected",
     "VAR_TABLE_OPTS": "Variable table options",
     "ADD_SELECTED": "Add selected variables to group",
