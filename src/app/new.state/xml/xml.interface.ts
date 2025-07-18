@@ -190,7 +190,7 @@ export interface XmlState {
     secureUploadUrl: string | null;
   } | null;
   error: {
-    type: 'fetch' | 'upload' | null;
+    type: 'fetch' | 'upload' | 'chrome-error' | null;
     message: string | null;
   };
 }

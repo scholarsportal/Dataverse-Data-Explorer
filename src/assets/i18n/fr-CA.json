@@ -61,7 +61,10 @@
     "VAR_REMOVED": "Variable retirée des tableaux croisés."
   },
   "APP": {
-    "LOADING": "Chargement du jeu de données",
+    "LOADING": "Chargement d'ensemble de données",
+    "LOADING_WARNING": "Il semble que vous chargiez un grand ensemble de données. Cela peut prendre quelques minutes. Veuillez patienter.",
+    "LOADING_WARNING_2": "Les utilisateurs des navigateurs Google Chrome et Microsoft Edge peuvent rencontrer une erreur avec les ensembles de données plus de 500 Mo. Veuillez utiliser Firefox pour afficher cet ensemble de données.",
+    "LOADING_WARNING_3": "Cliquez içi pour plus d'information",
     "ERROR": "Une erreur s'est produite",
     "ERROR_FETCH": "Erreur lors de la récupération du jeu de données : ",
     "ERROR_UNEXPECTED": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",

@@ -1,7 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
-import { catchError, delay, exhaustMap, map, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  exhaustMap,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
 import { DatasetActions } from '../dataset/dataset.actions';
 import {
@@ -14,6 +23,22 @@ import {
 @Injectable()
 export class XmlEffects {
   private actions$ = inject(Actions);
+
+  loadingForMoreThan15Seconds = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DataverseFetchActions.fetchDDIStart),
+      delay(15000),
+      map(() => DataverseFetchActions.fetchDDIErrorAfter15Seconds()),
+    );
+  });
+
+  loadingDecodedForMoreThan15Seconds = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DataverseFetchActions.fetchCrosstabStart),
+      delay(15000),
+      map(() => DataverseFetchActions.fetchDDIErrorAfter15Seconds()),
+    );
+  });
 
   /**
    * Effect to fetch dataset from Dataverse
