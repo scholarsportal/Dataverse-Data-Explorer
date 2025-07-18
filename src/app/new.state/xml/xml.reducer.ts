@@ -76,6 +76,13 @@ export const xmlReducer = createReducer(
       message: error.message || 'An error occurred while fetching the dataset',
     },
   })),
+  on(DataverseFetchActions.fetchDDIErrorAfter15Seconds, (state) => ({
+    ...state,
+    error: {
+      type: 'chrome-error' as const,
+      message: 'Dataset loading took too long',
+    },
+  })),
   on(DataverseFetchActions.datasetUploadError, (state, { error }) => ({
     ...state,
     error: {

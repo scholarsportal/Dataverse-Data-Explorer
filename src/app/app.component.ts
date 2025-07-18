@@ -1,4 +1,12 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
@@ -9,7 +17,10 @@ import {
 } from './new.state/dataset/dataset.selectors';
 import { DataverseFetchActions } from './new.state/xml/xml.actions';
 import { BodyComponent } from './components/body/body.component';
-import { selectDatasetError } from './new.state/xml/xml.selectors';
+import {
+  selectDatasetChromeError,
+  selectDatasetError,
+} from './new.state/xml/xml.selectors';
 import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from './../assets/i18n/localizations';
@@ -38,6 +49,21 @@ import { Subject, takeUntil } from 'rxjs';
                 id="dataset-progress"
                 aria-label="Loading dataset..."
               ></progress>
+              @if (chromeError()) {
+                <span class="text-2xl">
+                  {{ 'APP.LOADING_WARNING' | translate }}
+                </span>
+                <span class="text-lg font-thin">
+                  {{ 'APP.LOADING_WARNING_2' | translate }}
+                </span>
+                <a
+                  href="{{ guideLink() }}"
+                  class="text-lg font-thin underline"
+                  target="_blank"
+                >
+                  {{ 'APP.LOADING_WARNING_3' | translate }}
+                </a>
+              }
             </label>
           </h1>
         </div>
@@ -90,6 +116,8 @@ export class AppComponent implements OnInit, OnDestroy {
   loaded = this.store.selectSignal(selectDatasetDownloadedSuccessfully);
   error = this.store.selectSignal(selectDatasetError);
   progress = this.store.selectSignal(selectDatasetProgress);
+  chromeError = this.store.selectSignal(selectDatasetChromeError);
+  guideLink = signal<string | null>(null);
   private route = inject(ActivatedRoute);
   private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
@@ -100,6 +128,15 @@ export class AppComponent implements OnInit, OnDestroy {
       this.setLang(lang.id);
     } else {
       this.setLang('en-CA');
+    }
+    if (localStorage.getItem('language') === 'en-CA') {
+      this.guideLink.set(
+        'https://learn.scholarsportal.info/all-guides/odesi/working-with-data/#Accessing-Data-Explorer-Through-Odesi',
+      );
+    } else if (localStorage.getItem('language') === 'fr-CA') {
+      this.guideLink.set(
+        'https://learn.scholarsportal.info/fr/guides/odesi/travailler-avec-des-donnees/#Accder-lExplorateur-de-donnes-laide-de-Odesi',
+      );
     }
   }
 

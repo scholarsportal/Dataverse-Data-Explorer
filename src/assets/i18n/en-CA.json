@@ -62,6 +62,9 @@
   },
   "APP": {
     "LOADING": "Loading dataset ...",
+    "LOADING_WARNING": "Looks like you're loading a large dataset. This may take a few minutes. Please wait.",
+    "LOADING_WARNING_2": "Google Chrome or Microsoft Edge browser users may experience an error with datasets larger than 500MB. Please use Firefox to view this dataset.",
+    "LOADING_WARNING_3": "Click here for more information",
     "ERROR": "An Error Occurred",
     "ERROR_FETCH": "Error fetching dataset: ",
     "ERROR_UNEXPECTED": "An unexpected error occurred. Please try again later.",

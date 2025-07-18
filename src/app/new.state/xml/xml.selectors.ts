@@ -13,6 +13,11 @@ export const selectDatasetError = createSelector(
   (state) => state.error,
 );
 
+export const selectDatasetChromeError = createSelector(
+  selectDatasetError,
+  (error) => (error?.type === 'chrome-error' ? 'chrome-error' : false),
+);
+
 export const selectUserHasUploadAccess = createSelector(
   selectXmlFeature,
   (state) => !!state.info?.secureUploadUrl,

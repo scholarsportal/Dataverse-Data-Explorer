@@ -36,6 +36,7 @@ export const DataverseFetchActions = createActionGroup({
     }>(),
     // API call failed for a variety of reasons
     'Fetch DDI Error': props<{ error: Error }>(),
+    'Fetch DDI Error After 15 Seconds': emptyProps,
     // DDI file found
     'Fetch Crosstab Start': props<{
       data: ddiJSONStructure;
