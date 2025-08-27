@@ -113,7 +113,7 @@ export const xmlReducer = createReducer(
     (state, { importDdiData, variableTemplate }) => {
       const duplicateState: XmlState = structuredClone(state);
       const variables = duplicateState.dataset?.codeBook.dataDscr.var || [];
-      const variableGroups =
+      let variableGroups =
         duplicateState.dataset?.codeBook.dataDscr.varGrp || [];
       if (duplicateState.dataset && variables.length) {
         const variablesMatched: MatchVariables = matchVariableIDs(
@@ -126,10 +126,13 @@ export const xmlReducer = createReducer(
           variableTemplate,
         );
         if (variableTemplate.groups) {
-          duplicateState.dataset.codeBook.dataDscr.varGrp = updateGroups(
-            Array.isArray(importDdiData.codeBook.dataDscr.varGrp)
-              ? importDdiData.codeBook.dataDscr.varGrp
-              : [importDdiData.codeBook.dataDscr.varGrp],
+          const importedVariableGroups = importDdiData.codeBook.dataDscr.varGrp
+            ? importDdiData.codeBook.dataDscr.varGrp
+            : [];
+          variableGroups = updateGroups(
+            Array.isArray(importedVariableGroups)
+              ? importedVariableGroups
+              : [importedVariableGroups],
             variablesMatched,
           );
         }

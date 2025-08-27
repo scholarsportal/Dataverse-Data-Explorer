@@ -413,6 +413,7 @@ export function updateGroups(
   groups: VariableGroup[],
   matchedVariableIDs: MatchVariables,
 ): VariableGroup[] {
+  console.log(groups);
   const duplicateVariableGroups: VariableGroup[] = [];
   groups.forEach((group) => {
     const flipMatched: { [oldVariableID: string]: string } = {};
@@ -536,12 +537,16 @@ function editSingleVariable(
     };
   }
   if (variableTemplate.literalQuestion) {
+    console.log('current: ', currentVariable.qstn);
+    console.log('imported: ', importedVariablesMatched.importedVariable.qstn);
+    const literalQuestion =
+      importedVariablesMatched.importedVariable.qstn?.qstnLit ||
+      currentVariable.qstn?.qstnLit ||
+      '';
+    console.log('literalQuestion: ', literalQuestion);
     currentVariableCloned.qstn = {
       ...currentVariable.qstn,
-      qstnLit:
-        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
-        currentVariable.qstn?.qstnLit ||
-        '',
+      qstnLit: literalQuestion,
     };
   }
   if (variableTemplate.interviewQuestion) {
@@ -566,6 +571,7 @@ function editSingleVariable(
     currentVariableCloned.universe =
       importedVariablesMatched.importedVariable.universe;
   }
+  console.log('clones: ', currentVariableCloned);
   return currentVariableCloned;
 }
 
