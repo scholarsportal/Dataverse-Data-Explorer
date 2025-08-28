@@ -79,7 +79,7 @@
       <div class="sr-only">
         {{ 'CROSS_TABULATION.SELECT_DISPLAY' | translate }}
       </div>
-      <p-dropdown
+      <!-- <p-dropdown
         [(ngModel)]="selectedOption"
         [options]="options()"
         panelStyleClass="rounded border w-full h-full bg-base-100"
@@ -98,7 +98,7 @@
             {{ 'CROSS_TABULATION.' + value | translate }}
           </span>
         </ng-template>
-      </p-dropdown>
+      </p-dropdown> -->
       <button
         class="btn btn-secondary float-right mt-2"
         (click)="exportTableAsCSV()"

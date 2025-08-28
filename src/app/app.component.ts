@@ -53,7 +53,7 @@ import { Subject, takeUntil } from 'rxjs';
                 <span class="text-2xl">
                   {{ 'APP.LOADING_WARNING' | translate }}
                 </span>
-                <span class="text-lg font-thin">
+                <span class="text-lg font-thin max-w-1/3">
                   {{ 'APP.LOADING_WARNING_2' | translate }}
                 </span>
                 <a
@@ -74,14 +74,14 @@ import { Subject, takeUntil } from 'rxjs';
           <h1 class="text-6xl text-white font-sans font-bold">
             An Error Occurred
           </h1>
-          <p class="font-bold w-2/3 text-4xl text-white">
+          <p class="font-bold w-2/3 text-4xl text-white text-center">
             @if (error().type === 'fetch') {
               Error fetching dataset: {{ error().message }}
             } @else {
               An unexpected error occurred. Please try again later.
             }
           </p>
-          <p class="font-thin my-10 w-2/3 text-2xl text-white">
+          <p class="font-thin my-10 w-2/3 text-2xl text-white text-center">
             Please go back to your Dataverse instance and try again. If the
             problem persists, contact your system administrator.
           </p>

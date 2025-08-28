@@ -463,13 +463,11 @@ export function createNewVariables(
         variablesMatched[variable['@_ID']],
         reverseLookup,
       );
-      // console.log(updatedVariable);
       newVariables.push(updatedVariable);
     } else {
       newVariables.push(variable);
     }
   });
-  // console.log(newVariables);
   return newVariables;
 }
 
@@ -536,17 +534,18 @@ function editSingleVariable(
     };
   }
   if (variableTemplate.literalQuestion) {
+    const literalQuestion =
+      importedVariablesMatched.importedVariable.qstn?.qstnLit ||
+      currentVariable.qstn?.qstnLit ||
+      '';
     currentVariableCloned.qstn = {
       ...currentVariable.qstn,
-      qstnLit:
-        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
-        currentVariable.qstn?.qstnLit ||
-        '',
+      qstnLit: literalQuestion,
     };
   }
   if (variableTemplate.interviewQuestion) {
     currentVariableCloned.qstn = {
-      ...currentVariable.qstn,
+      ...currentVariableCloned.qstn,
       ivuInstr:
         importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
         currentVariable.qstn?.ivuInstr ||
@@ -555,7 +554,7 @@ function editSingleVariable(
   }
   if (variableTemplate.postQuestion) {
     currentVariableCloned.qstn = {
-      ...currentVariable.qstn,
+      ...currentVariableCloned.qstn,
       postQTxt:
         importedVariablesMatched.importedVariable.qstn?.postQTxt ||
         currentVariable.qstn?.postQTxt ||
