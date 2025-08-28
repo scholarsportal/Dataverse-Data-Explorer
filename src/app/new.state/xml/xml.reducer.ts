@@ -136,7 +136,6 @@ export const xmlReducer = createReducer(
             variablesMatched,
           );
         }
-        // console.log(createNewVariables(variablesMatched, variables, variableTemplate));
         duplicateState.info
           ? (duplicateState.info.importedSuccess = true)
           : {

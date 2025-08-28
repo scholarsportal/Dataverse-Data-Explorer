@@ -413,7 +413,6 @@ export function updateGroups(
   groups: VariableGroup[],
   matchedVariableIDs: MatchVariables,
 ): VariableGroup[] {
-  console.log(groups);
   const duplicateVariableGroups: VariableGroup[] = [];
   groups.forEach((group) => {
     const flipMatched: { [oldVariableID: string]: string } = {};
@@ -464,13 +463,11 @@ export function createNewVariables(
         variablesMatched[variable['@_ID']],
         reverseLookup,
       );
-      // console.log(updatedVariable);
       newVariables.push(updatedVariable);
     } else {
       newVariables.push(variable);
     }
   });
-  // console.log(newVariables);
   return newVariables;
 }
 
@@ -537,13 +534,10 @@ function editSingleVariable(
     };
   }
   if (variableTemplate.literalQuestion) {
-    console.log('current: ', currentVariable.qstn);
-    console.log('imported: ', importedVariablesMatched.importedVariable.qstn);
     const literalQuestion =
       importedVariablesMatched.importedVariable.qstn?.qstnLit ||
       currentVariable.qstn?.qstnLit ||
       '';
-    console.log('literalQuestion: ', literalQuestion);
     currentVariableCloned.qstn = {
       ...currentVariable.qstn,
       qstnLit: literalQuestion,
@@ -551,7 +545,7 @@ function editSingleVariable(
   }
   if (variableTemplate.interviewQuestion) {
     currentVariableCloned.qstn = {
-      ...currentVariable.qstn,
+      ...currentVariableCloned.qstn,
       ivuInstr:
         importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
         currentVariable.qstn?.ivuInstr ||
@@ -560,7 +554,7 @@ function editSingleVariable(
   }
   if (variableTemplate.postQuestion) {
     currentVariableCloned.qstn = {
-      ...currentVariable.qstn,
+      ...currentVariableCloned.qstn,
       postQTxt:
         importedVariablesMatched.importedVariable.qstn?.postQTxt ||
         currentVariable.qstn?.postQTxt ||
@@ -571,7 +565,6 @@ function editSingleVariable(
     currentVariableCloned.universe =
       importedVariablesMatched.importedVariable.universe;
   }
-  console.log('clones: ', currentVariableCloned);
   return currentVariableCloned;
 }
 
