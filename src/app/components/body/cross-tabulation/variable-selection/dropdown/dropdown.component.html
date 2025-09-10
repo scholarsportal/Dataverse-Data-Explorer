@@ -2,11 +2,11 @@
   <h3>
     {{ selectedVariableLabel() || 'No variable selected' }}
     @if (variableOrientation() === 'cols') {
-      [{{'CROSS_TABULATION.COLUMN' | translate}}]
+      [{{ 'CROSS_TABULATION.COLUMN' | translate }}]
     } @else if (variableOrientation() === 'rows') {
-      [{{'CROSS_TABULATION.ROW' | translate}}]
+      [{{ 'CROSS_TABULATION.ROW' | translate }}]
     } @else {
-      [{{'CROSS_TABULATION.SELECT_ROW_COL' | translate}}]
+      [{{ 'CROSS_TABULATION.SELECT_ROW_COL' | translate }}]
     }
   </h3>
 </div>
@@ -23,12 +23,16 @@
         panelStyleClass="rounded bg-base-100 border border-slate-300"
       >
         <ng-template pTemplate="selectedItem" let-item>{{
-          item === 'rows' ? ('CROSS_TABULATION.ROW' | translate) : ('CROSS_TABULATION.COLUMN' | translate)
+          item === 'rows'
+            ? ('CROSS_TABULATION.ROW' | translate)
+            : ('CROSS_TABULATION.COLUMN' | translate)
         }}</ng-template>
         <ng-template pTemplate="item" let-item>
-            <span class="px-2">{{
-              item === 'rows' ? ('CROSS_TABULATION.ROW' | translate) : ('CROSS_TABULATION.COLUMN' | translate) 
-            }}</span>
+          <span class="px-2">{{
+            item === 'rows'
+              ? ('CROSS_TABULATION.ROW' | translate)
+              : ('CROSS_TABULATION.COLUMN' | translate)
+          }}</span>
         </ng-template>
       </p-dropdown>
     </label>
@@ -47,7 +51,7 @@
         panelStyleClass="rounded bg-base-100 border border-slate-300"
       >
         <ng-template pTemplate="item" let-item>
-            <span class="px-2">{{ item.value.labl }}</span>
+          <span class="px-2">{{ item.value.labl }}</span>
         </ng-template>
       </p-dropdown>
     </label>
@@ -85,14 +89,16 @@
         </ng-template>
         <ng-template pTemplate="item" let-items>
           <span
-            [ariaDisabled]="variablesAlreadySelected().includes(items.variableID)"
+            [ariaDisabled]="
+              variablesAlreadySelected().includes(items.variableID)
+            "
             [ngClass]="{
               'text-success hover:bg-current':
-                variablesAlreadySelected().includes(items.variableID)
+                variablesAlreadySelected().includes(items.variableID),
             }"
             class="hover:bg-base-300 py-2.5 w-full h-full"
           >
-          {{ items.label }}
+            {{ items.label }}
           </span>
         </ng-template>
         <!-- <ng-template pTemplate="selectedItem" let-value>
@@ -113,7 +119,7 @@
         [options]="filteredCategories() | keyvalue"
         [ngModel]="filteredMissing()"
         placeholder="{{ 'CROSS_TABULATION.NONE' | translate }}"
-        [disabled]="!hasCategories()" 
+        [disabled]="!hasCategories()"
         (ngModelChange)="changeMissingValues($event)"
         optionLabel="value"
         optionValue="key"
@@ -123,34 +129,37 @@
         <ng-template pTemplate="empty">
           <span>{{ 'CROSS_TABULATION.NO_CATEGORIES' | translate }}</span>
         </ng-template>
-        
+
         <ng-template pTemplate="selectedItems" let-items>
           @if (!hasCategories()) {
             <span>{{ 'CROSS_TABULATION.NONE' | translate }}</span>
           } @else {
-            
-              @for (item of items; track $index) {
-                <span *ngIf="$index === 0" class="">
-                  {{ item.value }}
-                </span>
-                <span *ngIf="$index > 0" class="-ml-1">
-                  , {{ item.value }}
-                </span>
-              } @empty {
-                <span>{{ 'CROSS_TABULATION.NONE' | translate }}</span>
-              }
+            @for (item of items; track $index) {
+              <span *ngIf="$index === 0" class="">
+                {{ item.value }}
+              </span>
+              <span *ngIf="$index > 0" class="-ml-1"> , {{ item.value }} </span>
+            } @empty {
+              <span>{{ 'CROSS_TABULATION.NONE' | translate }}</span>
+            }
           }
         </ng-template>
         <ng-template let-item pTemplate="item">
-          <div class=""> 
-            <input *ngIf="!filteredMissing().includes(item.key)" type="checkbox" />
-            <input *ngIf="filteredMissing().includes(item.key)" checked type="checkbox" />
+          <div class="">
+            <input
+              *ngIf="filteredMissing().includes(item.key)"
+              type="checkbox"
+            />
+            <input
+              *ngIf="!filteredMissing().includes(item.key)"
+              checked
+              type="checkbox"
+            />
             {{ item.value }}
           </div>
         </ng-template>
         <ng-template pTemplate="closeicon" class="hidden"></ng-template>
         <ng-template pTemplate="filtericon" class="hidden"></ng-template>
-
       </p-multiSelect>
       <!-- <dct-multiselect-dropdown
         (changeSelectedItems)="changeMissingValues($event)"
@@ -165,7 +174,10 @@
   </div>
   <div class="w-full md:w-1/12 relative">
     <div class="flex flex-col mt-4 mb-2">
-      <button (click)="removeVariable(index())" class="p-2 btn-action md:absolute bottom-2 right-0 border rounded border-slate-300 md:border-0">
+      <button
+        (click)="removeVariable(index())"
+        class="p-2 btn-action md:absolute bottom-2 right-0 border rounded border-slate-300 md:border-0"
+      >
         <svg
           class="mx-2 w-6 h-6"
           fill="none"
@@ -180,7 +192,9 @@
             stroke-linejoin="round"
           />
         </svg>
-        <span class="sr-only">{{ 'CROSS_TABULATION.REMOVE_ROW' | translate }}</span>
+        <span class="sr-only">{{
+          'CROSS_TABULATION.REMOVE_ROW' | translate
+        }}</span>
       </button>
     </div>
   </div>
