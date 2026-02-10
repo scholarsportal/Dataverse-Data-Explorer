@@ -338,13 +338,24 @@ export class XmlEffects {
       return this.actions$.pipe(
         ofType(XmlManipulationActions.startImportMetadata),
         switchMap(({ importedXmlString, variableTemplate }) => {
-          const xml = ddiService.XMLtoJSON(importedXmlString);
-          return of(
-            XmlManipulationActions.importConversionSuccess({
-              importDdiData: xml,
-              variableTemplate,
-            }),
-          );
+          try {
+            const xml = ddiService.XMLtoJSON(importedXmlString);
+            return of(
+              XmlManipulationActions.importConversionSuccess({
+                importDdiData: xml,
+                variableTemplate,
+              }),
+            );
+          } catch (error) {
+            return of(
+              XmlManipulationActions.importConversionError({
+                error:
+                  error instanceof Error
+                    ? error.message
+                    : 'Failed to parse imported XML file',
+              }),
+            );
+          }
         }),
       );
     },

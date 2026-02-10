@@ -423,7 +423,10 @@ export function updateGroups(
     const newVars: string[] = [];
     if (groupVariables.length) {
       groupVariables.forEach((variable) => {
-        newVars.push(flipMatched[variable]);
+        const mapped = flipMatched[variable];
+        if (mapped !== undefined) {
+          newVars.push(mapped);
+        }
       });
     }
     duplicateVariableGroups.push({

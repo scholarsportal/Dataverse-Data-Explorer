@@ -115,36 +115,48 @@ export const xmlReducer = createReducer(
       const variables = duplicateState.dataset?.codeBook.dataDscr.var || [];
       let variableGroups =
         duplicateState.dataset?.codeBook.dataDscr.varGrp || [];
-      if (duplicateState.dataset && variables.length) {
-        const variablesMatched: MatchVariables = matchVariableIDs(
-          importDdiData.codeBook.dataDscr.var,
-          variables,
-        );
-        duplicateState.dataset.codeBook.dataDscr.var = createNewVariables(
-          variablesMatched,
-          variables,
-          variableTemplate,
-        );
-        if (variableTemplate.groups) {
-          const importedVariableGroups = importDdiData.codeBook.dataDscr.varGrp
-            ? importDdiData.codeBook.dataDscr.varGrp
-            : [];
-          variableGroups = updateGroups(
-            Array.isArray(importedVariableGroups)
-              ? importedVariableGroups
-              : [importedVariableGroups],
-            variablesMatched,
-          );
-        }
-        duplicateState.info
-          ? (duplicateState.info.importedSuccess = true)
-          : {
-              siteURL: '',
-              fileID: '',
-              apiKey: '',
-              importedSuccess: true,
-            };
+
+      // Validate imported DDI structure before accessing
+      const importedVariables = importDdiData?.codeBook?.dataDscr?.var;
+      if (!duplicateState.dataset || !variables.length || !importedVariables) {
+        return { ...duplicateState };
       }
+
+      // Normalize single-element to array for fast-xml-parser
+      const importedVariablesArray = Array.isArray(importedVariables)
+        ? importedVariables
+        : [importedVariables];
+
+      const variablesMatched: MatchVariables = matchVariableIDs(
+        importedVariablesArray,
+        variables,
+      );
+      duplicateState.dataset.codeBook.dataDscr.var = createNewVariables(
+        variablesMatched,
+        variables,
+        variableTemplate,
+      );
+      if (variableTemplate.groups) {
+        const importedVariableGroups =
+          importDdiData.codeBook.dataDscr.varGrp || [];
+        variableGroups = updateGroups(
+          Array.isArray(importedVariableGroups)
+            ? importedVariableGroups
+            : [importedVariableGroups],
+          variablesMatched,
+        );
+        duplicateState.dataset.codeBook.dataDscr.varGrp = variableGroups;
+      }
+
+      if (duplicateState.info) {
+        duplicateState.info.importedSuccess = true;
+      } else {
+        duplicateState.info = {
+          secureUploadUrl: null,
+          importedSuccess: true,
+        };
+      }
+
       return {
         ...duplicateState,
       };
