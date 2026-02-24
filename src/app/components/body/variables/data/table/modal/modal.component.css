@@ -1,4 +1,0 @@
-.sm\:modal-middle :where(.modal-box) { 
-  @apply rounded;
-  max-width: 50rem;
-}

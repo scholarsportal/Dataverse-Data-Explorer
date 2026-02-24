@@ -1,0 +1,77 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug: data-explorer (Chrome)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["nx", "serve", "data-explorer"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "pattern": "Local:.*?http://localhost:([0-9]+)",
+        "uriFormat": "http://localhost:%s",
+        "webRoot": "${workspaceFolder}/apps/data-explorer/src"
+      }
+    },
+    {
+      "name": "Debug: data-explorer unit tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "nx",
+        "test",
+        "data-explorer",
+        "--",
+        "--reporter=verbose"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+    {
+      "name": "Debug: current test file",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "vitest",
+        "run",
+        "--reporter=verbose",
+        "${relativeFile}"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+    {
+      "name": "Debug: Playwright e2e",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "nx",
+        "e2e",
+        "data-explorer-e2e",
+        "--",
+        "--debug"
+      ],
+      "env": {
+        "PWDEBUG": "1"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    }
+  ]
+}

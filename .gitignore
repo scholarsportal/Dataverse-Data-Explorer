@@ -8,6 +8,8 @@
 
 # Node
 /node_modules
+data-explorer-nx/node_modules
+data-explorer-nx/dist
 npm-debug.log
 yarn-error.log
 

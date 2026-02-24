@@ -1,0 +1,16 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100vh;
+}
+
+.header {
+  grid-area: 1 / 1 / 4 / 13;
+}
+
+.body {
+  grid-area: 4 / 1 / 13 / 13;
+}
