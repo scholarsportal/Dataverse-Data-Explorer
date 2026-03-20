@@ -144,6 +144,7 @@ export const xmlReducer = createReducer(
             ? importedVariableGroups
             : [importedVariableGroups],
           variablesMatched,
+          Array.isArray(variableGroups) ? variableGroups : [],
         );
         duplicateState.dataset.codeBook.dataDscr.varGrp = variableGroups;
       }

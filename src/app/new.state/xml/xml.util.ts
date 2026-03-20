@@ -398,7 +398,7 @@ export function matchVariableIDs(
   importedVariables.forEach((variableImported) => {
     // For each dataset we go through our current dataset to find the matching name
     for (const variableInCurrentDataset of datasetVariables) {
-      if (variableInCurrentDataset['@_name'] === variableImported['@_name']) {
+      if (variableInCurrentDataset['@_name'].trim() === variableImported['@_name'].trim()) {
         matchedVariables[variableInCurrentDataset['@_ID']] = {
           importedVariableID: variableImported['@_ID'],
           importedVariable: variableImported,
@@ -412,27 +412,38 @@ export function matchVariableIDs(
 export function updateGroups(
   groups: VariableGroup[],
   matchedVariableIDs: MatchVariables,
+  existingGroups: VariableGroup[],
 ): VariableGroup[] {
   const duplicateVariableGroups: VariableGroup[] = [];
+
+  // Build a reverse lookup: importedVariableID → currentDatasetVariableID
+  const flipMatched: { [oldVariableID: string]: string } = {};
+  Object.keys(matchedVariableIDs).forEach((id) => {
+    flipMatched[matchedVariableIDs[id].importedVariableID] = id;
+  });
+
+  // Derive a safe starting ID from existing groups so imported IDs never collide
+  const existingNumericIDs = existingGroups
+    .map((g) => parseInt(g['@_ID']?.replace('VG', '') || '0', 10))
+    .filter((n) => !isNaN(n));
+  let nextID =
+    existingNumericIDs.length ? Math.max(...existingNumericIDs) + 1 : 10000;
+
   groups.forEach((group) => {
-    const flipMatched: { [oldVariableID: string]: string } = {};
-    Object.keys(matchedVariableIDs).map((id) => {
-      flipMatched[matchedVariableIDs[id].importedVariableID] = id;
-    });
-    const groupVariables = group['@_var']?.split(' ') || [];
+    const groupVariables = group['@_var']?.split(' ').filter(Boolean) || [];
     const newVars: string[] = [];
-    if (groupVariables.length) {
-      groupVariables.forEach((variable) => {
-        const mapped = flipMatched[variable];
-        if (mapped !== undefined) {
-          newVars.push(mapped);
-        }
-      });
-    }
+    groupVariables.forEach((variable) => {
+      const mapped = flipMatched[variable];
+      if (mapped !== undefined) {
+        newVars.push(mapped);
+      }
+    });
     duplicateVariableGroups.push({
       ...group,
-      '@_var': newVars.length ? newVars.join(' ') : group['@_var'],
-      '@_ID': `VG${Math.floor(Math.random() * 90000) + 10000}`,
+      // Use only matched (current-dataset) IDs; empty string when none matched —
+      // never fall back to imported IDs that don't exist in the current dataset.
+      '@_var': newVars.join(' '),
+      '@_ID': `VG${nextID++}`,
     });
   });
   return duplicateVariableGroups;
@@ -490,30 +501,36 @@ function editSingleVariable(
 ): Variable {
   const currentVariableCloned = structuredClone(currentVariable);
   if (variableTemplate.label) {
-    if (currentVariableCloned.labl?.['#text']) {
-      currentVariableCloned.labl['#text'] =
-        importedVariablesMatched.importedVariable.labl?.['#text'] || '';
+    const importedLabel =
+      importedVariablesMatched.importedVariable.labl?.['#text'] ?? '';
+    if (
+      currentVariableCloned.labl &&
+      currentVariableCloned.labl['#text'] !== undefined
+    ) {
+      currentVariableCloned.labl['#text'] = importedLabel;
+    } else {
+      currentVariableCloned.labl = {
+        '#text': importedLabel,
+        '@_level': 'variable',
+      };
     }
   }
   if (variableTemplate.notes) {
-    // current var has no notes
-    if (!currentVariableCloned.notes) {
-      currentVariableCloned.notes =
-        importedVariablesMatched.importedVariable.notes;
-    }
-    // current var only has dataverse signature
-    if (
-      currentVariableCloned.notes &&
-      !Array.isArray(currentVariableCloned.notes)
-    ) {
-      currentVariableCloned.notes = [currentVariableCloned.notes, ''];
-    }
-    if (Array.isArray(importedVariablesMatched.importedVariable.notes)) {
-      currentVariableCloned.notes = [
-        currentVariableCloned.notes[0],
-        importedVariablesMatched.importedVariable.notes[1],
-      ];
-    }
+    // Normalise current notes: preserve the Dataverse system note at index 0
+    const systemNote = Array.isArray(currentVariableCloned.notes)
+      ? currentVariableCloned.notes[0]
+      : (currentVariableCloned.notes ?? '');
+
+    // Extract user-authored notes from the imported variable regardless of
+    // whether they are stored as a plain string or at index 1 of an array.
+    const importedNotes = importedVariablesMatched.importedVariable.notes;
+    const importedUserNote = Array.isArray(importedNotes)
+      ? importedNotes[1]
+      : typeof importedNotes === 'string'
+        ? importedNotes
+        : '';
+
+    currentVariableCloned.notes = [systemNote, importedUserNote];
   }
   if (variableTemplate.weight) {
     const importedVariable =
