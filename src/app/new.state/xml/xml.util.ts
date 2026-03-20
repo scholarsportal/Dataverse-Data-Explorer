@@ -529,40 +529,38 @@ function editSingleVariable(
     currentVariableCloned.catgry =
       importedVariablesMatched.importedVariable.catgry;
   }
-  if (!currentVariable.qstn) {
-    currentVariableCloned.qstn = {
-      ivuInstr: '',
+  const anyQuestionSelected =
+    variableTemplate.literalQuestion ||
+    variableTemplate.interviewQuestion ||
+    variableTemplate.postQuestion;
+
+  if (anyQuestionSelected) {
+    const existingQstn = currentVariableCloned.qstn || {
       qstnLit: '',
+      ivuInstr: '',
       postQTxt: '',
     };
-  }
-  if (variableTemplate.literalQuestion) {
-    const literalQuestion =
-      importedVariablesMatched.importedVariable.qstn?.qstnLit ||
-      currentVariable.qstn?.qstnLit ||
-      '';
-    currentVariableCloned.qstn = {
-      ...currentVariable.qstn,
-      qstnLit: literalQuestion,
-    };
-  }
-  if (variableTemplate.interviewQuestion) {
-    currentVariableCloned.qstn = {
-      ...currentVariableCloned.qstn,
-      ivuInstr:
+
+    if (variableTemplate.literalQuestion) {
+      existingQstn.qstnLit =
+        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
+        currentVariable.qstn?.qstnLit ||
+        '';
+    }
+    if (variableTemplate.interviewQuestion) {
+      existingQstn.ivuInstr =
         importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
         currentVariable.qstn?.ivuInstr ||
-        '',
-    };
-  }
-  if (variableTemplate.postQuestion) {
-    currentVariableCloned.qstn = {
-      ...currentVariableCloned.qstn,
-      postQTxt:
+        '';
+    }
+    if (variableTemplate.postQuestion) {
+      existingQstn.postQTxt =
         importedVariablesMatched.importedVariable.qstn?.postQTxt ||
         currentVariable.qstn?.postQTxt ||
-        '',
-    };
+        '';
+    }
+
+    currentVariableCloned.qstn = existingQstn;
   }
   if (variableTemplate.universe) {
     currentVariableCloned.universe =
