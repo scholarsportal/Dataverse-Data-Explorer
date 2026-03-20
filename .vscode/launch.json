@@ -6,7 +6,7 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["nx", "serve", "data-explorer"],
+      "runtimeArgs": ["nx", "serve", "data-explorer", "--port", "2350"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
