@@ -135,16 +135,19 @@ export const xmlReducer = createReducer(
         createNewVariables(variablesMatched, variables, variableTemplate);
       duplicateState.dataset.codeBook.dataDscr.var = updatedVariables;
       if (variableTemplate.groups) {
-        const importedVariableGroups =
-          importDdiData.codeBook.dataDscr.varGrp || [];
-        variableGroups = updateGroups(
-          Array.isArray(importedVariableGroups)
-            ? importedVariableGroups
-            : [importedVariableGroups],
-          variablesMatched,
-          Array.isArray(variableGroups) ? variableGroups : [],
-        );
-        duplicateState.dataset.codeBook.dataDscr.varGrp = variableGroups;
+        const rawImportedGroups = importDdiData.codeBook.dataDscr.varGrp;
+        if (rawImportedGroups) {
+          const importedVariableGroups = Array.isArray(rawImportedGroups)
+            ? rawImportedGroups
+            : [rawImportedGroups];
+          variableGroups = updateGroups(
+            importedVariableGroups,
+            variablesMatched,
+            Array.isArray(variableGroups) ? variableGroups : [],
+          );
+          duplicateState.dataset.codeBook.dataDscr.varGrp = variableGroups;
+        }
+        // If the imported XML has no varGrp, leave existing groups untouched.
       }
 
       if (duplicateState.info) {
