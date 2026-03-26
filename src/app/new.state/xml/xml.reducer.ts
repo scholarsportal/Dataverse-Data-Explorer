@@ -131,11 +131,9 @@ export const xmlReducer = createReducer(
         importedVariablesArray,
         variables,
       );
-      duplicateState.dataset.codeBook.dataDscr.var = createNewVariables(
-        variablesMatched,
-        variables,
-        variableTemplate,
-      );
+      const { variables: updatedVariables, unmatchedWeights } =
+        createNewVariables(variablesMatched, variables, variableTemplate);
+      duplicateState.dataset.codeBook.dataDscr.var = updatedVariables;
       if (variableTemplate.groups) {
         const importedVariableGroups =
           importDdiData.codeBook.dataDscr.varGrp || [];
@@ -151,10 +149,12 @@ export const xmlReducer = createReducer(
 
       if (duplicateState.info) {
         duplicateState.info.importedSuccess = true;
+        duplicateState.info.unmatchedImportedWeights = unmatchedWeights;
       } else {
         duplicateState.info = {
           secureUploadUrl: null,
           importedSuccess: true,
+          unmatchedImportedWeights: unmatchedWeights,
         };
       }
 

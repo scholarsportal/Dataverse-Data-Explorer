@@ -1,6 +1,8 @@
 import {
   ImportVariableFormTemplate,
   MatchVariables,
+  SummaryStatistic,
+  UnmatchedWeightVariable,
   Variable,
   VariableGroup,
 } from './xml.interface';
@@ -445,8 +447,9 @@ export function createNewVariables(
   variablesMatched: MatchVariables,
   variables: Variable[],
   variableTemplate: ImportVariableFormTemplate,
-): Variable[] {
+): { variables: Variable[]; unmatchedWeights: UnmatchedWeightVariable[] } {
   const newVariables: Variable[] = [];
+  const unmatchedWeights: UnmatchedWeightVariable[] = [];
   const reverseLookup: {
     [importedVariableId: string]: {
       currentDatasetVariableID: string;
@@ -468,13 +471,14 @@ export function createNewVariables(
         variableTemplate,
         variablesMatched[variable['@_ID']],
         reverseLookup,
+        unmatchedWeights,
       );
       newVariables.push(updatedVariable);
     } else {
       newVariables.push(variable);
     }
   });
-  return newVariables;
+  return { variables: newVariables, unmatchedWeights };
 }
 
 function editSingleVariable(
@@ -490,6 +494,7 @@ function editSingleVariable(
       importedVariable: Variable;
     };
   },
+  unmatchedWeights: UnmatchedWeightVariable[],
 ): Variable {
   const currentVariableCloned = structuredClone(currentVariable);
   if (variableTemplate.label) {
@@ -525,18 +530,50 @@ function editSingleVariable(
     currentVariableCloned.notes = [systemNote, importedUserNote];
   }
   if (variableTemplate.weight) {
-    const importedVariable =
+    const importedWgtVar =
       importedVariablesMatched.importedVariable['@_wgt-var'];
-    currentVariableCloned['@_wgt-var'] = reverseLookup[importedVariable]
-      ? reverseLookup[importedVariable]?.currentDatasetVariableID
+    currentVariableCloned['@_wgt-var'] = reverseLookup[importedWgtVar]
+      ? reverseLookup[importedWgtVar].currentDatasetVariableID
       : '';
     currentVariableCloned['@_wgt'] = importedVariablesMatched.importedVariable[
       '@_wgt'
     ]
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';
-    currentVariableCloned.catgry =
-      importedVariablesMatched.importedVariable.catgry;
+
+    // Deep-copy catgry and remap any @_wgt-var references inside catStat
+    // from imported variable IDs to current-dataset variable IDs.
+    const importedCatgry = structuredClone(
+      importedVariablesMatched.importedVariable.catgry,
+    );
+    if (Array.isArray(importedCatgry)) {
+      importedCatgry.forEach((category) => {
+        const remapStat = (stat: SummaryStatistic): void => {
+          const wgtVar = stat['@_wgt-var'];
+          if (wgtVar === undefined) return;
+          if (reverseLookup[wgtVar]) {
+            stat['@_wgt-var'] = reverseLookup[wgtVar].currentDatasetVariableID;
+          } else {
+            // Imported weight reference has no match in the current dataset —
+            // strip weighted attributes so the stat is clean and Dataverse won't
+            // reject the XML for an unresolvable cross-reference.
+            unmatchedWeights.push({
+              variableID: currentVariable['@_ID'],
+              variableName: currentVariable['@_name'],
+              importedWgtVar: wgtVar,
+            });
+            delete stat['@_wgt-var'];
+            delete stat['@_wgtd'];
+          }
+        };
+        if (Array.isArray(category.catStat)) {
+          category.catStat.forEach(remapStat);
+        } else {
+          remapStat(category.catStat);
+        }
+      });
+    }
+    currentVariableCloned.catgry = importedCatgry;
   }
   const anyQuestionSelected =
     variableTemplate.literalQuestion ||

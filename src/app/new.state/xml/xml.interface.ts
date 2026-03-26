@@ -13,7 +13,7 @@ interface Question {
   postQTxt?: string;
 }
 
-interface SummaryStatistic {
+export interface SummaryStatistic {
   '#text': string | number;
   '@_type': string;
   '@_wgtd'?: string;
@@ -175,6 +175,13 @@ export interface ddiJSONStructure {
   codeBook: CodeBook;
 }
 
+export interface UnmatchedWeightVariable {
+  variableID: string;
+  variableName: string;
+  /** The `@_wgt-var` value from the imported XML that had no match in the current dataset */
+  importedWgtVar: string;
+}
+
 export interface XmlState {
   dataset: ddiJSONStructure | null;
   header: {
@@ -188,6 +195,10 @@ export interface XmlState {
     language?: string;
     importedSuccess?: boolean;
     secureUploadUrl: string | null;
+    /** Variables whose imported weight reference could not be mapped to the current dataset.
+     * TODO: surface this list in the import result component so users know which variables
+     * lost their weight assignment and need to be reassigned manually. */
+    unmatchedImportedWeights?: UnmatchedWeightVariable[];
   } | null;
   error: {
     type: 'fetch' | 'upload' | 'chrome-error' | null;
