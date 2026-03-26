@@ -4,7 +4,7 @@
   "sourceRoot": "libs/pivot-table/src",
   "prefix": "dde",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope:feature", "type:lib"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

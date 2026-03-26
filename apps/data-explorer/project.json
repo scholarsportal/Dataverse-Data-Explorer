@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/data-explorer/src",
-  "tags": [],
+  "tags": ["scope:app", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -19,12 +19,7 @@
             "input": "apps/data-explorer/public"
           }
         ],
-        "styles": ["apps/data-explorer/src/styles.css"],
-        "server": "apps/data-explorer/src/main.server.ts",
-        "ssr": {
-          "entry": "apps/data-explorer/src/server.ts"
-        },
-        "outputMode": "server"
+        "styles": ["apps/data-explorer/src/styles.css"]
       },
       "configurations": {
         "production": {
