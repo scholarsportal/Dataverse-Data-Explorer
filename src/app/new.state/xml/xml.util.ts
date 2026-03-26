@@ -125,37 +125,29 @@ export function changeWeightForSelectedVariables(
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
       const currentCategories = duplicateVariables[variableID].catgry;
-      console.log('Weight ID: ', !!weightID);
       if (currentCategories && Array.isArray(currentCategories)) {
         currentCategories.map((category) => {
-          if (Array.isArray(category.catStat)) {
-            category.catStat = [
-              category.catStat[0],
-              {
-                '#text':
-                  weightID !== 'remove'
-                    ? frequencyTableForSelectedVariables[variableID][
-                        category.catValu
-                      ] || 0
-                    : 0,
-                '@_type': 'freq',
-                '@_wgtd': 'wgtd',
-                '@_wgt-var': weightID !== 'remove' ? weightID : '',
-              },
-            ];
+          const baseStat = Array.isArray(category.catStat)
+            ? category.catStat[0]
+            : category.catStat;
+          if (weightID === 'remove') {
+            const {
+              '@_wgtd': _wgtd,
+              '@_wgt-var': _wgtVar,
+              ...cleanStat
+            } = baseStat;
+            category.catStat = cleanStat;
           } else {
             category.catStat = [
-              category.catStat,
+              baseStat,
               {
                 '#text':
-                  weightID !== 'remove'
-                    ? frequencyTableForSelectedVariables[variableID][
-                        category.catValu
-                      ] || 0
-                    : 0,
+                  frequencyTableForSelectedVariables[variableID][
+                    category.catValu
+                  ] || 0,
                 '@_type': 'freq',
                 '@_wgtd': 'wgtd',
-                '@_wgt-var': weightID !== 'remove' ? weightID : '',
+                '@_wgt-var': weightID,
               },
             ];
           }
