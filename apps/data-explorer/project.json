@@ -2,7 +2,7 @@
   "name": "data-explorer",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "dde",
   "sourceRoot": "apps/data-explorer/src",
   "tags": ["scope:app", "type:app"],
   "targets": {
