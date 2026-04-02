@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Tonal Palettes — Static, theme-independent HSL scales
+   MD3 key tones: 0, 10, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 95, 98, 99, 100
+   Source color: #4338CA → hsl(245, 58%, 51%)
+   ========================================================================== */
+
+:root {
+  /* Primary — Bright Indigo (hue 245, chroma 58%) — #4338CA at tone 50 */
+  --palette-primary-0:   hsl(245, 58%, 0%);
+  --palette-primary-10:  hsl(245, 58%, 10%);
+  --palette-primary-20:  hsl(245, 58%, 20%);
+  --palette-primary-25:  hsl(245, 58%, 25%);
+  --palette-primary-30:  hsl(245, 58%, 30%);
+  --palette-primary-40:  hsl(245, 58%, 40%);
+  --palette-primary-50:  hsl(245, 58%, 51%);
+  --palette-primary-60:  hsl(245, 58%, 60%);
+  --palette-primary-70:  hsl(245, 58%, 70%);
+  --palette-primary-80:  hsl(245, 58%, 80%);
+  --palette-primary-90:  hsl(245, 58%, 90%);
+  --palette-primary-95:  hsl(245, 58%, 95%);
+  --palette-primary-99:  hsl(245, 58%, 99%);
+  --palette-primary-100: hsl(245, 58%, 100%);
+
+  /* Secondary — Pink (hue 333, chroma 71%) — #DB2777 at tone 40 */
+  --palette-secondary-0:   hsl(333, 71%, 0%);
+  --palette-secondary-10:  hsl(333, 71%, 10%);
+  --palette-secondary-20:  hsl(333, 71%, 20%);
+  --palette-secondary-25:  hsl(333, 71%, 25%);
+  --palette-secondary-30:  hsl(333, 71%, 30%);
+  --palette-secondary-40:  hsl(333, 71%, 40%);
+  --palette-secondary-50:  hsl(333, 71%, 51%);
+  --palette-secondary-60:  hsl(333, 71%, 60%);
+  --palette-secondary-70:  hsl(333, 71%, 70%);
+  --palette-secondary-80:  hsl(333, 71%, 80%);
+  --palette-secondary-90:  hsl(333, 71%, 90%);
+  --palette-secondary-95:  hsl(333, 71%, 95%);
+  --palette-secondary-99:  hsl(333, 71%, 99%);
+  --palette-secondary-100: hsl(333, 71%, 100%);
+
+  /* Tertiary — Yellow-Green (hue 62, chroma 75%) — #F0F2A6 at tone 80 */
+  --palette-tertiary-0:   hsl(62, 75%, 0%);
+  --palette-tertiary-10:  hsl(62, 75%, 10%);
+  --palette-tertiary-20:  hsl(62, 75%, 20%);
+  --palette-tertiary-25:  hsl(62, 75%, 25%);
+  --palette-tertiary-30:  hsl(62, 75%, 30%);
+  --palette-tertiary-40:  hsl(62, 75%, 40%);
+  --palette-tertiary-50:  hsl(62, 75%, 50%);
+  --palette-tertiary-60:  hsl(62, 75%, 60%);
+  --palette-tertiary-70:  hsl(62, 75%, 70%);
+  --palette-tertiary-80:  hsl(62, 75%, 80%);
+  --palette-tertiary-90:  hsl(62, 75%, 90%);
+  --palette-tertiary-95:  hsl(62, 75%, 95%);
+  --palette-tertiary-99:  hsl(62, 75%, 99%);
+  --palette-tertiary-100: hsl(62, 75%, 100%);
+
+  /* Error — Red (hue 0, chroma 75%) */
+  --palette-error-0:   hsl(0, 75%, 0%);
+  --palette-error-10:  hsl(0, 75%, 10%);
+  --palette-error-20:  hsl(0, 75%, 20%);
+  --palette-error-25:  hsl(0, 75%, 25%);
+  --palette-error-30:  hsl(0, 75%, 30%);
+  --palette-error-40:  hsl(0, 75%, 40%);
+  --palette-error-50:  hsl(0, 75%, 50%);
+  --palette-error-60:  hsl(0, 75%, 60%);
+  --palette-error-70:  hsl(0, 75%, 70%);
+  --palette-error-80:  hsl(0, 75%, 80%);
+  --palette-error-90:  hsl(0, 75%, 90%);
+  --palette-error-95:  hsl(0, 75%, 95%);
+  --palette-error-99:  hsl(0, 75%, 99%);
+  --palette-error-100: hsl(0, 75%, 100%);
+
+  /* Neutral — Light mode: achromatic (hue 0, saturation 0%)
+     Measured from borealisdata.ca/data-explorer light theme:
+       --b1 → #ffffff (100%), --b2 → #e8e8e8 (91%), --b3 → #d1d1d1 (82%), --bc → #161616 (8.6%) */
+  --palette-neutral-0:   hsl(0, 0%, 0%);
+  --palette-neutral-5:   hsl(0, 0%, 5%);
+  --palette-neutral-8:   hsl(0, 0%, 8.6%);
+  --palette-neutral-10:  hsl(0, 0%, 10%);
+  --palette-neutral-12:  hsl(0, 0%, 12%);
+  --palette-neutral-17:  hsl(0, 0%, 17%);
+  --palette-neutral-20:  hsl(0, 0%, 20%);
+  --palette-neutral-22:  hsl(0, 0%, 22%);
+  --palette-neutral-25:  hsl(0, 0%, 25%);
+  --palette-neutral-30:  hsl(0, 0%, 30%);
+  --palette-neutral-40:  hsl(0, 0%, 40%);
+  --palette-neutral-50:  hsl(0, 0%, 50%);
+  --palette-neutral-60:  hsl(0, 0%, 60%);
+  --palette-neutral-70:  hsl(0, 0%, 70%);
+  --palette-neutral-80:  hsl(0, 0%, 80%);
+  --palette-neutral-82:  hsl(0, 0%, 82%);
+  --palette-neutral-87:  hsl(0, 0%, 87%);
+  --palette-neutral-90:  hsl(0, 0%, 90%);
+  --palette-neutral-91:  hsl(0, 0%, 91%);
+  --palette-neutral-92:  hsl(0, 0%, 92%);
+  --palette-neutral-94:  hsl(0, 0%, 94%);
+  --palette-neutral-95:  hsl(0, 0%, 95%);
+  --palette-neutral-96:  hsl(0, 0%, 96%);
+  --palette-neutral-98:  hsl(0, 0%, 98%);
+  --palette-neutral-99:  hsl(0, 0%, 99%);
+  --palette-neutral-100: hsl(0, 0%, 100%);
+
+  /* Neutral Dark — Dark mode: blue-gray (hue 240, saturation 5–6%)
+     Measured from borealisdata.ca/data-explorer dark theme:
+       --b1 → #3f3f46 (26%), --b2 → #38383f (23.5%), --b3 → #323238 (20.8%), --bc → #d5d5d7 (84%) */
+  --palette-neutral-dark-5:   hsl(240, 6%, 5%);
+  --palette-neutral-dark-10:  hsl(240, 6%, 10%);
+  --palette-neutral-dark-12:  hsl(240, 6%, 12%);
+  --palette-neutral-dark-17:  hsl(240, 6%, 17%);
+  --palette-neutral-dark-21:  hsl(240, 6%, 20.8%);
+  --palette-neutral-dark-22:  hsl(240, 6%, 22%);
+  --palette-neutral-dark-24:  hsl(240, 6%, 23.5%);
+  --palette-neutral-dark-26:  hsl(240, 5%, 26%);
+  --palette-neutral-dark-84:  hsl(240, 2%, 84%);
+  --palette-neutral-dark-90:  hsl(240, 2%, 90%);
+  --palette-neutral-dark-95:  hsl(240, 2%, 95%);
+
+  /* Neutral Variant — Slate (hue 225, chroma 14%) */
+  --palette-neutral-variant-0:   hsl(225, 14%, 0%);
+  --palette-neutral-variant-10:  hsl(225, 14%, 10%);
+  --palette-neutral-variant-20:  hsl(225, 14%, 20%);
+  --palette-neutral-variant-25:  hsl(225, 14%, 25%);
+  --palette-neutral-variant-30:  hsl(225, 14%, 30%);
+  --palette-neutral-variant-40:  hsl(225, 14%, 40%);
+  --palette-neutral-variant-50:  hsl(225, 14%, 50%);
+  --palette-neutral-variant-60:  hsl(225, 14%, 60%);
+  --palette-neutral-variant-70:  hsl(225, 14%, 70%);
+  --palette-neutral-variant-80:  hsl(225, 14%, 80%);
+  --palette-neutral-variant-90:  hsl(225, 14%, 90%);
+  --palette-neutral-variant-95:  hsl(225, 14%, 95%);
+  --palette-neutral-variant-99:  hsl(225, 14%, 99%);
+  --palette-neutral-variant-100: hsl(225, 14%, 100%);
+
+  /* Functional — Success (hue 142) and Warning (hue 38) */
+  --palette-success-10: hsl(142, 60%, 10%);
+  --palette-success-30: hsl(142, 60%, 25%);
+  --palette-success-40: hsl(142, 60%, 30%);
+  --palette-success-80: hsl(142, 60%, 75%);
+  --palette-success-90: hsl(142, 60%, 90%);
+
+  --palette-warning-10: hsl(38, 80%, 10%);
+  --palette-warning-30: hsl(38, 80%, 25%);
+  --palette-warning-40: hsl(38, 80%, 35%);
+  --palette-warning-80: hsl(38, 80%, 75%);
+  --palette-warning-90: hsl(38, 80%, 90%);
+}

@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Typography — MD3 Type Scale
+   ========================================================================== */
+
+:root {
+  --dde-font-family:       'Roboto', system-ui, -apple-system, sans-serif;
+  --dde-font-family-brand: 'Roboto', system-ui, -apple-system, sans-serif;
+
+  /* Display */
+  --dde-display-large:  400 3.5625rem / 4rem var(--dde-font-family);
+  --dde-display-medium: 400 2.8125rem / 3.25rem var(--dde-font-family);
+  --dde-display-small:  400 2.25rem / 2.75rem var(--dde-font-family);
+
+  /* Headline */
+  --dde-headline-large:  400 2rem / 2.5rem var(--dde-font-family);
+  --dde-headline-medium: 400 1.75rem / 2.25rem var(--dde-font-family);
+  --dde-headline-small:  400 1.5rem / 2rem var(--dde-font-family);
+
+  /* Title */
+  --dde-title-large:  400 1.375rem / 1.75rem var(--dde-font-family);
+  --dde-title-medium: 500 1rem / 1.5rem var(--dde-font-family);
+  --dde-title-small:  500 0.875rem / 1.25rem var(--dde-font-family);
+
+  /* Label */
+  --dde-label-large:  500 0.875rem / 1.25rem var(--dde-font-family);
+  --dde-label-medium: 500 0.75rem / 1rem var(--dde-font-family);
+  --dde-label-small:  500 0.6875rem / 1rem var(--dde-font-family);
+
+  /* Body */
+  --dde-body-large:  400 1rem / 1.5rem var(--dde-font-family);
+  --dde-body-medium: 400 0.875rem / 1.25rem var(--dde-font-family);
+  --dde-body-small:  400 0.75rem / 1rem var(--dde-font-family);
+}

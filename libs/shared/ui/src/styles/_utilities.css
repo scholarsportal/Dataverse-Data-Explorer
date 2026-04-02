@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Utility Classes — Shorthand for design tokens
+   ========================================================================== */
+
+/* ── Color roles ── */
+.surface                   { background: var(--dde-surface);                     color: var(--dde-on-surface); }
+.surface-dim               { background: var(--dde-surface-dim);                 color: var(--dde-on-surface); }
+.surface-bright            { background: var(--dde-surface-bright);              color: var(--dde-on-surface); }
+.surface-container-lowest  { background: var(--dde-surface-container-lowest);    color: var(--dde-on-surface); }
+.surface-container-low     { background: var(--dde-surface-container-low);       color: var(--dde-on-surface); }
+.surface-container         { background: var(--dde-surface-container);           color: var(--dde-on-surface); }
+.surface-container-high    { background: var(--dde-surface-container-high);      color: var(--dde-on-surface); }
+.surface-container-highest { background: var(--dde-surface-container-highest);   color: var(--dde-on-surface); }
+.inverse-surface           { background: var(--dde-inverse-surface);             color: var(--dde-inverse-on-surface); }
+
+.primary             { background: var(--dde-primary);           color: var(--dde-on-primary); }
+.primary-container   { background: var(--dde-primary-container); color: var(--dde-on-primary-container); }
+.secondary           { background: var(--dde-secondary);           color: var(--dde-on-secondary); }
+.secondary-container { background: var(--dde-secondary-container); color: var(--dde-on-secondary-container); }
+.tertiary            { background: var(--dde-tertiary);           color: var(--dde-on-tertiary); }
+.tertiary-container  { background: var(--dde-tertiary-container); color: var(--dde-on-tertiary-container); }
+.error               { background: var(--dde-error);           color: var(--dde-on-error); }
+.error-container     { background: var(--dde-error-container); color: var(--dde-on-error-container); }
+.success             { background: var(--dde-success);           color: var(--dde-on-success); }
+.success-container   { background: var(--dde-success-container); color: var(--dde-on-success-container); }
+.warning             { background: var(--dde-warning);           color: var(--dde-on-warning); }
+.warning-container   { background: var(--dde-warning-container); color: var(--dde-on-warning-container); }
+
+/* ── Text color ── */
+.text-primary            { color: var(--dde-primary); }
+.text-secondary          { color: var(--dde-secondary); }
+.text-tertiary           { color: var(--dde-tertiary); }
+.text-error              { color: var(--dde-error); }
+.text-success            { color: var(--dde-success); }
+.text-warning            { color: var(--dde-warning); }
+.text-on-surface         { color: var(--dde-on-surface); }
+.text-on-surface-variant { color: var(--dde-on-surface-variant); }
+
+/* ── Typography ── */
+.display-large   { font: var(--dde-display-large); }
+.display-medium  { font: var(--dde-display-medium); }
+.display-small   { font: var(--dde-display-small); }
+.headline-large  { font: var(--dde-headline-large); }
+.headline-medium { font: var(--dde-headline-medium); }
+.headline-small  { font: var(--dde-headline-small); }
+.title-large     { font: var(--dde-title-large); }
+.title-medium    { font: var(--dde-title-medium); }
+.title-small     { font: var(--dde-title-small); }
+.label-large     { font: var(--dde-label-large); }
+.label-medium    { font: var(--dde-label-medium); }
+.label-small     { font: var(--dde-label-small); }
+.body-large      { font: var(--dde-body-large); }
+.body-medium     { font: var(--dde-body-medium); }
+.body-small      { font: var(--dde-body-small); }
+
+/* ── Elevation ── */
+.elevation-0 { box-shadow: var(--dde-elevation-0); }
+.elevation-1 { box-shadow: var(--dde-elevation-1); }
+.elevation-2 { box-shadow: var(--dde-elevation-2); }
+.elevation-3 { box-shadow: var(--dde-elevation-3); }
+.elevation-4 { box-shadow: var(--dde-elevation-4); }
+.elevation-5 { box-shadow: var(--dde-elevation-5); }
+
+/* ── Shape ── */
+.shape-none { border-radius: var(--dde-shape-none); }
+.shape-xs   { border-radius: var(--dde-shape-xs); }
+.shape-sm   { border-radius: var(--dde-shape-sm); }
+.shape-md   { border-radius: var(--dde-shape-md); }
+.shape-lg   { border-radius: var(--dde-shape-lg); }
+.shape-xl   { border-radius: var(--dde-shape-xl); }
+.shape-full { border-radius: var(--dde-shape-full); }

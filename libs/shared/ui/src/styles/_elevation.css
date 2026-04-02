@@ -1,0 +1,12 @@
+/* ==========================================================================
+   Elevation — MD3 shadow levels
+   ========================================================================== */
+
+:root {
+  --dde-elevation-0: none;
+  --dde-elevation-1: 0 1px 2px 0 hsl(220 8% 0% / 0.3), 0 1px 3px 1px hsl(220 8% 0% / 0.15);
+  --dde-elevation-2: 0 1px 2px 0 hsl(220 8% 0% / 0.3), 0 2px 6px 2px hsl(220 8% 0% / 0.15);
+  --dde-elevation-3: 0 1px 3px 0 hsl(220 8% 0% / 0.3), 0 4px 8px 3px hsl(220 8% 0% / 0.15);
+  --dde-elevation-4: 0 2px 3px 0 hsl(220 8% 0% / 0.3), 0 6px 10px 4px hsl(220 8% 0% / 0.15);
+  --dde-elevation-5: 0 4px 4px 0 hsl(220 8% 0% / 0.3), 0 8px 12px 6px hsl(220 8% 0% / 0.15);
+}

@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Semantic Design Tokens — Auto-switch via light-dark()
+   MD3 role mapping: https://m3.material.io/styles/color/roles
+   Requires: _palette.css loaded first, color-scheme set on html
+   ========================================================================== */
+
+html {
+  color-scheme: light dark;
+}
+
+:root {
+  /* ── Primary ── */
+  --dde-primary:              light-dark(var(--palette-primary-40),  var(--palette-primary-80));
+  --dde-on-primary:           light-dark(var(--palette-primary-100), var(--palette-primary-20));
+  --dde-primary-container:    light-dark(var(--palette-primary-90), var(--palette-primary-30));
+  --dde-on-primary-container: light-dark(var(--palette-primary-10), var(--palette-primary-90));
+
+  /* ── Secondary ── */
+  --dde-secondary:              light-dark(var(--palette-secondary-50), var(--palette-secondary-80));
+  --dde-on-secondary:           light-dark(var(--palette-secondary-100), var(--palette-secondary-20));
+  --dde-secondary-container:    light-dark(var(--palette-secondary-90), var(--palette-secondary-30));
+  --dde-on-secondary-container: light-dark(var(--palette-secondary-10), var(--palette-secondary-90));
+
+  /* ── Tertiary ── */
+  --dde-tertiary:              light-dark(var(--palette-tertiary-40), var(--palette-tertiary-80));
+  --dde-on-tertiary:           light-dark(var(--palette-tertiary-100), var(--palette-tertiary-20));
+  --dde-tertiary-container:    light-dark(var(--palette-tertiary-90), var(--palette-tertiary-30));
+  --dde-on-tertiary-container: light-dark(var(--palette-tertiary-10), var(--palette-tertiary-90));
+
+  /* ── Error ── */
+  --dde-error:              light-dark(var(--palette-error-40), var(--palette-error-80));
+  --dde-on-error:           light-dark(var(--palette-error-100), var(--palette-error-20));
+  --dde-error-container:    light-dark(var(--palette-error-90), var(--palette-error-30));
+  --dde-on-error-container: light-dark(var(--palette-error-10), var(--palette-error-90));
+
+  /* ── Success (custom) ── */
+  --dde-success:              light-dark(var(--palette-success-40), var(--palette-success-80));
+  --dde-on-success:           light-dark(hsl(0, 0%, 100%), var(--palette-success-10));
+  --dde-success-container:    light-dark(var(--palette-success-90), var(--palette-success-30));
+  --dde-on-success-container: light-dark(var(--palette-success-10), var(--palette-success-90));
+
+  /* ── Warning (custom) ── */
+  --dde-warning:              light-dark(var(--palette-warning-40), var(--palette-warning-80));
+  --dde-on-warning:           light-dark(hsl(0, 0%, 100%), var(--palette-warning-10));
+  --dde-warning-container:    light-dark(var(--palette-warning-90), var(--palette-warning-30));
+  --dde-on-warning-container: light-dark(var(--palette-warning-10), var(--palette-warning-90));
+
+  /* ── Surface / Background ──
+     Light values measured from borealisdata.ca/data-explorer (DaisyUI light theme):
+       body/cards = #ffffff, hover/header = #e8e8e8, stronger bg = #d1d1d1, text = #161616
+     Dark values measured from borealisdata.ca/data-explorer (DaisyUI dark theme):
+       body/cards = #3f3f46, hover/header = #38383f, stronger bg = #323238, text = #d5d5d7 */
+  --dde-surface:            light-dark(var(--palette-neutral-100), var(--palette-neutral-dark-26));
+  --dde-surface-dim:        light-dark(var(--palette-neutral-82),  var(--palette-neutral-dark-21));
+  --dde-surface-bright:     light-dark(var(--palette-neutral-98),  var(--palette-neutral-dark-26));
+  --dde-on-surface:         light-dark(var(--palette-neutral-8),   var(--palette-neutral-dark-84));
+  --dde-on-surface-variant: light-dark(var(--palette-neutral-variant-30), var(--palette-neutral-variant-80));
+
+  /* ── Surface containers (MD3 elevation replacements) ── */
+  --dde-surface-container-lowest:  light-dark(var(--palette-neutral-100), var(--palette-neutral-dark-21));
+  --dde-surface-container-low:     light-dark(var(--palette-neutral-96),  var(--palette-neutral-dark-22));
+  --dde-surface-container:         light-dark(var(--palette-neutral-94),  var(--palette-neutral-dark-22));
+  --dde-surface-container-high:    light-dark(var(--palette-neutral-91),  var(--palette-neutral-dark-24));
+  --dde-surface-container-highest: light-dark(var(--palette-neutral-87),  var(--palette-neutral-dark-26));
+
+  /* ── Inverse ── */
+  --dde-inverse-surface:    light-dark(var(--palette-neutral-20),  var(--palette-neutral-90));
+  --dde-inverse-on-surface: light-dark(var(--palette-neutral-95),  var(--palette-neutral-20));
+  --dde-inverse-primary:    light-dark(var(--palette-primary-80), var(--palette-primary-40));
+
+  /* ── Outline ── */
+  --dde-outline:         light-dark(var(--palette-neutral-variant-50), var(--palette-neutral-variant-60));
+  --dde-outline-variant: light-dark(var(--palette-neutral-variant-80), var(--palette-neutral-variant-30));
+
+  /* ── Scrim & Shadow ── */
+  --dde-scrim:  var(--palette-neutral-0);
+  --dde-shadow: var(--palette-neutral-0);
+}

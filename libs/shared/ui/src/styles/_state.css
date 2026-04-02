@@ -1,0 +1,10 @@
+/* ==========================================================================
+   State Layer Opacities — MD3 interaction states
+   ========================================================================== */
+
+:root {
+  --dde-state-hover:   0.08;
+  --dde-state-focus:   0.10;
+  --dde-state-pressed: 0.10;
+  --dde-state-dragged: 0.16;
+}

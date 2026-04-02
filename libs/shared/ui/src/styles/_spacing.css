@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Spacing & Shape — MD3 4px grid + rounded corners
+   ========================================================================== */
+
+:root {
+  /* Spacing (4px base grid) */
+  --dde-space-xs:  4px;
+  --dde-space-sm:  8px;
+  --dde-space-md:  16px;
+  --dde-space-lg:  24px;
+  --dde-space-xl:  32px;
+  --dde-space-2xl: 48px;
+
+  /* Shape (border-radius) */
+  --dde-shape-none: 0;
+  --dde-shape-xs:   4px;
+  --dde-shape-sm:   8px;
+  --dde-shape-md:   12px;
+  --dde-shape-lg:   16px;
+  --dde-shape-xl:   28px;
+  --dde-shape-full: 9999px;
+}

@@ -1,0 +1,21 @@
+/* ==========================================================================
+   Motion — MD3 easing curves & durations
+   ========================================================================== */
+
+:root {
+  --dde-motion-easing-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --dde-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --dde-motion-easing-decelerate: cubic-bezier(0, 0, 0, 1);
+  --dde-motion-easing-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  --dde-motion-duration-short1:  50ms;
+  --dde-motion-duration-short2:  100ms;
+  --dde-motion-duration-short3:  150ms;
+  --dde-motion-duration-short4:  200ms;
+  --dde-motion-duration-medium1: 250ms;
+  --dde-motion-duration-medium2: 300ms;
+  --dde-motion-duration-medium3: 350ms;
+  --dde-motion-duration-medium4: 400ms;
+  --dde-motion-duration-long1:   450ms;
+  --dde-motion-duration-long2:   500ms;
+}

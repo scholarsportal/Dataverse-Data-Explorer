@@ -1,24 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
-:root {
-  /* Primary Brand Colors */
-  --color-primary-main: hsl(244, 55%, 41%);      /* #4338CA - Indigo 700 */
-  --color-primary-light: hsl(244, 55%, 96%);     /* Indigo 50 - Background tints */
-  --color-primary-dark: hsl(244, 55%, 30%);      /* Deep Indigo for active states */
+/* ==========================================================================
+   Data Explorer — Global Styles
+   Design system from libs/shared/ui
+   ========================================================================== */
 
-  /* Neutral & Grayscale (Slate Palette) */
-  --color-neutral-50: hsl(210, 40%, 98%);       /* Backgrounds */
-  --color-neutral-100: hsl(210, 40%, 96%);      /* Subtle borders/dividers */
-  --color-neutral-200: hsl(214, 32%, 91%);      /* Standard borders */
-  --color-neutral-400: hsl(215, 16%, 47%);      /* Secondary text */
-  --color-neutral-600: hsl(215, 19%, 35%);      /* Medium emphasis text */
-  --color-neutral-900: hsl(222, 47%, 11%);      /* High emphasis text / Dark mode bg */
+@import '../../../libs/shared/ui/src/styles/index.css';
 
-  /* Functional / Semantic Colors */
-  --color-success: hsl(142, 71%, 45%);          /* Stable status */
-  --color-warning: hsl(38, 92%, 50%);           /* Warning status */
-  --color-error: hsl(0, 84%, 60%);              /* Critical alerts */
-  
-  /* Surface & Elevation */
-  --color-surface-white: hsl(0, 0%, 100%);
-  --color-surface-glass: hsla(0, 0%, 100%, 0.8); /* Backdrop blur surfaces */
+/* ==========================================================================
+   App-specific Base Defaults
+   ========================================================================== */
+body {
+  font: var(--dde-body-large);
+  background: var(--dde-surface);
+  color: var(--dde-on-surface);
 }
