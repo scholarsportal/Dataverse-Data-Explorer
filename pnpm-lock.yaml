@@ -26,18 +26,9 @@ importers:
       '@angular/platform-browser':
         specifier: ~21.2.0
         version: 21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))
-      '@angular/platform-server':
-        specifier: ~21.2.0
-        version: 21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@21.2.5)(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/router':
         specifier: ~21.2.0
         version: 21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/ssr':
-        specifier: ~21.2.0
-        version: 21.2.3(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-server@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@21.2.5)(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/router@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2))
-      express:
-        specifier: ^4.21.2
-        version: 4.22.1
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -60,6 +51,9 @@ importers:
       '@angular/language-service':
         specifier: ~21.2.0
         version: 21.2.5
+      '@biomejs/biome':
+        specifier: 2.4.10
+        version: 2.4.10
       '@eslint/js':
         specifier: ^9.8.0
         version: 9.39.4
@@ -102,12 +96,6 @@ importers:
       '@swc/helpers':
         specifier: ~0.5.18
         version: 0.5.19
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.25
-      '@types/node':
-        specifier: 20.19.9
-        version: 20.19.9
       '@typescript-eslint/utils':
         specifier: ^8.40.0
         version: 8.57.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -120,9 +108,6 @@ importers:
       eslint:
         specifier: ^9.8.0
         version: 9.39.4(jiti@2.6.1)
-      eslint-config-prettier:
-        specifier: ^10.0.0
-        version: 10.1.8(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-playwright:
         specifier: ^1.6.2
         version: 1.8.3(eslint@9.39.4(jiti@2.6.1))
@@ -144,9 +129,6 @@ importers:
       postcss-url:
         specifier: ~10.1.3
         version: 10.1.3(postcss@8.5.8)
-      prettier:
-        specifier: ~3.6.2
-        version: 3.6.2
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
@@ -1043,6 +1025,59 @@ packages:
   '@babel/types@7.29.0':
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
+
+  '@biomejs/biome@2.4.10':
+    resolution: {integrity: sha512-xxA3AphFQ1geij4JTHXv4EeSTda1IFn22ye9LdyVPoJU19fNVl0uzfEuhsfQ4Yue/0FaLs2/ccVi4UDiE7R30w==}
+    engines: {node: '>=14.21.3'}
+    hasBin: true
+
+  '@biomejs/cli-darwin-arm64@2.4.10':
+    resolution: {integrity: sha512-vuzzI1cWqDVzOMIkYyHbKqp+AkQq4K7k+UCXWpkYcY/HDn1UxdsbsfgtVpa40shem8Kax4TLDLlx8kMAecgqiw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@biomejs/cli-darwin-x64@2.4.10':
+    resolution: {integrity: sha512-14fzASRo+BPotwp7nWULy2W5xeUyFnTaq1V13Etrrxkrih+ez/2QfgFm5Ehtf5vSjtgx/IJycMMpn5kPd5ZNaA==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@biomejs/cli-linux-arm64-musl@2.4.10':
+    resolution: {integrity: sha512-WrJY6UuiSD/Dh+nwK2qOTu8kdMDlLV3dLMmychIghHPAysWFq1/DGC1pVZx8POE3ZkzKR3PUUnVrtZfMfaJjyQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-arm64@2.4.10':
+    resolution: {integrity: sha512-7MH1CMW5uuxQ/s7FLST63qF8B3Hgu2HRdZ7tA1X1+mk+St4JOuIrqdhIBnnyqeyWJNI+Bww7Es5QZ0wIc1Cmkw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64-musl@2.4.10':
+    resolution: {integrity: sha512-kDTi3pI6PBN6CiczsWYOyP2zk0IJI08EWEQyDMQWW221rPaaEz6FvjLhnU07KMzLv8q3qSuoB93ua6inSQ55Tw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64@2.4.10':
+    resolution: {integrity: sha512-tZLvEEi2u9Xu1zAqRjTcpIDGVtldigVvzug2fTuPG0ME/g8/mXpRPcNgLB22bGn6FvLJpHHnqLnwliOu8xjYrg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-win32-arm64@2.4.10':
+    resolution: {integrity: sha512-umwQU6qPzH+ISTf/eHyJ/QoQnJs3V9Vpjz2OjZXe9MVBZ7prgGafMy7yYeRGnlmDAn87AKTF3Q6weLoMGpeqdQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@biomejs/cli-win32-x64@2.4.10':
+    resolution: {integrity: sha512-aW/JU5GuyH4uxMrNYpoC2kjaHlyJGLgIa3XkhPEZI0uKhZhJZU8BuEyJmvgzSPQNGozBwWjC972RaNdcJ9KyJg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [win32]
 
   '@bufbuild/protobuf@2.11.0':
     resolution: {integrity: sha512-sBXGT13cpmPR5BMgHE6UEEfEaShh5Ror6rfN3yEK5si7QVrtZg8LEPQb0VVhiLRUslD2yLnXtnRzG035J/mZXQ==}
@@ -5698,11 +5733,6 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
-    engines: {node: '>=14'}
-    hasBin: true
-
   pretty-format@30.3.0:
     resolution: {integrity: sha512-oG4T3wCbfeuvljnyAzhBvpN45E8iOTXCU/TD3zXW80HA3dQ4ahdqMkWGiPWZvjpQwlbyHrPTWUAqUzGzv4l1JQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -7419,6 +7449,7 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
       xhr2: 0.2.1
+    optional: true
 
   '@angular/router@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
@@ -7436,6 +7467,7 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@angular/platform-server': 21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@21.2.5)(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(@angular/platform-browser@21.2.5(@angular/common@21.2.5(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.5(@angular/compiler@21.2.5)(rxjs@7.8.2)))(rxjs@7.8.2)
+    optional: true
 
   '@asamuzakjp/css-color@4.1.2':
     dependencies:
@@ -8248,6 +8280,41 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
+
+  '@biomejs/biome@2.4.10':
+    optionalDependencies:
+      '@biomejs/cli-darwin-arm64': 2.4.10
+      '@biomejs/cli-darwin-x64': 2.4.10
+      '@biomejs/cli-linux-arm64': 2.4.10
+      '@biomejs/cli-linux-arm64-musl': 2.4.10
+      '@biomejs/cli-linux-x64': 2.4.10
+      '@biomejs/cli-linux-x64-musl': 2.4.10
+      '@biomejs/cli-win32-arm64': 2.4.10
+      '@biomejs/cli-win32-x64': 2.4.10
+
+  '@biomejs/cli-darwin-arm64@2.4.10':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@2.4.10':
+    optional: true
+
+  '@biomejs/cli-linux-arm64-musl@2.4.10':
+    optional: true
+
+  '@biomejs/cli-linux-arm64@2.4.10':
+    optional: true
+
+  '@biomejs/cli-linux-x64-musl@2.4.10':
+    optional: true
+
+  '@biomejs/cli-linux-x64@2.4.10':
+    optional: true
+
+  '@biomejs/cli-win32-arm64@2.4.10':
+    optional: true
+
+  '@biomejs/cli-win32-x64@2.4.10':
+    optional: true
 
   '@bufbuild/protobuf@2.11.0': {}
 
@@ -11509,6 +11576,7 @@ snapshots:
   eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.4(jiti@2.6.1)
+    optional: true
 
   eslint-plugin-playwright@1.8.3(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
@@ -13431,8 +13499,6 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.6.2: {}
-
   pretty-format@30.3.0:
     dependencies:
       '@jest/schemas': 30.0.5
@@ -14724,7 +14790,8 @@ snapshots:
       is-wsl: 3.1.1
       powershell-utils: 0.1.0
 
-  xhr2@0.2.1: {}
+  xhr2@0.2.1:
+    optional: true
 
   xml-name-validator@5.0.0: {}
 

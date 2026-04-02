@@ -55,12 +55,16 @@ Thumbs.db
 
 .angular
 .claude
+.codex
 /CLAUDE.md
 /AGENTS.md
 /.opencode
+/.agents
 .playwright-mcp
 
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
 __screenshots__/
+
+.nx/polygraph
