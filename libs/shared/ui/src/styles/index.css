@@ -1,0 +1,25 @@
+/* ==========================================================================
+   DDE Design System — Shared Entry Point
+   Import order matters: reset -> palette -> tokens -> subsystems -> utilities
+
+   Usage: @import '@odesi/shared/ui/styles';
+   ========================================================================== */
+
+/* Layer 1: Reset */
+@import './_reset.css';
+
+/* Layer 2: Tonal palettes (raw HSL values, no theme logic) */
+@import './_palette.css';
+
+/* Layer 3: Semantic tokens (light-dark auto-switching) */
+@import './_tokens.css';
+
+/* Layer 4: Subsystem tokens */
+@import './_elevation.css';
+@import './_typography.css';
+@import './_spacing.css';
+@import './_motion.css';
+@import './_state.css';
+
+/* Layer 5: Utility classes (consume tokens) */
+@import './_utilities.css';
