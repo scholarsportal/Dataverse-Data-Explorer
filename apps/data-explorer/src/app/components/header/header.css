@@ -1,0 +1,35 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border-bottom: 1px solid var(--dde-on-surface);
+}
+
+.header-info {
+  padding: var(--dde-space-md);
+  grid-area: 1 / 1 / 3 / 13;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header-switcher {
+  grid-area: 3 / 1 / 4 / 13;
+}
+
+.logo-with-text {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.data-explorer-text {
+  margin-left: var(--dde-space-sm);
+  font-weight: bolder;
+}
+
+.logo-and-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
