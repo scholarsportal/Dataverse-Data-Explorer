@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'dde-variable-editor',
   imports: [],
-  templateUrl: './variable-editor.html',
+  template: ` <p>VariableEditor works!</p> `,
   styleUrl: './variable-editor.css',
 })
 export class VariableEditor {}
