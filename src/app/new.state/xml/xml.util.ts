@@ -1,4 +1,5 @@
 import {
+  Category,
   ImportVariableFormTemplate,
   MatchVariables,
   SummaryStatistic,
@@ -492,6 +493,90 @@ export function createNewVariables(
   return { variables: newVariables, unmatchedWeights };
 }
 
+// fast-xml-parser yields a bare object for single-element lists and nothing
+// for empty ones.
+function toArray<T>(value: T[] | T | undefined): T[] {
+  if (value === undefined || value === null) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+
+// Exact string match first. Exports from older DE versions carry numerically
+// corrupted codes ("1" for "01"), so fall back to numeric equality.
+function findMatchingCategory(
+  catValu: string,
+  candidates: Category[],
+): Category | undefined {
+  const target = String(catValu).trim();
+  const exact = candidates.find(
+    (candidate) => String(candidate.catValu).trim() === target,
+  );
+  if (exact || target === '' || Number.isNaN(Number(target))) {
+    return exact;
+  }
+  return candidates.find((candidate) => {
+    const value = String(candidate.catValu).trim();
+    return value !== '' && Number(value) === Number(target);
+  });
+}
+
+/**
+ * Replaces the weighted stats of `currentCategories` (mutated in place) with
+ * those of the matching imported categories, remapping `@_wgt-var` to
+ * current-dataset IDs. Category codes, labels and unweighted stats are never
+ * touched; imported categories absent from the current dataset are ignored.
+ * Returns the imported weight variable IDs that had no match.
+ *
+ * Dataverse's own DDI export names the weight only on <var wgt-var>, not on
+ * each weighted <catStat>, so the variable-level reference is the fallback.
+ */
+function mergeImportedWeightedStats(
+  currentCategories: Category[],
+  importedCategories: Category[],
+  importedVariableWgtVar: string | undefined,
+  reverseLookup: {
+    [importedVariableID: string]: { currentDatasetVariableID: string };
+  },
+): Set<string> {
+  const unmatchedWgtVars = new Set<string>();
+  currentCategories.forEach((category) => {
+    const stats = toArray(category.catStat);
+    const unweightedStats = stats.filter((stat) => !stat['@_wgtd']);
+    const importedMatch = findMatchingCategory(
+      category.catValu,
+      importedCategories,
+    );
+    const importedWeighted = toArray(importedMatch?.catStat).find(
+      (stat) => stat['@_wgtd'],
+    );
+    const importedWgtVar = importedWeighted
+      ? importedWeighted['@_wgt-var'] || importedVariableWgtVar
+      : undefined;
+    const mappedWgtVar = importedWgtVar
+      ? reverseLookup[importedWgtVar]?.currentDatasetVariableID
+      : undefined;
+    if (importedWgtVar && !mappedWgtVar) {
+      unmatchedWgtVars.add(importedWgtVar);
+    }
+
+    // No usable imported weighted stat: mirror the import and leave the
+    // category unweighted.
+    const nextStats: SummaryStatistic[] =
+      importedWeighted && mappedWgtVar
+        ? [
+            ...unweightedStats,
+            { ...structuredClone(importedWeighted), '@_wgt-var': mappedWgtVar },
+          ]
+        : unweightedStats;
+    if (stats.length === 0 && nextStats.length === 0) {
+      return;
+    }
+    category.catStat = nextStats.length === 1 ? nextStats[0] : nextStats;
+  });
+  return unmatchedWgtVars;
+}
+
 function editSingleVariable(
   currentVariable: Variable,
   variableTemplate: ImportVariableFormTemplate,
@@ -552,39 +637,23 @@ function editSingleVariable(
       ? importedVariablesMatched.importedVariable['@_wgt']
       : '';
 
-    // Deep-copy catgry and remap any @_wgt-var references inside catStat
-    // from imported variable IDs to current-dataset variable IDs.
-    const importedCatgry = structuredClone(
-      importedVariablesMatched.importedVariable.catgry,
+    // Merge weighted stats from the imported variable onto the CURRENT
+    // categories. Never replace catgry wholesale: the imported file's codes,
+    // labels and unweighted frequencies belong to a different dataset, and
+    // Dataverse rejects weighted stats whose catValu isn't in its database.
+    const unmatchedWgtVars = mergeImportedWeightedStats(
+      toArray(currentVariableCloned.catgry),
+      toArray(importedVariablesMatched.importedVariable.catgry),
+      importedWgtVar,
+      reverseLookup,
     );
-    if (Array.isArray(importedCatgry)) {
-      importedCatgry.forEach((category) => {
-        const remapStat = (stat: SummaryStatistic): void => {
-          const wgtVar = stat['@_wgt-var'];
-          if (wgtVar === undefined) return;
-          if (reverseLookup[wgtVar]) {
-            stat['@_wgt-var'] = reverseLookup[wgtVar].currentDatasetVariableID;
-          } else {
-            // Imported weight reference has no match in the current dataset —
-            // strip weighted attributes so the stat is clean and Dataverse won't
-            // reject the XML for an unresolvable cross-reference.
-            unmatchedWeights.push({
-              variableID: currentVariable['@_ID'],
-              variableName: currentVariable['@_name'],
-              importedWgtVar: wgtVar,
-            });
-            delete stat['@_wgt-var'];
-            delete stat['@_wgtd'];
-          }
-        };
-        if (Array.isArray(category.catStat)) {
-          category.catStat.forEach(remapStat);
-        } else {
-          remapStat(category.catStat);
-        }
+    unmatchedWgtVars.forEach((importedWgtVar) => {
+      unmatchedWeights.push({
+        variableID: currentVariable['@_ID'],
+        variableName: currentVariable['@_name'],
+        importedWgtVar,
       });
-    }
-    currentVariableCloned.catgry = importedCatgry;
+    });
   }
   const anyQuestionSelected =
     variableTemplate.literalQuestion ||
