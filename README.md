@@ -20,7 +20,7 @@ Data Explorer is an Angular application.
 - 📝 Edit variable metadata
 - 📝 Import DDI XML for curation workflows
 
-A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?dfId=127759&siteUrl=https://borealisdata.ca](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
+A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https://demo.borealisdata.ca&dfId=40226](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
 
 ## 📦 Prerequisites
 
