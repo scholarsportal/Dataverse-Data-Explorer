@@ -3,6 +3,8 @@
 import {
   changeWeightForSelectedVariables,
   createNewVariables,
+  normalizeGroupVariables,
+  updateGroups,
 } from './xml.util';
 import {
   Category,
@@ -10,6 +12,7 @@ import {
   MatchVariables,
   SummaryStatistic,
   Variable,
+  VariableGroup,
 } from './xml.interface';
 
 function makeVariable(
@@ -440,5 +443,66 @@ describe('createNewVariables (import)', () => {
       { ...weightOnly, weight: false, label: true },
     );
     expect(variables[0].catgry).toEqual(before);
+  });
+});
+
+describe('normalizeGroupVariables', () => {
+  it('omits the var attribute when the list is empty or blank', () => {
+    expect(normalizeGroupVariables({ '@_ID': 'VG1', labl: 'A', '@_var': '' })).toEqual({
+      '@_ID': 'VG1',
+      labl: 'A',
+    });
+    expect(
+      normalizeGroupVariables({ '@_ID': 'VG1', labl: 'A', '@_var': '   ' }),
+    ).toEqual({ '@_ID': 'VG1', labl: 'A' });
+    expect(normalizeGroupVariables({ '@_ID': 'VG1', labl: 'A' })).toEqual({
+      '@_ID': 'VG1',
+      labl: 'A',
+    });
+  });
+
+  it('trims, collapses and de-duplicates variable IDs', () => {
+    expect(
+      normalizeGroupVariables({
+        '@_ID': 'VG1',
+        labl: 'A',
+        '@_var': ' v1  v2 v1 ',
+      })['@_var'],
+    ).toBe('v1 v2');
+  });
+});
+
+describe('updateGroups (import)', () => {
+  const matched: MatchVariables = {
+    vNEW1: {
+      importedVariableID: 'vOLD1',
+      importedVariable: makeVariable('vOLD1', 'A', []),
+    },
+  };
+
+  it('remaps matched variables to current-dataset IDs', () => {
+    const [group] = updateGroups(
+      [{ '@_ID': 'VG5', labl: 'Group', '@_var': 'vOLD1' }],
+      matched,
+      [],
+    );
+    expect(group['@_var']).toBe('vNEW1');
+  });
+
+  it('omits var for groups that are empty in the source or have no matched variables', () => {
+    // Dataverse exports an empty group with no var attribute; serializing it
+    // back as var="" made every save of the import fail with a 500.
+    const groups: VariableGroup[] = updateGroups(
+      [
+        { '@_ID': 'VG5', labl: 'Empty in source' },
+        { '@_ID': 'VG6', labl: 'Unmatched', '@_var': 'vOTHER' },
+      ],
+      matched,
+      [],
+    );
+    expect(groups.length).toBe(2);
+    groups.forEach((group) => {
+      expect('@_var' in group).toBe(false);
+    });
   });
 });

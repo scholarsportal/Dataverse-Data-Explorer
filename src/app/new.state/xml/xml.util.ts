@@ -1,5 +1,6 @@
 import {
   Category,
+  ddiJSONStructure,
   ImportVariableFormTemplate,
   MatchVariables,
   SummaryStatistic,
@@ -444,15 +445,47 @@ export function updateGroups(
         newVars.push(mapped);
       }
     });
-    duplicateVariableGroups.push({
-      ...group,
-      // Use only matched (current-dataset) IDs; empty string when none matched —
-      // never fall back to imported IDs that don't exist in the current dataset.
-      '@_var': newVars.join(' '),
-      '@_ID': `VG${nextID++}`,
-    });
+    duplicateVariableGroups.push(
+      normalizeGroupVariables({
+        ...group,
+        // Use only matched (current-dataset) IDs — never fall back to imported
+        // IDs that don't exist in the current dataset.
+        '@_var': newVars.join(' '),
+        '@_ID': `VG${nextID++}`,
+      }),
+    );
   });
   return duplicateVariableGroups;
+}
+
+// Dataverse's /api/edit parses <varGrp var> with Long.parseLong on every
+// space-separated token, so an empty or padded list (var="", "v1  v2") fails
+// the whole save with a 500. A group without variables must omit the
+// attribute, which is also how Dataverse exports empty groups.
+export function normalizeGroupVariables(group: VariableGroup): VariableGroup {
+  const { '@_var': variables, ...rest } = group;
+  const variableIDs = [
+    ...new Set((variables ?? '').split(/\s+/).filter(Boolean)),
+  ];
+  return variableIDs.length ? { ...rest, '@_var': variableIDs.join(' ') } : rest;
+}
+
+export function withNormalizedGroups(json: ddiJSONStructure): ddiJSONStructure {
+  const varGrp = json.codeBook?.dataDscr?.varGrp;
+  if (!varGrp) {
+    return json;
+  }
+  const groups = Array.isArray(varGrp) ? varGrp : [varGrp];
+  return {
+    ...json,
+    codeBook: {
+      ...json.codeBook,
+      dataDscr: {
+        ...json.codeBook.dataDscr,
+        varGrp: groups.map(normalizeGroupVariables),
+      },
+    },
+  };
 }
 
 export function createNewVariables(
