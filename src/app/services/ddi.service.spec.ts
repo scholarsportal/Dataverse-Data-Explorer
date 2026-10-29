@@ -101,4 +101,37 @@ describe('DdiService', () => {
       );
     });
   });
+
+  describe('variable group serialization (issue #197)', () => {
+    // Dataverse calls Long.parseLong on every space-separated token of
+    // <varGrp var>, so var="" fails the whole save with a 500.
+    const fixture =
+      '<codeBook><dataDscr>' +
+      '<varGrp ID="VG1"><labl>Empty in source</labl></varGrp>' +
+      '<varGrp ID="VG2" var="v1  v2 "><labl>Padded</labl></varGrp>' +
+      '<var ID="v1" name="A"></var><var ID="v2" name="B"></var>' +
+      '</dataDscr></codeBook>';
+
+    it('never serializes an empty var attribute', () => {
+      const json = service.XMLtoJSON(fixture);
+      const groups = json.codeBook.dataDscr.varGrp as { '@_var'?: string }[];
+      groups[1]['@_var'] = '';
+      const xml = service.JSONtoXML(json);
+      expect(xml).not.toContain('var=""');
+      expect(xml).toContain('<varGrp ID="VG1">');
+      expect(xml).toContain('<varGrp ID="VG2">');
+    });
+
+    it('collapses padded var lists to single spaces', () => {
+      const xml = service.JSONtoXML(service.XMLtoJSON(fixture));
+      expect(xml).toContain('<varGrp ID="VG2" var="v1 v2">');
+    });
+
+    it('does not mutate the state passed in', () => {
+      const json = service.XMLtoJSON(fixture);
+      const before = structuredClone(json);
+      service.JSONtoXML(json);
+      expect(json).toEqual(before);
+    });
+  });
 });

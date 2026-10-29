@@ -9,6 +9,7 @@ import {
   ParsedCrossTabData,
 } from '../new.state/xml/xml.interface';
 import { selectDatasetInfo } from '../new.state/xml/xml.selectors';
+import { withNormalizedGroups } from '../new.state/xml/xml.util';
 
 @Injectable({
   providedIn: 'root',
@@ -124,9 +125,11 @@ export class DdiService {
     return parser.parse(xml);
   }
 
+  // Every save and export goes through here. Group edits anywhere in the app
+  // can leave an empty var list, which Dataverse rejects with a 500.
   JSONtoXML(json: ddiJSONStructure): string {
     const parser = new XMLBuilder(this.parseOptions);
-    return parser.build(json);
+    return parser.build(withNormalizedGroups(json));
   }
 
   // Dataverse tab subsets quote character values ("01") and may use CRLF
