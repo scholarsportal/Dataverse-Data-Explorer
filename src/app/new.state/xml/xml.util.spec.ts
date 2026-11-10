@@ -3,9 +3,11 @@
 import {
   changeWeightForSelectedVariables,
   createNewVariables,
+  fullyChangeMultipleVariables,
   normalizeGroupVariables,
   updateGroups,
 } from './xml.util';
+import { makeVariable, withoutVariableLabel } from './variable.mock';
 import {
   Category,
   ImportVariableFormTemplate,
@@ -14,39 +16,6 @@ import {
   Variable,
   VariableGroup,
 } from './xml.interface';
-
-function makeVariable(
-  id: string,
-  name: string,
-  categories: { value: string; freq: number }[],
-  overrides: Partial<Variable> = {},
-): Variable {
-  const catgry: Category[] = categories.map(({ value, freq }) => ({
-    catValu: value,
-    labl: { '#text': `label ${value}`, '@_level': 'category' },
-    catStat: { '#text': freq, '@_type': 'freq' },
-  }));
-  return {
-    location: { '@_fileid': 'f1' },
-    labl: { '#text': `${name} label`, '@_level': 'variable' },
-    qstn: { qstnLit: '' },
-    universe: '',
-    sumStat: [],
-    catgry,
-    varFormat: { '@_type': 'numeric' },
-    notes: {
-      '#text': 'system note',
-      '@_subject': '',
-      '@_level': '',
-      '@_type': '',
-    },
-    '@_ID': id,
-    '@_name': name,
-    '@_intrvl': 'discrete',
-    '@_wgt-var': '',
-    ...overrides,
-  };
-}
 
 function statsOf(category: Category): SummaryStatistic[] {
   return Array.isArray(category.catStat) ? category.catStat : [category.catStat];
@@ -504,5 +473,33 @@ describe('updateGroups (import)', () => {
     groups.forEach((group) => {
       expect('@_var' in group).toBe(false);
     });
+  });
+});
+
+describe('fullyChangeMultipleVariables (issue #208)', () => {
+  const emptyForm = {
+    label: '',
+    literalQuestion: '',
+    interviewQuestion: '',
+    postQuestion: '',
+    universe: '',
+    notes: '',
+  };
+
+  it('does not throw for a variable with no <labl> when the bulk label is blank', () => {
+    const unlabelled = withoutVariableLabel(
+      makeVariable('v1', 'pes25_data_quality', [{ value: '1', freq: 3 }]),
+    );
+    let result: Variable[] = [];
+    expect(() => {
+      result = fullyChangeMultipleVariables([unlabelled], ['v1'], emptyForm);
+    }).not.toThrow();
+    expect(result[0].labl['#text']).toBe('');
+  });
+
+  it('keeps the existing label when the bulk label is blank', () => {
+    const labelled = makeVariable('v1', 'REGION6', [{ value: '1', freq: 3 }]);
+    const result = fullyChangeMultipleVariables([labelled], ['v1'], emptyForm);
+    expect(result[0].labl['#text']).toBe('REGION6 label');
   });
 });

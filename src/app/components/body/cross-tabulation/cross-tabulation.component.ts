@@ -125,7 +125,7 @@ export class CrossTabulationComponent implements OnInit {
 
   getSelectedWeightVariableToString() {
     const fullVariable = this.variables()[this.selectedWeightVariable()];
-    return fullVariable['labl']['#text'];
+    return fullVariable?.labl?.['#text'] || fullVariable?.['@_name'] || '';
   }
 
   fetchingCheck() {

@@ -36,10 +36,18 @@ export class DdiService {
   // parseTagValue MUST remain false. Dataverse's /api/edit endpoint matches
   // <catValu> against its database by exact string equality, so zero-padded
   // codes ("01") and decimal codes ("1.0") must round-trip byte-for-byte.
+  //
+  // fast-xml-parser yields a bare object for an element that occurs once, so
+  // a variable with a single <catgry> would not be an array and every
+  // consumer that maps over categories would break (issue #208). Force it to
+  // an array on parse. The builder ignores isArray and writes a one-item
+  // array back as a single element, so saved XML is unchanged.
   private parseOptions = {
     ignoreAttributes: false as const,
     attributeNamePrefix: '@_',
     parseTagValue: false,
+    isArray: (_name: string, jpath: string): boolean =>
+      jpath === 'codeBook.dataDscr.var.catgry',
   };
 
   fetchDecodedURL(url: string) {

@@ -66,7 +66,7 @@ export class DropdownComponent {
   selectedGroup = signal<string | null>(null);
 
   selectedVariableLabel = computed(() => {
-    const label = this.variables()[this.selectedVariableID()]?.labl['#text'];
+    const label = this.variables()[this.selectedVariableID()]?.labl?.['#text'];
     return label;
   });
 
@@ -79,13 +79,16 @@ export class DropdownComponent {
     const selectedGroupID = this.selectedGroup() || '';
     const selectedGroup = this.groups()[selectedGroupID] || null;
     if (selectedGroup) {
-      selectedGroup?.['@_var']?.split(' ').map((variableID: string) =>
+      selectedGroup?.['@_var']?.split(' ').map((variableID: string) => {
+        const variable = this.variables()[variableID];
         newVariables.push({
           variableID: variableID,
-          label: this.variables()[variableID].labl['#text'],
+          label: variable?.labl?.['#text']
+            ? variable.labl['#text']
+            : `${variable?.['@_name'] ?? variableID} - No Label`,
           disabled: this.variablesAlreadySelected().includes(variableID),
-        }),
-      );
+        });
+      });
       return newVariables;
     } else {
       Object.values(this.variables()).map((variable) => {

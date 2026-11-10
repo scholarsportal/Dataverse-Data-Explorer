@@ -67,6 +67,62 @@ describe('DdiService', () => {
     });
   });
 
+  describe('single-category variables (issue #208)', () => {
+    // fast-xml-parser yields a bare object for an element that occurs once;
+    // <catgry> must always be an array so selectors can iterate it.
+    const fixture =
+      '<codeBook><dataDscr>' +
+      '<var ID="v1" name="cps25_property_1" intrvl="discrete">' +
+      '<labl level="variable">Own a residence</labl>' +
+      '<catgry><catValu>1</catValu><labl level="category">1. Own a residence</labl>' +
+      '<catStat type="freq">13114</catStat></catgry>' +
+      '</var>' +
+      '<var ID="v2" name="pes25_data_quality" intrvl="contin">' +
+      '<catgry><catValu>1</catValu><labl level="category">1. Clean complete</labl>' +
+      '<catStat type="freq">12513</catStat></catgry>' +
+      '<catgry><catValu>2</catValu><labl level="category">2. PES speeder</labl>' +
+      '<catStat type="freq">139</catStat></catgry>' +
+      '</var>' +
+      '</dataDscr></codeBook>';
+
+    it('parses a lone <catgry> as a one-element array', () => {
+      const parsed = service.XMLtoJSON(fixture);
+      const categories = parsed.codeBook.dataDscr.var[0].catgry;
+      expect(Array.isArray(categories)).toBe(true);
+      expect(categories.length).toBe(1);
+      expect(categories[0].catValu).toBe('1');
+    });
+
+    it('keeps multi-category variables as arrays', () => {
+      const parsed = service.XMLtoJSON(fixture);
+      expect(parsed.codeBook.dataDscr.var[1].catgry.length).toBe(2);
+    });
+
+    it('normalizes a lone <catgry> when the file has a single variable', () => {
+      const single =
+        '<codeBook><dataDscr><var ID="v1" name="X">' +
+        '<catgry><catValu>1</catValu></catgry>' +
+        '</var></dataDscr></codeBook>';
+      const parsed = service.XMLtoJSON(single);
+      const variable = parsed.codeBook.dataDscr.var as unknown as {
+        catgry: unknown;
+      };
+      expect(Array.isArray(variable.catgry)).toBe(true);
+    });
+
+    it('does not create <catgry> for variables without categories', () => {
+      const none =
+        '<codeBook><dataDscr><var ID="v1" name="X"></var>' +
+        '<var ID="v2" name="Y"></var></dataDscr></codeBook>';
+      const parsed = service.XMLtoJSON(none);
+      expect(parsed.codeBook.dataDscr.var[0].catgry).toBeUndefined();
+    });
+
+    it('writes the XML back unchanged', () => {
+      expect(service.JSONtoXML(service.XMLtoJSON(fixture))).toBe(fixture);
+    });
+  });
+
   describe('splitLines tab-value sanitization (issue #197)', () => {
     it('strips surrounding quotes from character values', () => {
       const input = 'CASEID\tPROV\n"000010"\t"01"\n"000011"\t"13"\n';

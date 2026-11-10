@@ -8,6 +8,7 @@ import {
   Variable,
   VariableGroup,
 } from './xml.interface';
+import { toArray } from '../../shared/util/array';
 
 interface VariableForm {
   label: string;
@@ -187,7 +188,7 @@ export function fullyChangeMultipleVariables(
         ...newVariableValue,
         label: newVariableValue.label.length
           ? newVariableValue.label
-          : variable.labl['#text'],
+          : (variable.labl?.['#text'] ?? ''),
         isWeight: !!variable['@_wgt'],
         assignedWeight: variable['@_wgt-var'],
       };
@@ -524,15 +525,6 @@ export function createNewVariables(
     }
   });
   return { variables: newVariables, unmatchedWeights };
-}
-
-// fast-xml-parser yields a bare object for single-element lists and nothing
-// for empty ones.
-function toArray<T>(value: T[] | T | undefined): T[] {
-  if (value === undefined || value === null) {
-    return [];
-  }
-  return Array.isArray(value) ? value : [value];
 }
 
 // Exact string match first. Exports from older DE versions carry numerically

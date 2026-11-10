@@ -5,6 +5,7 @@ import {
   selectDatasetVariables,
 } from '../xml/xml.selectors';
 import { Variable } from '../xml/xml.interface';
+import { toArray } from '../../shared/util/array';
 
 export const selectDatasetFeature =
   createFeatureSelector<DatasetState>('dataset');
@@ -124,15 +125,12 @@ export const selectDatasetAllVariableCategories = createSelector(
     } = {};
     Object.values(variables)?.map((variable) => {
       categories[variable['@_ID']] = {};
-      if (variable.catgry && Array.isArray(variable.catgry)) {
-        // console.log(variable.catgry);
-        variable.catgry.map((cat) => {
-          categories[variable['@_ID']] = {
-            ...categories[variable['@_ID']],
-            [cat.catValu]: cat.labl?.['#text'] ? cat.labl['#text'] : '',
-          };
-        });
-      }
+      toArray(variable.catgry).forEach((cat) => {
+        categories[variable['@_ID']] = {
+          ...categories[variable['@_ID']],
+          [cat.catValu]: cat.labl?.['#text'] ? cat.labl['#text'] : '',
+        };
+      });
     });
     return categories;
   },

@@ -67,7 +67,7 @@
         </ng-template>
         <ng-template let-item pTemplate="item">
           <span class="flex flex-row w-full px-2.5 py-0.5 hover:bg-base-300">
-            {{ item.labl['#text'] }}
+            {{ item.labl?.['#text'] || item['@_name'] }}
             @if (item['@_wgt'] === 'wgt') {
               <span class="rounded px-1 mx-2 bg-primary text-base-100">{{
                 'CROSS_TABULATION.WEIGHT' | translate

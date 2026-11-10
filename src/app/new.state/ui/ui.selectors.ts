@@ -21,6 +21,7 @@ import {
   transformCombinationsToChartData,
   truncatedText,
 } from './util';
+import { toArray } from '../../shared/util/array';
 
 export const selectUIFeature = createFeatureSelector<UIState>('ui');
 
@@ -56,7 +57,8 @@ export const selectOpenVariableLabel = createSelector(
   selectOpenVariableID,
   selectDatasetProcessedVariables,
   (id, variables) => {
-    return variables[id]?.['labl']['#text'] || '';
+    // <labl> is optional in DDI; a missing one must not abort the modal render
+    return variables[id]?.labl?.['#text'] || '';
   },
 );
 
@@ -249,28 +251,21 @@ export const selectOpenVariableChartTable = createSelector(
     const chart: ChartData = {};
     let totalCount = 0;
     let totalWeightCount = 0;
-    variables[variableID]?.catgry?.map((value) => {
+    // A single <catgry> or <catStat> parses as a bare object, and <catStat>
+    // may be absent entirely; normalize both so neither can throw
+    const categories = toArray(variables[variableID]?.catgry);
+    categories.forEach((value) => {
       let count: string = 'None';
       let weightedCount: string = 'None';
-      if (Array.isArray(value.catStat)) {
-        value.catStat.map((state) => {
-          if (state['@_wgtd']) {
-            weightedCount = String(state['#text']);
-            totalWeightCount += Number(state['#text']);
-          } else {
-            count = String(state['#text']);
-            totalCount += Number(state['#text']);
-          }
-        });
-      } else {
-        if (value.catStat['@_wgtd']) {
-          weightedCount = String(value.catStat['#text']);
-          totalWeightCount += Number(value.catStat['#text']);
+      toArray(value.catStat).forEach((state) => {
+        if (state['@_wgtd']) {
+          weightedCount = String(state['#text']);
+          totalWeightCount += Number(state['#text']);
         } else {
-          count = String(value.catStat['#text']);
-          totalCount += Number(value.catStat['#text']);
+          count = String(state['#text']);
+          totalCount += Number(state['#text']);
         }
-      }
+      });
       chart[value.catValu] = {
         category: value.labl?.['#text'] ? value.labl['#text'] : 'NO LABEL',
         count,
@@ -281,7 +276,7 @@ export const selectOpenVariableChartTable = createSelector(
       };
     });
     if (
-      !variables[variableID]?.catgry &&
+      categories.length === 0 &&
       variables[variableID]?.['@_name'] !== 'REC_NUM'
     ) {
       let highestCount = 0;
