@@ -11,8 +11,18 @@ import {
 import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CrossTabDisplayMode } from '../../../../new.state/ui/util';
 
 declare const jQuery: any;
+
+// Which total a percentage mode divides each cell by; null shows the sum.
+const FRACTION_OF: Record<CrossTabDisplayMode, 'row' | 'col' | 'total' | null> =
+  {
+    SHOW_VALUE: null,
+    ROW_PERC: 'row',
+    COL_PERC: 'col',
+    TOTAL_PERC: 'total',
+  };
 
 @Component({
   selector: 'dct-cross-table',
@@ -33,7 +43,7 @@ export class CrossTableComponent {
   cols = input.required<string[]>();
   hasData = input.required<boolean>();
   selectedViewOption = input<string>('Count');
-  aggregatorName = input.required<string>();
+  displayMode = input<CrossTabDisplayMode>('SHOW_VALUE');
   element: ElementRef = inject(ElementRef);
 
   constructor(
@@ -41,13 +51,15 @@ export class CrossTableComponent {
     private translate: TranslateService,
   ) {
     effect(() => {
+      // Read here so a change of display mode always re-renders the table
+      const displayMode = this.displayMode();
       if (this.data() && (this.rows() || this.cols())) {
-        this.createTable();
+        this.createTable(displayMode);
       }
     });
   }
 
-  createTable() {
+  createTable(displayMode: CrossTabDisplayMode = this.displayMode()) {
     if (!this.element?.nativeElement?.children) {
       console.log('Cannot build element');
       return;
@@ -66,14 +78,29 @@ export class CrossTableComponent {
     // Configure number formatting
     const numberFormat = jQuery.pivotUtilities.numberFormat;
     const intFormat = numberFormat({ digitsAfterDecimal: 1 });
+    const percentFormat = numberFormat({
+      digitsAfterDecimal: 1,
+      scaler: 100,
+      suffix: '%',
+    });
+
+    // Every observation carries its weight (1 when unweighted) in `value`,
+    // so cells are sums of `value`; percentages divide that sum by the row,
+    // column or grand total. An unrecognised mode falls back to the sum.
+    const templates = jQuery.pivotUtilities.aggregatorTemplates;
+    const weightedCount = templates.sum(intFormat);
+    const fractionOf = FRACTION_OF[displayMode] ?? null;
+    const aggregator = fractionOf
+      ? templates.fractionOf(weightedCount, fractionOf, percentFormat)([
+          'value',
+        ])
+      : weightedCount(['value']);
 
     // Create pivot table
     targetElement.pivot(this.data(), {
       rows: this.rows(),
       cols: this.cols(),
-      aggregator: jQuery.pivotUtilities.aggregatorTemplates.sum(intFormat)([
-        'value',
-      ]),
+      aggregator,
       rendererName: 'Table',
       showUI: false,
     });

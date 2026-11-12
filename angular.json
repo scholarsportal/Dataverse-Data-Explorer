@@ -89,7 +89,11 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery-ui/dist/jquery-ui.min.js",
+              "node_modules/pivottable/dist/pivot.min.js"
+            ],
             "karmaConfig": "karma.conf.js"
           }
         },

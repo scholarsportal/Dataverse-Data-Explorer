@@ -30,8 +30,18 @@ import {
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { selectDatasetProcessedVariables } from 'src/app/new.state/xml/xml.selectors';
 import { Variable } from 'src/app/new.state/xml/xml.interface';
-import { generateCrossTabCSV } from '../../../new.state/ui/util';
+import {
+  CROSS_TAB_DISPLAY_MODES,
+  CrossTabDisplayMode,
+  generateCrossTabCSV,
+} from '../../../new.state/ui/util';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+// PivotTable.js is loaded as a global script (see angular.json)
+declare const jQuery:
+  | { pivotUtilities?: { naturalSort?: (a: string, b: string) => number } }
+  | undefined;
+
 @Component({
   selector: 'dct-cross-tabulation',
   standalone: true,
@@ -90,30 +100,9 @@ export class CrossTabulationComponent implements OnInit {
 
   opt1 = 'test';
 
-  options = signal([
-    'SHOW_VALUE',
-    // 'Weighted Value',
-    'ROW_PERC',
-    'COL_PERC',
-    'TOTAL_PERC',
-  ]);
+  options = signal<CrossTabDisplayMode[]>([...CROSS_TAB_DISPLAY_MODES]);
 
-  selectedOption = signal('SHOW_VALUE');
-
-  selectedOptionComputed = computed(() => {
-    switch (this.selectedOption()) {
-      case 'SHOW_VALUE':
-        return 'Count';
-      case 'ROW_PERC':
-        return 'Count as Fraction of Rows';
-      case 'COL_PERC':
-        return 'Count as Fraction of Columns';
-      case 'TOTAL_PERC':
-        return 'Count as Fraction of Total';
-      default:
-        return 'Count';
-    }
-  });
+  selectedOption = signal<CrossTabDisplayMode>('SHOW_VALUE');
 
   ngOnInit(): void {
     this.translate
@@ -163,11 +152,20 @@ export class CrossTabulationComponent implements OnInit {
   }
 
   exportTableAsCSV() {
-    const csvData = generateCrossTabCSV({
-      rows: this.rows(),
-      cols: this.cols(),
-      table: this.table() as { [id: string]: string; value: string }[],
-    });
+    const mode = this.selectedOption();
+    const csvData = generateCrossTabCSV(
+      { rows: this.rows(), cols: this.cols(), table: this.table() },
+      {
+        mode,
+        valueLabel: this.translate.instant(`CROSS_TABULATION.${mode}`),
+        // The table's own comparator, so the export lists categories in the
+        // order shown on screen
+        compare:
+          typeof jQuery === 'undefined'
+            ? undefined
+            : jQuery.pivotUtilities?.naturalSort,
+      },
+    );
 
     // Add BOM for proper UTF-8 encoding in Excel
     const BOM = '\uFEFF';
