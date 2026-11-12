@@ -489,6 +489,14 @@ export function withNormalizedGroups(json: ddiJSONStructure): ddiJSONStructure {
   };
 }
 
+// The raw data file is fetched by variable ID. A one-column file has a single
+// <var>, which must not be assumed to be an array.
+export function datasetVariableIDs(json: ddiJSONStructure): string[] {
+  return toArray(json.codeBook?.dataDscr?.var).map(
+    (variable) => variable['@_ID'],
+  );
+}
+
 export function createNewVariables(
   variablesMatched: MatchVariables,
   variables: Variable[],

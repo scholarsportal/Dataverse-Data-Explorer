@@ -397,36 +397,36 @@ export const selectOpenVariableSummaryStatistics = createSelector(
       totalValidCount: '',
       totalInvalidCount: '',
     };
-    if (processedVariables[variableID]?.sumStat) {
-      processedVariables[variableID]?.sumStat.map((value) => {
-        switch (value['@_type']) {
-          case 'mean':
-            summaryStatistics.mean = String(value['#text']);
-            break;
-          case 'mode':
-            summaryStatistics.mode = String(value['#text']);
-            break;
-          case 'medn':
-            summaryStatistics.median = String(value['#text']);
-            break;
-          case 'invd':
-            summaryStatistics.totalInvalidCount = String(value['#text']);
-            break;
-          case 'min':
-            summaryStatistics.minimum = String(value['#text']);
-            break;
-          case 'stdev':
-            summaryStatistics.standardDeviation = String(value['#text']);
-            break;
-          case 'max':
-            summaryStatistics.maximum = String(value['#text']);
-            break;
-          case 'vald':
-            summaryStatistics.totalValidCount = String(value['#text']);
-            break;
-        }
-      });
-    }
+    // A single <sumStat> parses as a bare object and the element is optional;
+    // normalize so neither case can throw and abort the modal render
+    toArray(processedVariables[variableID]?.sumStat).forEach((value) => {
+      switch (value['@_type']) {
+        case 'mean':
+          summaryStatistics.mean = String(value['#text']);
+          break;
+        case 'mode':
+          summaryStatistics.mode = String(value['#text']);
+          break;
+        case 'medn':
+          summaryStatistics.median = String(value['#text']);
+          break;
+        case 'invd':
+          summaryStatistics.totalInvalidCount = String(value['#text']);
+          break;
+        case 'min':
+          summaryStatistics.minimum = String(value['#text']);
+          break;
+        case 'stdev':
+          summaryStatistics.standardDeviation = String(value['#text']);
+          break;
+        case 'max':
+          summaryStatistics.maximum = String(value['#text']);
+          break;
+        case 'vald':
+          summaryStatistics.totalValidCount = String(value['#text']);
+          break;
+      }
+    });
     return summaryStatistics;
   },
 );

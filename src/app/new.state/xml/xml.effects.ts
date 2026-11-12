@@ -17,6 +17,7 @@ import {
   changeAssignedWeightForMultipleVariables,
   changeGroupsForMultipleVariables,
   changeWeightForSelectedVariables,
+  datasetVariableIDs,
   fullyChangeMultipleVariables,
 } from './xml.util';
 
@@ -83,9 +84,7 @@ export class XmlEffects {
       return this.actions$.pipe(
         ofType(DataverseFetchActions.fetchCrosstabStart),
         switchMap(({ data, fileID, siteURL, metadataID, language }) => {
-          const variables =
-            data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
-            [];
+          const variables = datasetVariableIDs(data);
           const crossTabUrl = `${siteURL}/api/access/datafile/${fileID}`;
           return ddiService
             .fetchCrossTabulationFromVariables(variables, crossTabUrl)
@@ -163,9 +162,7 @@ export class XmlEffects {
           if (!urlForCrossTab) {
             throw new Error('No URL found for cross tabulation');
           }
-          const variables =
-            data.codeBook?.dataDscr?.var.map((variable) => variable['@_ID']) ??
-            [];
+          const variables = datasetVariableIDs(data);
           return ddiService
             .fetchCrossTabulationFromVariables(variables, urlForCrossTab)
             .pipe(

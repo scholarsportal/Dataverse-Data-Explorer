@@ -1,4 +1,4 @@
-import { Category, Variable } from './xml.interface';
+import { Category, SummaryStatistic, Variable } from './xml.interface';
 
 export function makeVariable(
   id: string,
@@ -44,5 +44,13 @@ export function withSingleCategoryObject(variable: Variable): Variable {
   return {
     ...variable,
     catgry: variable.catgry[0] as unknown as Category[],
+  };
+}
+
+// fast-xml-parser's raw output for a variable with exactly one <sumStat>.
+export function withSingleSumStatObject(variable: Variable): Variable {
+  return {
+    ...variable,
+    sumStat: variable.sumStat[0] as unknown as SummaryStatistic[],
   };
 }

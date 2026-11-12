@@ -2,11 +2,17 @@ import {
   selectOpenVariableChartTable,
   selectOpenVariableHasCategories,
   selectOpenVariableLabel,
+  selectOpenVariableSummaryStatistics,
 } from './ui.selectors';
-import { Category, Variable } from '../xml/xml.interface';
+import {
+  Category,
+  SummaryStatistic,
+  Variable,
+} from '../xml/xml.interface';
 import {
   makeVariable,
   withSingleCategoryObject,
+  withSingleSumStatObject,
   withoutVariableLabel,
 } from '../xml/variable.mock';
 
@@ -115,5 +121,58 @@ describe('selectOpenVariableChartTable (issue #208)', () => {
     });
     const chart = table({ v1: variable }, { v1: ['1', '2'] });
     expect(selectOpenVariableHasCategories.projector(chart)).toBe(false);
+  });
+});
+
+describe('selectOpenVariableSummaryStatistics', () => {
+  function stats(variables: { [id: string]: Variable }) {
+    return selectOpenVariableSummaryStatistics.projector('v1', variables, {});
+  }
+
+  it('maps every <sumStat> type to its summary field', () => {
+    const variable = makeVariable('v1', 'AGE', [], {
+      sumStat: [
+        { '#text': '1.0', '@_type': 'min' },
+        { '#text': '9.0', '@_type': 'max' },
+        { '#text': '4.5', '@_type': 'mean' },
+        { '#text': '4.0', '@_type': 'medn' },
+        { '#text': '.', '@_type': 'mode' },
+        { '#text': '2.1', '@_type': 'stdev' },
+        { '#text': '100.0', '@_type': 'vald' },
+        { '#text': '3.0', '@_type': 'invd' },
+      ],
+    });
+    expect(stats({ v1: variable })).toEqual({
+      minimum: '1.0',
+      maximum: '9.0',
+      mean: '4.5',
+      median: '4.0',
+      mode: '.',
+      standardDeviation: '2.1',
+      totalValidCount: '100.0',
+      totalInvalidCount: '3.0',
+    });
+  });
+
+  it('reads a single <sumStat> parsed as a bare object', () => {
+    const variable = withSingleSumStatObject(
+      makeVariable('v1', 'FREETEXT', [], {
+        sumStat: [{ '#text': '20180.0', '@_type': 'vald' }],
+      }),
+    );
+    const result = stats({ v1: variable });
+    expect(result.totalValidCount).toBe('20180.0');
+    expect(result.mean).toBe('');
+  });
+
+  it('returns blank statistics when the variable has no <sumStat>', () => {
+    const variable = makeVariable('v1', 'FREETEXT', [], {
+      sumStat: undefined as unknown as SummaryStatistic[],
+    });
+    expect(stats({ v1: variable }).totalValidCount).toBe('');
+  });
+
+  it('returns blank statistics for an unknown variable', () => {
+    expect(stats({}).totalValidCount).toBe('');
   });
 });
