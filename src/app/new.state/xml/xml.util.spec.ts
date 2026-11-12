@@ -3,6 +3,7 @@
 import {
   changeWeightForSelectedVariables,
   createNewVariables,
+  datasetVariableIDs,
   fullyChangeMultipleVariables,
   normalizeGroupVariables,
   updateGroups,
@@ -10,6 +11,7 @@ import {
 import { makeVariable, withoutVariableLabel } from './variable.mock';
 import {
   Category,
+  ddiJSONStructure,
   ImportVariableFormTemplate,
   MatchVariables,
   SummaryStatistic,
@@ -501,5 +503,27 @@ describe('fullyChangeMultipleVariables (issue #208)', () => {
     const labelled = makeVariable('v1', 'REGION6', [{ value: '1', freq: 3 }]);
     const result = fullyChangeMultipleVariables([labelled], ['v1'], emptyForm);
     expect(result[0].labl['#text']).toBe('REGION6 label');
+  });
+});
+
+describe('datasetVariableIDs', () => {
+  function ddi(variables: unknown): ddiJSONStructure {
+    return { codeBook: { dataDscr: { var: variables } } } as ddiJSONStructure;
+  }
+
+  it('lists the ID of every variable in file order', () => {
+    const json = ddi([makeVariable('v1', 'A', []), makeVariable('v2', 'B', [])]);
+    expect(datasetVariableIDs(json)).toEqual(['v1', 'v2']);
+  });
+
+  it('handles a single-variable file parsed as a bare object', () => {
+    expect(datasetVariableIDs(ddi(makeVariable('v1', 'ONLY', [])))).toEqual([
+      'v1',
+    ]);
+  });
+
+  it('returns an empty list when the DDI has no variables', () => {
+    expect(datasetVariableIDs(ddi(undefined))).toEqual([]);
+    expect(datasetVariableIDs({} as ddiJSONStructure)).toEqual([]);
   });
 });

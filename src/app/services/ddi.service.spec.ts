@@ -104,10 +104,7 @@ describe('DdiService', () => {
         '<catgry><catValu>1</catValu></catgry>' +
         '</var></dataDscr></codeBook>';
       const parsed = service.XMLtoJSON(single);
-      const variable = parsed.codeBook.dataDscr.var as unknown as {
-        catgry: unknown;
-      };
-      expect(Array.isArray(variable.catgry)).toBe(true);
+      expect(Array.isArray(parsed.codeBook.dataDscr.var[0].catgry)).toBe(true);
     });
 
     it('does not create <catgry> for variables without categories', () => {
@@ -120,6 +117,66 @@ describe('DdiService', () => {
 
     it('writes the XML back unchanged', () => {
       expect(service.JSONtoXML(service.XMLtoJSON(fixture))).toBe(fixture);
+    });
+  });
+
+  describe('single-variable files and single <sumStat>', () => {
+    // Same parser behaviour as the lone <catgry>: a file with one column has
+    // one <var>, and a variable may carry one <sumStat>. Both must be arrays
+    // or the dataset fails to load / the variable modal fails to render.
+    const singleVariable =
+      '<codeBook><dataDscr>' +
+      '<var ID="v1" name="ONLY" intrvl="discrete">' +
+      '<labl level="variable">The only column</labl>' +
+      '<sumStat type="vald">20180.0</sumStat>' +
+      '</var>' +
+      '</dataDscr></codeBook>';
+
+    const twoVariables =
+      '<codeBook><dataDscr>' +
+      '<var ID="v1" name="A"><sumStat type="vald">5.0</sumStat></var>' +
+      '<var ID="v2" name="B">' +
+      '<sumStat type="min">1.0</sumStat><sumStat type="max">9.0</sumStat>' +
+      '</var>' +
+      '</dataDscr></codeBook>';
+
+    it('parses a lone <var> as a one-element array', () => {
+      const variables = service.XMLtoJSON(singleVariable).codeBook.dataDscr.var;
+      expect(Array.isArray(variables)).toBe(true);
+      expect(variables.length).toBe(1);
+      expect(variables[0]['@_ID']).toBe('v1');
+    });
+
+    it('parses a lone <sumStat> as a one-element array', () => {
+      const variables = service.XMLtoJSON(twoVariables).codeBook.dataDscr.var;
+      expect(Array.isArray(variables[0].sumStat)).toBe(true);
+      expect(variables[0].sumStat.length).toBe(1);
+      expect(variables[0].sumStat[0]['@_type']).toBe('vald');
+      expect(variables[0].sumStat[0]['#text']).toBe('5.0');
+    });
+
+    it('keeps multiple <sumStat> elements as an array', () => {
+      const variables = service.XMLtoJSON(twoVariables).codeBook.dataDscr.var;
+      expect(variables[1].sumStat.length).toBe(2);
+    });
+
+    it('does not create <sumStat> for variables without statistics', () => {
+      const none =
+        '<codeBook><dataDscr><var ID="v1" name="X"></var></dataDscr></codeBook>';
+      const variables = service.XMLtoJSON(none).codeBook.dataDscr.var;
+      expect(variables[0].sumStat).toBeUndefined();
+    });
+
+    it('writes a single-variable file back unchanged', () => {
+      expect(service.JSONtoXML(service.XMLtoJSON(singleVariable))).toBe(
+        singleVariable,
+      );
+    });
+
+    it('writes a lone <sumStat> back unchanged', () => {
+      expect(service.JSONtoXML(service.XMLtoJSON(twoVariables))).toBe(
+        twoVariables,
+      );
     });
   });
 
