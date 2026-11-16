@@ -1,17 +1,15 @@
-import { MatchVariables, XmlState } from './xml.interface';
+import { XmlState } from './xml.interface';
 import { createReducer, on } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 import {
+  applyImportedMetadata,
   changeGroupsForSingleVariable,
   changeSingleVariable,
   changeWeightForSelectedVariables,
-  createNewVariables,
   deleteVariableGroup,
   extractUrlAndToken,
-  matchVariableIDs,
   removeVariablesFromGroups,
   renameVariableGroup,
-  updateGroups,
 } from './xml.util';
 
 export const initialState: XmlState = {
@@ -110,59 +108,32 @@ export const xmlReducer = createReducer(
   ),
   on(
     XmlManipulationActions.importConversionSuccess,
-    (state, { importDdiData, variableTemplate }) => {
-      const duplicateState: XmlState = structuredClone(state);
-      const variables = duplicateState.dataset?.codeBook.dataDscr.var || [];
-      let variableGroups =
-        duplicateState.dataset?.codeBook.dataDscr.varGrp || [];
-
-      // Validate imported DDI structure before accessing
-      const importedVariables = importDdiData?.codeBook?.dataDscr?.var;
-      if (!duplicateState.dataset || !variables.length || !importedVariables) {
-        return { ...duplicateState };
+    (
+      state,
+      { importDdiData, variableTemplate, groupResolutions, crossTabValues },
+    ) => {
+      if (!state.dataset) {
+        return state;
       }
-
-      // Normalize single-element to array for fast-xml-parser
-      const importedVariablesArray = Array.isArray(importedVariables)
-        ? importedVariables
-        : [importedVariables];
-
-      const variablesMatched: MatchVariables = matchVariableIDs(
-        importedVariablesArray,
-        variables,
+      const result = applyImportedMetadata(
+        state.dataset,
+        importDdiData,
+        variableTemplate,
+        { groupResolutions, crossTabValues },
       );
-      const { variables: updatedVariables, unmatchedWeights } =
-        createNewVariables(variablesMatched, variables, variableTemplate);
-      duplicateState.dataset.codeBook.dataDscr.var = updatedVariables;
-      if (variableTemplate.groups) {
-        const rawImportedGroups = importDdiData.codeBook.dataDscr.varGrp;
-        if (rawImportedGroups) {
-          const importedVariableGroups = Array.isArray(rawImportedGroups)
-            ? rawImportedGroups
-            : [rawImportedGroups];
-          variableGroups = updateGroups(
-            importedVariableGroups,
-            variablesMatched,
-            Array.isArray(variableGroups) ? variableGroups : [],
-          );
-          duplicateState.dataset.codeBook.dataDscr.varGrp = variableGroups;
-        }
-        // If the imported XML has no varGrp, leave existing groups untouched.
+      // Nothing to import: leave the dataset exactly as it was
+      if (!result) {
+        return state;
       }
-
-      if (duplicateState.info) {
-        duplicateState.info.importedSuccess = true;
-        duplicateState.info.unmatchedImportedWeights = unmatchedWeights;
-      } else {
-        duplicateState.info = {
-          secureUploadUrl: null,
-          importedSuccess: true,
-          unmatchedImportedWeights: unmatchedWeights,
-        };
-      }
-
       return {
-        ...duplicateState,
+        ...state,
+        dataset: result.dataset,
+        info: {
+          ...(state.info ?? { secureUploadUrl: null }),
+          importedSuccess: true,
+          unmatchedImportedWeights: result.summary.unmatchedWeights,
+          importSummary: result.summary,
+        },
       };
     },
   ),

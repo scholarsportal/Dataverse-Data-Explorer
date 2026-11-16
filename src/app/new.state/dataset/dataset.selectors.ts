@@ -83,6 +83,22 @@ export const selectDatasetImportError = createSelector(
   (state) => state.operationStatus.import === 'error',
 );
 
+// The import is parsed but waiting for the user to resolve group name clashes
+export const selectDatasetImportReview = createSelector(
+  selectDatasetFeature,
+  (state) => state.operationStatus.import === 'review',
+);
+
+export const selectPendingImport = createSelector(
+  selectDatasetFeature,
+  (state) => state.pendingImport ?? null,
+);
+
+export const selectImportGroupClashes = createSelector(
+  selectPendingImport,
+  (pendingImport) => pendingImport?.groupClashes ?? [],
+);
+
 //** WEIGHTS */
 
 export const selectDatasetWeights = createSelector(

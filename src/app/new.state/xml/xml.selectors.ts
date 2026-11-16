@@ -28,6 +28,11 @@ export const selectDatasetInfo = createSelector(
   (state) => state.info,
 );
 
+export const selectImportSummary = createSelector(
+  selectXmlFeature,
+  (state) => state.info?.importSummary ?? null,
+);
+
 export const selectDatasetLanguage = createSelector(
   selectXmlFeature,
   (state) => state.info?.language,

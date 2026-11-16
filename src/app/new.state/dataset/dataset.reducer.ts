@@ -8,7 +8,19 @@ import {
   CrossTabulationUIActions,
   VariableTabUIAction,
 } from '../ui/ui.actions';
-import { ddiJSONStructure } from '../xml/xml.interface';
+import {
+  ddiJSONStructure,
+  ImportGroupClash,
+  ImportVariableFormTemplate,
+} from '../xml/xml.interface';
+
+/** An import that has been parsed but not applied, because the user still
+ * has to decide what happens to clashing group names. */
+export interface PendingImport {
+  importDdiData: ddiJSONStructure;
+  variableTemplate: ImportVariableFormTemplate;
+  groupClashes: ImportGroupClash[];
+}
 
 export interface DatasetState {
   operationStatus: {
@@ -19,7 +31,7 @@ export interface DatasetState {
     uploadErrorMessage?: string;
     variableDownload: 'idle' | 'pending' | 'error' | 'success';
     variableDownloadErrorMessage?: string;
-    import: 'idle' | 'pending' | 'error' | 'success';
+    import: 'idle' | 'pending' | 'review' | 'error' | 'success';
     importErrorMessage?: string;
     openVariableEdit: 'idle' | 'changes' | 'saved';
   };
@@ -27,6 +39,7 @@ export interface DatasetState {
     importedDataset: ddiJSONStructure | null;
     importedResult: string | null;
   };
+  pendingImport: PendingImport | null;
   crossTabulation: {
     [variableID: string]: string[];
   };
@@ -50,6 +63,7 @@ const initialState: DatasetState = {
     importedDataset: null,
     importedResult: null,
   },
+  pendingImport: null,
   crossTabulation: {},
   weightedFrequencies: {},
 };
@@ -186,9 +200,32 @@ export const datasetReducer = createReducer(
       },
     };
   }),
+  on(
+    XmlManipulationActions.importGroupReviewRequired,
+    (state, { importDdiData, variableTemplate, groupClashes }) => {
+      return {
+        ...state,
+        pendingImport: { importDdiData, variableTemplate, groupClashes },
+        operationStatus: {
+          ...state.operationStatus,
+          import: 'review' as const,
+        },
+      };
+    },
+  ),
+  on(XmlManipulationActions.confirmImportGroupChoices, (state) => {
+    return {
+      ...state,
+      operationStatus: {
+        ...state.operationStatus,
+        import: 'pending' as const,
+      },
+    };
+  }),
   on(XmlManipulationActions.importConversionSuccess, (state) => {
     return {
       ...state,
+      pendingImport: null,
       operationStatus: {
         ...state.operationStatus,
         import: 'success' as const,
@@ -198,6 +235,7 @@ export const datasetReducer = createReducer(
   on(XmlManipulationActions.importConversionError, (state) => {
     return {
       ...state,
+      pendingImport: null,
       operationStatus: {
         ...state.operationStatus,
         import: 'error' as const,
@@ -207,6 +245,7 @@ export const datasetReducer = createReducer(
   on(XmlManipulationActions.resetImport, (state) => {
     return {
       ...state,
+      pendingImport: null,
       operationStatus: {
         ...state.operationStatus,
         import: 'idle' as const,

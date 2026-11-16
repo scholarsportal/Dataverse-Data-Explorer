@@ -182,6 +182,52 @@ export interface UnmatchedWeightVariable {
   importedWgtVar: string;
 }
 
+/** A variable whose imported weight is assigned, but whose weighted
+ * frequencies could not be computed from this dataset's data. */
+export interface UncomputedWeightVariable {
+  variableID: string;
+  variableName: string;
+}
+
+/** One group on either side of a name clash, described well enough for a
+ * user to tell apart groups that share a label. */
+export interface ImportGroupOption {
+  /** Existing groups: the group ID. Imported groups: position in the file. */
+  id: string;
+  variableCount: number;
+  variableNames: string[];
+}
+
+/** A group name that cannot be paired automatically: it is used by an
+ * imported group and an existing group, and by more than one group on at
+ * least one side. */
+export interface ImportGroupClash {
+  label: string;
+  existing: ImportGroupOption[];
+  imported: ImportGroupOption[];
+}
+
+export type ImportGroupAction = 'replace' | 'merge' | 'keepBoth';
+
+export interface ImportGroupResolution {
+  action: ImportGroupAction;
+  /** Merge only: imported group (`ImportGroupOption.id`) → existing group ID */
+  targets?: { [importedGroupID: string]: string };
+}
+
+/** The user's choice for each clashing group name, keyed by label. */
+export type ImportGroupResolutions = { [label: string]: ImportGroupResolution };
+
+export interface ImportSummary {
+  variablesInFile: number;
+  /** Variables in this dataset that matched a variable in the file by name */
+  variablesMatched: number;
+  /** null when groups were not imported */
+  groupsImported: number | null;
+  unmatchedWeights: UnmatchedWeightVariable[];
+  uncomputedWeights: UncomputedWeightVariable[];
+}
+
 export interface XmlState {
   dataset: ddiJSONStructure | null;
   header: {
@@ -195,10 +241,11 @@ export interface XmlState {
     language?: string;
     importedSuccess?: boolean;
     secureUploadUrl: string | null;
-    /** Variables whose imported weight reference could not be mapped to the current dataset.
-     * TODO: surface this list in the import result component so users know which variables
-     * lost their weight assignment and need to be reassigned manually. */
+    /** Variables whose imported weight reference could not be mapped to the current dataset. */
     unmatchedImportedWeights?: UnmatchedWeightVariable[];
+    /** Outcome of the last import, shown in the import panel so users know
+     * what was applied and which weights need to be reassigned manually. */
+    importSummary?: ImportSummary;
   } | null;
   error: {
     type: 'fetch' | 'upload' | 'chrome-error' | null;

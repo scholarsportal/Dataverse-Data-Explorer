@@ -5,7 +5,10 @@
     </h2>
   </div>
   <div class="flex flex-row w-full">
-    <div class="flex flex-col border-r pr-10 mr-5">
+    <fieldset
+      [disabled]="!importNotStarted()"
+      class="flex flex-col border-r pr-10 mr-5"
+    >
       <p class="w-full mb-5 text-base">
         {{ 'IMPORT.SELECT_DDI_SECTIONS' | translate }}
       </p>
@@ -91,7 +94,7 @@
         />
         {{ 'IMPORT.WEIGHTS' | translate }}
       </label>
-    </div>
+    </fieldset>
 
     <div class="flex flex-col px-5">
       @if (file) {
@@ -159,12 +162,175 @@
           </svg>
           <span>{{ 'IMPORT.IMPORT_SUCCESS' | translate }}</span>
         </div>
-        <button
-          class="rounded border border-base-300 py-2.5 px-5 my-5"
-          (click)="closeImportComponentState()"
-        >
-          {{ 'IMPORT.GO_BACK' | translate }}
-        </button>
+        @if (summary(); as result) {
+          <div class="import-summary mt-5 text-base" aria-live="polite">
+            <p>
+              {{
+                'IMPORT.SUMMARY_VARIABLES'
+                  | translate
+                    : {
+                        matched: result.variablesMatched,
+                        total: result.variablesInFile
+                      }
+              }}
+            </p>
+            @if (result.groupsImported !== null) {
+              <p>
+                {{
+                  'IMPORT.SUMMARY_GROUPS'
+                    | translate: { count: result.groupsImported }
+                }}
+              </p>
+            }
+            @if (result.unmatchedWeights.length > 0) {
+              <p class="font-semibold mt-3">
+                {{
+                  'IMPORT.SUMMARY_UNMATCHED_WEIGHTS'
+                    | translate: { count: result.unmatchedWeights.length }
+                }}
+              </p>
+              <ul class="import-summary-list" data-testid="unmatched-weights">
+                @for (
+                  variable of result.unmatchedWeights;
+                  track variable.variableID
+                ) {
+                  <li>{{ variable.variableName }}</li>
+                }
+              </ul>
+            }
+            @if (result.uncomputedWeights.length > 0) {
+              <p class="font-semibold mt-3">
+                {{
+                  'IMPORT.SUMMARY_UNCOMPUTED_WEIGHTS'
+                    | translate: { count: result.uncomputedWeights.length }
+                }}
+              </p>
+              <ul class="import-summary-list" data-testid="uncomputed-weights">
+                @for (
+                  variable of result.uncomputedWeights;
+                  track variable.variableID
+                ) {
+                  <li>{{ variable.variableName }}</li>
+                }
+              </ul>
+            }
+          </div>
+        }
+        <div class="flex flex-row flex-wrap gap-3 my-5">
+          <button
+            class="rounded border border-base-300 py-2.5 px-5"
+            (click)="closeImportComponentState()"
+          >
+            {{ 'IMPORT.GO_BACK' | translate }}
+          </button>
+          <button
+            class="rounded border border-base-300 py-2.5 px-5"
+            (click)="resetImportComponentState()"
+          >
+            {{ 'IMPORT.IMPORT_ANOTHER' | translate }}
+          </button>
+        </div>
+      } @else if (importNeedsReview()) {
+        <section class="mt-5" aria-labelledby="group-review-heading">
+          <h3 id="group-review-heading" class="font-bold text-lg">
+            {{ 'IMPORT.GROUP_REVIEW_TITLE' | translate }}
+          </h3>
+          <p class="text-base my-2">
+            {{ 'IMPORT.GROUP_REVIEW_HELP' | translate }}
+          </p>
+          @for (clash of groupClashes(); track clash.label; let i = $index) {
+            <fieldset class="group-clash" data-testid="group-clash">
+              <legend class="font-semibold px-1">
+                {{ clash.label || ('IMPORT.GROUP_NO_NAME' | translate) }}
+              </legend>
+              <p class="text-sm mb-1">
+                {{ 'IMPORT.GROUP_EXISTING' | translate }}
+              </p>
+              <ul class="import-summary-list">
+                @for (group of clash.existing; track group.id) {
+                  <li>{{ describeGroup(group) }}</li>
+                }
+              </ul>
+              <p class="text-sm mt-2 mb-1">
+                {{ 'IMPORT.GROUP_IN_FILE' | translate }}
+              </p>
+              <ul class="import-summary-list">
+                @for (group of clash.imported; track group.id) {
+                  <li>{{ describeGroup(group) }}</li>
+                }
+              </ul>
+              @for (action of groupActions; track action) {
+                <label
+                  class="input-label flex flex-row items-start gap-2"
+                  [for]="'group-' + i + '-' + action"
+                >
+                  <input
+                    type="radio"
+                    class="mt-1"
+                    [id]="'group-' + i + '-' + action"
+                    [name]="'group-action-' + i"
+                    [checked]="groupActionFor(clash.label) === action"
+                    (change)="chooseGroupAction(clash.label, action)"
+                  />
+                  <span>{{
+                    groupActionLabels[action]
+                      | translate: { prefix: importedGroupPrefix }
+                  }}</span>
+                </label>
+              }
+              @if (groupActionFor(clash.label) === 'merge') {
+                @for (
+                  imported of clash.imported;
+                  track imported.id;
+                  let j = $index
+                ) {
+                  <label
+                    class="input-label flex flex-col"
+                    [for]="'group-' + i + '-target-' + j"
+                  >
+                    <span class="text-sm">{{
+                      'IMPORT.GROUP_MERGE_TARGET'
+                        | translate: { group: describeGroup(imported) }
+                    }}</span>
+                    <select
+                      class="select select-bordered rounded mt-1"
+                      [id]="'group-' + i + '-target-' + j"
+                      (change)="
+                        chooseMergeTarget(
+                          clash.label,
+                          imported.id,
+                          $any($event.target).value
+                        )
+                      "
+                    >
+                      @for (existing of clash.existing; track existing.id) {
+                        <option
+                          [value]="existing.id"
+                          [selected]="
+                            mergeTargetFor(clash, imported.id) === existing.id
+                          "
+                        >
+                          {{ describeGroup(existing) }}
+                        </option>
+                      }
+                    </select>
+                  </label>
+                }
+              }
+            </fieldset>
+          }
+          <div class="flex flex-row flex-wrap gap-3 my-5">
+            <button class="btn btn-primary" (click)="applyReviewedImport()">
+              {{ 'IMPORT.APPLY_IMPORT' | translate }}
+            </button>
+            <button
+              class="rounded border border-base-300 py-2.5 px-5"
+              (click)="resetImportComponentState()"
+            >
+              {{ 'IMPORT.CANCEL_IMPORT' | translate }}
+            </button>
+          </div>
+        </section>
       } @else if (importError()) {
         <div role="alert" class="alert alert-error rounded mt-5">
           <svg
