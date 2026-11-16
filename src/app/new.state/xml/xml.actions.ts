@@ -2,6 +2,8 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
   ApiResponse,
   ddiJSONStructure,
+  ImportGroupClash,
+  ImportGroupResolutions,
   ImportVariableFormTemplate,
   ParsedCrossTabData,
   Variable,
@@ -84,10 +86,24 @@ export const XmlManipulationActions = createActionGroup({
     }>(),
     // XML file not compatible
     'Import Conversion Error': props<{ error: string }>(),
+    // The file uses group names that cannot be paired with the dataset's
+    // groups automatically; nothing is applied until the user chooses
+    'Import Group Review Required': props<{
+      importDdiData: ddiJSONStructure;
+      variableTemplate: ImportVariableFormTemplate;
+      groupClashes: ImportGroupClash[];
+    }>(),
+    // User has chosen what to do with each clashing group name
+    'Confirm Import Group Choices': props<{
+      groupResolutions: ImportGroupResolutions;
+    }>(),
     // Metadata merged successfully
     'Import Conversion Success': props<{
       importDdiData: ddiJSONStructure;
       variableTemplate: ImportVariableFormTemplate;
+      groupResolutions?: ImportGroupResolutions;
+      // Raw data per variable, used to compute weighted frequencies
+      crossTabValues?: { [variableID: string]: string[] };
     }>(),
     'Reset Import': emptyProps,
     'Rename Group': props<{ groupID: string; newLabel: string }>(),

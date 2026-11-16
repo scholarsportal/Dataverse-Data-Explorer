@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadButtonComponent } from './file-upload-button/file-upload-button.component';
 import { FormsModule } from '@angular/forms';
@@ -7,10 +12,20 @@ import {
   selectDatasetImportError,
   selectDatasetImportIdle,
   selectDatasetImportPending,
+  selectDatasetImportReview,
   selectDatasetImportSuccess,
+  selectImportGroupClashes,
 } from 'src/app/new.state/dataset/dataset.selectors';
-import { ImportVariableFormTemplate } from '../../new.state/xml/xml.interface';
+import {
+  ImportGroupAction,
+  ImportGroupClash,
+  ImportGroupOption,
+  ImportGroupResolutions,
+  ImportVariableFormTemplate,
+} from '../../new.state/xml/xml.interface';
 import { XmlManipulationActions } from '../../new.state/xml/xml.actions';
+import { selectImportSummary } from '../../new.state/xml/xml.selectors';
+import { IMPORTED_GROUP_LABEL_PREFIX } from '../../new.state/xml/xml.util';
 import { VariableTabUIAction } from '../../new.state/ui/ui.actions';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -28,10 +43,29 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ImportComponent {
+  private store = inject(Store);
   importInProgress = this.store.selectSignal(selectDatasetImportPending);
   importNotStarted = this.store.selectSignal(selectDatasetImportIdle);
   importSucceeded = this.store.selectSignal(selectDatasetImportSuccess);
   importError = this.store.selectSignal(selectDatasetImportError);
+  // Group names that need a decision before the import can be applied
+  importNeedsReview = this.store.selectSignal(selectDatasetImportReview);
+  groupClashes = this.store.selectSignal(selectImportGroupClashes);
+  summary = this.store.selectSignal(selectImportSummary);
+
+  readonly groupActions: readonly ImportGroupAction[] = [
+    'replace',
+    'merge',
+    'keepBoth',
+  ];
+  readonly groupActionLabels: Record<ImportGroupAction, string> = {
+    replace: 'IMPORT.GROUP_ACTION_REPLACE',
+    merge: 'IMPORT.GROUP_ACTION_MERGE',
+    keepBoth: 'IMPORT.GROUP_ACTION_KEEP_BOTH',
+  };
+  readonly importedGroupPrefix = IMPORTED_GROUP_LABEL_PREFIX.trim();
+  // The user's choice per clashing group name; anything not chosen is replaced
+  private groupChoices = signal<ImportGroupResolutions>({});
 
   file: File | undefined = undefined;
   // variable options-button
@@ -48,13 +82,76 @@ export class ImportComponent {
   error = true;
   loading = false;
 
-  constructor(private store: Store) {
-    effect(() => {
-      if (this.importSucceeded()) {
-        this.file = undefined;
-        this.store.dispatch(XmlManipulationActions.resetImport());
-      }
+  constructor() {
+    // The panel is created each time it is opened: start from a clean slate
+    // rather than showing the outcome of an earlier import.
+    this.store.dispatch(XmlManipulationActions.resetImport());
+  }
+
+  groupActionFor(label: string): ImportGroupAction {
+    return this.groupChoices()[label]?.action ?? 'replace';
+  }
+
+  chooseGroupAction(label: string, action: ImportGroupAction) {
+    this.groupChoices.update((choices) => ({
+      ...choices,
+      [label]: { ...choices[label], action },
+    }));
+  }
+
+  // The existing group an imported group merges into; the first one until the
+  // user picks another.
+  mergeTargetFor(clash: ImportGroupClash, importedGroupID: string): string {
+    return (
+      this.groupChoices()[clash.label]?.targets?.[importedGroupID] ??
+      clash.existing[0].id
+    );
+  }
+
+  chooseMergeTarget(
+    label: string,
+    importedGroupID: string,
+    existingGroupID: string,
+  ) {
+    this.groupChoices.update((choices) => ({
+      ...choices,
+      [label]: {
+        action: 'merge',
+        targets: {
+          ...choices[label]?.targets,
+          [importedGroupID]: existingGroupID,
+        },
+      },
+    }));
+  }
+
+  // Groups in a clash share a label, so they are told apart by their contents
+  describeGroup(group: ImportGroupOption): string {
+    const shown = group.variableNames.slice(0, 5).join(', ');
+    const more = group.variableNames.length > 5 ? ', …' : '';
+    return `${group.variableCount}: ${shown}${more}`;
+  }
+
+  applyReviewedImport() {
+    const groupResolutions: ImportGroupResolutions = {};
+    this.groupClashes().forEach((clash) => {
+      const action = this.groupActionFor(clash.label);
+      groupResolutions[clash.label] =
+        action === 'merge'
+          ? {
+              action,
+              targets: Object.fromEntries(
+                clash.imported.map((group) => [
+                  group.id,
+                  this.mergeTargetFor(clash, group.id),
+                ]),
+              ),
+            }
+          : { action };
     });
+    this.store.dispatch(
+      XmlManipulationActions.confirmImportGroupChoices({ groupResolutions }),
+    );
   }
 
   onFileSelected(file: File) {
@@ -94,6 +191,7 @@ export class ImportComponent {
 
   resetImportComponentState() {
     this.file = undefined;
+    this.groupChoices.set({});
     this.store.dispatch(XmlManipulationActions.resetImport());
   }
 

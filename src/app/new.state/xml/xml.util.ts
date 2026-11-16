@@ -1,9 +1,14 @@
 import {
   Category,
   ddiJSONStructure,
+  ImportGroupClash,
+  ImportGroupOption,
+  ImportGroupResolution,
+  ImportGroupResolutions,
+  ImportSummary,
   ImportVariableFormTemplate,
   MatchVariables,
-  SummaryStatistic,
+  UncomputedWeightVariable,
   UnmatchedWeightVariable,
   Variable,
   VariableGroup,
@@ -112,7 +117,12 @@ export function changeWeightForSelectedVariables(
     const selectedVariableCrossTab = variablesWithCrossTabMetadata[variableID];
     const weightVariableCrossTab = variablesWithCrossTabMetadata[weightID];
     const frequencyTable: { [categoryID: string]: number } = {};
-    if (weightVariableCrossTab && Array.isArray(weightVariableCrossTab)) {
+    // Both columns are needed: without the variable's own values there is
+    // nothing to weight, and the frequency table stays empty.
+    if (
+      Array.isArray(weightVariableCrossTab) &&
+      Array.isArray(selectedVariableCrossTab)
+    ) {
       weightVariableCrossTab.forEach((weightValue, index) => {
         const weight = Number(weightValue);
         if (Number.isNaN(weight)) {
@@ -127,8 +137,8 @@ export function changeWeightForSelectedVariables(
 
   Object.keys(frequencyTableForSelectedVariables).forEach((variableID) => {
     if (duplicateVariables[variableID]) {
-      const currentCategories = duplicateVariables[variableID].catgry;
-      if (currentCategories && Array.isArray(currentCategories)) {
+      const currentCategories = toArray(duplicateVariables[variableID].catgry);
+      if (currentCategories.length > 0) {
         // If none of the variable's category codes appear in the data, the
         // codes and the raw values disagree — writing weighted stats would
         // produce all-zero frequencies. Leave the variable unweighted.
@@ -136,18 +146,18 @@ export function changeWeightForSelectedVariables(
         const anyCategoryMatchesData = currentCategories.some(
           (category) => frequencyTable[category.catValu] !== undefined,
         );
-        if (
-          weightID !== 'remove' &&
-          currentCategories.length > 0 &&
-          !anyCategoryMatchesData
-        ) {
+        if (weightID !== 'remove' && !anyCategoryMatchesData) {
           return;
         }
-        currentCategories.map((category) => {
+        currentCategories.forEach((category) => {
           const baseStat = Array.isArray(category.catStat)
             ? category.catStat[0]
             : category.catStat;
           if (weightID === 'remove') {
+            // A category may have no <catStat> at all
+            if (!baseStat) {
+              return;
+            }
             const {
               '@_wgtd': _wgtd,
               '@_wgt-var': _wgtVar,
@@ -156,7 +166,7 @@ export function changeWeightForSelectedVariables(
             category.catStat = cleanStat;
           } else {
             category.catStat = [
-              baseStat,
+              ...toArray(category.catStat).filter((stat) => !stat['@_wgtd']),
               {
                 // A category that never occurs in the data has a genuine
                 // weighted frequency of zero.
@@ -168,8 +178,8 @@ export function changeWeightForSelectedVariables(
             ];
           }
         });
+        duplicateVariables[variableID].catgry = currentCategories;
       }
-      duplicateVariables[variableID].catgry = currentCategories;
     }
   });
   return Object.values(duplicateVariables);
@@ -397,6 +407,22 @@ export function removeVariablesFromGroups(
   return duplicateVariableGroups;
 }
 
+// <labl>, <universe> and similar elements parse as plain text when they have
+// no attributes and as an object with '#text' when they do.
+function elementText(value: unknown): string {
+  if (typeof value === 'string') {
+    return value.trim();
+  }
+  if (typeof value === 'number') {
+    return String(value);
+  }
+  if (value && typeof value === 'object' && '#text' in value) {
+    const text = (value as { '#text': unknown })['#text'];
+    return text === undefined || text === null ? '' : String(text).trim();
+  }
+  return '';
+}
+
 export function matchVariableIDs(
   importedVariables: Variable[],
   datasetVariables: Variable[],
@@ -404,9 +430,13 @@ export function matchVariableIDs(
   const matchedVariables: MatchVariables = {};
   // First we loop through the imported dataset
   importedVariables.forEach((variableImported) => {
+    const importedName = variableImported['@_name']?.trim();
+    if (!importedName) {
+      return;
+    }
     // For each dataset we go through our current dataset to find the matching name
     for (const variableInCurrentDataset of datasetVariables) {
-      if (variableInCurrentDataset['@_name'].trim() === variableImported['@_name'].trim()) {
+      if (variableInCurrentDataset['@_name']?.trim() === importedName) {
         matchedVariables[variableInCurrentDataset['@_ID']] = {
           importedVariableID: variableImported['@_ID'],
           importedVariable: variableImported,
@@ -417,17 +447,128 @@ export function matchVariableIDs(
   return matchedVariables;
 }
 
+/** Prepended to an imported group's label when the user keeps it alongside
+ * an existing group of the same name. */
+export const IMPORTED_GROUP_LABEL_PREFIX = 'DDE ';
+
+export function groupLabel(group: VariableGroup): string {
+  return elementText(group.labl);
+}
+
+function groupVariableIDs(group: VariableGroup): string[] {
+  return (group['@_var'] ?? '').split(/\s+/).filter(Boolean);
+}
+
+// importedVariableID → currentDatasetVariableID
+function importedToCurrentIDs(matchedVariableIDs: MatchVariables): {
+  [importedVariableID: string]: string;
+} {
+  const lookup: { [importedVariableID: string]: string } = {};
+  Object.keys(matchedVariableIDs).forEach((id) => {
+    lookup[matchedVariableIDs[id].importedVariableID] = id;
+  });
+  return lookup;
+}
+
+// An imported group's variables as current-dataset IDs. Variables with no
+// match are dropped: imported IDs mean nothing in the current dataset.
+function mappedGroupVariableIDs(
+  group: VariableGroup,
+  importedToCurrent: { [importedVariableID: string]: string },
+): string[] {
+  return groupVariableIDs(group)
+    .map((importedID) => importedToCurrent[importedID])
+    .filter((currentID): currentID is string => currentID !== undefined);
+}
+
+/**
+ * Group names that cannot be paired automatically. A name used by exactly one
+ * imported and one existing group is not a clash: the imported group simply
+ * replaces the existing one. A name used by several groups on either side is
+ * ambiguous, so the user decides what happens to it.
+ */
+export function findGroupClashes(
+  importedGroups: VariableGroup[],
+  existingGroups: VariableGroup[],
+  matchedVariableIDs: MatchVariables,
+  currentVariables: Variable[] = [],
+): ImportGroupClash[] {
+  const namesByID: { [variableID: string]: string } = {};
+  currentVariables.forEach((variable) => {
+    namesByID[variable['@_ID']] = variable['@_name'];
+  });
+  const describe = (id: string, variableIDs: string[]): ImportGroupOption => ({
+    id,
+    variableCount: variableIDs.length,
+    variableNames: variableIDs.map((variableID) => namesByID[variableID] ?? variableID),
+  });
+  const addTo = (
+    byLabel: Map<string, ImportGroupOption[]>,
+    label: string,
+    option: ImportGroupOption,
+  ): void => {
+    byLabel.set(label, [...(byLabel.get(label) ?? []), option]);
+  };
+
+  const existingByLabel = new Map<string, ImportGroupOption[]>();
+  existingGroups.forEach((group) => {
+    addTo(
+      existingByLabel,
+      groupLabel(group),
+      describe(group['@_ID'], groupVariableIDs(group)),
+    );
+  });
+
+  const importedToCurrent = importedToCurrentIDs(matchedVariableIDs);
+  const importedByLabel = new Map<string, ImportGroupOption[]>();
+  importedGroups.forEach((group, index) => {
+    addTo(
+      importedByLabel,
+      groupLabel(group),
+      describe(String(index), mappedGroupVariableIDs(group, importedToCurrent)),
+    );
+  });
+
+  const clashes: ImportGroupClash[] = [];
+  importedByLabel.forEach((imported, label) => {
+    const existing = existingByLabel.get(label) ?? [];
+    if (existing.length > 0 && (existing.length > 1 || imported.length > 1)) {
+      clashes.push({ label, existing, imported });
+    }
+  });
+  return clashes;
+}
+
+/**
+ * The dataset's groups after an import. Imported groups replace the existing
+ * list. Existing groups survive only under a clashing name (see
+ * `findGroupClashes`) for which the user chose to merge or to keep both.
+ */
 export function updateGroups(
   groups: VariableGroup[],
   matchedVariableIDs: MatchVariables,
   existingGroups: VariableGroup[],
+  resolutions: ImportGroupResolutions = {},
 ): VariableGroup[] {
-  const duplicateVariableGroups: VariableGroup[] = [];
+  const importedToCurrent = importedToCurrentIDs(matchedVariableIDs);
 
-  // Build a reverse lookup: importedVariableID → currentDatasetVariableID
-  const flipMatched: { [oldVariableID: string]: string } = {};
-  Object.keys(matchedVariableIDs).forEach((id) => {
-    flipMatched[matchedVariableIDs[id].importedVariableID] = id;
+  // A resolution is honoured only for a name that genuinely clashes, so a
+  // stale or malformed choice can never keep or merge anything else.
+  const clashLabels = new Set(
+    findGroupClashes(groups, existingGroups, matchedVariableIDs).map(
+      (clash) => clash.label,
+    ),
+  );
+  const resolutionFor = (label: string): ImportGroupResolution =>
+    clashLabels.has(label)
+      ? (resolutions[label] ?? { action: 'replace' })
+      : { action: 'replace' };
+
+  const keptExisting = new Map<string, VariableGroup>();
+  existingGroups.forEach((group) => {
+    if (resolutionFor(groupLabel(group)).action !== 'replace') {
+      keptExisting.set(group['@_ID'], structuredClone(group));
+    }
   });
 
   // Derive a safe starting ID from existing groups so imported IDs never collide
@@ -437,26 +578,44 @@ export function updateGroups(
   let nextID =
     existingNumericIDs.length ? Math.max(...existingNumericIDs) + 1 : 10000;
 
-  groups.forEach((group) => {
-    const groupVariables = group['@_var']?.split(' ').filter(Boolean) || [];
-    const newVars: string[] = [];
-    groupVariables.forEach((variable) => {
-      const mapped = flipMatched[variable];
-      if (mapped !== undefined) {
-        newVars.push(mapped);
+  const added: VariableGroup[] = [];
+  groups.forEach((group, index) => {
+    const label = groupLabel(group);
+    const resolution = resolutionFor(label);
+    const variableIDs = mappedGroupVariableIDs(group, importedToCurrent);
+
+    if (resolution.action === 'merge') {
+      const target = keptExisting.get(resolution.targets?.[String(index)] ?? '');
+      if (target && groupLabel(target) === label) {
+        target['@_var'] = [...groupVariableIDs(target), ...variableIDs].join(' ');
+        return;
       }
+      // No valid target was chosen: add the group on its own rather than
+      // silently dropping what the user imported.
+    }
+
+    const labl =
+      resolution.action === 'keepBoth'
+        ? withLabelText(group.labl, `${IMPORTED_GROUP_LABEL_PREFIX}${label}`)
+        : group.labl;
+    added.push({
+      ...group,
+      labl,
+      // Use only matched (current-dataset) IDs — never fall back to imported
+      // IDs that don't exist in the current dataset.
+      '@_var': variableIDs.join(' '),
+      '@_ID': `VG${nextID++}`,
     });
-    duplicateVariableGroups.push(
-      normalizeGroupVariables({
-        ...group,
-        // Use only matched (current-dataset) IDs — never fall back to imported
-        // IDs that don't exist in the current dataset.
-        '@_var': newVars.join(' '),
-        '@_ID': `VG${nextID++}`,
-      }),
-    );
   });
-  return duplicateVariableGroups;
+
+  return [...keptExisting.values(), ...added].map(normalizeGroupVariables);
+}
+
+// Replaces the text of a label while keeping any attributes it carries.
+function withLabelText(labl: unknown, text: string): string {
+  return labl && typeof labl === 'object'
+    ? ({ ...labl, '#text': text } as unknown as string)
+    : text;
 }
 
 // Dataverse's /api/edit parses <varGrp var> with Long.parseLong on every
@@ -497,11 +656,18 @@ export function datasetVariableIDs(json: ddiJSONStructure): string[] {
   );
 }
 
+type CrossTabValues = { [variableID: string]: string[] };
+
 export function createNewVariables(
   variablesMatched: MatchVariables,
   variables: Variable[],
   variableTemplate: ImportVariableFormTemplate,
-): { variables: Variable[]; unmatchedWeights: UnmatchedWeightVariable[] } {
+  crossTabValues: CrossTabValues = {},
+): {
+  variables: Variable[];
+  unmatchedWeights: UnmatchedWeightVariable[];
+  uncomputedWeights: UncomputedWeightVariable[];
+} {
   const newVariables: Variable[] = [];
   const unmatchedWeights: UnmatchedWeightVariable[] = [];
   const reverseLookup: {
@@ -532,84 +698,112 @@ export function createNewVariables(
       newVariables.push(variable);
     }
   });
-  return { variables: newVariables, unmatchedWeights };
+
+  if (!variableTemplate.weight) {
+    return { variables: newVariables, unmatchedWeights, uncomputedWeights: [] };
+  }
+  const recomputed = recomputeWeightedFrequencies(
+    newVariables,
+    new Set(Object.keys(variablesMatched)),
+    crossTabValues,
+  );
+  return {
+    variables: recomputed.variables,
+    unmatchedWeights,
+    uncomputedWeights: recomputed.uncomputedWeights,
+  };
 }
 
-// Exact string match first. Exports from older DE versions carry numerically
-// corrupted codes ("1" for "01"), so fall back to numeric equality.
-function findMatchingCategory(
-  catValu: string,
-  candidates: Category[],
-): Category | undefined {
-  const target = String(catValu).trim();
-  const exact = candidates.find(
-    (candidate) => String(candidate.catValu).trim() === target,
-  );
-  if (exact || target === '' || Number.isNaN(Number(target))) {
-    return exact;
-  }
-  return candidates.find((candidate) => {
-    const value = String(candidate.catValu).trim();
-    return value !== '' && Number(value) === Number(target);
+const hasWeightedStat = (category: Category): boolean =>
+  toArray(category.catStat).some((stat) => !!stat['@_wgtd']);
+
+/**
+ * Computes the weighted frequencies of the imported variables from THIS
+ * dataset's data. Numbers in an imported file describe another dataset and
+ * are never copied. A variable whose frequencies cannot be computed (weight
+ * data missing, or its category codes not found in the data) keeps its weight
+ * assignment but stays unweighted, and is reported.
+ */
+function recomputeWeightedFrequencies(
+  variables: Variable[],
+  importedVariableIDs: Set<string>,
+  crossTabValues: CrossTabValues,
+): { variables: Variable[]; uncomputedWeights: UncomputedWeightVariable[] } {
+  const variableIDsByWeight = new Map<string, string[]>();
+  variables.forEach((variable) => {
+    const weightID = variable['@_wgt-var'];
+    if (weightID && importedVariableIDs.has(variable['@_ID'])) {
+      variableIDsByWeight.set(weightID, [
+        ...(variableIDsByWeight.get(weightID) ?? []),
+        variable['@_ID'],
+      ]);
+    }
   });
+
+  let byID: { [variableID: string]: Variable } = Object.fromEntries(
+    variables.map((variable) => [variable['@_ID'], variable]),
+  );
+  variableIDsByWeight.forEach((variableIDs, weightID) => {
+    byID = Object.fromEntries(
+      changeWeightForSelectedVariables(
+        byID,
+        variableIDs,
+        weightID,
+        crossTabValues,
+      ).map((variable) => [variable['@_ID'], variable]),
+    );
+  });
+
+  const uncomputedWeights: UncomputedWeightVariable[] = [];
+  variableIDsByWeight.forEach((variableIDs) => {
+    variableIDs.forEach((variableID) => {
+      const categories = toArray(byID[variableID].catgry);
+      if (categories.length > 0 && !categories.some(hasWeightedStat)) {
+        uncomputedWeights.push({
+          variableID,
+          variableName: byID[variableID]['@_name'],
+        });
+      }
+    });
+  });
+
+  return {
+    variables: variables.map((variable) => byID[variable['@_ID']]),
+    uncomputedWeights,
+  };
+}
+
+// The weight an imported variable refers to. Dataverse's own DDI export names
+// it only on <var wgt-var>; older exports may name it only on the weighted
+// <catStat> elements.
+function importedWeightReference(importedVariable: Variable): string {
+  if (importedVariable['@_wgt-var']) {
+    return importedVariable['@_wgt-var'];
+  }
+  for (const category of toArray(importedVariable.catgry)) {
+    const weighted = toArray(category.catStat).find((stat) => stat['@_wgtd']);
+    if (weighted?.['@_wgt-var']) {
+      return weighted['@_wgt-var'];
+    }
+  }
+  return '';
+}
+
+// A variable's own note is plain text; Dataverse's system note (the UNF)
+// carries attributes and parses as an object.
+function userNote(notes: unknown): string {
+  const note = toArray(notes).find(
+    (entry) => typeof entry === 'string' && entry.trim() !== '',
+  );
+  return typeof note === 'string' ? note : '';
 }
 
 /**
- * Replaces the weighted stats of `currentCategories` (mutated in place) with
- * those of the matching imported categories, remapping `@_wgt-var` to
- * current-dataset IDs. Category codes, labels and unweighted stats are never
- * touched; imported categories absent from the current dataset are ignored.
- * Returns the imported weight variable IDs that had no match.
- *
- * Dataverse's own DDI export names the weight only on <var wgt-var>, not on
- * each weighted <catStat>, so the variable-level reference is the fallback.
+ * Applies the selected parts of an imported variable to the current one.
+ * A value is only ever overwritten by a non-blank imported value: a file that
+ * says nothing about a label, universe or note must not erase the one the
+ * dataset already has.
  */
-function mergeImportedWeightedStats(
-  currentCategories: Category[],
-  importedCategories: Category[],
-  importedVariableWgtVar: string | undefined,
-  reverseLookup: {
-    [importedVariableID: string]: { currentDatasetVariableID: string };
-  },
-): Set<string> {
-  const unmatchedWgtVars = new Set<string>();
-  currentCategories.forEach((category) => {
-    const stats = toArray(category.catStat);
-    const unweightedStats = stats.filter((stat) => !stat['@_wgtd']);
-    const importedMatch = findMatchingCategory(
-      category.catValu,
-      importedCategories,
-    );
-    const importedWeighted = toArray(importedMatch?.catStat).find(
-      (stat) => stat['@_wgtd'],
-    );
-    const importedWgtVar = importedWeighted
-      ? importedWeighted['@_wgt-var'] || importedVariableWgtVar
-      : undefined;
-    const mappedWgtVar = importedWgtVar
-      ? reverseLookup[importedWgtVar]?.currentDatasetVariableID
-      : undefined;
-    if (importedWgtVar && !mappedWgtVar) {
-      unmatchedWgtVars.add(importedWgtVar);
-    }
-
-    // No usable imported weighted stat: mirror the import and leave the
-    // category unweighted.
-    const nextStats: SummaryStatistic[] =
-      importedWeighted && mappedWgtVar
-        ? [
-            ...unweightedStats,
-            { ...structuredClone(importedWeighted), '@_wgt-var': mappedWgtVar },
-          ]
-        : unweightedStats;
-    if (stats.length === 0 && nextStats.length === 0) {
-      return;
-    }
-    category.catStat = nextStats.length === 1 ? nextStats[0] : nextStats;
-  });
-  return unmatchedWgtVars;
-}
-
 function editSingleVariable(
   currentVariable: Variable,
   variableTemplate: ImportVariableFormTemplate,
@@ -626,66 +820,57 @@ function editSingleVariable(
   unmatchedWeights: UnmatchedWeightVariable[],
 ): Variable {
   const currentVariableCloned = structuredClone(currentVariable);
+  const importedVariable = importedVariablesMatched.importedVariable;
+
   if (variableTemplate.label) {
-    const importedLabel =
-      importedVariablesMatched.importedVariable.labl?.['#text'] ?? '';
-    if (
-      currentVariableCloned.labl &&
-      currentVariableCloned.labl['#text'] !== undefined
-    ) {
-      currentVariableCloned.labl['#text'] = importedLabel;
-    } else {
+    const importedLabel = elementText(importedVariable.labl);
+    if (importedLabel) {
+      const currentLabel = currentVariableCloned.labl;
       currentVariableCloned.labl = {
+        ...(currentLabel && typeof currentLabel === 'object'
+          ? currentLabel
+          : { '@_level': 'variable' }),
         '#text': importedLabel,
-        '@_level': 'variable',
       };
     }
   }
   if (variableTemplate.notes) {
-    // Normalise current notes: preserve the Dataverse system note at index 0
-    const systemNote = Array.isArray(currentVariableCloned.notes)
-      ? currentVariableCloned.notes[0]
-      : (currentVariableCloned.notes ?? '');
-
-    // Extract user-authored notes from the imported variable regardless of
-    // whether they are stored as a plain string or at index 1 of an array.
-    const importedNotes = importedVariablesMatched.importedVariable.notes;
-    const importedUserNote = Array.isArray(importedNotes)
-      ? importedNotes[1]
-      : typeof importedNotes === 'string'
-        ? importedNotes
-        : '';
-
-    currentVariableCloned.notes = [systemNote, importedUserNote];
+    const importedUserNote = userNote(importedVariable.notes);
+    if (importedUserNote) {
+      // Preserve the Dataverse system note at index 0
+      const systemNote = Array.isArray(currentVariableCloned.notes)
+        ? currentVariableCloned.notes[0]
+        : (currentVariableCloned.notes ?? '');
+      currentVariableCloned.notes = [systemNote, importedUserNote] as Variable['notes'];
+    }
   }
   if (variableTemplate.weight) {
-    const importedWgtVar =
-      importedVariablesMatched.importedVariable['@_wgt-var'];
-    currentVariableCloned['@_wgt-var'] = reverseLookup[importedWgtVar]
-      ? reverseLookup[importedWgtVar].currentDatasetVariableID
+    const importedWgtVar = importedWeightReference(importedVariable);
+    const mappedWgtVar = importedWgtVar
+      ? reverseLookup[importedWgtVar]?.currentDatasetVariableID
+      : undefined;
+    currentVariableCloned['@_wgt-var'] = mappedWgtVar ?? '';
+    currentVariableCloned['@_wgt'] = importedVariable['@_wgt']
+      ? importedVariable['@_wgt']
       : '';
-    currentVariableCloned['@_wgt'] = importedVariablesMatched.importedVariable[
-      '@_wgt'
-    ]
-      ? importedVariablesMatched.importedVariable['@_wgt']
-      : '';
-
-    // Merge weighted stats from the imported variable onto the CURRENT
-    // categories. Never replace catgry wholesale: the imported file's codes,
-    // labels and unweighted frequencies belong to a different dataset, and
-    // Dataverse rejects weighted stats whose catValu isn't in its database.
-    const unmatchedWgtVars = mergeImportedWeightedStats(
-      toArray(currentVariableCloned.catgry),
-      toArray(importedVariablesMatched.importedVariable.catgry),
-      importedWgtVar,
-      reverseLookup,
-    );
-    unmatchedWgtVars.forEach((importedWgtVar) => {
+    if (importedWgtVar && !mappedWgtVar) {
       unmatchedWeights.push({
         variableID: currentVariable['@_ID'],
         variableName: currentVariable['@_name'],
         importedWgtVar,
       });
+    }
+
+    // Drop any weighted frequencies. Category codes, labels and unweighted
+    // frequencies are never touched; the weighted ones are recomputed from
+    // this dataset's data once every variable has its weight assigned.
+    toArray(currentVariableCloned.catgry).forEach((category) => {
+      const stats = toArray(category.catStat);
+      const unweightedStats = stats.filter((stat) => !stat['@_wgtd']);
+      if (unweightedStats.length !== stats.length) {
+        category.catStat =
+          unweightedStats.length === 1 ? unweightedStats[0] : unweightedStats;
+      }
     });
   }
   const anyQuestionSelected =
@@ -702,30 +887,110 @@ function editSingleVariable(
 
     if (variableTemplate.literalQuestion) {
       existingQstn.qstnLit =
-        importedVariablesMatched.importedVariable.qstn?.qstnLit ||
-        currentVariable.qstn?.qstnLit ||
-        '';
+        importedVariable.qstn?.qstnLit || currentVariable.qstn?.qstnLit || '';
     }
     if (variableTemplate.interviewQuestion) {
       existingQstn.ivuInstr =
-        importedVariablesMatched.importedVariable.qstn?.ivuInstr ||
-        currentVariable.qstn?.ivuInstr ||
-        '';
+        importedVariable.qstn?.ivuInstr || currentVariable.qstn?.ivuInstr || '';
     }
     if (variableTemplate.postQuestion) {
       existingQstn.postQTxt =
-        importedVariablesMatched.importedVariable.qstn?.postQTxt ||
-        currentVariable.qstn?.postQTxt ||
-        '';
+        importedVariable.qstn?.postQTxt || currentVariable.qstn?.postQTxt || '';
     }
 
     currentVariableCloned.qstn = existingQstn;
   }
-  if (variableTemplate.universe) {
-    currentVariableCloned.universe =
-      importedVariablesMatched.importedVariable.universe;
+  if (variableTemplate.universe && elementText(importedVariable.universe)) {
+    currentVariableCloned.universe = importedVariable.universe;
   }
   return currentVariableCloned;
+}
+
+/** True when the parsed file has the part of a DDI codebook an import needs. */
+export function hasImportableVariables(importDdiData: ddiJSONStructure): boolean {
+  return toArray(importDdiData?.codeBook?.dataDscr?.var).length > 0;
+}
+
+/** Group name clashes between an imported file and the current dataset. */
+export function findImportGroupClashes(
+  dataset: ddiJSONStructure | null,
+  importDdiData: ddiJSONStructure,
+): ImportGroupClash[] {
+  const variables = toArray(dataset?.codeBook?.dataDscr?.var);
+  const importedVariables = toArray(importDdiData?.codeBook?.dataDscr?.var);
+  return findGroupClashes(
+    toArray(importDdiData?.codeBook?.dataDscr?.varGrp),
+    toArray(dataset?.codeBook?.dataDscr?.varGrp),
+    matchVariableIDs(importedVariables, variables),
+    variables,
+  );
+}
+
+/**
+ * The dataset after importing the selected parts of `importDdiData`, with a
+ * summary of what was applied. Returns null when either side has no
+ * variables, in which case there is nothing to import. Inputs are not mutated.
+ */
+export function applyImportedMetadata(
+  dataset: ddiJSONStructure,
+  importDdiData: ddiJSONStructure,
+  variableTemplate: ImportVariableFormTemplate,
+  options: {
+    groupResolutions?: ImportGroupResolutions;
+    crossTabValues?: CrossTabValues;
+  } = {},
+): { dataset: ddiJSONStructure; summary: ImportSummary } | null {
+  const variables = toArray(dataset.codeBook?.dataDscr?.var);
+  const importedVariables = toArray(importDdiData?.codeBook?.dataDscr?.var);
+  if (!variables.length || !importedVariables.length) {
+    return null;
+  }
+
+  const variablesMatched = matchVariableIDs(importedVariables, variables);
+  const {
+    variables: updatedVariables,
+    unmatchedWeights,
+    uncomputedWeights,
+  } = createNewVariables(
+    variablesMatched,
+    variables,
+    variableTemplate,
+    options.crossTabValues,
+  );
+
+  // A file with no groups leaves the dataset's groups untouched
+  const importedGroups = toArray(importDdiData.codeBook.dataDscr.varGrp);
+  const replaceGroups = variableTemplate.groups && importedGroups.length > 0;
+
+  return {
+    dataset: {
+      ...dataset,
+      codeBook: {
+        ...dataset.codeBook,
+        dataDscr: {
+          ...dataset.codeBook.dataDscr,
+          var: updatedVariables,
+          ...(replaceGroups
+            ? {
+                varGrp: updateGroups(
+                  importedGroups,
+                  variablesMatched,
+                  toArray(dataset.codeBook.dataDscr.varGrp),
+                  options.groupResolutions,
+                ),
+              }
+            : {}),
+        },
+      },
+    },
+    summary: {
+      variablesInFile: importedVariables.length,
+      variablesMatched: Object.keys(variablesMatched).length,
+      groupsImported: replaceGroups ? importedGroups.length : null,
+      unmatchedWeights,
+      uncomputedWeights,
+    },
+  };
 }
 
 export function extractUrlAndToken(url: string) {

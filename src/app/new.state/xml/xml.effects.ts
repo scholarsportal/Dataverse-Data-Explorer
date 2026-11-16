@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { DataverseFetchActions, XmlManipulationActions } from './xml.actions';
 import {
   catchError,
@@ -10,6 +11,7 @@ import {
   of,
   switchMap,
   tap,
+  withLatestFrom,
 } from 'rxjs';
 import { DdiService } from '../../services/ddi.service';
 import { DatasetActions } from '../dataset/dataset.actions';
@@ -18,12 +20,20 @@ import {
   changeGroupsForMultipleVariables,
   changeWeightForSelectedVariables,
   datasetVariableIDs,
+  findImportGroupClashes,
   fullyChangeMultipleVariables,
+  hasImportableVariables,
 } from './xml.util';
+import { selectDatasetState } from './xml.selectors';
+import {
+  selectDatasetVariableCrossTabValues,
+  selectPendingImport,
+} from '../dataset/dataset.selectors';
 
 @Injectable()
 export class XmlEffects {
   private actions$ = inject(Actions);
+  private store = inject(Store);
 
   loadingForMoreThan15Seconds = createEffect(() => {
     return this.actions$.pipe(
@@ -349,31 +359,75 @@ export class XmlEffects {
     );
   });
 
+  /**
+   * Parses the imported file. If its group names can be paired with the
+   * dataset's groups, the import is applied straight away. If some names are
+   * ambiguous, nothing is applied until the user has chosen what to do.
+   */
   convertImportedDatasetToXML$ = createEffect(
     (ddiService: DdiService = inject(DdiService)) => {
       return this.actions$.pipe(
         ofType(XmlManipulationActions.startImportMetadata),
-        switchMap(({ importedXmlString, variableTemplate }) => {
+        withLatestFrom(
+          this.store.select(selectDatasetState),
+          this.store.select(selectDatasetVariableCrossTabValues),
+        ),
+        map(([{ importedXmlString, variableTemplate }, xml, crossTabValues]) => {
           try {
-            const xml = ddiService.XMLtoJSON(importedXmlString);
-            return of(
-              XmlManipulationActions.importConversionSuccess({
-                importDdiData: xml,
+            const importDdiData = ddiService.XMLtoJSON(importedXmlString);
+            if (!hasImportableVariables(importDdiData)) {
+              return XmlManipulationActions.importConversionError({
+                error: 'The file is not a DDI codebook with variables',
+              });
+            }
+            const groupClashes = variableTemplate.groups
+              ? findImportGroupClashes(xml.dataset, importDdiData)
+              : [];
+            if (groupClashes.length > 0) {
+              return XmlManipulationActions.importGroupReviewRequired({
+                importDdiData,
                 variableTemplate,
-              }),
-            );
+                groupClashes,
+              });
+            }
+            return XmlManipulationActions.importConversionSuccess({
+              importDdiData,
+              variableTemplate,
+              crossTabValues,
+            });
           } catch (error) {
-            return of(
-              XmlManipulationActions.importConversionError({
-                error:
-                  error instanceof Error
-                    ? error.message
-                    : 'Failed to parse imported XML file',
-              }),
-            );
+            return XmlManipulationActions.importConversionError({
+              error:
+                error instanceof Error
+                  ? error.message
+                  : 'Failed to parse imported XML file',
+            });
           }
         }),
       );
     },
   );
+
+  applyReviewedImport$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(XmlManipulationActions.confirmImportGroupChoices),
+      withLatestFrom(
+        this.store.select(selectPendingImport),
+        this.store.select(selectDatasetVariableCrossTabValues),
+      ),
+      map(([{ groupResolutions }, pendingImport, crossTabValues]) => {
+        if (!pendingImport) {
+          return XmlManipulationActions.importConversionError({
+            error: 'There is no import waiting to be applied',
+          });
+        }
+        return XmlManipulationActions.importConversionSuccess({
+          importDdiData: pendingImport.importDdiData,
+          variableTemplate: pendingImport.variableTemplate,
+          groupResolutions,
+          crossTabValues,
+        });
+      }),
+    );
+  });
 }

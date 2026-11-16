@@ -11,3 +11,11 @@
 .input-label {
   @apply my-2;
 }
+
+.group-clash {
+  @apply border border-base-300 rounded p-4 my-3;
+}
+/* Lists can hold hundreds of variables: keep them scrollable, not page-long */
+.import-summary-list {
+  @apply list-disc ml-5 max-h-40 overflow-y-auto text-sm;
+}
