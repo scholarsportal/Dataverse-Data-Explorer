@@ -1,9 +1,9 @@
 # Dataverse Data Explorer
 
-[![Data Explorer Deploy](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/static.yml)
-[![Lint/Test](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/actions/workflows/node.js.yml)
+[![Data Explorer Deploy](https://github.com/scholarsportal/Dataverse-Data-Explorer/actions/workflows/static.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Explorer/actions/workflows/static.yml)
+[![Lint/Test](https://github.com/scholarsportal/Dataverse-Data-Explorer/actions/workflows/node.js.yml/badge.svg)](https://github.com/scholarsportal/Dataverse-Data-Explorer/actions/workflows/node.js.yml)
 
-![Data Explorer Screenshot](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Data%20Explorer%20Screenshot.png?raw=true 'Data Explorer Screenshot')
+![Data Explorer Screenshot](documentation/img/Data%20Explorer%20Screenshot.png 'Data Explorer Screenshot')
 
 ## 📜 Description
 
@@ -20,7 +20,7 @@ Data Explorer is an Angular application.
 - 📝 Edit variable metadata
 - 📝 Import DDI XML for curation workflows
 
-A demo of the tool is available here; note that this Github pages demo is **not recommended for use in a production environment**: [https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https://demo.borealisdata.ca&dfId=40226](https://scholarsportal.github.io/Dataverse-Data-Explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
+A demo of the tool, running on the Borealis demo repository, is available here; note that this demo is **not recommended for use in a production environment**: [https://demo.borealisdata.ca/data-explorer/?siteUrl=https://demo.borealisdata.ca&dfId=40226](https://demo.borealisdata.ca/data-explorer/?siteUrl=https:%2F%2Fdemo.borealisdata.ca&dfId=40226).
 
 ## 📦 Prerequisites
 
@@ -75,7 +75,7 @@ Use `ng build` to get the `dist` directory, and serve the dist directly using Ap
 
 ## App State
 
-![Data Explorer State Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/150d423b-b520-41b8-a908-6586d7aa1084)
+![Data Explorer State Diagram](https://github.com/scholarsportal/Dataverse-Data-Explorer/assets/44186742/150d423b-b520-41b8-a908-6586d7aa1084)
 
 The tool has a state divided into three distinct state groups.
 
@@ -87,16 +87,16 @@ The UI state represents any UI changes, including any temporary visual changes t
 
 ## Actions
 
-![1. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/ad32a66e-caab-4c40-894e-8b103f3779a2)
+![1. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Explorer/assets/44186742/ad32a66e-caab-4c40-894e-8b103f3779a2)
 
-![2. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/2348e3bb-ed50-4868-9326-d4bc49998665)
+![2. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Explorer/assets/44186742/2348e3bb-ed50-4868-9326-d4bc49998665)
 
-![3. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/assets/44186742/74f97864-5673-4959-aacc-68927df80cd5)
+![3. Data Explorer Screenshot with labels showing what triggers an action](https://github.com/scholarsportal/Dataverse-Data-Explorer/assets/44186742/74f97864-5673-4959-aacc-68927df80cd5)
 
-![Data Curation Tool Launch Activity Diagram](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Init%20Sequence%20Diagram.jpg?raw=true 'Launch Activity Diagram')
+![Data Curation Tool Launch Activity Diagram](documentation/img/Init%20Sequence%20Diagram.jpg 'Launch Activity Diagram')
 
-![Update Component View Reference](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Update%20Component%20View.jpg?raw=true 'Update Component View Reference')
+![Update Component View Reference](documentation/img/Update%20Component%20View.jpg 'Update Component View Reference')
 
-![View Variable](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/View%20Variable.jpg?raw=true 'View Variable Sequence Diagram')
+![View Variable](documentation/img/View%20Variable.jpg 'View Variable Sequence Diagram')
 
-![Edit Single Variable](https://github.com/scholarsportal/Dataverse-Data-Curation-Tool/blob/nana-dev/documentation/img/Edit%20Single%20Variable.jpg?raw=true 'Edit Single Variable Sequence Diagram')
+![Edit Single Variable](documentation/img/Edit%20Single%20Variable.jpg 'Edit Single Variable Sequence Diagram')

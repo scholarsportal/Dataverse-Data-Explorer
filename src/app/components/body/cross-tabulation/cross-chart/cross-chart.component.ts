@@ -2,12 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
   input,
   OnInit,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 import { TranslateModule } from '@ngx-translate/core';
+import { Theme, ThemeService } from 'src/app/services/theme.service';
+import { applyChartTheme } from 'src/app/shared/util/chart';
 
 @Component({
   selector: 'dct-cross-chart',
@@ -27,6 +30,7 @@ export class CrossChartComponent implements OnInit {
   cols = input.required<any>();
   data = input.required<any>();
   public chartJS: any;
+  private themeService = inject(ThemeService);
 
   // constructor() {
   //   effect(() => {
@@ -40,14 +44,16 @@ export class CrossChartComponent implements OnInit {
   redrawChart$ = effect(() => {
     const data = this.data();
 
+    // Reading the theme here recolours the chart when it is toggled
+    const theme = this.themeService.theme();
     if (data) {
-      this.redrawChart(data);
+      this.redrawChart(data, theme);
     }
   });
 
   relabelChart$ = effect(() => {
     if (this.cols() || this.rows()) {
-      this.redrawChart(this.data());
+      this.redrawChart(this.data(), this.themeService.theme());
     }
   });
 
@@ -85,64 +91,15 @@ export class CrossChartComponent implements OnInit {
         },
       },
     });
-    const light = 'black',
-      dark = 'white',
-      neutral = '#c8c5d0',
-      theme = localStorage.getItem('theme');
-
-    if (theme === 'light') {
-      this.chartJS.options.scales.x.grid.color = neutral;
-      this.chartJS.options.scales.y.grid.color = neutral;
-      this.chartJS.options.scales.x.ticks.color = light;
-      this.chartJS.options.scales.y.ticks.color = light;
-      this.chartJS.options.scales.x.title.color = light;
-      this.chartJS.options.scales.y.title.color = light;
-      this.chartJS.options.plugins.title.color = light;
-      this.chartJS.options.plugins.legend.labels.color = light;
-    } else {
-      this.chartJS.options.scales.x.grid.color = dark;
-      this.chartJS.options.scales.y.grid.color = dark;
-      this.chartJS.options.scales.x.ticks.color = dark;
-      this.chartJS.options.scales.y.ticks.color = dark;
-      this.chartJS.options.scales.x.title.color = dark;
-      this.chartJS.options.scales.y.title.color = dark;
-      this.chartJS.options.plugins.title.color = dark;
-      this.chartJS.options.plugins.legend.labels.color = dark;
-    }
+    applyChartTheme(this.chartJS, this.themeService.theme());
   }
 
-  private redrawChart(data: any) {
+  private redrawChart(data: any, theme: Theme) {
     // Update chart data and redraw
     if (this.chartJS) {
       this.chartJS.data = data;
-      // if (this.chartJS.data?.options?.scales?.y?.ticks) {
-      //   this.chartJS.data.options.scales.y.ticks.autoSkip = chart.length >= 10;
-      // }
+      applyChartTheme(this.chartJS, theme);
       this.chartJS.update();
-      const light = 'black',
-        dark = 'white',
-        neutral = '#c8c5d0',
-        theme = localStorage.getItem('theme');
-
-      if (theme === 'light') {
-        this.chartJS.options.scales.x.grid.color = neutral;
-        this.chartJS.options.scales.y.grid.color = neutral;
-        this.chartJS.options.scales.x.ticks.color = light;
-        this.chartJS.options.scales.y.ticks.color = light;
-        this.chartJS.options.scales.x.title.color = light;
-        this.chartJS.options.scales.y.title.color = light;
-        this.chartJS.options.plugins.legend.labels.color = light;
-        this.chartJS.update();
-      } else {
-        this.chartJS.options.scales.x.grid.color = dark;
-        this.chartJS.options.scales.y.grid.color = dark;
-        this.chartJS.options.scales.x.ticks.color = dark;
-        this.chartJS.options.scales.y.ticks.color = dark;
-        this.chartJS.options.scales.x.title.color = dark;
-        this.chartJS.options.scales.y.title.color = dark;
-        this.chartJS.options.plugins.legend.labels.color = dark;
-        this.chartJS.update();
-      }
     }
   }
 }

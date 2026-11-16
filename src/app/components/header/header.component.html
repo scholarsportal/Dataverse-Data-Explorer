@@ -23,7 +23,7 @@
               <!-- this hidden checkbox controls the state -->
               <input
                 (change)="toggleTheme()"
-                [checked]="!currentThemeLight"
+                [checked]="isDarkTheme()"
                 class="theme-controller"
                 type="checkbox"
               />

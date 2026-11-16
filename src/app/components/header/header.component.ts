@@ -41,6 +41,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DdiService } from '../../services/ddi.service';
+import { ThemeService } from '../../services/theme.service';
 import { MessageModule } from 'primeng/message';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from '../../../assets/i18n/localizations';
@@ -73,7 +74,8 @@ export class HeaderComponent implements OnInit {
   languages = Languages;
   language = localStorage.getItem('language');
 
-  currentThemeLight: boolean = true;
+  private themeService = inject(ThemeService);
+  isDarkTheme = this.themeService.isDark;
   showToggle: boolean = false;
 
   weightIdle: boolean = true;
@@ -179,9 +181,6 @@ export class HeaderComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('theme') === 'dark') {
-      this.currentThemeLight = false;
-    }
     this.showToggle = true;
     this.pagetitle.setTitle(this.title() || 'Data Explorer');
     this.tracker.setDocumentTitle(this.title() || 'Data Explorer');
@@ -223,16 +222,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleTheme() {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'light') {
-      this.currentThemeLight = false;
-      localStorage.setItem('theme', 'dark');
-      document.body.setAttribute('data-theme', 'dark');
-    } else {
-      this.currentThemeLight = true;
-      localStorage.setItem('theme', 'light');
-      document.body.setAttribute('data-theme', 'light');
-    }
+    this.themeService.toggle();
   }
 
   changeLanguage(event: any) {

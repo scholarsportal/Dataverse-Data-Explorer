@@ -20,6 +20,8 @@ import { VariableInformationComponent } from './variable-information/variable-in
 import { VariableTabUIAction } from 'src/app/new.state/ui/ui.actions';
 import { shuffleColours } from './chart.interface';
 import { TranslateModule } from '@ngx-translate/core';
+import { Theme, ThemeService } from 'src/app/services/theme.service';
+import { applyChartTheme } from 'src/app/shared/util/chart';
 
 @Component({
   selector: 'dct-chart',
@@ -36,6 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class ChartComponent implements OnInit {
   store = inject(Store);
+  private themeService = inject(ThemeService);
   // $groups = this.store.selectSignal(selectOpenVariableSelectedGroups);
   variableID = input.required<string>();
   variableLabel = input.required<string>();
@@ -55,8 +58,10 @@ export class ChartComponent implements OnInit {
   public chartJS: any;
 
   constructor() {
+    // Redraw when the data changes, and recolour when the theme is toggled
+    // while the chart is open
     effect(() => {
-      this.redrawChart(this.chart());
+      this.redrawChart(this.chart(), this.themeService.theme());
     });
   }
 
@@ -125,63 +130,16 @@ export class ChartComponent implements OnInit {
       },
     });
 
-    const light = 'black';
-    const dark = 'white';
-    const neutral = '#c8c5d0';
-    const theme = localStorage.getItem('theme');
-
-    if (theme === 'light') {
-      this.chartJS.options.scales.x.grid.color = neutral;
-      this.chartJS.options.scales.y.grid.color = neutral;
-      this.chartJS.options.scales.x.ticks.color = light;
-      this.chartJS.options.scales.y.ticks.color = light;
-      this.chartJS.options.plugins.legend.labels.color = light;
-    } else {
-      this.chartJS.options.scales.x.grid.color = dark;
-      this.chartJS.options.scales.y.grid.color = dark;
-      this.chartJS.options.scales.x.ticks.color = dark;
-      this.chartJS.options.scales.y.ticks.color = dark;
-      this.chartJS.options.plugins.legend.labels.color = dark;
-    }
+    applyChartTheme(this.chartJS, this.themeService.theme());
   }
 
-  private redrawChart(chart: { x: number; y: string }[]) {
+  private redrawChart(chart: { x: number; y: string }[], theme: Theme) {
     // Update chart data and redraw
     if (this.chartJS) {
       this.chartJS.data.labels = chart.map((item) => item.y); // Update labels
       this.chartJS.data.datasets[0].data = chart.map((item) => item.x); // Update data
+      applyChartTheme(this.chartJS, theme);
       this.chartJS.update();
-
-      const light = 'black';
-      const dark = 'white';
-      const neutral = '#c8c5d0';
-      const theme = localStorage.getItem('theme');
-
-      if (theme === 'light') {
-        this.chartJS.options.scales.x.grid.color = neutral;
-        this.chartJS.options.scales.y.grid.color = neutral;
-        this.chartJS.options.scales.x.ticks.color = light;
-        this.chartJS.options.scales.y.ticks.color = light;
-        this.chartJS.options.plugins.legend.labels.color = light;
-        this.chartJS.update();
-      } else {
-        this.chartJS.options.scales.x.grid.color = dark;
-        this.chartJS.options.scales.y.grid.color = dark;
-        this.chartJS.options.scales.x.ticks.color = dark;
-        this.chartJS.options.scales.y.ticks.color = dark;
-        this.chartJS.options.plugins.legend.labels.color = dark;
-        this.chartJS.update();
-      }
     }
-  }
-
-  private getGridColor(): string {
-    const theme = localStorage.getItem('theme');
-    return theme === 'light' ? '#c8c5d0' : 'white';
-  }
-
-  private getTickColor(): string {
-    const theme = localStorage.getItem('theme');
-    return theme === 'light' ? 'black' : 'white';
   }
 }

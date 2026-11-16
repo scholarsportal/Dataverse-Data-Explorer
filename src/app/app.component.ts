@@ -25,6 +25,7 @@ import { selectDatasetProgress } from './new.state/ui/ui.selectors';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Languages } from './../assets/i18n/localizations';
 import { Subject, takeUntil } from 'rxjs';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'dct-root',
@@ -112,6 +113,9 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private store = inject(Store);
+  // Injected here so the theme is applied as soon as the app starts,
+  // before any chart or the header is created
+  private themeService = inject(ThemeService);
   loading = this.store.selectSignal(selectDatasetDownloadPending);
   loaded = this.store.selectSignal(selectDatasetDownloadedSuccessfully);
   error = this.store.selectSignal(selectDatasetError);
@@ -144,7 +148,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
-        this.setTheme();
         const callback = (params['callback'] as string) || null;
         const siteURL = params['siteUrl'] as string;
         const fileID =
@@ -189,22 +192,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private setTheme() {
-    if (localStorage.getItem('theme')) {
-      const theme = localStorage.getItem('theme') as string;
-      document.body.setAttribute('data-theme', theme);
-    } else {
-      const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');
-      if (darkThemeMq.matches) {
-        localStorage.setItem('theme', 'dark');
-        document.body.setAttribute('data-theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-        document.body.setAttribute('data-theme', 'light');
-      }
-    }
   }
 
   private setLang(lang: string) {
