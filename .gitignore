@@ -30,6 +30,8 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+# Nx build cache: machine-specific binaries, regenerated on demand
+/.nx/
 .sass-cache/
 /connect.lock
 /coverage
