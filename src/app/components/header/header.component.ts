@@ -152,7 +152,8 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'DOWNLOAD_META',
-      url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
+      //url: `${this.siteURL()}/api/meta/datafile/${this.fileID()}`,
+      url: `${this.siteURL()}/api/access/datafile/${this.fileID()}/metadata/ddi`,
     },
     {
       label: 'DOWNLOAD_XML',
